@@ -1,4 +1,4 @@
-KH Semi Project Repogitory
+KH Semi Project Repository
 ==========================
 KH 정보교육원 세미 프로젝트 협업을 위한 레포지토리
 
@@ -7,12 +7,12 @@ KH 정보교육원 세미 프로젝트 협업을 위한 레포지토리
 준비사항
 --------
 
-> ### 먼저 Repogitory를 clone해서 본인 local에 저장!
-- 협업해서 작업하기 위해 원격 Repogitory에만 저장되어 있는 코드를 Local Repogitory로 가져오는 과정
+> ### 먼저 Repository를 clone해서 본인 local에 저장!
+- 협업해서 작업하기 위해 원격 Repository에만 저장되어 있는 코드를 Local Repository로 가져오는 과정
 - clone 이후에는 아래 주의사항을 참고하여 함께 협업 진행!
 
 ```bash
-$ git clone (Repogitory 주소)
+$ git clone (Repository 주소)
 ```
 
 <br>
@@ -40,7 +40,7 @@ $ git checkout -b feature/[기능명] develop
 # 새로운 기능에 대한 작업 수행 + (add, commit)
 # 작업 중이라면 'develop' 브랜치로 이동하면 안 됨!
 
-# 원격 Repogitory에 본인이 local에서 만든 'feature' 브랜치를 올림
+# 원격 Repository에 본인이 local에서 만든 'feature' 브랜치를 올림
 $ git push -u origin feature/[기능명]
 
 # github에서 'feature -> develop'(중요!!! master 아님!) Pull Request! 이후 논의해서 순차적으로 merge 진행
@@ -49,7 +49,7 @@ $ git push -u origin feature/[기능명]
 # 'feature/[기능명]' 브랜치 삭제
 $ git branch -d feature/[기능명]
 
-# 원격 Repogitory에 올려놓은 'feature' 브랜치 삭제
+# 원격 Repository에 올려놓은 'feature' 브랜치 삭제
 $ git push origin --delete feature/[기능명]
 ```
 
@@ -63,7 +63,7 @@ $ git push origin --delete feature/[기능명]
 # 현재 브랜치 상태 저장 (선택사항 - 변경 사항이 있을 경우)
 $ git stash
 
-# 최신화 된 원격 Repogitory 정보(commit 내용)를 받아옴
+# 최신화 된 원격 Repository 정보(commit 내용)를 받아옴
 $ git fetch origin
 
 # 최신화 된 'develop' 브랜치 코드들을 'feature' 브랜치에 모두 merge
