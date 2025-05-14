@@ -42,7 +42,7 @@
             </div>
             
             <!-- 페이징 처리 -->
-            <!-- <div class="pagination">
+            <div class="pagination">
               <a th:if="${pagination.hasPrevious}" th:href="@{${pagination.previousPage}}" class="page-nav">Previous</a>
               <th:block th:each="pageNum : ${pagination.pageNumbers}">
                 <a th:href="@{${pagination.getPageUrl(pageNum)}}" 
@@ -50,12 +50,12 @@
                   th:class="${pageNum == pagination.currentPage ? 'current' : ''}"></a>
               </th:block>
               <a th:if="${pagination.hasNext}" th:href="@{${pagination.nextPage}}" class="page-nav">Next</a>
-            </div> -->
+            </div>
             
             <!-- 글쓰기 버튼 -->
-            <!-- <div class="write-button">
+            <div class="write-button">
               <a href="/board/write">Write</a>
-            </div> -->
+            </div>
           </div>
         </div>
         

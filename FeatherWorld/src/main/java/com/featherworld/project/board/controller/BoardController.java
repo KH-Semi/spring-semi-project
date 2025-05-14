@@ -17,9 +17,6 @@ import com.featherworld.project.board.model.service.BoardService;
 
 import lombok.extern.slf4j.Slf4j;
 
-/** 게시판(/board 요청을 받는) 컨트롤러
- * @author Jiho
- */
 @Controller
 @RequestMapping("board")
 @Slf4j
@@ -79,6 +76,7 @@ public class BoardController {
 		model.addAttribute("boardList", boardList);
 		
 		// 4. pagination을 기준으로 가져온 게시글을 구성
+		
 		
 		return "board/boardList";
 	}

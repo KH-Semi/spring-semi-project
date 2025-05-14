@@ -29,7 +29,7 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.selectBoardType(memberNo);
 	}
 	
-	// 해당 게시판의 게시글 조회
+	// 해당 게시판에서 삭제되지 않은 게시글 조회
 	@Override
 	public List<Board> selectBoardList(int currentBoardCode) {
 		return mapper.selectBoardList(currentBoardCode);

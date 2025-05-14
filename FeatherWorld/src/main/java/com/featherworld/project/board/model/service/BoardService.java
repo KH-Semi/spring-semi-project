@@ -21,7 +21,7 @@ public interface BoardService {
 	 */
 	List<BoardType> selectBoardType(int memberNo);
 
-	/** 해당 게시판의 게시글 조회
+	/** 해당 게시판에서 삭제되지 않은 게시글 조회
 	 * @author Jiho
 	 * @param currentBoardCode : 선택된 게시판 종류 번호
 	 * @return
