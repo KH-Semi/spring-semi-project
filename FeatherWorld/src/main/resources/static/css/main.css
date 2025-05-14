@@ -1,5 +1,9 @@
 body {
-  font-family: 'Noto Sans KR', sans-serif;
+  box-sizing: border-box;
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
   margin: 0;
   padding: 0;
   background-color: #f5f5f5;
@@ -60,7 +64,7 @@ body {
   border-right: 1px solid #e0e0e0;
 }
 
-.board-list .board-item {
+.board-type-sidebar .board-type-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -70,13 +74,13 @@ body {
   cursor: pointer;
 }
 
-.board-list .board-item:first-child {
-  background-color: #c62828;
+.board-type-sidebar .board-type-item:first-child {
+  background-color: #9F2120;
   color: white;
-  font-weight: bold;
+  font-weight: 600;
 }
 
-.board-list .board-item:not(:first-child):hover {
+.board-type-sidebar .board-type-item:not(:first-child):hover {
   background-color: #f5f5f5;
 }
 
@@ -101,57 +105,65 @@ body {
   padding: 20px;
 }
 
-.post-item {
+.board-item {
+  display: flex;
+  justify-content: space-between;
+  height: 90px;
   border: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
   border-radius: 5px;
+  padding: 15px;
   margin-bottom: 20px;
   overflow: hidden;
 }
 
-.post-header {
+.board-wrap {
   display: flex;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-bottom: 1px solid #e0e0e0;
+  flex-basis: 80%;
 }
 
-.post-thumbnail img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+.board-thumbnail img {
+  width: 90px;
+  height: 90px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
   object-fit: cover;
 }
 
-.post-info {
-  margin-left: 10px;
+.board-main {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 10px;
 }
 
-.post-title {
-  font-weight: bold;
-  margin-bottom: 5px;
+.board-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin: 5px 0px;
 }
 
-.post-date {
-  font-size: 12px;
-  color: #777;
-}
-
-.post-content {
-  padding: 15px;
+.board-content {
+  font-size: 16px;
   line-height: 1.6;
 }
 
-.post-footer {
+.board-info {
   display: flex;
-  justify-content: flex-end;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-top: 1px solid #e0e0e0;
+  flex-basis: 15%;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.post-reads {
+.board-date {
+  font-size: 12px;
+  color: #8E8E8E;
+}
+
+.board-reads {
   display: flex;
   align-items: center;
+  color: #8E8E8E;
+  font-size: 14px;
 }
 
 .icon-read {
@@ -166,7 +178,7 @@ body {
   border-left: 1px solid #e0e0e0;
 }
 
-.navigation .nav-item {
+.nav-sidebar .nav-item {
   display: flex;
   align-items: center;
   padding: 12px 10px;
@@ -175,11 +187,11 @@ body {
   cursor: pointer;
 }
 
-.navigation .nav-item:hover {
+.nav-sidebar .nav-item:hover {
   background-color: #f5f5f5;
 }
 
-.navigation .nav-item i {
+.nav-sidebar .nav-item i {
   margin-right: 10px;
 }
 
@@ -187,7 +199,7 @@ body {
 .footer-container {
   text-align: center;
   padding: 15px 0;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   border-top: 1px solid #e0e0e0;
   color: #777;
   font-size: 14px;
@@ -211,9 +223,9 @@ body {
 }
 
 .pagination a.current {
-  background-color: #c62828;
+  background-color: #9F2120;
   color: white;
-  border-color: #c62828;
+  border-color: #9F2120;
 }
 
 /* 글쓰기 버튼 스타일 */
@@ -226,7 +238,7 @@ body {
 .write-button a {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #c62828;
+  background-color: #9F2120;
   color: white;
   border-radius: 5px;
   text-decoration: none;
@@ -234,7 +246,7 @@ body {
 }
 
 .write-button a:hover {
-  background-color: #b71c1c;
+  opacity: 90%;
 }
 
 /* 아이콘 스타일 */
@@ -256,7 +268,5 @@ body {
   
   .left-sidebar, .right-sidebar {
     width: 100%;
-    border: none;
-    border-bottom: 1px solid #e0e0e0;
   }
 }

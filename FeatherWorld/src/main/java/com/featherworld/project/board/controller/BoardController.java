@@ -76,7 +76,7 @@ public class BoardController {
 		List<Board> boardList = service.selectBoardList(currentBoardCode);
 		
 		// request scope에 boardList 저장
-		model.addAttribute("posts", boardList);
+		model.addAttribute("boardList", boardList);
 		
 		// 4. pagination을 기준으로 가져온 게시글을 구성
 		
