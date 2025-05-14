@@ -1,0 +1,262 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* 헤더 스타일 */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 50px;
+  height: 50px;
+}
+
+.site-title {
+  font-family: 'Pacifico', cursive;
+  color: #9F2120;
+  font-weight: 400;
+  font-size: 28px;
+  margin-left: 10px;
+}
+
+.site-subtitle {
+  font-size: 18px;
+  color: #555;
+}
+
+/* 콘텐츠 컨테이너 스타일 */
+.content-container {
+  display: flex;
+  min-height: 600px;
+}
+
+/* 좌측 사이드바 스타일 */
+.left-sidebar {
+  width: 250px;
+  padding: 20px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.board-list .board-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.board-list .board-item:first-child {
+  background-color: #c62828;
+  color: white;
+  font-weight: bold;
+}
+
+.board-list .board-item:not(:first-child):hover {
+  background-color: #f5f5f5;
+}
+
+.add-folder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-folder:hover {
+  background-color: #f5f5f5;
+}
+
+/* 메인 콘텐츠 스타일 */
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.post-item {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.post-header {
+  display: flex;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.post-thumbnail img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.post-info {
+  margin-left: 10px;
+}
+
+.post-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.post-date {
+  font-size: 12px;
+  color: #777;
+}
+
+.post-content {
+  padding: 15px;
+  line-height: 1.6;
+}
+
+.post-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+}
+
+.post-reads {
+  display: flex;
+  align-items: center;
+}
+
+.icon-read {
+  color: #c62828;
+  margin-right: 5px;
+}
+
+/* 우측 사이드바 스타일 */
+.right-sidebar {
+  width: 200px;
+  padding: 20px;
+  border-left: 1px solid #e0e0e0;
+}
+
+.navigation .nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.navigation .nav-item:hover {
+  background-color: #f5f5f5;
+}
+
+.navigation .nav-item i {
+  margin-right: 10px;
+}
+
+/* 푸터 스타일 */
+.footer-container {
+  text-align: center;
+  padding: 15px 0;
+  background-color: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+  color: #777;
+  font-size: 14px;
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination a.current {
+  background-color: #c62828;
+  color: white;
+  border-color: #c62828;
+}
+
+/* 글쓰기 버튼 스타일 */
+.write-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.write-button a {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #c62828;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.write-button a:hover {
+  background-color: #b71c1c;
+}
+
+/* 아이콘 스타일 */
+.icon-edit, .icon-delete {
+  color: #777;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.icon-edit:hover, .icon-delete:hover {
+  color: #c62828;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 992px) {
+  .content-container {
+    flex-direction: column;
+  }
+  
+  .left-sidebar, .right-sidebar {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+}

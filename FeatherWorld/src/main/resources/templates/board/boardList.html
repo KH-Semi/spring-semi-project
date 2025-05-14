@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
+
+  <th:block th:replace="~{common/common}"></th:block>
+</head>
+  <body>
+    
+    <div class="container">
+      <!-- 헤더 Include -->
+      <th:block th:replace="~{common/fragments/header}"></th:block>
+      
+      <div class="content-container">
+        <!-- 좌측 게시판 리스트 Include -->
+        <div class="left-sidebar">
+          <div class="board-list">
+            <div class="board-item">
+              <span class="board-title">Board List</span>
+            </div>
+            <div class="board-item" th:each="boardType : ${boardTypeList}" th:object="${boardType}">
+              <span class="board-title" th:text="*{boardName}">Daily</span>
+              <span class="edit-icon"><i class="icon-edit"></i></span>
+              <span class="delete-icon"><i class="icon-delete"></i></span>
+            </div>
+            <div class="add-folder">
+              <i class="icon-add"></i> Add Folder
+            </div>
+          </div>
+        </div>
+        
+        <!-- 중앙 게시글 목록 -->
+        <div class="main-content">
+          <div class="post-list">
+            <!-- DB에서 가져온 게시글 목록 순회 -->
+            <div class="post-item" th:each="post : ${posts}" th:object="${post}">
+              <div class="post-header">
+                <div class="post-thumbnail">
+                  <img th:src="#{user.default.image}" alt="thumbnail">
+                </div>
+                <div class="post-info">
+                  <div class="post-title" th:text="*{boardTitle}">게시글 제목</div>
+                  <div class="post-date" th:text="*{boardWriteDate}">게시일</div>
+                </div>
+              </div>
+              <div class="post-content" th:text="*{boardContent}">게시글 내용</div>
+              <div class="post-footer">
+                <div class="post-reads">
+                  <i class="icon-read"></i>
+                  <span th:text="*{likeCount}">0</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 페이징 처리 -->
+            <!-- <div class="pagination">
+              <a th:if="${pagination.hasPrevious}" th:href="@{${pagination.previousPage}}" class="page-nav">Previous</a>
+              <th:block th:each="pageNum : ${pagination.pageNumbers}">
+                <a th:href="@{${pagination.getPageUrl(pageNum)}}" 
+                  th:text="${pageNum}" 
+                  th:class="${pageNum == pagination.currentPage ? 'current' : ''}"></a>
+              </th:block>
+              <a th:if="${pagination.hasNext}" th:href="@{${pagination.nextPage}}" class="page-nav">Next</a>
+            </div> -->
+            
+            <!-- 글쓰기 버튼 -->
+            <!-- <div class="write-button">
+              <a href="/board/write">Write</a>
+            </div> -->
+          </div>
+        </div>
+        
+        <!-- 우측 네비게이션 바 Include -->
+        <div class="right-sidebar">
+          <th:block th:replace="~{common/fragments/navigation}"></th:block>
+        </div>
+      </div>
+      
+      <!-- 푸터 Include -->
+      <th:block th:replace="~{common/fragments/footer}"></th:block>
+    </div>
+    
+    <script src="/js/main.js"></script>
+
+  </body>
+</html>

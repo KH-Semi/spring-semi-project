@@ -9,6 +9,10 @@
   <th:block th:replace="~{common/common}"></th:block>
 </head>
 <body>
+  <th:block th:replace="~{common/fragments/header}"></th:block>
+  
   <img th:src="#{user.default.image}">
+
+  <th:block th:replace="~{common/fragments/footer}"></th:block>
 </body>
 </html>
