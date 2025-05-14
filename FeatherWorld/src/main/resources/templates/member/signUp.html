@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeatherWorld - signUp</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/signUp.css}">
+</head>
+<body>
+    <!-- Header Fragment -->
+    <div th:replace="~{common/header}"></div>
+    
+    <main class="main-content">
+        <div class="container">
+            <div class="signup-container">
+                <h1 class="signup-title">회원가입</h1>
+                
+                <form class="signup-form" action="/member/signup" method="post">
+                    <!-- ID Field -->
+                    <div class="form-group">
+                        <label for="username" class="required-label">ID :</label>
+                        <div class="input-with-button">
+                            <input type="text" id="username" name="memberEmail" placeholder="이메일을 입력해주세요" class="form-input">
+                             <label for="name" class="required-label">AUTHKEY :</label>
+                            <input type="text" id="authKey" placeholder="인증번호를 입력해주세요." class="form-input">
+                            <button type="button" class="confirm-btn" id="idConfirmBtn">Get Authkey</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Name & Phone Fields -->
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label for="name" class="required-label">NAME :</label>
+                            <input type="text" id="name" name="memberName" placeholder="이름을 입력해 주세요." class="form-input">
+                        </div>
+                        <div class="form-group half">
+                            <label for="phone" class="required-label">PHONE :</label>
+                            <input type="text" id="phone" name="memberTel" placeholder="전화번호를 입력해 주세요." class="form-input">
+                        </div>
+                    </div>
+                    
+                    <!-- Password Fields -->
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label for="password" class="required-label">PASSWORD :</label>
+                            <input type="password" id="password" name="memberPw" placeholder="영문, 숫자, !@#$%를 포함한 8자 ~ 12자" class="form-input">
+                        </div>
+                        <div class="form-group half">
+                            <label for="passwordCheck" class="required-label">PASSWORD CHECK :</label>
+                            <input type="password" id="passwordCheck" name="memberPwConfirm" placeholder="영문, 숫자, !@#$%를 포함한 8자 ~ 12자" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <!-- Address Fields -->
+                    <div class="form-group">
+                        <label for="address" class="normal-label">ADDRESS :</label>
+                        <div class="address-inputs">
+                            <div class="input-with-button">
+                                <input type="text" id="postalCode" name="memberAddress" placeholder="우편번호" class="form-input postal-code">
+                                <input type="text" id="roadAddress" name="memberAddress" placeholder="도로명 / 지번 주소" class="form-input road-address">
+                                <button type="button" class="address-search-btn" id="addressSearchBtn">Search Address</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Address Detail Field -->
+                    <div class="form-group">
+                        <label for="addressDetail" class="normal-label">ADDRESS DETAIL :</label>
+                        <input type="text" id="addressDetail" name="memberAddress" placeholder="상세 주소" class="form-input">
+                    </div>
+                    
+                    <!-- Form Buttons -->
+                    <div class="form-buttons">
+                        <a href="/" class="main-btn">Main</a>
+                        <button type="submit" class="signup-btn">Signup</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer Fragment -->
+    <div th:replace="~{common/footer}"></div>
+    
+
+    <script src="/js/member/signUp.js"></script> 
+
+</body>
+</html>
