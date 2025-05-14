@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeatherWorld - 방명록</title>
+    <link rel="stylesheet" href="/css/guestbook/guestbook-style.css"> <!-- 필요시 CSS 분리 -->
+</head>
+<body>
+<div class="container">
+
+    <!-- 상단 로고 및 제목 -->
+    <div th:replace="~{common/common :: logoHeader(${member.memberName + member.homeTitle})}"></div>
+
+    <div class="content">
+
+        <!-- 왼쪽 프로필 -->
+        <div th:replace="~{common/common :: profileBox(${member})}"></div>
+
+        <!-- 가운데 방명록 본문 -->
+        <div class="middle-panel">
+            <!-- 방문자 수 -->
+            <div class="stats-bar">
+                <div class="stats-item">
+                    <div class="stats-label">Today</div>
+                    <div class="stats-value" th:text="${member.todayCount}">10</div>
+                </div>
+                <div class="stats-item">
+                    <div class="stats-label">Total</div>
+                    <div class="stats-value" th:text="${member.visitorTotal}">50</div>
+                </div>
+            </div>
+
+            <!-- 방명록 목록 -->
+            <div class="guestbook-entries">
+                <div class="guestbook-entry" th:each="gb : ${guestBookList}">
+                    <div class="entry-header">
+                        <div class="entry-avatar">
+                            <img th:src="@{/images/profile/default.png}" alt="Avatar">
+                        </div>
+                        <div class="entry-info">
+                            <div class="entry-author" th:text="${gb.visitorName}">이름</div>
+                            <div class="entry-date" th:text="${#dates.format(gb.guestBookWriteDate, 'yyyy. MM. dd HH:mm')}">2025.05.10</div>
+                        </div>
+                    </div>
+                    <div class="entry-content" th:text="${gb.guestBookContent}">내용</div>
+                    <a href="#" class="delete-btn">Delete</a>
+                </div>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination">
+                <a href="#" class="page-nav">❮ Previous</a>
+                <div class="page-item">1</div>
+                <div class="page-item active">2</div>
+                <div class="page-item">3</div>
+                <div class="page-item">4</div>
+                <div class="page-item">5</div>
+                <div class="page-item">...</div>
+                <div class="page-item">11</div>
+                <a href="#" class="page-nav">Next ❯</a>
+            </div>
+
+            <!-- 방명록 입력 -->
+            <form th:action="@{/guestbook/insert}" method="post" class="guestbook-input">
+                <textarea class="input-field" name="guestBookContent" placeholder="Guest Book Input" required></textarea>
+                <div class="emotion-toggle">
+                    <span class="heart-icon">❤</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" name="secretFl" value="Y">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="write-btn">
+                    <button type="submit" class="btn-write">✎</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 오른쪽 메뉴 -->
+        <div th:replace="~{common/common :: menuNav('guestbook')}"></div>
+
+    </div>
+
+    <!-- 하단 푸터 -->
+    <div th:replace="~{common/common :: footer}"></div>
+</div>
+</body>
+</html>
