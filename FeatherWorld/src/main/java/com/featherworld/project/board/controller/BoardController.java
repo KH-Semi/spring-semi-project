@@ -1,6 +1,7 @@
 package com.featherworld.project.board.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,9 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.featherworld.project.board.model.dto.Board;
 import com.featherworld.project.board.model.dto.BoardType;
 import com.featherworld.project.board.model.service.BoardService;
 
@@ -25,7 +26,7 @@ public class BoardController {
 	@Autowired
 	BoardService service;
 	
-	/** 선택된 게시판에 해당하는 게시글 조회(비동기)
+	/** 선택된 게시판에 해당하는 게시글 조회 (게시판 종류 - 비동기)
 	 * @author Jiho
 	 * @param memberNo : 현재 조회 중인 회원 번호
 	 * @param boardCode : 현재 선택된 게시판 종류 번호
@@ -35,6 +36,7 @@ public class BoardController {
 	@GetMapping("{memberNo:[0-9]+}")
 	public String boardMainPage(@PathVariable("memberNo") int memberNo,
 								@RequestBody(required = false) BoardType boardType,
+								@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 								Model model, RedirectAttributes ra) {
 		
 		// 0. 회원 번호 유효성 검사
@@ -70,14 +72,23 @@ public class BoardController {
 		log.debug("현재 게시판 번호 : {}", currentBoardCode);
 		
 		// 3. 해당 게시판의 게시글만 조회
-		List<Board> boardList = service.selectBoardList(currentBoardCode);
+		Map<String, Object> map = service.selectBoardList(currentBoardCode, cp);
 		
-		// request scope에 boardList 저장
-		model.addAttribute("boardList", boardList);
+		// request scope에 boardList, paginatioin 저장
+		// (게시글이 없다면 각각 null 저장됨)
+		model.addAttribute("boardList", map.get("boardList"));
+		model.addAttribute("pagination", map.get("pagination"));
 		
-		// 4. pagination을 기준으로 가져온 게시글을 구성
-		
-		
+		// forward
 		return "board/boardList";
+	}
+	
+	@GetMapping("{memberNo:[0-9]+}/write")
+	public String boardWrite(@PathVariable("memberNo") int memberNo,
+							 @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
+		
+		
+		
+		return "board/boardWrite";
 	}
 }

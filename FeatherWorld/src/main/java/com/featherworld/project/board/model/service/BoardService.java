@@ -1,8 +1,8 @@
 package com.featherworld.project.board.model.service;
 
 import java.util.List;
+import java.util.Map;
 
-import com.featherworld.project.board.model.dto.Board;
 import com.featherworld.project.board.model.dto.BoardType;
 
 public interface BoardService {
@@ -21,12 +21,14 @@ public interface BoardService {
 	 */
 	List<BoardType> selectBoardType(int memberNo);
 
-	/** 해당 게시판에서 삭제되지 않은 게시글 조회
+
+	/** 현재 선택된 게시판의 삭제되지 않은 게시글 목록 조회 / pagination 객체 반환
 	 * @author Jiho
-	 * @param currentBoardCode : 선택된 게시판 종류 번호
-	 * @return
+	 * @param currentBoardCode
+	 * @param cp
+	 * @return {"boardList" : List<Board>, "pagination" : Pagination}
 	 */
-	List<Board> selectBoardList(int currentBoardCode);
+	Map<String, Object> selectBoardList(int currentBoardCode, int cp);
 
 
 }

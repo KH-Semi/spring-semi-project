@@ -2,25 +2,33 @@ package com.featherworld.project.common.dto;
 
 public class Pagination {
 
+	// 절대적인 값
 	private int currentPage;	// 현재 페이지 번호
 	private int listCount;		// 전체 객체 수
 	
-	// 상대적인 값을 정하는 기준
-	private int limit = 3;		// 한 페이지 목록에 보여지는 객체 수
-	private int pageSize = 10;	// 보여질 페이지 번호 개수
+	/* 상대적인 값을 정하는 기준 */
+	private int limit;			// 한 페이지 목록에 보여지는 객체 수
+	private int pageSize;		// 보여질 페이지 번호 개수
+	
+	// -------------------------------------------------------------
 	
 	// 상대적인 값
-	private int maxPage;		// 마지막 페이지 번호
-	private int startPage;		// 보여지는 맨 앞 페이지 번호
-	private int endPage;		// 보여지는 맨 뒤 페이지 번호
+	private int maxPage;	// 마지막 페이지 번호
+	private int startPage;	// 보여지는 맨 앞 페이지 번호
+	private int endPage;	// 보여지는 맨 뒤 페이지 번호
 		
-	private int prevPage;		// 이전 페이지 모음의 마지막 번호
-	private int nextPage;		// 다음 페이지 모음의 시작 번호
+	private int prevPage;	// 이전 페이지 모음의 마지막 번호
+	private int nextPage;	// 다음 페이지 모음의 시작 번호
 	
 	public Pagination(int currentPage, int listCount) {
 		super();
 		this.currentPage = currentPage;
 		this.listCount = listCount;
+		// limit, pageSize 지정해주지 않았을 때의 기본값 설정
+		limit = 3;
+		pageSize = 10;
+		
+		calculate();
 	}
 
 	public Pagination(int currentPage, int listCount, int limit, int pageSize) {
@@ -29,6 +37,8 @@ public class Pagination {
 		this.listCount = listCount;
 		this.limit = limit;
 		this.pageSize = pageSize;
+		
+		calculate();
 	}
 
 	public int getCurrentPage() {

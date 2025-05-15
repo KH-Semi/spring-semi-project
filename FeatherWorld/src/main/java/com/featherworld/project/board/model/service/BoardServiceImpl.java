@@ -1,7 +1,10 @@
 package com.featherworld.project.board.model.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.featherworld.project.board.model.dto.Board;
 import com.featherworld.project.board.model.dto.BoardType;
 import com.featherworld.project.board.model.mapper.BoardMapper;
+import com.featherworld.project.common.dto.Pagination;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -29,9 +33,41 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.selectBoardType(memberNo);
 	}
 	
-	// 해당 게시판에서 삭제되지 않은 게시글 조회
+	// 현재 선택된 게시판의 삭제되지 않은 게시글 목록 조회/해당 pagination 객체 반환
 	@Override
-	public List<Board> selectBoardList(int currentBoardCode) {
-		return mapper.selectBoardList(currentBoardCode);
+	public Map<String, Object> selectBoardList(int currentBoardCode, int cp) {
+		
+		// 0. 반환할 Map 인스턴스(객체) 생성
+		Map<String, Object> map = new HashMap<>();
+		
+		// 1. 게시판 종류 번호로 해당 게시판의 게시글 목록 가져오기
+		
+		// 1-1. 해당 게시판의 삭제되지 않은 총 게시글 개수(listCount) 조회
+		int listCount = mapper.getListCount(currentBoardCode);
+		
+		// 게시글이 존재하지 않는다면, 빈 map return
+		if(listCount == 0) return map;
+		
+		// 1-2. 현재 페이지(cp), 총 게시글 개수(listCount)를 기준으로
+		// 		pagination 객체 생성
+		Pagination pagination = new Pagination(cp, listCount);
+		
+		// 1-3. 생성된 pagination 객체의 필드값(limit)을 기준으로
+		// 		해당 페이지에 포함되는 게시글 목록만 가져옴
+		//		RowBounds 객체(MyBatis 제공) 활용
+		int limit = pagination.getLimit();
+		int offset = (cp - 1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		// RowBounds와 현재 게시판 종류 번호(currentBoardCode)를 매개변수로 지정
+		// rowBounds 순서는 반드시 두 번째!
+		List<Board> boardList = mapper.selectBoardList(currentBoardCode, rowBounds);
+		
+		// 생성한 pagination, boardList 넣어주기
+		map.put("pagination", pagination);
+		map.put("boardList", boardList);
+		
+		// pagination, boardList 들어있는 map 반환
+		return map;
 	}
 }
