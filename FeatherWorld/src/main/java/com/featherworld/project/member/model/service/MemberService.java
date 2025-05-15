@@ -22,4 +22,10 @@ public interface MemberService {
 	 */
 	int setDefaultBoardType(int memberNo);
 
+	/** 로그인 서비스
+	 * @param inputMember
+	 * @return
+	 */
+	Member login(Member inputMember);
+
 }

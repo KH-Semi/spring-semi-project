@@ -23,4 +23,11 @@ public interface MemberMapper {
 	 * @return
 	 */
 	int setDefaultBoardType(int memberNo);
+
+	/** 로그인을 할때 이메일이 있는지 조회하는 메서드
+	 * @param memberEmail
+	 * @return
+	 * @author 영민
+	 */
+	Member login(String memberEmail);
 }

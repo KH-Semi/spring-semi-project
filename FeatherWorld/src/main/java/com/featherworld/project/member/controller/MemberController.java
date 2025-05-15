@@ -2,15 +2,18 @@ package com.featherworld.project.member.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.featherworld.project.member.model.dto.Member;
 import com.featherworld.project.member.model.service.MemberService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 
 /** member 컨트롤러 클래스
@@ -35,6 +38,8 @@ public class MemberController {
 		
 		return "member/signUp";
 	}
+	
+	
 		
 	/** 회원가입 메서드 (post)
 	 * @author 영민
@@ -88,10 +93,24 @@ public class MemberController {
 	 * @return
 	 * @author 영민
 	 */
-	// 아직 미완성~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// 아이디 저장은 아직 안함
 	@PostMapping("login")
-	public String login() {
+	public String login(Member inputMember,RedirectAttributes ra, Model model) {
 		
-		return null;
+		Member loginMember = service.login(inputMember);
+		
+		if(loginMember == null) {
+			// 로그인실패
+			ra.addFlashAttribute("message","아이디또는 비밀번호가 맞지않습니다,");
+			
+		}else {
+			//로그인성공
+			model.addAttribute("loginMember",loginMember);
+			
+			// --- saveId 할꺼면 여기서부터 진행..
+		}
+		
+		
+		return "redirect:/";
 	}
 }

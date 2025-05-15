@@ -75,4 +75,23 @@ public class MemberServiceImpl implements MemberService {
 		return mapper.setDefaultBoardType(memberNo);
 	}
 
+	/** 로그인 메서드
+	 * @author 영민
+	 */
+	@Override
+	public Member login(Member inputMember) {
+		
+		Member loginMember = mapper.login(inputMember.getMemberEmail());
+		
+		if (loginMember == null) return null; // 조회해도 맞는 이메일이없을때
+		
+		
+		//if(!bcrypt.matches(inputMember.getMemberPw(),loginMember.getMemberPw()))return null;
+		// 로그인회원의 비밀번호와 입력받은 비밀번호가 같지않다면
+		
+		loginMember.setMemberPw(null); // 로그인 비밀번호 혹시몰라 제거
+		
+		
+		return loginMember;
+	}
 }

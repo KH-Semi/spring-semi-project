@@ -1,5 +1,7 @@
 package com.featherworld.project.member.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,17 @@ public class MemberEmailContoller {
 		}
 		
 		return 0;
+	}
+	
+	/** 이메일 이랑 인증번호가 맞는지 확인하는 컨트롤러
+	 * @param map
+	 * @return
+	 * @author 영민
+	 */
+	@ResponseBody
+	@PostMapping("checkAuthKey")
+	public int checkAuthKey(@RequestBody Map<String, String> map) {
+		return service.checkAuthKey(map);
 	}
 	
 }
