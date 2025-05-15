@@ -54,15 +54,6 @@ CREATE TABLE "MEMBER" (
 	"KAKAO_ACCESS_TOKEN"	VARCHAR2(300)		NULL
 );
 
--------------------------- 5/14
-INSERT INTO MEMBER
-VALUES(SEQ_MEMBER_NO.NEXTVAL,
-        #{membereMAIL},
-        #{memberPw},
-        #{memberName},
-        #{memberTel},
-        #{memberAddress},
-        DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,NULL)
 
 SELECT *FROM MEMBER;
 -- 회원 테이블 코멘트
@@ -189,6 +180,8 @@ CREATE TABLE "AUTH_KEY" (
 	"AUTH_KEY"	CHAR(6)		NOT NULL,
 	"CREATE_TIME"	DATE	DEFAULT SYSDATE	NOT NULL
 );
+
+SELECT * FROM MEMBER;
 
 -- 인증 번호 테이블 코멘트
 COMMENT ON COLUMN "AUTH_KEY"."KEY_NO" IS '인증키 구분 번호(PK)';
