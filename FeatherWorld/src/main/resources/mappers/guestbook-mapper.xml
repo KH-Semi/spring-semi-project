@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.featherworld.project.main.mapper.GuestBookMapper">
+<mapper namespace="com.featherworld.project.guestBook.model.mapper.GuestBookMapper">
 
 
 <!-- 방명록 조회 -->
@@ -13,7 +13,18 @@
 </select>
 
 
-
+<!-- 방명록 작성 -->
+<insert id="guestBookInsert" parameterType="GuestBook">
+    INSERT INTO GUEST_BOOK (
+        GUEST_BOOK_NO, GUEST_BOOK_CONTENT,GUEST_BOOK_WRITE_DATE, OWNER_NO, VISITOR_NO
+    ) VALUES (
+        SEQ_GUEST_BOOK_NO.NEXTVAL,
+        #{guestBookContent},
+        SYSDATE,
+        #{ownerNo},
+        #{visitorNo}
+    )
+</insert>
 
 
 <!-- 방명록 수정 -->
@@ -24,8 +35,6 @@
 </update>
   
   
-  
-  
 <!-- 방명록 삭제 -->
 <delete id="deleteGuestBook">
 DELETE FROM GUEST_BOOK
@@ -33,7 +42,11 @@ WHERE GUEST_BOOK_NO =#{guestbookNo}
 AND (OWNER_NO = #{memberNo} OR VISITOR_NO = #{memberNo})
 </delete>
  
-  
-  
+ <!-- 본인이 작성한 글이 아니면 수정 못하게 -->
+<select id="selectOne" resultType="GuestBook">
+	SELECT * FROM GUEST_BOOK
+	WHERE GUEST_BOOK_NO = #{guestBookNo}
+</select>
+ 
   
 </mapper>

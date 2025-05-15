@@ -31,11 +31,7 @@ public interface BoardService {
 	 */
 	Map<String, Object> selectBoardList(int currentBoardCode, int cp);
 
-
-
-
 	
-
 	/** 좋아요 체크 여부
 	 * @author 허배
 	 * @param map
