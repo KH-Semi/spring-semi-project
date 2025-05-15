@@ -1,0 +1,90 @@
+/* 메인 콘텐츠 스타일 */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.board-list {
+  max-width: 630px;
+}
+
+.board-item {
+  display: flex;
+  justify-content: space-between;
+  height: 90px;
+  border: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.board-wrap {
+  display: flex;
+  flex-basis: 80%;
+}
+
+.board-thumbnail img {
+  width: 90px;
+  height: 90px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.board-main {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 10px;
+}
+
+.board-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin: 5px 0px;
+}
+
+.board-content {
+  font-size: 16px;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.board-info {
+  display: flex;
+  flex-basis: 20%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.board-date {
+  color: #8E8E8E;
+  font-size: 12px;
+}
+
+.board-reads {
+  display: flex;
+  align-items: center;
+  color: #8E8E8E;
+  font-size: 14px;
+}
+
+.icon-read {
+  color: #c62828;
+  margin-right: 5px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 992px) {
+  .board-list {
+    max-width: none;
+  }
+}
