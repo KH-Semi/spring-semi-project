@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.featherworld.project.main.mapper.MainMapper">
+  <select id="select" resultType="Ilchon">
+  	SELECT MEMBER_IMG "memberImg", MEMBER_NAME "memberName", FROM_NICKNAME "fromNickname"
+	FROM MEMBER
+	JOIN ILCHON ON MEMBER.MEMBER_NO = ILCHON.FROM_MEMBER_NO
+	WHERE IS_ILCHON = 'Y'
+	AND ILCHON.FROM_MEMBER_NO = ${loginMemberNo}
+
+  </select>
+  
+  <select id ="countIlchons">
+  	SELECT COUNT(*)
+	FROM ILCHON
+	WHERE IS_ILCHON = 'Y'
+	AND ILCHON.FROM_MEMBER_NO = ${loginMemberNo}
+  </select>
+</mapper>
