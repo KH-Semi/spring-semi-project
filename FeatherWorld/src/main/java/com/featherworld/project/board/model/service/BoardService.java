@@ -22,7 +22,6 @@ public interface BoardService {
 	 */
 	List<BoardType> selectBoardType(int memberNo);
 
-
 	/** 현재 선택된 게시판의 삭제되지 않은 게시글 목록 조회 / pagination 객체 반환
 	 * @author Jiho
 	 * @param currentBoardCode
@@ -30,11 +29,6 @@ public interface BoardService {
 	 * @return {"boardList" : List<Board>, "pagination" : Pagination}
 	 */
 	Map<String, Object> selectBoardList(int currentBoardCode, int cp);
-
-
-
-
-	
 
 	/** 좋아요 체크 여부
 	 * @author 허배

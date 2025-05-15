@@ -2,19 +2,23 @@ package com.featherworld.project.board.controller;
 
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.featherworld.project.board.model.dto.BoardType;
 import com.featherworld.project.board.model.service.BoardService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -23,25 +27,29 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardController {
 
 	@Autowired
-	BoardService service;
+	private BoardService service;
 	
-	/** 선택된 게시판에 해당하는 게시글 조회 (게시판 종류 - 비동기)
+	/**
+	 * 1. 해당 회원의 게시판 목록 조회
+	 * 2. default 게시판의 삭제되지 않은 게시글 목록 조회
+	 * 
 	 * @author Jiho
 	 * @param memberNo : 현재 조회 중인 회원 번호
-	 * @param boardCode : 현재 선택된 게시판 종류 번호
+	 * @param cp : 현재 페이지 번호
+	 * @param session : 세션 객체
 	 * @param model
+	 * @param ra
 	 * @return
 	 */
 	@GetMapping("{memberNo:[0-9]+}")
 	public String boardMainPage(@PathVariable("memberNo") int memberNo,
-								@RequestBody(required = false) BoardType boardType,
 								@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
-								Model model, RedirectAttributes ra) {
+								HttpSession session, Model model, RedirectAttributes ra) {
 		
 		// 0. 회원 번호 유효성 검사
 		int result = service.checkMember(memberNo);
 		
-		if(result == 0) { // 존재하지 않는 회원 번호인 경우 main page로 redirect
+		if(result == 0) { // DB에 존재하지 않는 회원 번호인 경우 main page로 redirect
 			
 			ra.addFlashAttribute("message", "존재하지 않는 회원입니다.");
 			
@@ -51,24 +59,13 @@ public class BoardController {
 		// 1. 현재 회원의 게시판 종류 번호(boardCode)를 조회해서 가져옴
 		List<BoardType> boardTypeList = service.selectBoardType(memberNo);
 		
-		// request scope에 boardTypeList 저장
-		model.addAttribute("boardTypeList", boardTypeList);
+		// session scope에 boardTypeList 저장
+		session.setAttribute("boardTypeList", boardTypeList);
 		
-		// 2. 게시판 선택
-		int currentBoardCode = 0;
+		// 2. 가장 처음 생성된 default 게시판 종류 번호
+		int currentBoardCode = boardTypeList.getFirst().getBoardCode();
 		
-		if(boardType == null) { // 게시판이 클릭되지 않은 경우(boardCode = null)
-			
-			// 가장 처음 생성된 default 게시판 조회
-			currentBoardCode = boardTypeList.getFirst().getBoardCode();
-			
-		} else {
-			
-			// 게시판이 클릭된 경우(boardCode = 해당 게시판 종류 번호)	
-			currentBoardCode = boardType.getBoardCode();
-		}
-		
-		log.debug("현재 게시판 번호 : {}", currentBoardCode);
+		log.debug("default 게시판 번호 : {}", currentBoardCode);
 		
 		// 3. 해당 게시판의 게시글만 조회
 		Map<String, Object> map = service.selectBoardList(currentBoardCode, cp);
@@ -80,6 +77,21 @@ public class BoardController {
 		
 		// forward
 		return "board/boardList";
+	}
+	
+	/** 비동기로 게시글 목록, 페이지 목록 반환
+	 * @author Jiho
+	 * @param memberNo : 현재 조회 중인 회원 번호
+	 * @param boardCode : 선택한 게시판 종류 번호
+	 * @param cp : 현재 페이지 번호
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("{memberNo:[0-9]+}/{boardCode:[0-9]+}")
+	public Map<String, Object> selectBordList(@PathVariable("memberNo") int memberNo, @PathVariable("boardCode") int boardCode,
+											  @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
+		
+		return service.selectBoardList(boardCode, cp);
 	}
 	
 	@GetMapping("{memberNo:[0-9]+}/write")

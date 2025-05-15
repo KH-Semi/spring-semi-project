@@ -3,7 +3,8 @@
     <div class="board-type-item">
       <span class="board-type-title">Board Type</span>
     </div>
-    <div class="board-type-item" th:each="boardType : ${boardTypeList}" th:object="${boardType}">
+    <!-- th:data-board-code="*{boardCode}" 해당 boardCode 값을 각각의 게시판 div에 추가 -->
+    <div class="board-type-item" th:data-board-code="*{boardCode}" th:each="boardType : ${session.boardTypeList}" th:object="${boardType}">
       <span class="board-type-title" th:text="*{boardName}">Daily</span>
       <span class="edit-icon"><i class="icon-edit"></i></span>
       <span class="delete-icon"><i class="icon-delete"></i></span>

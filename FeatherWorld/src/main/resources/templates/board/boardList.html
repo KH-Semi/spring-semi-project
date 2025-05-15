@@ -74,8 +74,11 @@
       <!-- 푸터 Include -->
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
-    
-    <script src="/js/main.js"></script>
 
+    <!-- Natural Template 활용 회원 번호 선언 -->
+    <script th:inline="javascript">
+      const memberNo = /*[[${memberNo}]]*/ [];
+    </script>
+    <script src="/js/board/boardList.js"></script>
   </body>
 </html>

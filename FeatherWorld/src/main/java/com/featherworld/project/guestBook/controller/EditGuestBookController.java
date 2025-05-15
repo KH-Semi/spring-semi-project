@@ -10,7 +10,7 @@ import com.featherworld.project.guestBook.service.GuestBookService;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("editGuestBook")
+@RequestMapping("guestBook")
 @Slf4j
 public class EditGuestBookController {
 
