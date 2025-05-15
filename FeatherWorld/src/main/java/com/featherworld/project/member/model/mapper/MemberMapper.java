@@ -1,7 +1,6 @@
 package com.featherworld.project.member.model.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-
 import com.featherworld.project.member.model.dto.Member;
 
 /** 멤버 mapper 인터페이스
@@ -24,5 +23,4 @@ public interface MemberMapper {
 	 * @return
 	 */
 	int setDefaultBoardType(int memberNo);
-
 }

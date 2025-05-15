@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.featherworld.project.board.model.mapper.BoardMapper">
+
+<!-- 게시판 목록 -->
+  <select id="selectBoardTypeList" resultType="Board">
+    SELECT BT.BOARD_CODE, BT.BOARD_NAME, BT.AUTHORITY
+    FROM BOARD_TYPE BT
+    WHERE BT.MEMBER_NO = #{memberNo}
+    ORDER BY BOARD_CODE
+  </select>
+
+  <!-- 폴더 생성 -->
+  <insert id="insertBoardType" parameterType="Board" useGeneratedKeys="true" keyProperty="boardCode">
+    INSERT INTO BOARD_TYPE (BOARD_CODE, BOARD_NAME, AUTHORITY, MEMBER_NO)
+    VALUES (SEQ_BOARD_CODE.NEXTVAL, #{boardName}, #{authority}, #{memberNo})
+  </insert>
+
+  <!-- 폴더 이름 수정 -->
+  <update id="updateBoardType" parameterType="Board">
+    UPDATE BOARD_TYPE
+    SET BOARD_NAME = #{boardName}
+    WHERE BOARD_CODE = #{boardCode}
+  </update>
+
+  <!-- 폴더 삭제 -->
+  <delete id="deleteBoardType">
+    DELETE FROM BOARD_TYPE
+    WHERE BOARD_CODE = #{boardCode}
+  </delete>
+
+  <!-- 친구 접근 확인 -->
+  <select id="checkFriendAccess" resultType="int">
+    SELECT COUNT(*)
+    FROM ILCHON
+    WHERE IS_ILCHON = 'Y'
+      AND ((FROM_MEMBER_NO = #{loginMemberNo} AND TO_MEMBER_NO = #{ownerNo})
+        OR (TO_MEMBER_NO = #{loginMemberNo} AND FROM_MEMBER_NO = #{ownerNo}))
+  </select>
+  
+	<!-- 좋아요 해제 -->
+	<delete id="deleteBoardLike">
+		DELETE FROM "BOARD_LIKE"
+		WHERE MEMBER_NO = #{memberNo}
+		AND BOARD_NO = #{boardNo}
+	</delete>
+	
+	<!-- 좋아요 체크 -->
+	<insert id="insertBoardLike">
+		INSERT INTO "BOARD_LIKE"
+		VALUES(#{memberNo}, #{boardNo})
+	</insert>
+	
+	<!-- 게시글 좋아요 개수 조회 -->
+	<select id="selectLikeCount">
+		SELECT COUNT(*) FROM "BOARD_LIKE"
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+</mapper>
+
+
