@@ -25,21 +25,27 @@ public class GuestBookController {
 	@Autowired
 	private GuestBookService service;
 	
-	@Autowired
-	private MemberService memberService;
+	//@Autowired
+	//private MemberService memberService;
 	
-	 @GetMapping("/guestbook")
-	    public String guestBookPage(@SessionAttribute("loginMember")Member loginMember,Model model) {
+	 @GetMapping("/{cp}")
+	    public String guestBookPage(@SessionAttribute("loginMember")Member loginMember,
+	    		Model model,@PathVariable("cp") int cp) {
 
-	       int memberNo = loginMember.getMemberNo();//로그인 한 회원의 정보 = ownerNo
-
-	       model.addAttribute("member", loginMember);
+	       int ownerNo = loginMember.getMemberNo();//로그인 한 회원의 정보 = ownerNo. 현재 내 홈피기준
+	       int loginMemberNo = loginMember.getMemberNo();//로그인한 회원의 정보
+	     
 	       
 	       
 	        // 2. 방명록 목록 조회
-	        List<GuestBook> guestBookList = GuestBookService.selectGuestbookList(memberNo);
-	        model.addAttribute("guestBookList", guestBookList);
-
+	        List<GuestBook> guestBookList = service.selectGuestBookList(ownerNo,loginMemberNo,cp);
+	       
+	       
+	        model.addAttribute("member", loginMember);
+	        model.addAttribute("guestBookList",guestBookList);
+	        model.addAttribute("cp",cp);
+	        
+	        
 	        return "guestBook/guestBook"; // templates/guestBook/guestBook.html
 	    }
 	

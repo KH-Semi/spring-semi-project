@@ -23,31 +23,25 @@ public class EditGuestBookServiceImpl implements EditGuestBookService {
 	private EditGuestBookMapper mapper;
 
 	
-	//게시글 작성
+	//방명록 작성
 	@Override
 	public int guestBookInsert(GuestBook inputGuestBook) throws Exception {
 		return 0;
 	}
 
 	
-	//게시글 수정
+	//방명록 수정
 	@Override
 	public int guestBookUpdate(GuestBook inputGuestBook) throws Exception {
 		return 0;
 	}
 
-	//게시글 수정
-	@Override
-	public int guestBookUpdate(GuestBook inputGuestBook, String deleteOrderList) throws Exception {
-		return 0;
-	}
 	
 	
-	
-	//게시글 삭제
+	//방명록 삭제
 	@Override
 	public int guestBookDelete(Map<String, Integer> map) {
-		return 0;
+		return mapper.guestBookDelete(map);
 	}
 
 

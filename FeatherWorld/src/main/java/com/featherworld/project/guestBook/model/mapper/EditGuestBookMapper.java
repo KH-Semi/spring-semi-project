@@ -6,22 +6,22 @@ import com.featherworld.project.guestBook.model.dto.GuestBook;
 
 public interface EditGuestBookMapper {
 
-	/** 게시글 작성
+	/** 방명록 작성
 	 * @param inputGuestBook
-	 * @return 해당 게시글의 GuestBookNo
+	 * @return 해당 방명록의 GuestBookNo
 	 */
 	int guestBookInsert(GuestBook inputGuestBook);
 
 	
-	/** 게시글 부분( 제목/내용) 수정
+	/** 방명록 부분( 제목/내용) 수정
 	 * @param inputGuestBook
-	 * @return
+	 * @return 
 	 */
 	int guestBookUpdate(GuestBook inputGuestBook);
 	
 	
 
-	/** 게시글 삭제
+	/** 방명록 삭제
 	 * @param map
 	 * @return
 	 */
