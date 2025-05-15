@@ -10,18 +10,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Member {
-	
-	private int memberNo;
-	private String memberEmail;
-	private String memberPw;
-	private String memberName;
-	private String memberTel;
-	private String memberAddress;
-	private String memberImg;
-	private String memberIntro;
-	private String homeTitle;
-	private int visitorTotal;
-	private String enrollDate;
-	private String memberDelFl;
-	private String kakaoAccessToken;
+
+   private int memberNo;
+   private String memberEmail;
+   private String memberPw;
+   private String memberName;
+   private String memberTel;
+   private String memberAddress;
+   private String memberImg;
+   private String memberIntro;
+   private String homeTitle;
+   private int visitorTotal;
+   private String enrollDate;
+   private String memberDelFl;
+   private String kakaoAccessToken;
 }
