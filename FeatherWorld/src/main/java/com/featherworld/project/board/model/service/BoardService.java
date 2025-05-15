@@ -2,6 +2,7 @@ package com.featherworld.project.board.model.service;
 
 import java.util.List;
 import java.util.Map;
+import com.featherworld.project.board.model.dto.Board;
 
 import com.featherworld.project.board.model.dto.BoardType;
 
@@ -29,6 +30,18 @@ public interface BoardService {
 	 * @return {"boardList" : List<Board>, "pagination" : Pagination}
 	 */
 	Map<String, Object> selectBoardList(int currentBoardCode, int cp);
+
+
+
+
+	
+
+	/** 좋아요 체크 여부
+	 * @author 허배
+	 * @param map
+	 * @return
+	 */
+	int boardLike(Map<String, Integer> map);
 
 
 }

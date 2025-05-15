@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.featherworld.project.member.model.mapper.MemberMapper">
+
+	<!-- 회원가입 SQL 영민 -->
+	<insert id="signUp">
+	INSERT INTO MEMBER
+    VALUES(SEQ_MEMBER_NO.NEXTVAL,
+        #{membereMAIL},
+        #{memberPw},
+        #{memberName},
+        #{memberTel},
+        #{memberAddress},
+        DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,NULL)
+	</insert>
+	
+	<!-- 회원가입을 하고나서 바로 boardType 하나 추가함 -->
+	<insert id="setDefaultBoardType">
+	INSERT INTO BOARD_TYPE
+	VALUES(SEQ_BOARD_CODE_NO.NEXTVAL,DEFAULT,DEFAULT,#{memberNo})
+		
+	</insert>
+
+</mapper>

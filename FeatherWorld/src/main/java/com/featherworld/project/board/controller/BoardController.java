@@ -2,7 +2,6 @@ package com.featherworld.project.board.controller;
 
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -90,5 +89,15 @@ public class BoardController {
 		
 		
 		return "board/boardWrite";
+	}
+    
+	/** 게시글 좋아요 체크/해제
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("like") // /board/like (POST)
+	public int boardLike(@RequestBody Map<String, Integer> map) {
+		return service.boardLike(map);
+		
 	}
 }
