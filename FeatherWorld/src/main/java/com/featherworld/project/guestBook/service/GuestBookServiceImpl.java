@@ -19,6 +19,8 @@ public class GuestBookServiceImpl implements GuestBookService{
 	@Autowired
 	private GuestBookMapper mapper;
 	
+	
+	//방명록 조회
 	public List<GuestBook> selectGuestBookList(int ownerNo, int loginMemberNo, int cp) {
 	
 		return mapper.selectGuestBookList(ownerNo,loginMemberNo,cp);
