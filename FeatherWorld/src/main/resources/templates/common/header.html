@@ -1,26 +1,13 @@
-<header style="
-  width: 100%; 
-  max-width: 1200px; 
-  margin: 0 auto; 
-  padding: 10px 20px; 
-  border: 2px solid #ccc; 
-  border-radius: 10px; 
-  background-color: #fdfdfd; 
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
-  display: flex; 
-  align-items: center; 
-  height: 80px; 
-  box-sizing: border-box;
-">
-  
-  <img src="/FeatherWorld/src/main/resources/static/images/header.log.jpg" alt="메인 로고" id="homeLogo" style="display: block;">
-</a>
-
-  </section>
-
- <table style="border-collapse: collapse;">
-    <tr>
-      <td style="padding: 0 10px; font-weight: bold;" th:text="${boardType.boardName}"></td>
-    </tr>
-  </table>
+<header>
+  <div class="header-container">
+    <div class="logo-container">
+        <a href="/">
+            <img src="/images/logo.png" alt="FeatherWorld Logo" class="logo-img">
+            <span class="logo-text">FeatherWorld</span>
+        </a>
+    </div>
+    <div class="nav-container">
+        <!-- Navigation links can be added here -->
+    </div>
+  </div>
 </header>

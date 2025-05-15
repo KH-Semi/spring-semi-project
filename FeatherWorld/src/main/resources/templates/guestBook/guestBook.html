@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>FeatherWorld - 안준성의 미니홈피</title>
+    <link rel="stylesheet" href="/css/guestbook/guestbook.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header-title">guestBook</div>
+        <div class="main-container">
+            <div class="header">
+                <div class="logo">
+                    <img src="/api/placeholder/50/50" alt="FeatherWorld Logo">
+                    <div class="logo-text">FeatherWorld</div>
+                </div>
+                <div class="page-title">안준성의 미니홈피</div>
+            </div>
+            <div class="content">
+                <div class="left-panel">
+                    <div class="visitor-stats">
+                        <div class="visitor-stat">
+                            <div class="visitor-label">Today</div>
+                            <div class="visitor-value">10</div>
+                        </div>
+                        <div class="visitor-stat">
+                            <div class="visitor-label">/ Total</div>
+                            <div class="visitor-value">50</div>
+                        </div>
+                    </div>
+                    <div class="profile-image">
+                        <img src="/api/placeholder/120/120" alt="Profile Image">
+                    </div>
+                    <div class="username">안준성</div>
+                    <div class="email">Me@google.com</div>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">48</div>
+                            <div class="stat-label">Follower</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">48</div>
+                            <div class="stat-label">Following</div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">Edit Profile</button>
+                        <button class="btn btn-secondary">Logout</button>
+                    </div>
+                    <div class="bio-section">
+                        <div class="bio-title">Bio</div>
+                    </div>
+                    <div class="status">Surfing</div>
+                </div>
+                <div class="middle-panel">
+                    <div class="guestbook-entries" id="guestbook-entries"></div>
+                    <div class="pagination">
+                        <a href="#" class="page-nav">❮ Previous</a>
+                        <div class="page-item">1</div>
+                        <div class="page-item active">2</div>
+                        <div class="page-item">3</div>
+                        <div class="page-item">4</div>
+                        <div class="page-item">5</div>
+                        <div class="page-item">...</div>
+                        <div class="page-item">11</div>
+                        <a href="#" class="page-nav">Next ❯</a>
+                    </div>
+                    <div class="guestbook-input">
+                        <textarea class="input-area" id="guestbook-input" placeholder="Guest Book Input"></textarea>
+                        <div class="input-tools">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="write-button-container">
+                        <button class="write-btn" id="write-btn">
+                            <span class="write-icon">✎</span> Write
+                        </button>
+                    </div>
+                </div>
+                <div class="right-panel">
+                    <ul class="menu">
+                        <li class="menu-item"><span class="menu-icon">🏠</span>Home</li>
+                        <li class="menu-item"><span class="menu-icon">👤</span>Profile</li>
+                        <li class="menu-item"><span class="menu-icon">📋</span>Board</li>
+                        <li class="menu-item"><span class="menu-icon">👥</span>Friendlist</li>
+                        <li class="menu-item"><span class="menu-icon">🎵</span>Playlist</li>
+                        <li class="menu-item active"><span class="menu-icon">📔</span>Guestbook</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer">©2025 FeatherWorld Social Platform - all rights reserved</div>
+        </div>
+    </div>
+    <script src="/js/guestbook/guestbook.js"></script>
+</body>
+</html>

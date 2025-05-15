@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.featherworld.project.main.mapper.GuestBookMapper">
+
+
+<!-- 방명록 조회 -->
+<select id="selectGuestBookList" resultType="GuestBook">
+    SELECT *
+    FROM GUEST_BOOK
+    WHERE OWNER_NO = #{ownerNo}
+    AND (VISITOR_NO = #{loginMemberNo} OR OWNER_NO = #{loginMemberNo})
+    ORDER BY GUEST_BOOK_NO DESC
+</select>
+
+
+
+
+
+<!-- 방명록 수정 -->
+<update id="updateGuestBook">
+    UPDATE GUEST_BOOK
+    SET GUEST_BOOK_CONTENT = #{guestBookContent}
+    WHERE GUEST_BOOK_NO = #{guestBookNo}
+</update>
+  
+  
+  
+  
+<!-- 방명록 삭제 -->
+<delete id="deleteGuestBook">
+DELETE FROM GUEST_BOOK
+WHERE GUEST_BOOK_NO =#{guestbookNo}
+AND (OWNER_NO = #{memberNo} OR VISITOR_NO = #{memberNo})
+</delete>
+ 
+  
+  
+  
+</mapper>

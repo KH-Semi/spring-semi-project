@@ -1,153 +1,142 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
- 
-  <!-- common.html fragment -->
-  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
 
+  <th:block th:replace="~{common/common}"></th:block>
 </head>
 <body>
-  <img th:src="#{user.default.image}">
-
-  <main>
-
-    <!-- common/header.html 을 조각으로 추가 -->
-	<th:block th:replace="~{common/header}"></th:block>
-
-    <!-- 메인 페이지 내용  -->
-    <section class="content">
+    <!-- Header Fragment -->
+    <div th:replace="~{common/header}"></div>
     
-      <section class="content-1">
-		<!-- 비동기 보충 시 사용 영역 -->
-	  </section>
-
-      <section class="content-2">
-        <!-- 로그인, 회원가입 버튼 -->
-
-          <!-- 로그인이 되어있지 않은 경우 -->
-          <th:block th:if="${session.loginMember == null}">
-          
-            <!-- 로그인 박스 -->
-            <form action="/member/login" method="POST" id="loginForm">
-              <fieldset class="id-pw-area">
-    
-                <!-- 아이디/비밀번호 입력 -->
-                <section>
-                  <input type="text" 
-                        name="memberEmail"
-                        placeholder="이메일">
-    
-                  <input type="password" 
-                        name="memberPw" 
-                        placeholder="비밀번호">
-                </section>
-    
-                <!-- 로그인 버튼 -->
-                <section>
-                  <button>로그인</button>
-                </section>
-              </fieldset>
-    
-              <label>
-                <!-- label 태그 : input 태그의 제목을 나타내는 태그  -->
-                <input type="checkbox" name="saveId">
-                아이디 저장
-              </label>
-    
-              <article class="signup-find-area">
-                <a href="/member/signup">회원가입</a>
-                <span> | </span>
-                <a href="#">ID/PW 찾기</a>
-              </article>
-            </form>
-          </th:block>
-
-          <!-- 로그인이 되어있는 경우 -->
-          <!--<th:block th:unless="${session.loginMember == null}"></th:block>-->
-          <th:block th:if="${session.loginMember != null}">
-            <article class="login-area">
-              <a href="/myPage/profile">
-                <!-- 프로필 이미지 -->
-
-                <!-- 
-                  session.loginMember.profileImg 에 유저가 등록한 이미지가 있다면(null이 아니라면)
-                  session.loginMember.profileImg에 저장된 이미지 경로를 사용함.
-                  없다면(null이라면) messages.properties에 있는 기본 이미지 경로를 사용!
-
-                  th:with -> 변수 선언
-                  -->
-                <img th:with="user=#{user.default.image}" 
-                    th:src="${session.loginMember.profileImg ?: user}"
-                     id="memberProfile"
-                     alt="프로필 이미지" >
-              </a>
-
-              <!-- 닉네임, 이메일, 로그아웃 버튼 영역 -->
-              <div class="my-info" th:object="${session.loginMember}">
-                <div>
-                  <a href="/myPage/info" id="nickname" th:text="*{memberNickname}">닉네임</a>
-                  <a href="/member/logout" id="logoutBtn">로그아웃</a>
-                </div>
-                <p th:text="*{memberEmail}">이메일</p>
-              </div>
-
-            </article>
-          </th:block>
-          
-
-      </section>
-
-    </section>
-
-     <!-- navigator -->
-  <nav>
-    <ul>
-      
-      <li class="chatting-li">
-        <a href="#">Home</a>
-      </li>
-      <li class="chatting-li">
-        <a href="#">Profile</a>
-      </li>
-      <li class="chatting-li">
-        <a href="#">Board</a>
-      </li>
-      <li class="chatting-li">
-        <a href="#">FriendList</a>
-      </li>
-  
-      <li class="chatting-li">
-        <a href="#">playList</a>
-      </li>
-
-      <li class="chatting-li">
-        <a href="#">Guestbook</a>
-      </li>
+    <main class="main-content">
        
-      <th:block th:each="boardType : ${application.boardTypeList}">
-        <li>
-          <a th:text="${boardType.boardName}"
-            th:href="@{/board/{boardCode}(boardCode=${boardType.boardCode})}">게시판이름</a>
-        </li>
-      </th:block>
+        <div class="container">
+            <!-- Search Bar -->
+            <div class="main-sections">
+             <section class="left-panel">
+            
 
+            <div class="search-bar">
+                <input type="text" placeholder="Member Search" class="member-search">
+                <button class="search-btn">
+                    <img th:src="@{/images/icons/search.png}" alt="Search" class="search-icon">
+                </button>
+            </div>
+            
+            <!-- Today's Best Section -->
+            <section class="todays-best">
+                <h2 class="section-title">TODAY'S BEST</h2>
+                <div class="members-list">
+                    
+                    <!-- 첫번째줄 투데이베스트 -->
+                    <div class="member-row">
+                        <div class="member-card highlight">
+                            <div class="member-avatar">
+                                <img th:src="@{/images/user.png}" alt="Member Avatar">
+                            </div>
+                            <p class="member-name">🔥 안준성</p>
+                        </div>
+                        <div class="member-card">
+                            <div class="member-avatar">
+                                <img th:src="@{/images/user.png}" alt="Member Avatar">
+                            </div>
+                            <p class="member-name">손석준</p>
+                        </div>
+                        <div class="member-card">
+                            <div class="member-avatar">
+                                <img th:src="@{/images/user.png}" alt="Member Avatar">
+                            </div>
+                            <p class="member-name">이윤진</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 두번째줄 투데이베스트 -->
+                    <div class="member-row">
+                        <div class="member-card">
+                            <div class="member-avatar">
+                                <img th:src="@{/images/user.png}" alt="Member Avatar">
+                            </div>
+                            <p class="member-name">김영민</p>
+                        </div>
+                        <div class="member-card">
+                            <div class="member-avatar">
+                                <img th:src="@{/images/user.png}" alt="Member Avatar">
+                            </div>
+                            <p class="member-name">허배령</p>
+                        </div>
+                        <div class="member-card">
+                            <div class="member-avatar">
+                                <img th:src="@{/images/user.png}" alt="Member Avatar">
+                            </div>
+                            <p class="member-name">김지호</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </section>
+            
+            <!-- 로그인세션 -->
+             <div class="right-panel">
+            <section class="login-section" th:if="${session.loginMember == null}">
+                <h2 class="section-title">SIGN IN</h2>
+                
+                <!-- 로그인이 안되어잇을떄-->
+                <form class="login-form" action="/member/login" method="post">
+                    <div class="form-group">
+                        <label for="username">Email :</label>
+                        <input type="text" id="username" name="memberEmail" placeholder="Email을입력해주세요" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">PASSWORD :</label>
+                        <input type="password" id="password" name="memberPw" placeholder="Password를 입력해주세요." class="form-input">
+                    </div>
+                    
+                    <button type="submit" class="login-btn">로그인</button>
+                    
+                    <div class="social-login">
+                        <button type="button" class="kakao-btn" onclick="kakaoLogin()">
+                            <img th:src="@{/images/icons/kakao.png}" alt="Kakao" class="kakao-icon">
+                            카카오 로그인
+                        </button>
+                    </div>
+                    
+                    <div class="login-options">
+                        <a href="/member/findIdPw" class="option-link">아이디/비밀번호 찾기</a>
+                        <a href="/member/signUp" class="option-link">회원가입</a>
+                    </div>
+                </form>
+            </section>
+            
+            <!--로그인이 되었을때 -->
+            <section class="profile-section" th:if="${session.loginMember != null}">
+                <div class="profile-container">
+                    <div class="profile-avatar">
+                        <img th:src="${session.loginMember.profileImage}" alt="Profile" class="profile-img">
+                    </div>
+                    <h2 class="profile-name" th:text="${session.loginMember.memberName}">안준성</h2>
+                    <p class="profile-email" th:text="${session.loginMember.memberEmail}">Me@google.com</p>
+                    
+                    <div class="profile-actions">
+                        <a href="/member/home" class="home-btn">
+                            <img th:src="@{/static/images/icons/home.png}" alt="Home" class="home-icon">
+                            My Home
+                        </a>
+                        <a href="/logout" class="logout-btn">Logout</a>
+                    </div>
+                </div>
+            </section>
+            </div>
+        </div>
+        </div>
+    </main>
+    
+    <!-- Footer Fragment -->
+    <div th:replace="~{common/footer}"></div>
 
-      
-      </li>
-    </ul>
-  </nav>
-  
-  
-
-  </main>
-
-  <!-- common/footer 추가-->
-  <th:block th:replace="~{common/footer}"></th:block>
-
-  <!-- script 추가-->
-  <script src="/js/main.js"></script>
-</body>
+  </body>
 </html>
