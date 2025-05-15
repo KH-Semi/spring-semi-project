@@ -11,80 +11,89 @@
     <!-- Header Fragment -->
     <div th:replace="~{common/header}"></div>
     
-    <main class="main-content">
-        <div class="container">
-            <div class="signup-container">
-                <h1 class="signup-title">회원가입</h1>
-                
-                <form class="signup-form" action="/member/signup" method="post">
-                    <!-- ID Field -->
-                    <div class="form-group">
-                        <label for="username" class="required-label">ID :</label>
-                        <div class="input-with-button">
-                            <input type="text" id="username" name="memberEmail" placeholder="이메일을 입력해주세요" class="form-input">
-                             <label for="name" class="required-label">AUTHKEY :</label>
-                            <input type="text" id="authKey" placeholder="인증번호를 입력해주세요." class="form-input">
-                            <button type="button" class="confirm-btn" id="idConfirmBtn">Get Authkey</button>
-                        </div>
-                    </div>
-                    
-                    <!-- Name & Phone Fields -->
-                    <div class="form-row">
-                        <div class="form-group half">
-                            <label for="name" class="required-label">NAME :</label>
-                            <input type="text" id="name" name="memberName" placeholder="이름을 입력해 주세요." class="form-input">
-                        </div>
-                        <div class="form-group half">
-                            <label for="phone" class="required-label">PHONE :</label>
-                            <input type="text" id="phone" name="memberTel" placeholder="전화번호를 입력해 주세요." class="form-input">
-                        </div>
-                    </div>
-                    
-                    <!-- Password Fields -->
-                    <div class="form-row">
-                        <div class="form-group half">
-                            <label for="password" class="required-label">PASSWORD :</label>
-                            <input type="password" id="password" name="memberPw" placeholder="영문, 숫자, !@#$%를 포함한 8자 ~ 12자" class="form-input">
-                        </div>
-                        <div class="form-group half">
-                            <label for="passwordCheck" class="required-label">PASSWORD CHECK :</label>
-                            <input type="password" id="passwordCheck" name="memberPwConfirm" placeholder="영문, 숫자, !@#$%를 포함한 8자 ~ 12자" class="form-input">
-                        </div>
-                    </div>
-                    
-                    <!-- Address Fields -->
-                    <div class="form-group">
-                        <label for="address" class="normal-label">ADDRESS :</label>
-                        <div class="address-inputs">
-                            <div class="input-with-button">
-                                <input type="text" id="postalCode" name="memberAddress" placeholder="우편번호" class="form-input postal-code">
-                                <input type="text" id="roadAddress" name="memberAddress" placeholder="도로명 / 지번 주소" class="form-input road-address">
-                                <button type="button" class="address-search-btn" id="addressSearchBtn">Search Address</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Address Detail Field -->
-                    <div class="form-group">
-                        <label for="addressDetail" class="normal-label">ADDRESS DETAIL :</label>
-                        <input type="text" id="addressDetail" name="memberAddress" placeholder="상세 주소" class="form-input">
-                    </div>
-                    
-                    <!-- Form Buttons -->
-                    <div class="form-buttons">
-                        <a href="/" class="main-btn">Main</a>
-                        <button type="submit" class="signup-btn">Signup</button>
-                    </div>
-                </form>
+   </div>
+        
+        <br>
+        <h1>회원가입</h1>
+        
+        <form id="signupForm" action="/member/signup" method="POST" name="signUpForm">
+            <div class="form-group">
+                <label class="required">ID:</label>
+                <input type="email" id="email" name="memberEmail" placeholder="ex) abc123@email.com" required>
+                <span class="validation-message">유효한 이메일 주소를 입력해주세요.</span>
             </div>
-        </div>
-    </main>
+            
+            <div class="form-group">
+                <div style="display: flex; gap: 10px; align-items: flex-start;">
+                    <div style="flex-grow: 1;">
+                        <label class="required">AUTHKEY:</label>
+                        <input type="text" id="authkey" name="authkey" placeholder="인증번호를 입력해주세요." required>
+                        <span class="validation-message">인증번호를 입력해주세요.</span>
+                    </div>
+                    <button type="button" class="btn" id="getAuthkey" style="margin-top: 24px;">Get Authkey</button>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="required">NAME:</label>
+                    <input type="text" id="name" name="memberName" placeholder="이름을 입력해 주세요." required>
+                    <span class="validation-message">이름을 입력해주세요.</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">PHONE:</label>
+                    <input type="tel" id="phone" name="memberTel" placeholder="전화번호를 입력해 주세요." required>
+                    <span class="validation-message">유효한 전화번호를 입력해주세요.</span>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="required">PASSWORD:</label>
+                    <input type="password" id="password" name="memberPw" placeholder="영문, 숫자, !@#$%를 포함한 8자 ~ 12자" required>
+                    <span class="validation-message">영문, 숫자, 특수문자를 포함한 8-12자를 입력해주세요.</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">PASSWORD CHECK:</label>
+                    <input type="password" id="passwordCheck" name="memberPwConfirm" placeholder="영문, 숫자, !@#$%를 포함한 8자 ~ 12자" required>
+                    <span class="validation-message">비밀번호가 일치하지 않습니다.</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>ADDRESS:</label>
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="zipCode" name="memberAddress" placeholder="우편번호" readonly>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="address" name="memberAddress" placeholder="도로명 / 지번 주소" readonly>
+                    </div>
+                    <div class="form-group" style="flex: 0 0 auto;">
+                        <button type="button" class="btn" id="searchAddress">Search Address</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>ADDRESS DETAIL:</label>
+                <input type="text" id="addressDetail" name="memberAddress" placeholder="상세 주소">
+            </div>
+            
+            <div class="btn-container">
+                <button type="button" class="btn" id="mainBtn">Main</button>
+                <button type="submit" class="btn" id="signupBtn">Signup</button>
+            </div>
+        </form>
+    </div>
     
     <!-- Footer Fragment -->
     <div th:replace="~{common/footer}"></div>
     
 
     <script src="/js/member/signUp.js"></script> 
-
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </body>
 </html>

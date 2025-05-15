@@ -54,6 +54,17 @@ CREATE TABLE "MEMBER" (
 	"KAKAO_ACCESS_TOKEN"	VARCHAR2(300)		NULL
 );
 
+-------------------------- 5/14
+INSERT INTO MEMBER
+VALUES(SEQ_MEMBER_NO.NEXTVAL,
+        #{membereMAIL},
+        #{memberPw},
+        #{memberName},
+        #{memberTel},
+        #{memberAddress},
+        DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,NULL)
+
+SELECT *FROM MEMBER;
 -- 회원 테이블 코멘트
 COMMENT ON COLUMN "MEMBER"."MEMBER_NO" IS '회원 번호(PK)';
 COMMENT ON COLUMN "MEMBER"."MEMBER_EMAIL" IS '회원 이메일(ID)';
