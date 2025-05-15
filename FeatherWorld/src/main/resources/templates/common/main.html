@@ -4,10 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-  
-     <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
 
+  <th:block th:replace="~{common/common}"></th:block>
 </head>
 <body>
     <!-- Header Fragment -->
@@ -138,64 +137,6 @@
     
     <!-- Footer Fragment -->
     <div th:replace="~{common/footer}"></div>
-    
-    <!-- Kakao SDK -->
-    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-    <script>
-        // Kakao SDK init
-        Kakao.init('YOUR_KAKAO_APP_KEY');
-        
-        function kakaoLogin() {
-            Kakao.Auth.login({
-                success: function(authObj) {
-                    Kakao.API.request({
-                        url: '/v2/user/me',
-                        success: function(res) {
-                            const kakaoAccount = res.kakao_account;
-                            
-                            // Send data to server
-                            const form = document.createElement('form');
-                            form.method = 'POST';
-                            form.action = '/kakaoLogin';
-                            
-                            const emailInput = document.createElement('input');
-                            emailInput.type = 'hidden';
-                            emailInput.name = 'email';
-                            emailInput.value = kakaoAccount.email;
-                            
-                            const nameInput = document.createElement('input');
-                            nameInput.type = 'hidden';
-                            nameInput.name = 'name';
-                            nameInput.value = kakaoAccount.profile.nickname;
-                            
-                            const profileInput = document.createElement('input');
-                            profileInput.type = 'hidden';
-                            profileInput.name = 'profileImage';
-                            profileInput.value = kakaoAccount.profile.thumbnail_image_url;
-                            
-                            form.appendChild(emailInput);
-                            form.appendChild(nameInput);
-                            form.appendChild(profileInput);
-                            
-                            document.body.appendChild(form);
-                            form.submit();
-                        },
-                        fail: function(error) {
-                            console.log(error);
-                        }
-                    });
-                },
-                fail: function(err) {
-                    console.log(err);
-                }
-            });
-        }
-        </script>
-    </body>
-    </html>
-        
-  
-        
- 
 
-
+  </body>
+</html>
