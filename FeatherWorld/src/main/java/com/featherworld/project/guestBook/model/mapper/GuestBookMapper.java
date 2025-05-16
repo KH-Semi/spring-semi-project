@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.featherworld.project.guestBook.model.dto.GuestBook;
 
@@ -16,7 +17,9 @@ public interface GuestBookMapper {
 	 * @param cp
 	 * @return
 	 */
-	List<GuestBook> selectGuestBookList(int ownerNo, int loginMemberNo, int cp);
+	List<GuestBook> selectGuestBookList( @Param("ownerNo") int ownerNo,
+										@Param("loginMemberNo") int loginMemberNo,
+										@Param("cp") int cp  );
 
 	
 	/** 방명록 작성

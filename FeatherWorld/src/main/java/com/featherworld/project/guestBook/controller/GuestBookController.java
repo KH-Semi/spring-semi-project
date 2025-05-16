@@ -5,122 +5,122 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.featherworld.project.guestBook.model.dto.GuestBook;
 import com.featherworld.project.guestBook.service.GuestBookService;
 import com.featherworld.project.member.model.dto.Member;
-import com.featherworld.project.member.model.service.MemberService;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
-@RequestMapping("guestBook")
-@Slf4j
+@RestController
+@RequestMapping("guestbook")
+
 public class GuestBookController {
 
 	@Autowired
 	private GuestBookService service;
 
-
+	//방명록은 동기
+	
 	// 방명록 조회
 	@GetMapping("")
-	public String guestBookPage(@SessionAttribute(value = "loginMember", required = false) Member loginMember,
-			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model) {
-
-		int ownerNo;
-		int loginMemberNo;
+	public List<GuestBook>selectGuestBookList(
+			@SessionAttribute(value = "loginMember", required = false) Member loginMember,
+			 @RequestParam(value = "ownerNo", required = false) Integer ownerNo,
+			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
 
 		
-		 if (loginMember != null) {
-		        ownerNo = loginMember.getMemberNo();
-		        loginMemberNo = loginMember.getMemberNo();
-		    }
-		 else {
-		        // 비회원이 들어온 경우 기본값 설정
-		        ownerNo = 1;           // 예: 홈페이지 주인 번호
-		        loginMemberNo = -1;    // 비회원 표시용
-		    }
+		int loginMemberNo = (loginMember!=null)? loginMember.getMemberNo():-1;
 		
+		//ownerNo가 없을 경우 
+		if(ownerNo==null) {
+			if(loginMember !=null) {
+				//로그인 했으면 본인의 미니홈피라고 간주하여 ownerNo를 본인의 번호로 설정
+				ownerNo = loginMember.getMemberNo();
+				
+			}else {
+				//로그인도 안하고, ownerNo도 없는 비회원
+				ownerNo = -1;
+			}
+		}
 		
-		
-		// 2. 방명록 목록 조회
-		List<GuestBook> guestBookList = service.selectGuestBookList(ownerNo, loginMemberNo, cp);
-
-		model.addAttribute("member", loginMember);
-		model.addAttribute("guestBookList", guestBookList);
-		model.addAttribute("cp", cp);
-		model.addAttribute("owner", loginMember); // 현재 홈피 주인 정보를 전달 ??(GPT)
-
-		return "guestBook/guestBook"; // templates/guestBook/guestBook.html
+		return service.selectGuestBookList(ownerNo, loginMemberNo, cp);
 	}
 
 	// 방명록 작성
-	@PostMapping("/insert")
-	public String insertGuestBook(@SessionAttribute("loginMember") Member loginMember,
+	@PostMapping("")
+	public int insertGuestBook(@SessionAttribute(value = "loginMember",required=false) Member loginMember,
 			GuestBook inputGuestBook,
 			@RequestParam(value="cp",required=false,defaultValue="1")int cp) throws Exception {
 		
-		 	inputGuestBook.setVisitorNo(loginMember.getMemberNo()); // 작성자 번호
-		    inputGuestBook.setOwnerNo(loginMember.getMemberNo());   // 본인 미니홈피 기준
+		 // 1. 로그인 체크
+	    if (loginMember == null) return 0;
 
-		    int result = service.guestBookInsert(inputGuestBook);
-		
-		    return "redirect:/guestbook?cp=" + cp;
+	    // 2. 작성자/홈피 주인 정보 설정
+	    inputGuestBook.setVisitorNo(loginMember.getMemberNo());
+	    inputGuestBook.setOwnerNo(loginMember.getMemberNo());
+
+	    // 3. 삽입 후 결과 반환 (성공 시 1)
+	    return service.guestBookInsert(inputGuestBook);
 	}
 
 	// 수정
-	@PostMapping("/update")
-	public String updateGuestBook(@SessionAttribute("loginMember") Member loginMember,
+	@PutMapping("")
+	public int updateGuestBook(@SessionAttribute(value = "loginMember",required=false) Member loginMember,
 								   GuestBook inputGuestBook,
 			@RequestParam(value = "cp" , required=false, defaultValue="1")int cp) throws Exception {
 		
 		
-		// 작성자 본인인지 검증 ( 글 번호로 기존 방명록 글 가져오기)
+		// 로그인 안 한 경우
+	    if (loginMember == null) return 0;
+
+	    // 기존 글 가져오기
 	    GuestBook origin = service.selectOne(inputGuestBook.getGuestBookNo());
 
-	    
-	    //2.없거나 작성자가 다르면 X 
+	    // 존재하지 않거나 작성자가 본인이 아니면 실패
 	    if (origin == null || origin.getVisitorNo() != loginMember.getMemberNo()) {
-	        return "redirect:/guestbook?cp=" + cp;
+	        return 0;
 	    }
 
-	    
-	    //수정
+	    // 작성자 번호 세팅 후 수정 수행
 	    inputGuestBook.setVisitorNo(loginMember.getMemberNo());
-
-	    int result = service.guestBookUpdate(inputGuestBook);
-
-	    return "redirect:/guestbook?cp=" + cp;
+	    return service.guestBookUpdate(inputGuestBook);
 	}
 
 	// 삭제
-	@PostMapping("/delete")
-	public String deleteGuestBook( @SessionAttribute("loginMember") Member loginMember,
+	@DeleteMapping("")
+	public int deleteGuestBook( @SessionAttribute(value="loginMember",required=false) Member loginMember,
 	        @RequestParam("guestBookNo") int guestBookNo,
 	        @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
-		  GuestBook guestBook = service.selectOne(guestBookNo);
-		    int memberNo = loginMember.getMemberNo();
+		
+		
+		//로그인 안한 경우 차단
+		if(loginMember==null) {
+			return 0;
+		}
+		
+		GuestBook guestBook = service.selectOne(guestBookNo);
+		int memberNo = loginMember.getMemberNo();
+		
+		 // 작성자 or 홈피 주인만 삭제 가능
+	    if (guestBook == null ||
+	        (guestBook.getVisitorNo() != memberNo && guestBook.getOwnerNo() != memberNo)) {
+	        return 0;
+	    }
 
-		    // 작성자 or 홈피 주인만 삭제 가능
-		    if (guestBook == null ||
-		        (guestBook.getVisitorNo() != memberNo && guestBook.getOwnerNo() != memberNo)) {
-		        return "redirect:/guestbook?cp=" + cp;
-		    }
-
-		    Map<String, Integer> map = new HashMap<>();
-		    map.put("guestBookNo", guestBookNo);
-		    map.put("memberNo", memberNo);
-
-		    int result = service.guestBookDelete(map);
-
-		    return "redirect:/guestbook?cp=" + cp;
+	    Map<String, Integer> map = new HashMap<>();
+	    map.put("guestBookNo", guestBookNo);
+	    map.put("memberNo", memberNo);
+		
+		    return service.guestBookDelete(map);
 	}
 
 }

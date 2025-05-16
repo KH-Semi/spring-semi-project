@@ -17,10 +17,10 @@
       <div class="content-container">
        
         
-        <!-- 중앙 게시글 목록 -->
+        <!-- 중앙 방명록 목록 -->
         <div class="main-content">
           <div class="guestbook-list">
-            <!-- DB에서 가져온 게시글 목록 순회 -->
+            <!-- DB에서 가져온 방명록 목록 순회 -->
             <div class="guestbook-item" th:each="guestBook : ${guestBookList}" th:object="${guestBook}">
               <div class="guestbook-wrap">
                
@@ -55,23 +55,16 @@
             </div>
             
 			
-			<form th:action="@{/guestbook/insert}" method="post" th:if="${loginMember != null}">
-			  <textarea name="guestBookContent" placeholder="방명록을 작성해보세요 :)" required></textarea>
-			  <input type="hidden" name="ownerNo" th:value="${owner.memberNo}" />
-			  <button type="submit">작성</button>
-			</form>
+			<!--방명록 작성 부분-->
 			
+          <div class="guestBook-write-area">
+			<textarea name="guestBookContent" placeholder="방명록을 작성해보세요 :)" required></textarea>
+			<button id="addGuestBook">
+				연필모양 Write</button>
+		  </div>
+			  
 			
-			
-			
-			
-            <!-- 글쓰기 버튼 -->
-            <div class="write-button">
-              <a th:href="@{/guestbook/write(cp=*{currentPage})}">Write</a>
-            </div>
-          </div>
-        </div>
-        
+		
         <!-- 우측 네비게이션 바 Include -->
         <th:block th:replace="~{common/navSidebar}"></th:block>
       </div>
@@ -80,7 +73,7 @@
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
     
-    <script src="/js/main.js"></script>
+    <script src="/js/guestBook/guestBook.js"></script>
 
   </body>
 </html>

@@ -42,12 +42,6 @@
   margin: 0px 10px;
 }
 
-.guestbook-title {
-  font-weight: 600;
-  font-size: 14px;
-  margin: 5px 0px;
-}
-
 .guestbook-content {
   font-size: 16px;
   line-height: 1.6;
@@ -68,13 +62,6 @@
 .guestbook-date {
   color: #8E8E8E;
   font-size: 12px;
-}
-
-.guestbook-reads {
-  display: flex;
-  align-items: center;
-  color: #8E8E8E;
-  font-size: 14px;
 }
 
 .icon-read {
