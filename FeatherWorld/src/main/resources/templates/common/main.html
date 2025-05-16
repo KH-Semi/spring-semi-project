@@ -116,26 +116,21 @@
             <section class="profile-section" th:if="${session.loginMember != null}">
                 <div class="profile-container">
                     <div class="profile-avatar">
-                         <img th:if="${session.loginMember != null 
-                            and session.loginMember.memberImg != null 
-                            and session.loginMember.memberImg != 'null'}"
-                            th:src="@{${session.loginMember.memberImg}}" 
-                            alt="Profile Image" />
-                            
-                           <img th:if="${session.loginMember == null 
-                            or session.loginMember.memberImg == null 
-                            or session.loginMember.memberImg == 'null'}"
-                            th:src="@{/images/user.png}" alt="Default Profile" />
-                    </div>
+                          <img th:src="${session.loginMember != null && 
+                            session.loginMember.memberImg != null && 
+                            session.loginMember.memberImg != 'null' ? 
+                            session.loginMember.memberImg : '/images/user.png'}" 
+                                alt="Profile Image">
+                            </div>
                     <h2 class="profile-name" th:text="${session.loginMember.memberName}">안준성</h2>
                     <p class="profile-email" th:text="${session.loginMember.memberEmail}">Me@google.com</p>
                     
                     <div class="profile-actions">
                         <a href="/member/home" class="home-btn">
-                            <img th:src="@{/static/images/icons/home.png}" alt="Home" class="home-icon">
-                            My Home
+                            <i class="fa-solid fa-house"alt="Home"></i> 
+                             My Home
                         </a>
-                        <a href="/logout" class="logout-btn">Logout</a>
+                        <a href="/member/logout" class="logout-btn">Logout</a>
                     </div>
                 </div>
             </section>

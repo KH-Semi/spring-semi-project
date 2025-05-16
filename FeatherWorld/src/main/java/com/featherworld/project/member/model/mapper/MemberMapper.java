@@ -30,4 +30,11 @@ public interface MemberMapper {
 	 * @author 영민
 	 */
 	Member login(String memberEmail);
+
+	/** 회원가입도중 이메일 중복확인
+	 * @param memberEmail
+	 * @return
+	 * @author 영민
+	 */
+	int checkEmail(String memberEmail);
 }

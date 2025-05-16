@@ -23,7 +23,7 @@
             <!-- Main content -->
             <h2 class="title">회원가입</h2>
             
-            <form id="signupForm" action="/member/login" method="post">
+            <form id="signupForm" action="/member/signup" method="post">
                 <!-- ID Field -->
                 <div class="form-group">
                     <label class="required" for="userId">EMAIL :</label>
@@ -48,12 +48,12 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="required" for="name">NAME :</label>
-                        <input type="text" id="name" placeholder="이름을 입력해 주세요." name="memberName">
+                        <input type="text" name="memberName" id="memberName" placeholder="이름" maxlength="10">
                         <span id="nameMessage" class="validation-message"></span>
                     </div>
                     <div class="form-group">
                         <label class="required" for="phone">PHONE :</label>
-                        <input type="tel" id="phone" placeholder="전화번호를 입력해 주세요." name="memberTel">
+                        <input type="tel" id="phone" placeholder="('-'제외)전화번호를 입력해 주세요." name="memberTel">
                         <span id="phoneMessage" class="validation-message"></span>
                     </div>
                 </div>

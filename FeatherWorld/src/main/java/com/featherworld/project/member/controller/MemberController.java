@@ -7,11 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.featherworld.project.member.model.dto.Member;
 import com.featherworld.project.member.model.service.MemberService;
+
+import jakarta.websocket.Session;
 
 
 
@@ -41,7 +45,7 @@ public class MemberController {
 	
 	
 		
-	/** 회원가입 메서드 (post)
+	/** 회원가입 메서드 (post)a
 	 * @author 영민
 	 * @param inputMember
 	 * @param memberAddress
@@ -49,7 +53,7 @@ public class MemberController {
 	 * @return
 	 */
 	@PostMapping("signup")
-	public String signup(Member inputMember, @RequestParam("memberAddress") String[] memberAddress, RedirectAttributes ra  
+	public String signUp(Member inputMember, @RequestParam("memberAddress") String[] memberAddress, RedirectAttributes ra  
 			
 			                 ) {
 	 	
@@ -60,25 +64,16 @@ public class MemberController {
 		
 		if(result > 0) {
 			
-			int memberNo=inputMember.getMemberNo();
-			
-			int typeResult = service.setDefaultBoardType(memberNo);
-			
-			if (typeResult > 0) {
-				
-				message = inputMember.getMemberName()+ "님 회원가입완료";
-				path = "/";
-				
-			}
-			
-						
-		}else {
-			
+			message = inputMember.getMemberName()+ "님 회원가입완료";
+			path = "/";
+
+			}else {			
+		 
 			message = "회원가입실패..";
 			path = "signUp";
 					
-		}
-		ra.addAttribute("message", message);
+		     }
+		ra.addFlashAttribute("message", message);
 		
 		
 		return "redirect:" + path;
@@ -113,4 +108,24 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
+	
+	/** 이메일 중복하는 메서드(비동기..)
+	 * @param memberEmail
+	 * @return
+	 * @author 영민
+	 */
+	@GetMapping("checkEmail")
+	@ResponseBody
+	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
+		return service.checkEmail(memberEmail);
+	}
+	
+	@GetMapping("logout")
+	public String logout(SessionStatus status) {
+		
+		status.setComplete();
+		return "redirect:/";
+	}
+	
+	
 }

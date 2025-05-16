@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 입력 필드
     const userId = document.getElementById('userId');
     const authKey = document.getElementById('authKey');
-    const name = document.getElementById('name');
+    const name = document.getElementById('memberName');
     const phone = document.getElementById('phone');
     const password = document.getElementById('password');
     const passwordCheck = document.getElementById('passwordCheck');
@@ -22,13 +22,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const getAuthKeyBtn = document.getElementById('getAuthKey');
     const authKeyConfirmBtn = document.getElementById('authKeyConfirm');
     const searchAddressBtn = document.getElementById('searchAddress');
-    const mainBtn = document.getElementById('mainBtn');
+    const mainBtn = document.querySelector("#mainBtn");
     const signupBtn = document.getElementById('signupBtn');
     
     // 유효성 검사를 위한 정규식
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/; // 이메일 형식
     const phoneRegex = /^01[0|1|6|7|8|9][0-9]{7,8}$/; // 하이픈 없는 전화번호 형식
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%])[A-Za-z\d!@#$%]{8,12}$/; // 비밀번호 형식
+    
+    let authTimer; // 타이머 역할을 할  setInertval 함수를 저장할 변수
+
+    const initMin = 4; // 타이머 초기값 (분)
+    const initSec = 59; // 타이머 초기값 (초)
+    const initTime = "05:00";
+
+    // 실제 줄어드는 시간을 저장할 변수
+    let min = initMin;
+    let sec = initSec;
+    
     
     // 유효성 검사 함수들
     function validateEmail() {
@@ -42,12 +53,12 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
 
         } else {
-            fetch("/member/checkEmail?memberEmail="+userId)
+             // 이메일 중복확인 (비동기요청)
+            fetch("/member/checkEmail?memberEmail="+userId.value)
            .then(resp => resp.text())
             .then(count =>{
                   if(count == 1){// 중복
                   userIdMessage.innerText = "이미 사용중인 이메일 입니다";
-                 emailMessage.classList.add("error")  
                   userIdMessage.className = 'validation-message invalid';
                  return false;
             }})
@@ -69,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
             authKeyMessage.className = 'validation-message invalid';
             return false; // 버튼으로 확인이 필요함
         }
+
     }
     
     function validateName() {
@@ -191,29 +203,137 @@ document.addEventListener('DOMContentLoaded', function() {
     addressDetail.addEventListener('blur', validateAddressDetail);
     
     // 버튼 기능 구현
-    getAuthKeyBtn.addEventListener('click', function() {
-        if (validateEmail()) {
-            alert('인증번호가 발송되었습니다.');
-            authKeyMessage.textContent = '인증번호를 입력해주세요.';
-            authKeyMessage.className = 'validation-message invalid';
-        } else {
-            alert('유효한 이메일을 입력해주세요.');
-        }
-    });
-    
-    authKeyConfirmBtn.addEventListener('click', function() {
-        if (authKey.value.trim() === '') {
-            authKeyMessage.textContent = '인증번호를 입력해주세요.';
-            authKeyMessage.className = 'validation-message invalid';
-        } else {
 
-            // 실제 구현 시에는 서버와 검증
-            authKeyMessage.textContent = '입력값 정상';
-            authKeyMessage.className = 'validation-message valid';
-            alert('인증이 완료되었습니다.');
-        }
-    });
+    // 인증번호 받기 버튼 누르기
+getAuthKeyBtn.addEventListener('click', function() {
+    if (validateEmail()) {
+        // 타이머 초기화
+        min = initMin;
+        sec = initSec;
+        clearInterval(authTimer);
+        
+        // 이메일 발송 요청
+        fetch("/email/signup", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ email: userId.value }) // JSON 형식으로 변환하여 전송
+        })
+        .then(resp => resp.text())
+        .then(result => {
+            if(result == 1) {
+                console.log("인증 번호 발송 성공");
+                alert('인증번호가 발송되었습니다.');
+                
+                // 타이머 시작
+                startAuthTimer();
+            } else {
+                console.log("인증 번호 발송 실패");
+                alert('인증번호 발송에 실패했습니다. 다시 시도해주세요.');
+            }
+        })
+        .catch(error => {
+            console.error("인증번호 발송 오류:", error);
+            alert('서버 오류가 발생했습니다.');
+        });
+        
+        authKeyMessage.textContent = initTime;
+        authKeyMessage.className = 'validation-message invalid';
+    } else {
+        alert('유효한 이메일을 입력해주세요.');
+    }
+});
+
+// 인증번호 확인 버튼 클릭 이벤트
+authKeyConfirmBtn.addEventListener('click', function() {
+    if (authKey.value.trim() === '') {
+        authKeyMessage.textContent = '인증번호를 입력해주세요.';
+        authKeyMessage.className = 'validation-message invalid';
+        return;
+    }
     
+    if (min === 0 && sec === 0) {
+        alert("인증번호 입력 제한시간을 초과하였습니다. 다시 발급해주세요");
+        return;
+    }
+    
+    if (authKey.value.length < 6 || authKey.value.length >= 7) {
+        alert("인증번호를 정확히 입력해주세요");
+        return;
+    }
+    
+    // 인증번호 확인 요청
+    const data = {
+        email: userId.value,
+        authKey: authKey.value
+    };
+    
+    fetch("/email/checkAuthKey", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    })
+    .then(resp => resp.text())
+    .then(result => {
+        if(result == 0) {
+            alert("인증번호가 일치하지 않습니다");
+            return false;
+        }
+        
+        // 인증 성공 시
+        clearInterval(authTimer); // 타이머 멈춤
+        authKeyMessage.textContent = '입력값 정상';
+        authKeyMessage.className = 'validation-message valid';
+        alert('인증이 완료되었습니다.');
+        return true;
+    })
+    .catch(error => {
+        console.error("인증번호 확인 오류:", error);
+        alert('서버 오류가 발생했습니다.');
+    });
+});
+  
+    //--------------------------------------------------------------
+ // 타이머 시작 함수 (이 함수 추가 필요)
+function startAuthTimer() {
+    clearInterval(authTimer); // 기존 타이머 정리
+    
+    // 시간 초기화
+    min = initMin;
+    sec = initSec;
+    
+    // 초기값 표시
+    authKeyMessage.innerText = `${addZero(min)}:${addZero(sec)}`;
+    
+    authTimer = setInterval(() => {
+        // 0 분 0 초인 경우 ("00:00 출력 후")
+        if(min == 0 && sec == 0){
+            clearInterval(authTimer); // interval 멈춤
+            authKeyMessage.textContent = '인증시간이 초과되었습니다.';
+            authKeyMessage.className = 'validation-message invalid';
+            return;
+        }
+        
+        // 0 초인 경우
+        if(sec == 0){
+            sec = 59;
+            min--;
+        } else {
+            sec--; // 1초 감소
+        }
+        
+        authKeyMessage.innerText = `${addZero(min)}:${addZero(sec)}`;
+    }, 1000); // 1초 지연시간
+}
+
+  //매개변수 전달받은 숫자가 10 미만인 경우 (한자리) 앞에 0 붙어서 반환
+  function addZero (number) {
+     if (number < 10) return "0" + number;
+     else             return number; 
+    };
+  //-------------------------------------------------------------
+  
+
+
     // 주소 관련 기능
     searchAddressBtn.addEventListener('click', function() {
         // Daum 우편번호 서비스를 활용한 주소 검색
@@ -233,29 +353,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }).open();
     });
     
-    mainBtn.addEventListener('click', function() {
-        window.location.href = '/main';
-    });
+  
+ mainBtn.addEventListener("click", ()=>{   
+                location.href = "/";
+                });
     
     // 폼 제출
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // 모든 필드 유효성 검사
-        const isEmailValid = validateEmail();
-        const isAuthKeyValid = authKeyMessage.className.includes('valid');
-        const isNameValid = validateName();
-        const isPhoneValid = validatePhone();
-        const isPasswordValid = validatePassword();
-        const isPasswordCheckValid = validatePasswordCheck();
-        const isAddressDetailValid = validateAddressDetail();
-        
-        if (isEmailValid && isAuthKeyValid && isNameValid && isPhoneValid && 
-            isPasswordValid && isPasswordCheckValid && isAddressDetailValid) {
-            alert('회원가입이 완료되었습니다!');
-            // 실제 구현 시에는 서버로 폼 제출
-        } else {
-            alert('모든 필수 항목을 올바르게 입력해주세요.');
-        }
-    });
+   document.getElementById('signupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // 모든 필드 유효성 검사
+    const isEmailValid = validateEmail();
+    const isAuthKeyValid = authKeyMessage.className.includes('valid');
+    const isNameValid = validateName();
+    const isPhoneValid = validatePhone();
+    const isPasswordValid = validatePassword();
+    const isPasswordCheckValid = validatePasswordCheck();
+    const isAddressDetailValid = validateAddressDetail();
+    
+    if (isEmailValid && isAuthKeyValid && isNameValid && isPhoneValid && 
+        isPasswordValid && isPasswordCheckValid && isAddressDetailValid) {
+        alert('회원가입이 완료되었습니다!');
+        this.submit(); // 폼을 실제로 제출
+    } else {
+        alert('모든 필수 항목을 올바르게 입력해주세요.');
+    }
+});
+
 });
