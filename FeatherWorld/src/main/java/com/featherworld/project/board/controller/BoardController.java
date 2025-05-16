@@ -14,6 +14,7 @@ import java.util.Map;
 
 @Controller
 @Slf4j
+@RequestMapping("board")
 public class BoardController {
 
 	@Autowired
@@ -21,7 +22,7 @@ public class BoardController {
 	
 	/**
 	 * 1. 해당 회원의 게시판 목록 조회
-	 * 2. default 게시판의 삭제되지 않은 게시글 목록 조회
+	 * 2. 해당 게시판의 삭제되지 않은 게시글 목록 조회
 	 * 
 	 * @author Jiho
 	 * @param memberNo : 현재 조회 중인 회원 번호
@@ -30,12 +31,12 @@ public class BoardController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/members/{memberNo}/boards/init")
+	@GetMapping("{memberNo:[0-9]+}")
 	public String boardMainPage(@PathVariable int memberNo,
 								@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 								HttpSession session, Model model) {
 
-		// 0. 회원 번호 유효성 검사
+		// 0. 회원 번호 존재 유무 검사
 		int result = service.checkMember(memberNo);
 		
 		if(result == 0) { // DB에 존재하지 않는 회원 번호인 경우 main page로 redirect
@@ -50,7 +51,9 @@ public class BoardController {
 		
 		// 2. 가장 처음 생성된 default 게시판 종류 번호
 		int currentBoardCode = boardTypeList.getFirst().getBoardCode();
-		
+		// boardList.js에서 현재 선택된 게시판인지 확인하기 위해 전달
+		// model.addAttribute("currentBoardCode", currentBoardCode);
+
 		log.debug("default 게시판 번호 : {}", currentBoardCode);
 		
 		// 3. 해당 게시판의 게시글만 조회
@@ -72,18 +75,17 @@ public class BoardController {
 	 * @return
 	 */
 	@ResponseBody
-	@GetMapping("/boards/{boardCode}/posts")
-	public Map<String, Object> selectBordList(@RequestParam int boardCode,
+	@GetMapping("type/{boardCode:[0-9]+}")
+	public Map<String, Object> selectBordList(@PathVariable int boardCode,
 											  @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
 		return service.selectBoardList(boardCode, cp);
 	}
 	
-	@GetMapping("{memberNo:[0-9]+}/write")
-	public String boardWrite(@PathVariable("memberNo") int memberNo,
+	@GetMapping("type/{boardCode:[0-9]+}/write")
+	public String boardWrite(@PathVariable int boardCode,
 							 @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
 		
-		
-		
+
 		return "board/boardWrite";
 	}
     

@@ -21,8 +21,13 @@
         <!-- 중앙 게시글 목록 -->
         <div class="main-content">
           <div class="board-list">
-            <!-- DB에서 가져온 게시글 목록 순회 -->
-            <div class="board-item" th:each="board : ${boardList}" th:object="${board}">
+            <!-- 게시글이 존재하지 않는 경우 -->
+            <div th:if="${boardList == null}">
+              <span>게시글이 존재하지 않습니다.</span>
+            </div>
+
+            <!-- 게시글이 존재하는 경우, DB에서 가져온 게시글 목록 순회 -->
+            <div class="board-item" th:unless="${boardList == null}" th:each="board : ${boardList}" th:object="${board}">
               <div class="board-wrap">
                 <!-- 썸네일 여부에 따라 다르게 표시 -->
                 <div th:if="*{thumbnail != null}" class="board-thumbnail">
@@ -75,9 +80,9 @@
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
 
-    <!-- Natural Template 활용 회원 번호 선언 -->
+    <!-- Natural Template 활용 default 게시판 종류 번호 선언 -->
     <script th:inline="javascript">
-      const memberNo = /*[[${memberNo}]]*/ [];
+      const currentBoardCode = /*[[${currentBoardCode}]]*/ 0;
     </script>
     <script src="/js/board/boardList.js"></script>
   </body>
