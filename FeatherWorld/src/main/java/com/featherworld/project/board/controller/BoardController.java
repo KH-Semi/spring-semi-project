@@ -21,15 +21,14 @@ public class BoardController {
 	private BoardService service;
 	
 	/**
-	 * 1. 해당 회원의 게시판 목록 조회
+	 * 1. 해당 회원의 게시판 목록 조회 <br>
 	 * 2. 해당 게시판의 삭제되지 않은 게시글 목록 조회
 	 * 
 	 * @author Jiho
-	 * @param memberNo : 현재 조회 중인 회원 번호
-	 * @param cp : 현재 페이지 번호
-	 * @param session : 세션 객체
-	 * @param model
-	 * @return
+	 * @param memberNo 현재 조회 중인 회원 번호
+	 * @param cp 현재 페이지 번호
+	 * @param session 세션 객체
+	 * @param model 게시글/페이징 목록 전달
 	 */
 	@GetMapping("{memberNo:[0-9]+}")
 	public String boardMainPage(@PathVariable int memberNo,
@@ -51,7 +50,7 @@ public class BoardController {
 		
 		// 2. 가장 처음 생성된 default 게시판 종류 번호
 		int currentBoardCode = boardTypeList.getFirst().getBoardCode();
-		// boardList.js에서 현재 선택된 게시판인지 확인하기 위해 전달
+		// boardList.js 에서 현재 선택된 게시판인지 확인하기 위해 전달
 		// model.addAttribute("currentBoardCode", currentBoardCode);
 
 		log.debug("default 게시판 번호 : {}", currentBoardCode);
@@ -59,7 +58,7 @@ public class BoardController {
 		// 3. 해당 게시판의 게시글만 조회
 		Map<String, Object> map = service.selectBoardList(currentBoardCode, cp);
 		
-		// request scope에 boardList, paginatioin 저장
+		// request scope에 boardList, pagination 저장
 		// (게시글이 없다면 각각 null 저장됨)
 		model.addAttribute("boardList", map.get("boardList"));
 		model.addAttribute("pagination", map.get("pagination"));
@@ -70,9 +69,8 @@ public class BoardController {
 	
 	/** 비동기로 게시글 목록, 페이지 목록 반환
 	 * @author Jiho
-	 * @param boardCode : 선택한 게시판 종류 번호
-	 * @param cp : 현재 페이지 번호
-	 * @return
+	 * @param boardCode 선택한 게시판 종류 번호
+	 * @param cp 현재 페이지 번호
 	 */
 	@ResponseBody
 	@GetMapping("type/{boardCode:[0-9]+}")
@@ -90,12 +88,10 @@ public class BoardController {
 	}
     
 	/** 게시글 좋아요 체크/해제
-	 * @return
 	 */
 	@ResponseBody
 	@PostMapping("like") // /board/like (POST)
 	public int boardLike(@RequestBody Map<String, Integer> map) {
 		return service.boardLike(map);
-		
 	}
 }
