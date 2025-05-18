@@ -6,6 +6,7 @@
   <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
 
   <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/board/boardList.css">
   <link rel="stylesheet" href="/css/board/boardWrite.css">
 </head>
   <body>
@@ -20,7 +21,7 @@
         
         <!-- 중앙 게시글 상세 -->
         <div class="main-content">
-          <div class="board-detail">
+          <div class="board-write">
             <div class="back-button">
               <button class="btn-back">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -43,7 +44,7 @@
               <div class="emoji-selector">
                 <div class="emoji-row">
                   <div class="emoji-item selected">
-                    <img src="/chicken-emoji.png" alt="Chicken emoji" class="emoji-img">
+                    <img th:src="#{user.default.image}" alt="Chicken emoji" class="emoji-img">
                   </div>
                   <div class="emoji-item">
                     <div class="placeholder-emoji"></div>
@@ -83,8 +84,11 @@
       <!-- 푸터 Include -->
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
-    
-    <script src="/js/main.js"></script>
 
+    <!-- JS 에서 쓰기 버튼 클릭 이벤트에 활용할 현재 게시판 종류 번호 선언 -->
+    <script th:inline="javascript">
+      const currentBoardCode = /*[[${boardCode}]]*/ 0;
+    </script>
+    <script src="/js/board/boardList.js"></script>
   </body>
 </html>

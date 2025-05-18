@@ -49,14 +49,14 @@ public class BoardController {
 		session.setAttribute("boardTypeList", boardTypeList);
 		
 		// 2. 가장 처음 생성된 default 게시판 종류 번호
-		int currentBoardCode = boardTypeList.getFirst().getBoardCode();
-		// boardList.js 에서 현재 선택된 게시판인지 확인하기 위해 전달
-		// model.addAttribute("currentBoardCode", currentBoardCode);
+		int defaultBoardCode = boardTypeList.getFirst().getBoardCode();
+		// boardList.js 에서 활용하기 위해 default 게시판 종류 번호 선언
+		 model.addAttribute("defaultBoardCode", defaultBoardCode);
 
-		log.debug("default 게시판 번호 : {}", currentBoardCode);
+		log.debug("default 게시판 번호 : {}", defaultBoardCode);
 		
 		// 3. 해당 게시판의 게시글만 조회
-		Map<String, Object> map = service.selectBoardList(currentBoardCode, cp);
+		Map<String, Object> map = service.selectBoardList(defaultBoardCode, cp);
 		
 		// request scope에 boardList, pagination 저장
 		// (게시글이 없다면 각각 null 저장됨)

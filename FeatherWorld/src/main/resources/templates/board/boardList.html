@@ -52,33 +52,39 @@
             <!-- 페이징 처리 -->
             <div class="pagination" th:if="${pagination != null}" th:object="${pagination}">
 
-              <span>&lt;&lt;</span>
-              <span class="page-nav">&lt;</span>
+              <span th:onclick="|loadBoardList(${defaultBoardCode}, 1)|">&lt;&lt;</span>
+              <span th:onclick="|loadBoardList(${defaultBoardCode}, *{startPage})|" class="page-nav">&lt;</span>
 
               <th:block th:if="*{startPage <= endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
-                <span th:text="${i}" th:classappend="${i} == *{currentPage} ? 'current' : ''"></span>
+                <span th:onclick="|loadBoardList(${defaultBoardCode}, ${i})|"
+                      th:classappend="${i} == *{currentPage} ? 'current' : ''"
+                      th:text="${i}"></span>
               </th:block>
 
-              <span class="page-nav">&gt;</span>
-              <span>&gt;&gt;</span>
+              <span th:onclick="|loadBoardList(${defaultBoardCode}, *{endPage})|" class="page-nav">&gt;</span>
+              <span th:onclick="|loadBoardList(${defaultBoardCode}, *{maxPage})|">&gt;&gt;</span>
 
             </div>
-            
+
             <!-- 글쓰기 버튼 -->
             <div class="write-button">
-              <span type="button">Write</span>
+              <span>Write</span>
             </div>
           </div>
         </div>
-        
+
         <!-- 우측 네비게이션 바 Include -->
         <th:block th:replace="~{common/navSidebar}"></th:block>
       </div>
-      
+
       <!-- 푸터 Include -->
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
 
+    <!-- JS 에서 쓰기 버튼 클릭 이벤트에 활용할 현재 게시판 종류 번호 선언 -->
+    <script th:inline="javascript">
+      const currentBoardCode = /*[[${defaultBoardCode}]]*/ 0;
+    </script>
     <script src="/js/board/boardList.js"></script>
   </body>
 </html>

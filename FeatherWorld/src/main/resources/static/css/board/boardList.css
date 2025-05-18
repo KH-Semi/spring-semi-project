@@ -39,13 +39,13 @@
 .board-main {
   display: flex;
   flex-direction: column;
-  margin: 0px 10px;
+  margin: 0 10px;
 }
 
 .board-title {
   font-weight: 600;
   font-size: 14px;
-  margin: 5px 0px;
+  margin: 5px 0;
 }
 
 .board-content {
