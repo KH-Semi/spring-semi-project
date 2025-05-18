@@ -15,7 +15,9 @@
       <th:block th:replace="~{common/header}"></th:block>
       
       <div class="content-container">
-       
+		
+		<!-- 좌측 프로필 들어올 공간 Include -->
+		        <th:block th:replace="~{board/boardTypeSidebar}"></th:block>
         
         <!-- 중앙 방명록 목록 -->
         <div class="main-content">
@@ -30,14 +32,15 @@
                 </div>
               </div>
               <div class="guestbook-info">
-				<span th:text="*{visitorNickname}">닉네임</span>
+			        	<span th:text="*{visitorNickname}">닉네임</span>
                 <div class="guestbook-date" th:text="*{guestBookWriteDate}">게시일</div>
-                
               </div>
             </div>
           </div>
 
           <div>
+			
+			
             <!-- 페이징 처리 -->
             <div class="pagination" th:if="${pagination != null}" th:object="${pagination}">
 
@@ -50,18 +53,17 @@
               </th:block>
 
               <a th:href="@{/guestbook(cp=*{nextPage})}" class="page-nav">&gt;</a>
-              <a th:href="@{/guestbook(cp=*{maxPage})}">&gt;&gt;</a>
-
+              <a th:href="@{/guestbook(cp=*{maxPage})}">&gt;&gt;</a>	  
             </div>
             
+			    <!--방명록 작성 부분-->
+					  						
+					  			          <div class="guestBook-write-area">
+					  						<textarea name="guestBookContent" placeholder="방명록을 작성해보세요 :)" required></textarea>
+					  						<button id="addGuestBook">
+					  							연필모양 Write</button>
+					  					  </div>
 			
-			<!--방명록 작성 부분-->
-			
-          <div class="guestBook-write-area">
-			<textarea name="guestBookContent" placeholder="방명록을 작성해보세요 :)" required></textarea>
-			<button id="addGuestBook">
-				연필모양 Write</button>
-		  </div>
 			  
 			
 		

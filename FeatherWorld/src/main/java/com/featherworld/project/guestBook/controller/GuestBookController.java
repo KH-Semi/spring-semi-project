@@ -1,27 +1,26 @@
 package com.featherworld.project.guestBook.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.featherworld.project.guestBook.model.dto.GuestBook;
 import com.featherworld.project.guestBook.service.GuestBookService;
 import com.featherworld.project.member.model.dto.Member;
 
-import lombok.extern.slf4j.Slf4j;
 
-@RestController
-@RequestMapping("guestbook")
+@Controller
+//@RestController
+@RequestMapping("guestBook")
 
 public class GuestBookController {
 
@@ -29,31 +28,34 @@ public class GuestBookController {
 	private GuestBookService service;
 
 	//방명록은 동기
-	
-	// 방명록 조회
-	@GetMapping("")
-	public List<GuestBook>selectGuestBookList(
-			@SessionAttribute(value = "loginMember", required = false) Member loginMember,
-			 @RequestParam(value = "ownerNo", required = false) Integer ownerNo,
-			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
-
-		
-		int loginMemberNo = (loginMember!=null)? loginMember.getMemberNo():-1;
-		
-		//ownerNo가 없을 경우 
-		if(ownerNo==null) {
-			if(loginMember !=null) {
-				//로그인 했으면 본인의 미니홈피라고 간주하여 ownerNo를 본인의 번호로 설정
-				ownerNo = loginMember.getMemberNo();
-				
-			}else {
-				//로그인도 안하고, ownerNo도 없는 비회원
-				ownerNo = -1;
-			}
-		}
-		
-		return service.selectGuestBookList(ownerNo, loginMemberNo, cp);
-	}
+	 @GetMapping("")
+	    public String guestBookPage() {
+	        return "guestBook/guestBook";  // templates/guestBook/guestBook.html
+	    }
+//	// 방명록 조회
+//	@GetMapping("")
+//	public List<GuestBook>selectGuestBookList(
+//			@SessionAttribute(value = "loginMember", required = false) Member loginMember,
+//			 @RequestParam(value = "ownerNo", required = false) Integer ownerNo,
+//			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
+//
+//		
+//		int loginMemberNo = (loginMember!=null)? loginMember.getMemberNo():-1;
+//		
+//		//ownerNo가 없을 경우 
+//		if(ownerNo==null) {
+//			if(loginMember !=null) {
+//				//로그인 했으면 본인의 미니홈피라고 간주하여 ownerNo를 본인의 번호로 설정
+//				ownerNo = loginMember.getMemberNo();
+//				
+//			}else {
+//				//로그인도 안하고, ownerNo도 없는 비회원
+//				ownerNo = -1;
+//			}
+//		}
+//		
+//		return service.selectGuestBookList(ownerNo, loginMemberNo, cp);
+//	}
 
 	// 방명록 작성
 	@PostMapping("")
