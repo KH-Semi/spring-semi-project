@@ -20,7 +20,7 @@ import com.featherworld.project.member.model.dto.Member;
 
 @Controller
 //@RestController
-@RequestMapping("guestBook")
+@RequestMapping("guestbook")
 
 public class GuestBookController {
 
@@ -30,7 +30,7 @@ public class GuestBookController {
 	//방명록은 동기
 	 @GetMapping("")
 	    public String guestBookPage() {
-	        return "guestBook/guestBook";  // templates/guestBook/guestBook.html
+	        return "guestbook/guestbook";  // templates/guestBook/guestBook.html
 	    }
 //	// 방명록 조회
 //	@GetMapping("")

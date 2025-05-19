@@ -1,81 +1,100 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
 
-  <th:block th:replace="~{common/common}"></th:block>
-  <link rel="stylesheet" href="/css/guestBook/guestbook.css">
-</head>
+    <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" href="/css/guestBook/guestbook.css" />
+  </head>
   <body>
-    
     <div class="container">
       <!-- 헤더 Include -->
       <th:block th:replace="~{common/header}"></th:block>
-      
+
       <div class="content-container">
-		
-		<!-- 좌측 프로필 들어올 공간 Include -->
-		        <th:block th:replace="~{board/boardTypeSidebar}"></th:block>
-        
+        <!-- 좌측 석준이가 만든 프로필 들어올 공간 Include -->
+        <th:block th:replace="~{board/boardTypeSidebar}"></th:block>
+
         <!-- 중앙 방명록 목록 -->
         <div class="main-content">
           <div class="guestbook-list">
             <!-- DB에서 가져온 방명록 목록 순회 -->
-            <div class="guestbook-item" th:each="guestBook : ${guestBookList}" th:object="${guestBook}">
+            <div
+              class="guestbook-item"
+              th:each="guestBook : ${guestBookList}"
+              th:object="${guestBook}"
+            >
               <div class="guestbook-wrap">
-               
                 <div class="guestbook-main">
-                 
-                  <div class="guestbook-content" th:text="*{guestBookContent}">방명록 내용</div>
+                  <div class="guestbook-content" th:text="*{guestBookContent}">
+                    방명록 내용
+                  </div>
                 </div>
               </div>
               <div class="guestbook-info">
-			        	<span th:text="*{visitorNickname}">닉네임</span>
-                <div class="guestbook-date" th:text="*{guestBookWriteDate}">게시일</div>
+                <span th:text="*{visitorNickname}">닉네임</span>
+                <div class="guestbook-date" th:text="*{guestBookWriteDate}">
+                  게시일
+                </div>
               </div>
             </div>
           </div>
 
-          <div>
-			
-			
-            <!-- 페이징 처리 -->
-            <div class="pagination" th:if="${pagination != null}" th:object="${pagination}">
+          <!-- 페이징 처리 -->
+          <div
+            class="pagination"
+            th:if="${pagination != null}"
+            th:object="${pagination}"
+          >
+            <a th:href="@{/guestbook(cp=1)}">&lt;&lt;</a>
+            <a th:href="@{/guestbook(cp=*{prevPage})}" class="page-nav">&lt;</a>
 
-              <a th:href="@{/guestbook(cp=1)}">&lt;&lt;</a>
-              <a th:href="@{/guestbook(cp=*{prevPage})}" class="page-nav">&lt;</a>
+            <th:block
+              th:if="*{startPage <= endPage}"
+              th:each="i : *{#numbers.sequence(startPage, endPage)}"
+            >
+              <a
+                th:href="@{/guestbook(cp=${i})}"
+                th:text="${i}"
+                th:class="${i} == *{currentPage} ? 'current' : ''"
+              ></a>
+            </th:block>
 
-              <th:block th:if="*{startPage <= endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
-                <a th:href="@{/guestbook(cp=${i})}" 
-                  th:text="${i}" th:class="${i} == *{currentPage} ? 'current' : ''"></a>
-              </th:block>
+            <a th:href="@{/guestbook(cp=*{nextPage})}" class="page-nav">&gt;</a>
+            <a th:href="@{/guestbook(cp=*{maxPage})}">&gt;&gt;</a>
+          </div>
 
-              <a th:href="@{/guestbook(cp=*{nextPage})}" class="page-nav">&gt;</a>
-              <a th:href="@{/guestbook(cp=*{maxPage})}">&gt;&gt;</a>	  
+          <!-- 방명록 작성 부분 -->
+          <div class="guestBook-write-area">
+            <!-- 아이콘 -->
+            <div class="icon-bar">
+              <i class="fa-solid fa-lock-open"></i>
+              <i class="fa-solid fa-toggle-on"></i>
+              <br />
             </div>
-            
-			    <!--방명록 작성 부분-->
-					  						
-					  			          <div class="guestBook-write-area">
-					  						<textarea name="guestBookContent" placeholder="방명록을 작성해보세요 :)" required></textarea>
-					  						<button id="addGuestBook">
-					  							연필모양 Write</button>
-					  					  </div>
-			
-			  
-			
-		
+            <textarea
+              name="guestBookContent"
+              placeholder="방명록을 작성해보세요 :)"
+              required
+            ></textarea>
+            <!-- 글쓰기 버튼 -->
+            <div class="write-button">
+              <a>Write✏️</a>
+            </div>
+          </div>
+        </div>
+        <!-- /.main-content -->
+
         <!-- 우측 네비게이션 바 Include -->
         <th:block th:replace="~{common/navSidebar}"></th:block>
       </div>
-      
+
       <!-- 푸터 Include -->
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
-    
-    <script src="/js/guestBook/guestBook.js"></script>
 
+    <script src="/js/guestBook/guestBook.js"></script>
   </body>
 </html>
