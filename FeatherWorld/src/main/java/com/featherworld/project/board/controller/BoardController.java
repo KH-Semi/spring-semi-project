@@ -1,18 +1,22 @@
 package com.featherworld.project.board.controller;
 
-import com.featherworld.project.board.model.dto.Board;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.featherworld.project.board.model.dto.BoardType;
 import com.featherworld.project.board.model.service.BoardService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @Slf4j
@@ -24,10 +28,10 @@ public class BoardController {
 	/**
 	 * 1. 해당 회원의 게시판 목록 조회 <br>
 	 * 2. 해당 게시판의 삭제되지 않은 게시글 목록 조회
-	 * 
+	 *
 	 * @author Jiho
 	 * @param memberNo 현재 조회 중인 회원 번호
-	 * @param boardCode 해당 게시판 종류 번호   
+	 * @param boardCode 해당 게시판 종류 번호
 	 * @param cp 현재 페이지 번호
 	 * @param session 세션 객체
 	 * @param model 게시글/페이징 목록 전달
@@ -55,7 +59,7 @@ public class BoardController {
 		model.addAttribute("currentBoardCode", boardCode);
 
 		log.debug("게시판 번호 : {}", boardCode);
-		
+
 		// 3. 해당 게시판의 게시글만 조회
 		Map<String, Object> map = service.selectBoardList(boardCode, cp);
 		
@@ -93,6 +97,8 @@ public class BoardController {
 	}
     
 	/** 게시글 좋아요 체크/해제
+	 * @author 허배령
+	 * @return
 	 */
 	@ResponseBody
 	@PostMapping("like") // /board/like (POST)

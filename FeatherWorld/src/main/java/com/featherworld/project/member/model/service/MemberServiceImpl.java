@@ -32,47 +32,85 @@ public class MemberServiceImpl implements MemberService {
 	 *
 	 */
 	@Override
-		public int signUp(Member inputMember, String[] memberAddress) {
-		
-		//1.다음 api를 이용한 우편번호 + 주소와 상세주소를 구분자를, 이걸^^^로바꿈 
-		
-		log.info(inputMember.getMemberAddress()); // 주소 입력값 확인용 로그
-		
-		// 주소가 입력되어있는 경우
-		if(!inputMember.getMemberAddress().equals(",,")) { 
-			
-			String address = String.join("^^^", memberAddress);
-			// 구분자 추가해서 ,자리에 ^^^ 이걸로 바꿀꺼임
-			
-			inputMember.setMemberAddress(address);
-		
-				
-		}else {// 주소가 입력되지 않은경우
-			
-			inputMember.setMemberAddress(null);
-			//null 값 넣어버렷
-		}
-		
-		//2. 비밀번호 암호화
-		String encPw = bcrypt.encode(inputMember.getMemberPw());
-		
-		inputMember.setMemberPw(encPw);
-		
-		//3. 카카오 API  일딴 나중에 API 구현하면 대체할꺼임 일딴 ㄱㄷ ..
-		
-		int result = mapper.signUp(inputMember);
-		
-			return result;
-		}
+	public int signUp(Member inputMember, String[] memberAddress) {
+	    
+	    // 주소 처리 로직 
+	    if(!inputMember.getMemberAddress().equals(",,")) { 
+	        String address = String.join("^^^", memberAddress);
+	        inputMember.setMemberAddress(address);
+	    } else {
+	        inputMember.setMemberAddress(null);
+	    }
+	    
+	    // 비밀번호 암호화
+	    String encPw = bcrypt.encode(inputMember.getMemberPw());
+	    inputMember.setMemberPw(encPw);
+	    
+	    // 회원 가입 처리
+	    int result = mapper.signUp(inputMember);
+	    
+	    // 확인용 ..
+	    log.info("생성된 회원 번호: {}", inputMember.getMemberNo());
+	    
+	    // 회원 가입이 성공한 경우에만 기본 게시판 타입 생성
+	    if(result > 0) {
+	     
+	    	int memberNo	= inputMember.getMemberNo();
+	    	
+	      result = mapper.setDefaultBoardType(memberNo);
+	        
+	      log.info("기본 게시판 타입 설정 결과: {}", result);
+	    }
+	    
+	    return result;
+	}
 	
 	/** 회원가입이 되었을때 default로 boardType을 하나 생성해주는 메서드
 	 *  (회원가입이 성공하면 memberNo가 생겨서 그memberNo로 만들어줌)
 	 *	@author 영민
 	 */
 	@Override
+	
 	public int setDefaultBoardType(int memberNo) {
 		
 		return mapper.setDefaultBoardType(memberNo);
 	}
 
-}
+	/** 로그인 메서드
+	 * @author 영민
+	 */
+	@Override
+	public Member login(Member inputMember) {
+		
+		Member loginMember = mapper.login(inputMember.getMemberEmail());
+		
+		if (loginMember == null) return null; // 조회해도 맞는 이메일이없을때
+		
+		
+		if(!bcrypt.matches(inputMember.getMemberPw(),loginMember.getMemberPw()))return null;
+		// 로그인회원의 비밀번호와 입력받은 비밀번호가 같지않다면
+		
+		loginMember.setMemberPw(null); // 로그인 비밀번호 혹시몰라 제거
+		
+		
+		return loginMember;
+	}
+
+	/** 회원입도중 이메일 중복확인
+	 *@author 영민
+	 */
+	@Override
+	public int checkEmail(String memberEmail) {
+		
+		return mapper.checkEmail(memberEmail);
+	}
+	
+	/** 가입된 회원의 이메일 찾기
+	 *
+	 */
+	@Override
+		public Member findId(Member inputMember) {
+			
+			return mapper.findId(inputMember);
+		}
+	}

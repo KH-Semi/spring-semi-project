@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeatherWorld</title>
+    <!-- 공용 css/js 추가 -->
+  <th:block th:replace="~{common/common}"></th:block>
+  <!-- 아이콘 -->
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <!-- myPage 전용 CSS -->
+  <link rel="stylesheet" href="/FeatherWorld/src/main/resources/static/css/myPage.css">
+
+  </head>
+<body>
+    <div class="container">
+        <!-- Left Panel - Profile Information -->
+        <div class="left-panel">
+            <header class="logo">
+                <p>Today / Total</p>
+            </header>
+
+            <div class="profile-info">
+                <div class="profile-image">
+                    <img src="/FeatherWorld/src/main/resources/static/images/user.png" alt="프로필 이미지">
+                </div>
+                <div class="profile-name">반응형</div>
+                <div class="profile-handle">@re</div>
+                <div class="profile-stats">
+                    
+                    <div class="stat">
+                        <div class="stat-number">128</div>
+                        <div class="stat-label">Follower</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">97</div>
+                        <div class="stat-label">Following</div>
+                    </div>
+                </div>
+                <div class="profile-action">
+                    <button class="action-button Edit-button">Edit Profile</button>
+                    <button class="action-button Logout-button">Logout</button>
+                </div>
+            </div>
+        
+            <!-- 여기 추가 -->
+              <div class="profile-action">
+                <button class="action-button Board-button">Bio</button>
+              </div>
+            
+            <div class="profile-action">
+                    <button class="action-button surfing-button">surfing</button>
+                </div>
+        </div>
+
+        <!-- Middle Panel - Posts -->
+      <div class="middle-panel">
+      <div class="boardContainer">
+        
+        <div class="boardSummary">
+          <div class="summary-links">
+            <a href="#">Board Total</a>
+            <a href="#">Guest Book Total</a>
+          </div>
+        </div>
+
+        <div class="recentBoard">Recent Board</div>
+        
+        <!-- 이미지 4개 행 추가 -->
+    <div class="small-image-row">
+      <img src="/FeatherWorld/src/main/resources/static/images/sample1.jpg" alt="Image 1">
+      <img src="/FeatherWorld/src/main/resources/static/images/sample2.jpg" alt="Image 2">
+      <img src="/FeatherWorld/src/main/resources/static/images/sample3.jpg" alt="Image 3">
+      <img src="/FeatherWorld/src/main/resources/static/images/sample4.jpg" alt="Image 4">
+    </div>
+
+    <textarea class="Comment" placeholder="Write Friend Comment."></textarea>
+
+    <div class="comment-header">
+        <div class="title">Friend Comment List</div>
+          <button id="write-button" class="write-button">Write</button>
+        </div>
+      <div id="comment-form" style="display:none; margin-top:10px;">
+        <textarea id="comment-input" class="Comment" placeholder="댓글을 작성하세요..."></textarea>
+        <button id="submit-comment" class="write-button">댓글 등록</button>
+      </div>
+
+
+  <!-- 뎃글 부분 -->
+
+   <!-- 댓글 목록 div에 id 추가 -->
+<div class="comment-list" id="comment-list">
+
+  <div class="comment-item">
+    <img src="avatar1.png" alt="User avatar" class="avatar" />
+    <div class="comment-content">
+      
+        <span class="username">허태범</span>
+        <span class="comment-text">여기에 댓글 텍스트를 넣으세요.</span>
+        
+      <div class="comment-meta">
+        <span class="user-role">남양스트롱</span>
+        <button class="delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="comment-item">
+    <img src="avatar2.png" alt="User avatar" class="avatar" />
+    <div class="comment-content">
+        <span class="username">김영인</span>
+        <span class="comment-text">안녕하세요~~~</span>
+      <div class="comment-meta">
+        <span class="user-role">레몬이</span>
+        <button class="delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="comment-item">
+    <img src="avatar2.png" alt="User avatar" class="avatar" />
+    <div class="comment-content">
+        <span class="username">김영인</span>
+        <span class="comment-text">안녕하세요~~~</span>
+      <div class="comment-meta">
+        <span class="user-role">레몬이</span>
+        <button class="delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="comment-item">
+    <img src="avatar2.png" alt="User avatar" class="avatar" />
+    <div class="comment-content">
+        <span class="username">김영인</span>
+        <span class="comment-text">안녕하세요~~~</span>
+      <div class="comment-meta">
+        <span class="user-role">레몬이</span>
+        <button class="delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+</div>
+</div>
+</div>
+
+        
+
+
+        <!--                          -->
+
+        <!-- Right Panel - Navigation Menu -->
+        <div class="right-panel">
+            <div class="menu-item menu-item-home active-home">
+              <i class="fas fa-house"></i> Home
+            </div>
+            <div class="menu-item profile-menu">
+                 <i class="fas fa-user"></i> Profile
+            </div>
+            <div class="menu-item">
+               <i class="fas fa-clipboard-list"></i> Board
+            </div>
+            <div class="menu-item">
+               <i class="fas fa-user-friends"></i> FriendList
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-play"></i> Playlist
+            </div>
+            <div class="menu-item">
+                <i class="fas fa-book"></i> Guestbook
+            </div>
+        </div>
+    </div>
+
+    
+     <!-- 푸터 추가 -->
+   <th:block th:replace="~{common/footer}"></th:block>
+
+   <script src="/FeatherWorld/src/main/resources/static/js/home/home.js"></script>
+</body>
+</html>

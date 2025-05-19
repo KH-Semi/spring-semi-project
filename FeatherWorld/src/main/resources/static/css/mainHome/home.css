@@ -145,6 +145,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
 }
 
 .member-name {
@@ -432,4 +433,10 @@ body {
 .profile-section {
   width: 100%;
   
+}
+.member-avatar img, .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }

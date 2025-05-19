@@ -1,0 +1,74 @@
+
+.friend-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 20px;
+  width: 100%;
+  border: 1px solid #e0e0e0; /*#e0e0e0*/
+  background-color: #f9f9f9; /*#f9f9f9*/
+  border-radius: 5px;
+  padding: 15px;
+  margin: 5px 5px;
+  overflow: hidden;
+}
+    
+.friend-item>*{
+  display: flex;
+  margin-left: 10px;
+ 
+   align-self: center;
+}
+
+.rounded-span {
+  display: inline-block;  /* 또는 block */
+ 
+ align-content : center;
+ align-self: center;
+  border-radius: 20px;
+  background-color: #ddd;
+  padding:  10px;
+  margin : 5px 10px;
+  height:15px;
+  font-size:12px;
+}
+*>.left-align{
+  align-items: center;
+
+}
+*>.right-align{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+
+ul, li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+span{
+  
+  
+  margin : 0px 10px 0px 10px;
+}
+
+.color-gray{
+  color:#8E8E8E;
+}
+
+.font-bold{
+
+  font-weight: bold;
+}
+
+.title{
+  font-weight: bold;
+  margin:10px;
+  font-size:medium;
+  justify-self: flex-start;
+}
