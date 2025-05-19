@@ -4,7 +4,7 @@
       <span class="board-type-title">Board Type</span>
       <th:block th:if="${session.loginMember?.memberNo == memberNo}">
         <span class="edit-button"><i class="icon-edit"></i>edit</span>
-      <th:block>
+      </th:block>
     </div>
     <!-- th:data-board-code="*{boardCode}" 해당 boardCode 값을 각각의 게시판 div에 추가 -->
     <div class="board-type-item" th:data-board-code="*{boardCode}" th:each="boardType : ${session.boardTypeList}" th:object="${boardType}">

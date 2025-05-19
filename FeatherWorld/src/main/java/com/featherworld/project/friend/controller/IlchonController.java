@@ -1,17 +1,15 @@
 package com.featherworld.project.friend.controller;
 
-import java.util.Map;
-
+import com.featherworld.project.friend.model.service.IlchonService;
+import com.featherworld.project.member.model.dto.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import com.featherworld.project.friend.model.service.IlchonService;
-import com.featherworld.project.member.model.dto.Member;
+import java.util.Map;
 
 @Controller
 //@RestController // @Controller + @ResponseBody

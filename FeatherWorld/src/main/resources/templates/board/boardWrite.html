@@ -1,73 +1,63 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
 
-  <th:block th:replace="~{common/common}"></th:block>
-  <link rel="stylesheet" href="/css/board/boardList.css">
-  <link rel="stylesheet" href="/css/board/boardWrite.css">
-</head>
+    <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" href="/css/board/boardList.css" />
+    <link rel="stylesheet" href="/css/board/boardWrite.css" />
+  </head>
   <body>
-    
     <div class="container">
       <!-- 헤더 Include -->
       <th:block th:replace="~{common/header}"></th:block>
-      
+
       <div class="content-container">
         <!-- 좌측 게시판 리스트 Include -->
         <th:block th:replace="~{board/boardTypeSidebar}"></th:block>
-        
+
         <!-- 중앙 게시글 상세 -->
         <div class="main-content">
           <div class="board-write">
             <div class="back-button">
               <button class="btn-back">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M19 12H5"></path>
-                  <path d="M12 19l-7-7 7-7"></path>
-                </svg>
+                <span class="fa-solid fa-left-long"></span>
               </button>
             </div>
-            
+
             <div class="board-form">
               <div class="input-group mb-4">
-                <input type="text" class="form-control" placeholder="Board Title" aria-label="Board Title">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Board Title"
+                  aria-label="Board Title"
+                />
               </div>
-              
+
               <div class="content-area">
-                <textarea class="form-control" placeholder="Board Content" rows="10"></textarea>
+                <textarea
+                  class="form-control"
+                  placeholder="Board Content"
+                  rows="10">
+                </textarea>
                 <div class="byte-counter">(12/2000)bytes</div>
               </div>
-              
-              <div class="emoji-selector">
-                <div class="emoji-row">
-                  <div class="emoji-item selected">
-                    <img th:src="#{user.default.image}" alt="Chicken emoji" class="emoji-img">
-                  </div>
-                  <div class="emoji-item">
-                    <div class="placeholder-emoji"></div>
-                  </div>
-                  <div class="emoji-item">
-                    <div class="placeholder-emoji"></div>
-                  </div>
-                  <div class="emoji-item">
-                    <div class="placeholder-emoji"></div>
-                  </div>
-                  <div class="emoji-item">
-                    <div class="placeholder-emoji"></div>
-                  </div>
-                  <div class="emoji-item">
-                    <div class="placeholder-emoji"></div>
-                  </div>
-                </div>
-              </div>
-              
+
               <div class="button-group">
                 <button class="btn-cancel">Cancel</button>
                 <button class="btn-confirm">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
                   Confirm
@@ -76,11 +66,11 @@
             </div>
           </div>
         </div>
-        
+
         <!-- 우측 네비게이션 바 Include -->
         <th:block th:replace="~{common/navSidebar}"></th:block>
       </div>
-      
+
       <!-- 푸터 Include -->
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
@@ -89,6 +79,6 @@
     <script th:inline="javascript">
       const currentBoardCode = /*[[${boardCode}]]*/ 0;
     </script>
-    <script src="/js/board/main.js"></script>
+    <script src="/js/board/boardList.js"></script>
   </body>
 </html>

@@ -170,8 +170,8 @@ const renderBoardList = async (boardCode, page) => {
     // 게시글 조회수를 담은 div 생성
     const boardReads = createDiv("board-reads");
 
-    const iconRead = document.createElement("i");
-    iconRead.classList.add("icon-read");
+    const iconRead = document.createElement("span");
+    iconRead.classList.add("fa-solid", "fa-book-open-reader");
     const readCount = document.createElement("span");
     readCount.innerText = board.readCount;
 
@@ -215,16 +215,20 @@ document.querySelectorAll(".board-type-item").forEach(boardTypeItem => {
 // 쓰기 버튼 클릭시 비동기식 페이지 전환
 if(writeBtn) {
 
-    writeBtn.firstElementChild.addEventListener("click", () => {
+  /** 글을 작성할 수 있는 요소를 그려주고, 작성 완료 시 다시 게시글/페이징 목록을 업데이트해서 보여주는 메서드
+   * @author Jiho
+   */
+  writeBtn.firstElementChild.addEventListener("click", () => {
 
-      if(boardCode === 0) {
-        alert("존재하지 않는 게시판입니다.");
-        return;
-      }
-
-
-
-    });
+    if(boardCode === 0) {
+      alert("존재하지 않는 게시판입니다.");
+      return;
+    }
+    
+    // 1. html 요소 그리기
+    // 2.
+    
+  });
 }
 
 // 보드 메인 페이지 최초 진입 시 renderBoardList() 실행

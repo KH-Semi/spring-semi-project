@@ -1,23 +1,17 @@
 package com.featherworld.project.board.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.featherworld.project.board.model.dto.BoardType;
 import com.featherworld.project.board.model.service.BoardService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -62,7 +56,7 @@ public class BoardController {
 
 			if(boardType.getBoardCode() == boardCode) {
 				// 해당 게시판 종류 번호
-				// main.js 에서 활용하기 위해 현재 게시판 종류 번호 선언
+				// boardList.js 에서 활용하기 위해 현재 게시판 종류 번호 선언
 				model.addAttribute("currentBoardCode", boardCode);
 
 				log.debug("회원 {}의 게시판 번호 {}", memberNo, boardCode);
@@ -101,7 +95,6 @@ public class BoardController {
     
 	/** 게시글 좋아요 체크/해제
 	 * @author 허배령
-	 * @return
 	 */
 	@ResponseBody
 	@PostMapping("like") // /board/like (POST)
