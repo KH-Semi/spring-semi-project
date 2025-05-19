@@ -25,7 +25,7 @@ import jakarta.websocket.Session;
  */
 
 @SessionAttributes({"loginMember"})
-@RequestMapping("member")
+
 @Controller
 public class MemberController {
 
@@ -120,6 +120,11 @@ public class MemberController {
 		return service.checkEmail(memberEmail);
 	}
 	
+	/** 로그아웃
+	 * @param status
+	 * @return
+	 * @author 영민
+	 */
 	@GetMapping("logout")
 	public String logout(SessionStatus status) {
 		
@@ -127,5 +132,40 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	/** 아이디 찾기 사이트로 포워드
+	 * @return
+	 * @author 영민
+	 */
+	@GetMapping("findId")
+	public String findId() {
+		return "member/findId";
+	}
+	
+	/** 아이디 찾는 서비스
+	 * @param memberTel
+	 * @param memberEmail
+	 * @param ra
+	 * @author 영민
+	 * @return memberEmail
+	 */
+	@PostMapping("findId")
+	@ResponseBody
+	public String findId(Member inputMember,
+			             RedirectAttributes ra) {
+		
+		Member inputMemberEmail = service.findId(inputMember);
+		
+		if(inputMemberEmail == null) {
+		
+			return "";
+	
+		}
+		
+		
+		String getEmail = inputMemberEmail.getMemberEmail();
+		
+		
+		return getEmail;
+	}
 	
 }

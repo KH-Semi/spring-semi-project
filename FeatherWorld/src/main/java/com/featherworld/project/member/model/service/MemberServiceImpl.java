@@ -104,4 +104,13 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mapper.checkEmail(memberEmail);
 	}
-}
+	
+	/** 가입된 회원의 이메일 찾기
+	 *
+	 */
+	@Override
+		public Member findId(Member inputMember) {
+			
+			return mapper.findId(inputMember);
+		}
+	}

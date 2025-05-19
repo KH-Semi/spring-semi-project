@@ -37,4 +37,11 @@ public interface MemberMapper {
 	 * @author 영민
 	 */
 	int checkEmail(String memberEmail);
+
+	/** 가입된 회원의 이메일 찾기
+	 * @param inputMember
+	 * @return
+	 * @author 영민
+	 */
+	Member findId(Member inputMember);
 }

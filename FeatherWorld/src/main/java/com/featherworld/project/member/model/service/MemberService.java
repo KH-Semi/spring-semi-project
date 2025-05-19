@@ -34,4 +34,11 @@ public interface MemberService {
 	 */
 	int checkEmail(String memberEmail);
 
+	
+	/** 가입된 회원의 이메일 찾기
+	 * @param inputMember
+	 * @return
+	 */
+	Member findId(Member inputMember);
+
 }
