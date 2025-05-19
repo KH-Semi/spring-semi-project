@@ -10,18 +10,18 @@
 				FROM ILCHON 
 				JOIN MEMBER ON MEMBER.MEMBER_NO = ILCHON.TO_MEMBER_NO
 				WHERE (ILCHON.FROM_MEMBER_NO = #{loginMemberNo} )
-				AND IS_ILCHON='Y') -- FROM_MEMBER_NO기준으로 JOIN
+				AND IS_ILCHON='Y') <!-- FROM_MEMBER_NO기준으로 JOIN-->
 		
 		UNION
 		(SELECT  MEMBER_IMG, MEMBER_NAME, TO_NICKNAME "nickname"
 				FROM ILCHON 
 				JOIN MEMBER ON MEMBER.MEMBER_NO = ILCHON.FROM_MEMBER_NO
 				WHERE ( ILCHON.TO_MEMBER_NO = #{loginMemberNo} )
-				AND IS_ILCHON='Y') -- TO_MEMBER_NO기준으로 JOIN
+				AND IS_ILCHON='Y') <!-- TO_MEMBER_NO기준으로 JOIN-->
 	)
 	
 	
-  </select><!-- SQL문 logic 잘못되었음! 아래 subquery 구문에서 계속 수정해나갈것-->
+  </select><!--  아래 subquery 구문에서 계속 수정해나갈것-->
   
   <select id ="countIlchons" resultType = "int">
   	

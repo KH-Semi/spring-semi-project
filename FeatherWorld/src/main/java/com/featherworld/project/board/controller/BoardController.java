@@ -93,8 +93,13 @@ public class BoardController {
 		
 		return "board/boardWrite";
 	}
+	
+	
+	
+	
     
 	/** 게시글 좋아요 체크/해제
+	 * @author 허배령
 	 * @return
 	 */
 	@ResponseBody

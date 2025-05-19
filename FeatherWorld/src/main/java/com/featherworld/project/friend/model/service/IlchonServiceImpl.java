@@ -8,8 +8,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.featherworld.project.friend.model.dto.Ilchon;
 import com.featherworld.project.common.dto.Pagination;
+import com.featherworld.project.friend.model.dto.Ilchon;
 import com.featherworld.project.friend.model.mapper.IlchonMapper;
 
 
@@ -27,7 +27,9 @@ public class IlchonServiceImpl implements IlchonService {
 		int ilchonsCount =  mapper.countIlchons(loginMemberNo);
 		
 		// pagination 객체 생성 
-		com.featherworld.project.common.dto.Pagination pagination = new Pagination(cp, ilchonsCount);
+
+	    Pagination pagination = new Pagination(cp, ilchonsCount);
+
 		
 		// 지정된 inchon들의 목록 조회
 		/*
