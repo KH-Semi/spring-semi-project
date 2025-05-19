@@ -12,10 +12,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <!-- myPage 전용 CSS -->
-    <link
-      rel="stylesheet"
-      href="/FeatherWorld/src/main/resources/static/css/myPage.css"
-    />
+    <link rel="stylesheet" href="../../static/css/myPage/Profile.css" />
   </head>
   <body>
     <div class="container">
@@ -28,22 +25,31 @@
         <div class="profile-info">
           <div class="profile-image">
             <img
-              src="/FeatherWorld/src/main/resources/static/images/user.png"
-              alt="프로필 이미지"
+              th:src="${session.loginMember != null && session.loginMember.
+              memberImg != null} ? @{${session.loginMember.memberImg}} : @{/images/user.png}"
+              alt="Profile Image"
             />
           </div>
-          <div class="profile-name">반응형</div>
-          <div class="profile-handle">@re</div>
+
+          <!-- 회원 번호 표시 -->
+          <div class="profile-name" th:text="${memberno}">회원번호</div>
+
+          <!-- 닉네임 (@ 표시 포함) -->
+          <div class="profile-handle" th:text="'@' + ${nickname}">@닉네임</div>
+
+          <!-- 팔로워 / 팔로잉 수 -->
           <div class="profile-stats">
             <div class="stat">
-              <div class="stat-number">128</div>
+              <div class="stat-number" th:text="${followerCount}">0</div>
               <div class="stat-label">Follower</div>
             </div>
             <div class="stat">
-              <div class="stat-number">97</div>
+              <div class="stat-number" th:text="${followingCount}">0</div>
               <div class="stat-label">Following</div>
             </div>
           </div>
+
+          <!-- 하단 버튼 -->
           <div class="profile-action">
             <button id="editProfileBtn" class="action-button Edit-button">
               Edit Profile

@@ -595,13 +595,6 @@ body {
   text-align: center;
 }
 
-/* home */
-.menu-item.active-home {
-  background-color: #912d2d; /* 진한 빨간색 */
-  color: white;
-  border: 1px solid #912d2d;
-}
-
 /* Profile */
 .menu-item.active-profile {
   background-color: #912d2d; /* 진한 빨간색 */
