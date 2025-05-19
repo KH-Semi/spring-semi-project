@@ -97,7 +97,7 @@ const renderBoardList = async (boardCode, page) => {
   const updatedBoardContainer = createDiv("board-list");
 
   // ajax를 통해 비동기로 회원별 게시판 목록 각 요소 클릭시 boardList & pagination 구해옴
-  const resp = await fetch(`/board/type/${boardCode}?cp=${page}`);
+  const resp = await fetch(`/board/${boardCode}?cp=${page}`);
   const map = await resp.json();
 
   // map 내부에 있는 pagination & boardList 선언
@@ -218,5 +218,5 @@ if(writeBtn) {
   });
 }
 
-// 페이지 최초 진입 시 실행
+// 보드 메인 페이지 최초 진입 시 renderBoardList() 실행
 renderBoardList(boardCode, 1);

@@ -17,7 +17,7 @@
 	</select>
 	
 	<!-- 해당 게시판의 삭제되지 않은 총 게시글 개수(listCount) 조회 -->
-	<select id="getListCount" resultType="_int">
+	<select id="getListCount"  resultType="_int">
 		SELECT COUNT(*)
 		FROM BOARD
 		WHERE BOARD_CODE = ${currentBoardCode}

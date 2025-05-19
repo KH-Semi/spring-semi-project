@@ -10,15 +10,13 @@ public interface BoardService {
 
 	/** 회원 여부 확인
 	 * @author Jiho
-	 * @param memberNo : 현재 조회 중인 회원 번호
-	 * @return
+	 * @param memberNo 현재 조회 중인 회원 번호
 	 */
 	int checkMember(int memberNo);
 	
 	/** 현재 회원의 게시판 종류 번호(boardCode) 조회
 	 * @author Jiho
-	 * @param memberNo : 현재 조회 중인 회원 번호
-	 * @return
+	 * @param memberNo 현재 조회 중인 회원 번호
 	 */
 	List<BoardType> selectBoardType(int memberNo);
 

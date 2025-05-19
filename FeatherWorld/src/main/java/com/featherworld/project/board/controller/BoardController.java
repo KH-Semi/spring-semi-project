@@ -1,5 +1,6 @@
 package com.featherworld.project.board.controller;
 
+import com.featherworld.project.board.model.dto.Board;
 import com.featherworld.project.board.model.dto.BoardType;
 import com.featherworld.project.board.model.service.BoardService;
 import jakarta.servlet.http.HttpSession;
@@ -9,12 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 @Slf4j
-@RequestMapping("board")
 public class BoardController {
 
 	@Autowired
@@ -26,12 +27,13 @@ public class BoardController {
 	 * 
 	 * @author Jiho
 	 * @param memberNo 현재 조회 중인 회원 번호
+	 * @param boardCode 해당 게시판 종류 번호   
 	 * @param cp 현재 페이지 번호
 	 * @param session 세션 객체
 	 * @param model 게시글/페이징 목록 전달
 	 */
-	@GetMapping("{memberNo:[0-9]+}")
-	public String boardMainPage(@PathVariable int memberNo,
+	@GetMapping("member/{memberNo:[0-9]+}/board/{boardCode:[0-9]+}")
+	public String boardMainPage(@PathVariable int memberNo, @PathVariable int boardCode,
 								@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 								HttpSession session, Model model) {
 
@@ -48,15 +50,14 @@ public class BoardController {
 		// session scope에 boardTypeList 저장
 		session.setAttribute("boardTypeList", boardTypeList);
 		
-		// 2. 가장 처음 생성된 default 게시판 종류 번호
-		int defaultBoardCode = boardTypeList.getFirst().getBoardCode();
-		// boardList.js 에서 활용하기 위해 default 게시판 종류 번호 선언
-		 model.addAttribute("defaultBoardCode", defaultBoardCode);
+		// 2. 해당 게시판 종류 번호
+		// boardList.js 에서 활용하기 위해 현재 게시판 종류 번호 선언
+		model.addAttribute("currentBoardCode", boardCode);
 
-		log.debug("default 게시판 번호 : {}", defaultBoardCode);
+		log.debug("게시판 번호 : {}", boardCode);
 		
 		// 3. 해당 게시판의 게시글만 조회
-		Map<String, Object> map = service.selectBoardList(defaultBoardCode, cp);
+		Map<String, Object> map = service.selectBoardList(boardCode, cp);
 		
 		// request scope에 boardList, pagination 저장
 		// (게시글이 없다면 각각 null 저장됨)
@@ -73,16 +74,20 @@ public class BoardController {
 	 * @param cp 현재 페이지 번호
 	 */
 	@ResponseBody
-	@GetMapping("type/{boardCode:[0-9]+}")
+	@GetMapping("board/{boardCode:[0-9]+}")
 	public Map<String, Object> selectBordList(@PathVariable int boardCode,
 											  @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
+
 		return service.selectBoardList(boardCode, cp);
 	}
-	
-	@GetMapping("type/{boardCode:[0-9]+}/write")
+
+	/** 게시글 쓰기
+	 * @param boardCode 현재 게시판 종류 번호
+	 * @param cp 현재 페이지 번호
+	 */
+	@GetMapping("board/{boardCode:[0-9]+}/write")
 	public String boardWrite(@PathVariable int boardCode,
 							 @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
-		
 
 		return "board/boardWrite";
 	}
