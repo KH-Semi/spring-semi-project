@@ -27,7 +27,7 @@ public class IlchonServiceImpl implements IlchonService {
 		int ilchonsCount =  mapper.countIlchons(loginMemberNo);
 		
 		// pagination 객체 생성 
-		Pagination pagination = new Pagination(cp, ilchonsCount);
+	    Pagination pagination = new Pagination(cp, ilchonsCount);
 		
 		// 지정된 inchon들의 목록 조회
 		/*
