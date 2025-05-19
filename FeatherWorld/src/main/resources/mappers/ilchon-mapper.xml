@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.featherworld.project.main.mapper.MainMapper">
+<mapper namespace="com.featherworld.project.friend.model.mapper.IlchonMapper">
   <select id="select" resultType="Ilchon">
-  	SELECT MEMBER_IMG "memberImg", MEMBER_NAME "memberName", FROM_NICKNAME "fromNickname"
-	FROM MEMBER
-	JOIN ILCHON ON MEMBER.MEMBER_NO = ILCHON.FROM_MEMBER_NO
-	WHERE IS_ILCHON = 'Y'
-	AND ILCHON.FROM_MEMBER_NO = ${loginMemberNo}
-
-  </select>
+	
+	
+	SELECT MEMBER_IMG "memberImg", MEMBER_NAME "memberName", "nickname" "fromNickname"
+	FROM(
+		(SELECT MEMBER_IMG, MEMBER_NAME, FROM_NICKNAME "nickname"
+				FROM ILCHON 
+				JOIN MEMBER ON MEMBER.MEMBER_NO = ILCHON.TO_MEMBER_NO
+				WHERE (ILCHON.FROM_MEMBER_NO = #{loginMemberNo} )
+				AND IS_ILCHON='Y') -- FROM_MEMBER_NO기준으로 JOIN
+		
+		UNION
+		(SELECT  MEMBER_IMG, MEMBER_NAME, TO_NICKNAME "nickname"
+				FROM ILCHON 
+				JOIN MEMBER ON MEMBER.MEMBER_NO = ILCHON.FROM_MEMBER_NO
+				WHERE ( ILCHON.TO_MEMBER_NO = #{loginMemberNo} )
+				AND IS_ILCHON='Y') -- TO_MEMBER_NO기준으로 JOIN
+	)
+	
+	
+  </select><!-- SQL문 logic 잘못되었음! 아래 subquery 구문에서 계속 수정해나갈것-->
   
-  <select id ="countIlchons">
+  <select id ="countIlchons" resultType = "int">
+  	
   	SELECT COUNT(*)
 	FROM ILCHON
 	WHERE IS_ILCHON = 'Y'
-	AND ILCHON.FROM_MEMBER_NO = ${loginMemberNo}
+	AND (ILCHON.FROM_MEMBER_NO = #{loginMemberNo} OR ILCHON.TO_MEMBER_NO = #{loginMemberNo})
   </select>
 </mapper>
+<!-- 
+	5월 15일 수정사항 
+
+일촌 보낸사람(FROM_MEMBER_NO)와 일촌 받은사람(TO_MEMBER_NO)
+모두 select할수 있도록 "select" 와 "countIlchons" 수정-->

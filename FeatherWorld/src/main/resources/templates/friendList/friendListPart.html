@@ -1,0 +1,67 @@
+<head>
+    <link rel="stylesheet" href="/css/common/main.css"> <!-- for pagination -->
+    <link rel="stylesheet" href="/css/friendList/friendListPart.css">
+    
+</head>
+
+
+
+
+<div id = "my-friend-list">
+  <ul class="title">내 일촌 목록</ul>
+  <ul id="friend-list">
+      
+    <th:block  th:each="ilchon : ${ilchons}">
+      <li class="friend-item">
+        <div class="left-align">
+          <img th:if="${ilchon.memberImg}" th:src="@{${ilchon.memberImg}}" width="20" />
+          <img th:unless="${ilchon.memberImg}" th:src="@{/images/default-user.png}" width="20" />
+          <span class="font-bold color-gray"th:text="${ilchon.memberName}">별명</span>
+
+        </div>
+        
+        <div class="right-align">
+
+          <span class="color-gray"th:text="${ilchon.fromNickname}">일촌명</span> 
+        
+          <span class="rounded-span right-align font-bold">일촌</span>
+        </div>
+        
+      </li>
+    </th:block>
+    <th:block th:if="${#lists.isEmpty(ilchons)}">
+      <li>일촌이 없습니다.</li>
+    </th:block>
+  </ul>
+
+  <!-- pagination -->
+  <ul class="pagination" th:if="${pagination != null}">
+    <!-- << -->
+    <li><a th:href="@{/friendList(cp=1)}">&lt;&lt;</a></li>
+
+    <!-- < -->
+    <li><a th:href="@{/friendList(cp=${pagination.prevPage})}">&lt;</a></li>
+
+    <!-- Page numbers -->
+    <th:block th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
+      <li th:if="${i == pagination.currentPage}">
+        <a class="current" th:text="${i}"></a>
+      </li>
+      <li th:if="${i != pagination.currentPage}">
+        <a th:href="@{/friendList(cp=${i})}" th:text="${i}"></a>
+      </li>
+    </th:block>
+
+    <!-- > -->
+    <li><a th:href="@{/friendList(cp=${pagination.nextPage})}">&gt;</a></li>
+
+    <!-- >> -->
+    <li><a th:href="@{/friendList(cp=${pagination.maxPage})}">&gt;&gt;</a></li>
+  </ul>
+</div>
+<!--***********author : ahn     **********
+***************2505015 todo :   **********
+
+
+1. 다음/이전 pagenation (<,<<,>>,>) 에서 500에러 나지않게(로그인 세션 구현후 시험해볼것)
+2. 전용 friendList.css 파일 만들기-->

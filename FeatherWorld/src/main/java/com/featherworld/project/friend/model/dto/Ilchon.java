@@ -23,4 +23,5 @@ public class Ilchon {
 	private String toNickname;
 	private boolean isIlchon;
 	
+	
 }
