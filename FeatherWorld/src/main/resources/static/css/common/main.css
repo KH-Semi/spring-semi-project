@@ -10,7 +10,7 @@ body {
 
 .container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: auto;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -59,28 +59,33 @@ body {
 
 /* 좌측 사이드바 스타일 */
 .left-sidebar {
-  width: 250px;
+  min-width: 250px;
   padding: 20px;
   border-right: 1px solid #e0e0e0;
 }
 
-.board-type-sidebar .board-type-item {
+.board-type-sidebar {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+}
+
+.board-type-sidebar .board-type-item {
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.board-type-sidebar .board-type-item:first-child {
+.board-type-sidebar > div:first-child {
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
   background-color: #9F2120;
   color: white;
   font-weight: 600;
 }
 
-.board-type-sidebar .board-type-item:not(:first-child):hover {
+.board-type-sidebar .board-type-item:hover {
   background-color: #f5f5f5;
 }
 
@@ -101,9 +106,14 @@ body {
 
 /* 우측 사이드바 스타일 */
 .right-sidebar {
-  width: 200px;
+  min-width: 200px;
   padding: 20px;
   border-left: 1px solid #e0e0e0;
+}
+
+.nav-sidebar {
+  display: flex;
+  flex-direction: column;
 }
 
 .nav-sidebar .nav-item {
@@ -140,7 +150,7 @@ body {
   margin-top: 20px;
 }
 
-.pagination a {
+.pagination span {
   display: inline-block;
   padding: 5px 10px;
   margin: 0 5px;
@@ -150,10 +160,16 @@ body {
   color: #333;
 }
 
-.pagination a.current {
+.pagination span:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.pagination span.current {
   background-color: #9F2120;
   color: white;
   border-color: #9F2120;
+  cursor: default;
 }
 
 /* 글쓰기 버튼 스타일 */
@@ -163,7 +179,7 @@ body {
   margin-top: 20px;
 }
 
-.write-button a {
+.write-button > span {
   display: inline-block;
   padding: 10px 20px;
   background-color: #9F2120;
@@ -175,6 +191,7 @@ body {
 
 .write-button a:hover {
   opacity: 90%;
+  cursor: pointer;
 }
 
 /* 아이콘 스타일 */
@@ -195,7 +212,11 @@ body {
   }
 
   .left-sidebar, .right-sidebar {
-    width: 95%;
     border: none;
+  }
+
+  .nav-sidebar {
+    flex-direction: row;
+    justify-content: center;
   }
 }
