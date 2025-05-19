@@ -40,8 +40,9 @@
                     </div>
                 </div>
                 <div class="profile-action">
-                    <button class="action-button Edit-button">Edit Profile</button>
-                    <button class="action-button Logout-button">Logout</button>
+                    <button id="confirmEditBtn" class="action-button Edit-button">Confirm</button>
+                   <button id="backToProfileBtn" class="action-button back-button">Back</button>
+
                 </div>
             </div>
         
@@ -61,21 +62,27 @@
                 
             </div>
             <div class="post">
-                <form action="/upload" method="post" enctype="multipart/form-data">
-                  <label for="image"></label>
-                  <input type="file" id="image" name="image" accept="image/*" class="file-input">
+                <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+                    <label for="image"></label>
+                    <input type="file" id="image" name="image" accept="image/*" class="file-input" />
                 </form>
 
-                <div class="post-content">
-                    
-                </div>
-                
+            <div class="bio-section">
+                <textarea id="bio-input" class="Comment-home" placeholder="자기소개를 입력하세요..."></textarea>
+                <div id="bio-display" class="bio-display" style="margin-top: 10px;"></div>
+            </div>
+
+            <div id="previewContainer" style="margin-top: 15px;">
+                <img id="previewImage" src="" alt="이미지 미리보기" style="max-width: 300px; display:none; border-radius: 8px;"/>
+            </div>
+            </div>
+
                 <!-- 업데이트 삭제 버튼 -->
-                <div class="post-actions">
-                    <button class="post-button">Profile Update</button>
-                    <button class="post-button">Delete Account</button>
-                    
-                </div>
+              <div class="post-actions">
+                <button id="backToProfileBtn" class="update-button">Back</button>
+                <button id="confirmBtn" class="update-button">Confirm</button>
+              </div>
+
             </div>
         </div>
 
@@ -84,8 +91,8 @@
             <div class="menu-item">
                 <i class="fas fa-house"></i> Home
             </div>
-            <div class="menu-item profile-menu">
-                 <i class="fas fa-user"></i> Profile
+            <div class="menu-item menu-item-profile active-profile">
+              <i class="fas fa-user"></i> Profile
             </div>
             <div class="menu-item">
                <i class="fas fa-clipboard-list"></i> Board
@@ -105,5 +112,6 @@
      <!-- 푸터 추가 -->
    <th:block th:replace="~{common/footer}"></th:block>
 
+   <script src="/FeatherWorld/src/main/resources/static/js/profile/editProfile.js"></script>
 </body>
 </html>
