@@ -12,6 +12,7 @@ import com.featherworld.project.guestBook.model.dto.GuestBook;
 public interface GuestBookMapper {
 
 	/** 방명록 조회
+	 * @author 
 	 * @param ownerNo
 	 * @param loginMemberNo
 	 * @param cp
@@ -23,6 +24,7 @@ public interface GuestBookMapper {
 
 	
 	/** 방명록 작성
+	 * @author 
 	 * @param inputGuestBook
 	 * @return 해당 방명록의 GuestBookNo
 	 */
@@ -30,6 +32,7 @@ public interface GuestBookMapper {
 
 	
 	/** 방명록 수정
+	 * @author 
 	 * @param inputGuestBook
 	 * @return 
 	 */
@@ -38,6 +41,7 @@ public interface GuestBookMapper {
 	
 
 	/** 방명록 삭제
+	 * @author 
 	 * @param map
 	 * @return
 	 */
