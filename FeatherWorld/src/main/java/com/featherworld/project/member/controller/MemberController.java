@@ -37,7 +37,7 @@ public class MemberController {
 	 * @return
 	 * @author 영민
 	 */
-	@GetMapping("signUp")
+	@GetMapping("signup")
 	public String signUp() {
 		
 		return "member/signUp";

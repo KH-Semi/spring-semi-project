@@ -5,13 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import com.featherworld.project.guestBook.model.dto.GuestBook;
 import com.featherworld.project.guestBook.service.GuestBookService;
@@ -20,16 +14,14 @@ import com.featherworld.project.member.model.dto.Member;
 
 @Controller
 //@RestController
-@RequestMapping("guestbook")
-
 public class GuestBookController {
 
 	@Autowired
 	private GuestBookService service;
 
 	//방명록은 동기
-	 @GetMapping("")
-	    public String guestBookPage() {
+	 @GetMapping("{memberNo:[0-9]+}/guestbook")
+	    public String guestBookPage(@PathVariable int memberNo) {
 	        return "guestbook/guestbook";  // templates/guestBook/guestBook.html
 	    }
 //	// 방명록 조회
@@ -58,7 +50,7 @@ public class GuestBookController {
 //	}
 
 	// 방명록 작성
-	@PostMapping("")
+	@PostMapping("{memberNo:[0-9]+}/guestbook")
 	public int insertGuestBook(@SessionAttribute(value = "loginMember",required=false) Member loginMember,
 			GuestBook inputGuestBook,
 			@RequestParam(value="cp",required=false,defaultValue="1")int cp) throws Exception {
@@ -75,7 +67,7 @@ public class GuestBookController {
 	}
 
 	// 수정
-	@PutMapping("")
+	@PutMapping("{memberNo:[0-9]+}/guestbook")
 	public int updateGuestBook(@SessionAttribute(value = "loginMember",required=false) Member loginMember,
 								   GuestBook inputGuestBook,
 			@RequestParam(value = "cp" , required=false, defaultValue="1")int cp) throws Exception {
@@ -98,7 +90,7 @@ public class GuestBookController {
 	}
 
 	// 삭제
-	@DeleteMapping("")
+	@DeleteMapping("{memberNo:[0-9]+}/guestbook")
 	public int deleteGuestBook( @SessionAttribute(value="loginMember",required=false) Member loginMember,
 	        @RequestParam("guestBookNo") int guestBookNo,
 	        @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {

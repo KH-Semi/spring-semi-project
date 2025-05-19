@@ -15,13 +15,12 @@ import com.featherworld.project.member.model.dto.Member;
 
 @Controller
 //@RestController // @Controller + @ResponseBody
-@RequestMapping("friendList")
 public class IlchonController {
 	
 	@Autowired
 	private IlchonService service;
 	
-	@GetMapping("")
+	@GetMapping("{memberNo:[0-9]+}/friendlist")
 	public String select(@SessionAttribute Member loginMember
 			,@RequestParam(value = "cp", required = false, defaultValue = "1") int cp
 			,Model model){
@@ -38,7 +37,7 @@ public class IlchonController {
 		
 	}
 	// 250515 아직 로그인 세션기능이 구현되지 않았으므로 시험할수 있는 controller 내부 함수 구현
-	@GetMapping("/test")
+	@GetMapping("{memberNo:[0-9]+}/friendList/test")
 	public String selectTest(/* @SessionAttribute Member loginMember*/ 
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp
 			,Model model){

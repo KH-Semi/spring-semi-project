@@ -82,6 +82,11 @@
   margin-right: 5px;
 }
 
+.write-button > span:hover {
+  opacity: 90%;
+  cursor: pointer;
+}
+
 /* 반응형 디자인 */
 @media (max-width: 992px) {
   .board-list {
