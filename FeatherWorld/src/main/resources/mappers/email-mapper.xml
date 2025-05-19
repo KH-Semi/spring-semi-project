@@ -16,4 +16,12 @@
 	VALUES(SEQ_KEY_NO.NEXTVAL ,#{email} ,#{authKey}, DEFAULT)
 	</insert>
 
+	<!-- 인증번호와 이메일확인  -->
+	<select id="checkAuthKey">
+	SELECT COUNT(*)
+	FROM AUTH_KEY
+	WHERE EMAIL = #{email}
+	AND AUTH_KEY = #{authKey}
+	</select>
+
 </mapper>

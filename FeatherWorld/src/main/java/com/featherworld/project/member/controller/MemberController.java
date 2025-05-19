@@ -2,15 +2,22 @@ package com.featherworld.project.member.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.featherworld.project.member.model.dto.Member;
 import com.featherworld.project.member.model.service.MemberService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.websocket.Session;
+
+
 
 
 /** member 컨트롤러 클래스
@@ -18,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 
 @SessionAttributes({"loginMember"})
-@RequestMapping("member")
+
 @Controller
 public class MemberController {
 
@@ -35,8 +42,10 @@ public class MemberController {
 		
 		return "member/signUp";
 	}
+	
+	
 		
-	/** 회원가입 메서드 (post)
+	/** 회원가입 메서드 (post)a
 	 * @author 영민
 	 * @param inputMember
 	 * @param memberAddress
@@ -44,7 +53,7 @@ public class MemberController {
 	 * @return
 	 */
 	@PostMapping("signup")
-	public String signup(Member inputMember, @RequestParam("memberAddress") String[] memberAddress, RedirectAttributes ra  
+	public String signUp(Member inputMember, @RequestParam("memberAddress") String[] memberAddress, RedirectAttributes ra  
 			
 			                 ) {
 	 	
@@ -55,25 +64,16 @@ public class MemberController {
 		
 		if(result > 0) {
 			
-			int memberNo=inputMember.getMemberNo();
-			
-			int typeResult = service.setDefaultBoardType(memberNo);
-			
-			if (typeResult > 0) {
-				
-				message = inputMember.getMemberName()+ "님 회원가입완료";
-				path = "/";
-				
-			}
-			
-						
-		}else {
-			
+			message = inputMember.getMemberName()+ "님 회원가입완료";
+			path = "/";
+
+			}else {			
+		 
 			message = "회원가입실패..";
 			path = "signUp";
 					
-		}
-		ra.addAttribute("message", message);
+		     }
+		ra.addFlashAttribute("message", message);
 		
 		
 		return "redirect:" + path;
@@ -88,10 +88,84 @@ public class MemberController {
 	 * @return
 	 * @author 영민
 	 */
-	// 아직 미완성~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// 아이디 저장은 아직 안함
 	@PostMapping("login")
-	public String login() {
+	public String login(Member inputMember,RedirectAttributes ra, Model model) {
 		
-		return null;
+		Member loginMember = service.login(inputMember);
+		
+		if(loginMember == null) {
+			// 로그인실패
+			ra.addFlashAttribute("message","아이디또는 비밀번호가 맞지않습니다,");
+			
+		}else {
+			//로그인성공
+			model.addAttribute("loginMember",loginMember);
+			
+			// --- saveId 할꺼면 여기서부터 진행..
+		}
+		
+		
+		return "redirect:/";
 	}
+	
+	/** 이메일 중복하는 메서드(비동기..)
+	 * @param memberEmail
+	 * @return
+	 * @author 영민
+	 */
+	@GetMapping("checkEmail")
+	@ResponseBody
+	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
+		return service.checkEmail(memberEmail);
+	}
+	
+	/** 로그아웃
+	 * @param status
+	 * @return
+	 * @author 영민
+	 */
+	@GetMapping("logout")
+	public String logout(SessionStatus status) {
+		
+		status.setComplete();
+		return "redirect:/";
+	}
+	
+	/** 아이디 찾기 사이트로 포워드
+	 * @return
+	 * @author 영민
+	 */
+	@GetMapping("findId")
+	public String findId() {
+		return "member/findId";
+	}
+	
+	/** 아이디 찾는 서비스
+	 * @param memberTel
+	 * @param memberEmail
+	 * @param ra
+	 * @author 영민
+	 * @return memberEmail
+	 */
+	@PostMapping("findId")
+	@ResponseBody
+	public String findId(Member inputMember,
+			             RedirectAttributes ra) {
+		
+		Member inputMemberEmail = service.findId(inputMember);
+		
+		if(inputMemberEmail == null) {
+		
+			return "";
+	
+		}
+		
+		
+		String getEmail = inputMemberEmail.getMemberEmail();
+		
+		
+		return getEmail;
+	}
+	
 }
