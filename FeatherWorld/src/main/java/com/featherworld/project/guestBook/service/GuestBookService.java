@@ -15,7 +15,7 @@ public interface GuestBookService {
 	 * @param cp
 	 * @return
 	 */
-	List<GuestBook> selectGuestBookList(Integer ownerNo, int loginMemberNo, int cp);
+	Map<String, Object> selectGuestBookList(Integer ownerNo, int loginMemberNo, int cp);
 	
 	
 	/** 방명록 작성 서비스 

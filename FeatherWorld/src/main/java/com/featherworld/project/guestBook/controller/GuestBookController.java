@@ -1,12 +1,15 @@
 package com.featherworld.project.guestBook.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,19 +22,60 @@ import com.featherworld.project.member.model.dto.Member;
 
 
 @Controller
-//@RestController
-@RequestMapping("guestbook")
+
 
 public class GuestBookController {
 
 	@Autowired
 	private GuestBookService service;
 
-	//방명록은 동기
-	 @GetMapping("")
-	    public String guestBookPage() {
+	
+	
+	 /** 동기
+	  * 해당 회원의 삭제되지 않은 방명록 목록 조회
+	  * @author 
+	 * @return
+	 */
+	@GetMapping("/{memberNo:[0-9]+}/guestbook")
+	    public String guestBookPage(@SessionAttribute(value = "loginMember", required = false) Member loginMember,
+	    		@PathVariable int memberNo,
+	    		@RequestParam(value = "ownerNo", required = false) Integer ownerNo,
+	    		@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+	    		Model model) {
+		
+		
+		 int loginMemberNo = (loginMember != null) ? loginMember.getMemberNo() : -1;
+
+		    if (ownerNo == null) {
+		        ownerNo = loginMemberNo;
+		    }
+
+		    Map<String, Integer> map = new HashMap<>();
+		    
+		    map.put("ownerNo", ownerNo);
+		    map.put("loginMemberNo", loginMemberNo);
+		    map.put("cp", cp);
+		    
+		   List<GuestBook> guestBookList = service.selectGuestBookList(map); 		
+
+		    //GuestBookService.selectGuestBookList(ownerNo, loginMemberNo, cp);
+		    
+		    model.addAttribute("guestBookList", map.get("guestBookList"));
+		    model.addAttribute("pagination", map.get("pagination"));
+		    model.addAttribute("ownerInfo", map.get("ownerInfo"));
+		    model.addAttribute("canWrite", map.get("canWrite"));
+		
+		
 	        return "guestbook/guestbook";  // templates/guestBook/guestBook.html
 	    }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 //	// 방명록 조회
 //	@GetMapping("")
 //	public List<GuestBook>selectGuestBookList(

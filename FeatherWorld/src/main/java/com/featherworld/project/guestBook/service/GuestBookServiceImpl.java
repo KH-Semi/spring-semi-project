@@ -19,11 +19,13 @@ public class GuestBookServiceImpl implements GuestBookService{
 	@Autowired
 	private GuestBookMapper mapper;
 	
+		
+		
 		//방명록 조회
 		@Override
-		public List<GuestBook> selectGuestBookList(Integer ownerNo, int loginMemberNo, int cp) {
+		public Map<String, Object> selectGuestBookList(map) {
+			// TODO Auto-generated method stub
 			return mapper.selectGuestBookList(ownerNo, loginMemberNo, cp);
-			
 		}
 		
 		
@@ -63,6 +65,11 @@ public class GuestBookServiceImpl implements GuestBookService{
 		public GuestBook selectOne(int guestBookNo) {
 			return mapper.selectOne(guestBookNo);
 		}
+
+
+
+
+		
 
 
 

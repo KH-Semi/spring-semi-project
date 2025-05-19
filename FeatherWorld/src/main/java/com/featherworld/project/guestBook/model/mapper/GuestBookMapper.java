@@ -11,6 +11,8 @@ import com.featherworld.project.guestBook.model.dto.GuestBook;
 @Mapper
 public interface GuestBookMapper {
 
+	
+	
 	/** 방명록 조회
 	 * @author 
 	 * @param ownerNo
@@ -18,10 +20,7 @@ public interface GuestBookMapper {
 	 * @param cp
 	 * @return
 	 */
-	List<GuestBook> selectGuestBookList( @Param("ownerNo") int ownerNo,
-										@Param("loginMemberNo") int loginMemberNo,
-										@Param("cp") int cp  );
-
+	Map<String, Object> selectGuestBookList(map);
 	
 	/** 방명록 작성
 	 * @author 
@@ -49,4 +48,7 @@ public interface GuestBookMapper {
 
 
 	GuestBook selectOne(int guestBookNo);
+
+
+	
 }
