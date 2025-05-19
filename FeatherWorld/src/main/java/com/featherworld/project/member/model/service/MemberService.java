@@ -22,4 +22,23 @@ public interface MemberService {
 	 */
 	int setDefaultBoardType(int memberNo);
 
+	/** 로그인 서비스
+	 * @param inputMember
+	 * @return
+	 */
+	Member login(Member inputMember);
+
+	/** 이메일 중복 확인 서비스
+	 * @param memberEmail
+	 * @return
+	 */
+	int checkEmail(String memberEmail);
+
+	
+	/** 가입된 회원의 이메일 찾기
+	 * @param inputMember
+	 * @return
+	 */
+	Member findId(Member inputMember);
+
 }
