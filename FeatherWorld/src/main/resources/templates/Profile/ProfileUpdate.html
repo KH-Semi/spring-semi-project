@@ -16,8 +16,8 @@
   </head>
 <body>
     <div class="container">
-       <!-- Left Panel - Profile Information -->
-      <div class="left-panel">
+       <!-- Left sidebar - Profile Information -->
+      <div class="left-sidebar">
         <header class="logo">
           <p>Today / Total</p>
         </header>
@@ -60,8 +60,8 @@
                 </div>
         </div>
 
-        <!-- Middle Panel - Posts -->
-        <div class="middle-panel">
+        <!-- Middle sidebar - Posts -->
+        <div class="middle-sidebar">
             <div class="header">
                 
             </div>
@@ -90,32 +90,46 @@
             </div>
         </div>
 
-        <!-- Right Panel - Navigation Menu -->
-        <div class="right-panel">
-            <div class="menu-item">
-                <i class="fas fa-house"></i> Home
-            </div>
-            <div class="menu-item menu-item-profile active-profile">
-              <i class="fas fa-user"></i> Profile
-            </div>
-            <div class="menu-item">
-               <i class="fas fa-clipboard-list"></i> Board
-            </div>
-            <div class="menu-item">
-               <i class="fas fa-user-friends"></i> FriendList
-            </div>
-            <div class="menu-item">
-                <i class="fas fa-play"></i> Playlist
-            </div>
-            <div class="menu-item">
-                <i class="fas fa-book"></i> Guestbook
-            </div>
-        </div>
+        <!-- Right sidebar - Navigation Menu -->
+        <div class="right-sidebar">
+  <div class="nav-sidebar">
+    <div class="nav-item">
+      <a th:href="@{/{member}/minihome(member=${memberNo})}">
+        <i class="fas fa-house"></i> Home
+      </a>
     </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/profile(member=${memberNo})}">
+        <i class="fas fa-user"></i> Profile
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}">
+        <i class="fas fa-clipboard-list"></i> Board
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/friendlist(member=${memberNo})}">
+        <i class="fas fa-user-friends"></i> Friendlist
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/playlist(member=${memberNo})}">
+        <i class="fas fa-play"></i> Playlist
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/guestbook(member=${memberNo})}">
+        <i class="fas fa-book"></i> Guestbook
+      </a>
+    </div>
+  </div>
+</div>
+
 
      <!-- 푸터 추가 -->
    <th:block th:replace="~{common/footer}"></th:block>
 
-   <script src="/FeatherWorld/src/main/resources/static/js/profile/editProfile.js"></script>
+   <script src="../../static/js/profile/updateProfile.js"></script>
 </body>
 </html>

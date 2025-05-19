@@ -16,8 +16,8 @@
   </head>
   <body>
     <div class="container">
-      <!-- Left Panel - Profile Information -->
-      <div class="left-panel">
+      <!-- Left sidebar - Profile Information -->
+      <div class="left-sidebar">
         <header class="logo">
           <p>Today / Total</p>
         </header>
@@ -51,12 +51,10 @@
 
           <!-- 프로필 편집 / 로그아웃 버튼 -->
           <div class="profile-action">
-            <button class="action-button Edit-button">Edit Profile</button>
-            <form th:action="@{/logout}" method="post">
-              <button type="submit" class="action-button Logout-button">
-                Logout
-              </button>
-            </form>
+            <button id="editProfileBtn" class="action-button Edit-button">
+              Edit Profile
+            </button>
+            <button class="action-button Logout-button">Logout</button>
           </div>
         </div>
 
@@ -70,8 +68,8 @@
         </div>
       </div>
 
-      <!-- Middle Panel - Posts -->
-      <div class="middle-panel">
+      <!-- Middle sidebar - Posts -->
+      <div class="middle-sidebar">
         <div class="boardContainer">
           <div class="boardSummary">
             <div class="summary-links">
@@ -120,88 +118,71 @@
             <button id="submit-comment" class="write-button">댓글 등록</button>
           </div>
 
-          <!-- 뎃글 부분 -->
-
-          <!-- 댓글 목록 div에 id 추가 -->
-          <div class="comment-list" id="comment-list">
-            <div class="comment-item">
-              <img src="avatar1.png" alt="User avatar" class="avatar" />
-              <div class="comment-content">
-                <span class="username">허태범</span>
-                <span class="comment-text">여기에 댓글 텍스트를 넣으세요.</span>
-
-                <div class="comment-meta">
-                  <span class="user-role">남양스트롱</span>
-                  <button class="delete-btn">Delete</button>
-                </div>
-              </div>
-            </div>
-            <hr />
-
-            <div class="comment-item">
-              <img src="avatar2.png" alt="User avatar" class="avatar" />
-              <div class="comment-content">
-                <span class="username">김영인</span>
-                <span class="comment-text">안녕하세요~~~</span>
-                <div class="comment-meta">
-                  <span class="user-role">레몬이</span>
-                  <button class="delete-btn">Delete</button>
-                </div>
-              </div>
-            </div>
-            <hr />
-
-            <div class="comment-item">
-              <img src="avatar2.png" alt="User avatar" class="avatar" />
-              <div class="comment-content">
-                <span class="username">김영인</span>
-                <span class="comment-text">안녕하세요~~~</span>
-                <div class="comment-meta">
-                  <span class="user-role">레몬이</span>
-                  <button class="delete-btn">Delete</button>
-                </div>
-              </div>
-            </div>
-            <hr />
-
-            <div class="comment-item">
-              <img src="avatar2.png" alt="User avatar" class="avatar" />
-              <div class="comment-content">
-                <span class="username">김영인</span>
-                <span class="comment-text">안녕하세요~~~</span>
-                <div class="comment-meta">
-                  <span class="user-role">레몬이</span>
-                  <button class="delete-btn">Delete</button>
-                </div>
-              </div>
-            </div>
-            <hr />
+          <!-- 댓글 부분 -->
+<div class="comment-list" id="comment-list">
+  <div th:each="comment : ${comments}">
+    <div class="comment-item">
+      <img 
+        th:src="${comment.memberImg != null} ? @{${comment.memberImg}} : @{/images/user.png}" 
+        alt="User avatar" 
+        class="avatar" />
+      <div class="comment-content">
+        <span class="username" th:text="${comment.username}">사용자명</span>
+        <span class="comment-text" th:text="${comment.commentText}">댓글 내용</span>
+        <div class="comment-meta">
+          <span class="user-role" th:text="${comment.userRole}">역할</span>
+          <button class="delete-btn">Delete</button>
+        </div>
+      </div>
+    </div>
+    <hr />
+  </div>
+</div>
           </div>
         </div>
       </div>
 
       <!--                          -->
 
-      <!-- Right Panel - Navigation Menu -->
-      <div class="right-panel">
-        <div class="menu-item menu-item-home active-home">
-          <i class="fas fa-house"></i> Home
-        </div>
-        <div class="menu-item profile-menu">
-          <i class="fas fa-user"></i> Profile
-        </div>
-        <div class="menu-item"><i class="fas fa-clipboard-list"></i> Board</div>
-        <div class="menu-item">
-          <i class="fas fa-user-friends"></i> FriendList
-        </div>
-        <div class="menu-item"><i class="fas fa-play"></i> Playlist</div>
-        <div class="menu-item"><i class="fas fa-book"></i> Guestbook</div>
-      </div>
+       <!-- Right sidebar - Navigation Menu -->
+         <div class="right-sidebar">
+  <div class="nav-sidebar">
+    <div class="nav-item">
+      <a th:href="@{/{member}/minihome(member=${memberNo})}">
+        <i class="fas fa-house"></i> Home
+      </a>
     </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/profile(member=${memberNo})}">
+        <i class="fas fa-user"></i> Profile
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}">
+        <i class="fas fa-clipboard-list"></i> Board
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/friendlist(member=${memberNo})}">
+        <i class="fas fa-user-friends"></i> Friendlist
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/playlist(member=${memberNo})}">
+        <i class="fas fa-play"></i> Playlist
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/guestbook(member=${memberNo})}">
+        <i class="fas fa-book"></i> Guestbook
+      </a>
+    </div>
+  </div>
+</div>
 
     <!-- 푸터 추가 -->
     <th:block th:replace="~{common/footer}"></th:block>
 
-    <script src="/FeatherWorld/src/main/resources/static/js/home/home.js"></script>
+    <script src="../../static/js/miniHome/miniHome.js"></script>
   </body>
 </html>

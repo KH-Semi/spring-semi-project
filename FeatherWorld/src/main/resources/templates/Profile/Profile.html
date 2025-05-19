@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FeatherWorld</title>
-    <!-- 공용 css/js 추가 -->
-    <th:block th:replace="~{common/common :: headerFragment}"></th:block>
+    <!-- 공용 CSS/JS용 headFragment 불러오기 (필요하면) -->
+    <th:block th:replace="~{common/common :: headFragment}"></th:block>
+    
     <!-- 아이콘 -->
     <link
       rel="stylesheet"
@@ -15,9 +16,11 @@
     <link rel="stylesheet" href="../../static/css/myPage/Profile.css" />
   </head>
   <body>
+    <!-- 여기서 공통 헤더 삽입 -->
+    <th:block th:replace="~{common/common :: headerFragment}"></th:block>
     <div class="container">
       <!-- Left Panel - Profile Information -->
-      <div class="left-panel">
+      <div class="left-sidebar">
         <header class="logo">
           <p>Today / Total</p>
         </header>
@@ -69,7 +72,7 @@
       </div>
 
       <!-- Middle Panel - Posts -->
-      <div class="middle-panel">
+      <div class="middle-sidebar">
         <div class="header">
           <!-- 필요시 헤더 추가 -->
         </div>
@@ -108,19 +111,40 @@
       </div>
 
       <!-- Right Panel - Navigation Menu -->
-      <div class="right-panel">
-        <div class="menu-item"><i class="fas fa-house"></i> Home</div>
-        <div class="menu-item menu-item-profile active-profile">
-          <i class="fas fa-user"></i> Profile
-        </div>
-        <div class="menu-item"><i class="fas fa-clipboard-list"></i> Board</div>
-        <div class="menu-item">
-          <i class="fas fa-user-friends"></i> FriendList
-        </div>
-        <div class="menu-item"><i class="fas fa-play"></i> Playlist</div>
-        <div class="menu-item"><i class="fas fa-book"></i> Guestbook</div>
-      </div>
+      <div class="right-sidebar">
+  <div class="nav-sidebar">
+    <div class="nav-item">
+      <a th:href="@{/{member}/minihome(member=${memberNo})}">
+        <i class="fas fa-house"></i> Home
+      </a>
     </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/profile(member=${memberNo})}">
+        <i class="fas fa-user"></i> Profile
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}">
+        <i class="fas fa-clipboard-list"></i> Board
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/friendlist(member=${memberNo})}">
+        <i class="fas fa-user-friends"></i> Friendlist
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/playlist(member=${memberNo})}">
+        <i class="fas fa-play"></i> Playlist
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/guestbook(member=${memberNo})}">
+        <i class="fas fa-book"></i> Guestbook
+      </a>
+    </div>
+  </div>
+</div>
 
     <!-- 푸터 추가 -->
     <th:block th:replace="~{common/footer}"></th:block>
