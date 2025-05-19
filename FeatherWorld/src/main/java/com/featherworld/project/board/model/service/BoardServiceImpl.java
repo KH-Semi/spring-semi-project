@@ -71,7 +71,9 @@ public class BoardServiceImpl implements BoardService {
 		return map;
 	}
 
-	// 게시글 좋아요 체크/해제
+	/** 게시글 좋아요 체크/해제
+	 * @author 허배령
+	 */
 	@Override
 	public int boardLike(Map<String, Integer> map) {
 		
