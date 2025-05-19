@@ -21,52 +21,13 @@
         <!-- 중앙 게시글 목록 -->
         <div class="main-content">
           <div class="board-list">
-            <!-- 게시글이 존재하지 않는 경우 -->
-            <div th:if="${boardList == null}">
-              <span>게시글이 존재하지 않습니다.</span>
-            </div>
-
-            <!-- 게시글이 존재하는 경우, DB에서 가져온 게시글 목록 순회 -->
-            <div class="board-item" th:unless="${boardList == null}" th:each="board : ${boardList}" th:object="${board}">
-              <div class="board-wrap">
-                <!-- 썸네일 여부에 따라 다르게 표시 -->
-                <div th:if="*{thumbnail != null}" class="board-thumbnail">
-                    <img th:src="*{thumbnail}" alt="thumbnail">
-                </div>
-                <div class="board-main">
-                  <div class="board-title" th:text="*{boardTitle}">게시글 제목</div>
-                  <div class="board-content" th:text="*{boardContent}">게시글 내용</div>
-                </div>
-              </div>
-              <div class="board-info">
-                <div class="board-date" th:text="*{boardWriteDate}">게시일</div>
-                <div class="board-reads">
-                  <i class="icon-read"></i>
-                  <span th:text="*{readCount}">0</span>
-                </div>
-              </div>
-            </div>
+            <!-- JS가 동적으로 게시글 목록 생성 -->
           </div>
 
           <div>
-            <!-- 페이징 처리 -->
-            <div class="pagination" th:if="${pagination != null}" th:object="${pagination}">
-
-              <span th:onclick="|loadBoardList(${defaultBoardCode}, 1)|">&lt;&lt;</span>
-              <span th:onclick="|loadBoardList(${defaultBoardCode}, *{startPage})|" class="page-nav">&lt;</span>
-
-              <th:block th:if="*{startPage <= endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
-                <span th:onclick="|loadBoardList(${defaultBoardCode}, ${i})|"
-                      th:classappend="${i} == *{currentPage} ? 'current' : ''"
-                      th:text="${i}"></span>
-              </th:block>
-
-              <span th:onclick="|loadBoardList(${defaultBoardCode}, *{endPage})|" class="page-nav">&gt;</span>
-              <span th:onclick="|loadBoardList(${defaultBoardCode}, *{maxPage})|">&gt;&gt;</span>
-
+            <div class="pagination">
+              <!-- JS가 동적으로 페이징 버튼 생성 -->
             </div>
-
-            <!-- 글쓰기 버튼 -->
             <div class="write-button">
               <span>Write</span>
             </div>

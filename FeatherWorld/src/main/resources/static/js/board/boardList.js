@@ -14,7 +14,7 @@ const updateCp = (page) => {
   history.replaceState({}, '', url);
 }
 
-/** 게시글 목록을 불러올 때, 게시글이 존재한다면 페이징 목록 생성
+/** 게시글 여부 판단 후, 페이징 목록 렌더링
  * @author Jiho
  * @param pagination Pagination 객체
  */
@@ -40,7 +40,7 @@ const renderPagination = (pagination) => {
 
     // 페이지 클릭 이벤트 추가
     span.addEventListener("click", async () => {
-      await loadBoardList(boardCode, page);
+      await renderBoardList(boardCode, page);
     });
 
     return span;
@@ -73,13 +73,12 @@ const renderPagination = (pagination) => {
   else if(writeBtn) writeBtn.before(tempPagination);
 };
 
-/** 게시판 종류별 게시글 목록 불러오는 메서드
+/** 게시판 갱신시 갱신된 게시글/페이징 목록 렌더링
  * @author Jiho
  * @param {number} boardCode 게시판 종류 번호
  * @param {number} page 페이지 번호(cp)
- * @returns {HTMLDivElement} 비동기로 가져온 게시글 목록 div
  */
-const loadBoardList = async (boardCode, page) => {
+const renderBoardList = async (boardCode, page) => {
   /** 특정 class를 가진 div 태그 생성
    * @author Jiho
    * @param {string} className 클래스명
@@ -95,7 +94,7 @@ const loadBoardList = async (boardCode, page) => {
   };
 
   // 게시글 목록 div 생성
-  const boardContainer = createDiv("board-list");
+  const updatedBoardContainer = createDiv("board-list");
 
   // ajax를 통해 비동기로 회원별 게시판 목록 각 요소 클릭시 boardList & pagination 구해옴
   const resp = await fetch(`/board/type/${boardCode}?cp=${page}`);
@@ -114,16 +113,20 @@ const loadBoardList = async (boardCode, page) => {
     if(paginationContainer) paginationContainer.remove();
   }
 
+  // 기존 게시글 목록 div
+  const boardContainer = document.querySelector(".board-list");
+
   // 게시글이 없는 경우
   if(boardList == null) {
     const span = document.createElement("span");
     span.innerText = "게시글이 존재하지 않습니다.";
 
-    boardContainer.append(span);
-    // 게시글 목록 div를 임시 게시글 목록 div로 교체
-    boardContainer.replaceWith(boardContainer);
+    updatedBoardContainer.append(span);
+    
+    // 기존 게시글 목록 div를 갱신된 게시글 목록 div로 교체
+    boardContainer.replaceWith(updatedBoardContainer);
 
-    return boardContainer;
+    return;
   }
 
   // 비동기로 가져온 게시글 내용을 꺼내서 html 요소로 대입
@@ -176,10 +179,10 @@ const loadBoardList = async (boardCode, page) => {
     boardItem.append(boardWrap, boardInfo);
 
     // 게시글 목록 div에 게시글 하나 넣기
-    boardContainer.append(boardItem);
+    updatedBoardContainer.append(boardItem);
   }
 
-  return boardContainer;
+  boardContainer.replaceWith(updatedBoardContainer);
 }
 
 // 좌측 게시판 목록 선택
@@ -191,16 +194,11 @@ document.querySelectorAll(".board-type-item").forEach(boardTypeItem => {
     // url 속 쿼리 스트링을 통해 현재 페이지 값(cp) 1로 수정
     // 게시글이 없는 경우에도 cp 값은 1, 반환 map 내용만 다름
     updateCp(1);
-
+    
+    // 현재 게시판 종류 번호 갱신
     boardCode = boardTypeItem.dataset.boardCode;
-
-    // 기존 게시글 목록 div
-    const boardContainer = document.querySelector(".board-list");
-    // 새로운 게시글 목록 div
-    const newBoardContainer = await loadBoardList(boardCode, 1);
-
-    // 게시글 목록 div 교체
-    boardContainer.replaceWith(newBoardContainer);
+    // 게시글 목록 갱신
+    await renderBoardList(boardCode, 1);
   });
 });
 
@@ -219,3 +217,6 @@ if(writeBtn) {
 
   });
 }
+
+// 페이지 최초 진입 시 실행
+renderBoardList(boardCode, 1);
