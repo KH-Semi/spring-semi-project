@@ -14,9 +14,6 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-
-
-
 @Mapper
 public interface BoardMapper {
 
@@ -28,16 +25,27 @@ public interface BoardMapper {
 	int getListCount(int currentBoardCode);
 
 	List<Board> selectBoardList(int currentBoardCode, RowBounds rowBounds);
-	
 
 
-    // 게시글 좋아요 해제
+	/** 게시글 좋아요 해제
+	 * @author 허배령
+	 * @param map
+	 * @return
+	 */
 	int deleteBoardLike(Map<String, Integer> map);
 	
-	// 게시글 좋아요 체크
+	/** 게시글 좋아요 체크
+	 * @author 허배령
+	 * @param map
+	 * @return
+	 */
 	int insertBoardLike(Map<String, Integer> map);
 
-	// 게시글 좋아요 개수 조회
+	/** 게시글 좋아요 개수 조회
+	 * @author 허배령
+	 * @param integer
+	 * @return
+	 */
 	int selectLikeCount(Integer integer);
 
 
