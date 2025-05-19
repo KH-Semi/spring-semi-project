@@ -193,7 +193,7 @@ body {
   .content-container {
     flex-direction: column;
   }
-  
+
   .left-sidebar, .right-sidebar {
     width: 95%;
     border: none;

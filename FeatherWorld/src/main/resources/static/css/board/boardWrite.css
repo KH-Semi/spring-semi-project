@@ -1,13 +1,6 @@
 /* 메인 콘텐츠 스타일 */
-.main-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-grow: 1;
-  padding: 20px;
-}
 
-.board-detail {
+.board-write {
   max-width: 630px;
   margin: 0 auto;
 }
@@ -124,7 +117,7 @@
 
 /* 반응형 디자인 */
 @media (max-width: 992px) {
-  .board-detail {
+  .board-write {
     max-width: none;
   }
 }

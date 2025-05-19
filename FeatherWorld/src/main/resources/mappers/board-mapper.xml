@@ -17,7 +17,7 @@
 	</select>
 	
 	<!-- 해당 게시판의 삭제되지 않은 총 게시글 개수(listCount) 조회 -->
-	<select id="getListCount" resultType="_int">
+	<select id="getListCount"  resultType="_int">
 		SELECT COUNT(*)
 		FROM BOARD
 		WHERE BOARD_CODE = ${currentBoardCode}
@@ -33,14 +33,6 @@
 		AND BOARD_DEL_FL = 'N'
 		ORDER BY BOARD_NO DESC
 	</select>
-	
-	<!-- 
-	SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT,
-	TO_CHAR(BOARD_WRITE_DATE, 'YYYY-MM-DD') AS BOARD_WRITE_DATE, READ_COUNT
-	FROM BOARD
-	WHERE BOARD_CODE = ${currentBoardCode}
-	AND BOARD_DEL_FL = 'N'
-	 -->
   
 	<!-- 좋아요 해제 -->
 	<delete id="deleteBoardLike">

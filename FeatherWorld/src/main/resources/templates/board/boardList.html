@@ -21,61 +21,31 @@
         <!-- 중앙 게시글 목록 -->
         <div class="main-content">
           <div class="board-list">
-            <!-- DB에서 가져온 게시글 목록 순회 -->
-            <div class="board-item" th:each="board : ${boardList}" th:object="${board}">
-              <div class="board-wrap">
-                <!-- 썸네일 여부에 따라 다르게 표시 -->
-                <div th:if="*{thumbnail != null}" class="board-thumbnail">
-                    <img th:src="*{thumbnail}" alt="thumbnail">
-                </div>
-                <div class="board-main">
-                  <div class="board-title" th:text="*{boardTitle}">게시글 제목</div>
-                  <div class="board-content" th:text="*{boardContent}">게시글 내용</div>
-                </div>
-              </div>
-              <div class="board-info">
-                <div class="board-date" th:text="*{boardWriteDate}">게시일</div>
-                <div class="board-reads">
-                  <i class="icon-read"></i>
-                  <span th:text="*{readCount}">0</span>
-                </div>
-              </div>
-            </div>
+            <!-- JS가 동적으로 게시글 목록 생성 -->
           </div>
 
           <div>
-            <!-- 페이징 처리 -->
-            <div class="pagination" th:if="${pagination != null}" th:object="${pagination}">
-
-              <a th:href="@{/board/{memberNo}(memberNo=${memberNo}, cp=1)}">&lt;&lt;</a>
-              <a th:href="@{/board/{memberNo}(memberNo=${memberNo}, cp=*{prevPage})}" class="page-nav">&lt;</a>
-
-              <th:block th:if="*{startPage <= endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
-                <a th:href="@{/board/{memberNo}(memberNo=${memberNo}, cp=${i})}" 
-                  th:text="${i}" th:class="${i} == *{currentPage} ? 'current' : ''"></a>
-              </th:block>
-
-              <a th:href="@{/board/{memberNo}(memberNo=${memberNo}, cp=*{nextPage})}" class="page-nav">&gt;</a>
-              <a th:href="@{/board/{memberNo}(memberNo=${memberNo}, cp=*{maxPage})}">&gt;&gt;</a>
-
+            <div class="pagination">
+              <!-- JS가 동적으로 페이징 버튼 생성 -->
             </div>
-            
-            <!-- 글쓰기 버튼 -->
             <div class="write-button">
-              <a th:href="@{/board/{memberNo}/write(memberNo=${memberNo}, cp=*{currentPage})}">Write</a>
+              <span>Write</span>
             </div>
           </div>
         </div>
-        
+
         <!-- 우측 네비게이션 바 Include -->
         <th:block th:replace="~{common/navSidebar}"></th:block>
       </div>
-      
+
       <!-- 푸터 Include -->
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
-    
-    <script src="/js/main.js"></script>
 
+    <!-- JS 에서 쓰기 버튼 클릭 이벤트에 활용할 현재 게시판 종류 번호 선언 -->
+    <script th:inline="javascript">
+      const currentBoardCode = /*[[${currentBoardCode}]]*/ 0;
+    </script>
+    <script src="/js/board/boardList.js"></script>
   </body>
 </html>
