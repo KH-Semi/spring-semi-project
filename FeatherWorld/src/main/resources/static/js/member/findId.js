@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const nameError = document.getElementById('nameError');
     const phoneError = document.getElementById('phoneError');
     const confirmBtn = document.getElementById('confirmBtn');
-    
+   
     // 이름 정규식: 2~20자 한글, 영문
     const nameRegex = /^[가-힣a-zA-Z]{2,20}$/;
     
@@ -99,4 +99,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 초기 폼 검증
     validateForm();
+
+   
 });

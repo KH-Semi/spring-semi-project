@@ -30,8 +30,10 @@ public class IlchonController {
 		
 		// loginMember의 MEMBER_NO를 불러오기
 		int loginMemberNo = loginMember.getMemberNo(); 
+		
 		Map<String, Object> map = service.selectIlchonMemberList(loginMemberNo, cp);
 		//map에서 ilchons 따로 변수로 뺴낼것
+		
 		model.addAttribute("ilchons", map.get("ilchons"));
 	    model.addAttribute("pagination", map.get("pagination"));
 		return "friendList/friendList";

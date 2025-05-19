@@ -44,4 +44,10 @@ public interface MemberMapper {
 	 * @author 영민
 	 */
 	Member findId(Member inputMember);
+
+	/** 가입된 회원의 비밀번호 재설정
+	 * @param inputMember
+	 * @return
+	 */
+	int resetPassword(Member inputMember);
 }

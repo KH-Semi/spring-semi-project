@@ -57,5 +57,12 @@
     WHERE MEMBER_NAME = #{memberName}
     AND MEMBER_TEL = #{memberTel}
 	</select>
+	
+	<!-- 가입된 회원의 비밀번호 변경 -->
+	<update id="resetPassword">
+	UPDATE MEMBER SET
+	MEMBER_PW = #{memberPw}
+	WHERE MEMBER_EMAIL = #{memberEmail}	
+	</update>
 
 </mapper>

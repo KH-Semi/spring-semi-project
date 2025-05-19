@@ -1,5 +1,7 @@
 package com.featherworld.project.member.model.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -106,6 +108,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	/** 가입된 회원의 이메일 찾기
+	 * @author 영민
 	 *
 	 */
 	@Override
@@ -113,4 +116,37 @@ public class MemberServiceImpl implements MemberService {
 			
 			return mapper.findId(inputMember);
 		}
+	
+	/** 가입된 회원의 비밀번호 변경
+	 *@author 영민
+	 */
+	@Override
+	public int resetPassword(Map<String, String> map) {
+	    try {
+	        Member inputMember = new Member();
+	        
+	        String memberEmail = map.get("memberEmail");
+	        String memberPw = map.get("memberPw");
+	        
+	        if (memberEmail == null || memberPw == null) {
+	            log.error("이메일 또는 비밀번호가 null입니다.");
+	            return 0;
+	        }
+	        
+	        String encPw = bcrypt.encode(memberPw);
+	        
+	        inputMember.setMemberPw(encPw);
+	        inputMember.setMemberEmail(memberEmail);
+	        
+	        int result = mapper.resetPassword(inputMember);
+	        log.info("비밀번호 재설정 결과: {}", result);
+	        
+	        return result;
+	    } catch (Exception e) {
+	        log.error("비밀번호 재설정 중 오류 발생: {}", e.getMessage(), e);
+	        return 0;
+	    }
+	}
+	
+	
 	}

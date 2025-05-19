@@ -168,7 +168,10 @@
                 </p>
 
                 <div class="profile-actions">
-                  <a href="/member/home" class="home-btn">
+                  <a
+                    th:href="@{/{memberNo}/minihome(memberNo=${session.loginMember.memberNo})}"
+                    class="home-btn"
+                  >
                     <i class="fa-solid fa-house" alt="Home"></i>
                     My Home
                   </a>

@@ -36,7 +36,7 @@ public class BoardController {
 	 * @param session 세션 객체
 	 * @param model 게시글/페이징 목록 전달
 	 */
-	@GetMapping("member/{memberNo:[0-9]+}/board/{boardCode:[0-9]+}")
+	@GetMapping("/{memberNo:[0-9]+}/board/{boardCode:[0-9]+}")
 	public String boardMainPage(@PathVariable int memberNo, @PathVariable int boardCode,
 								@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 								HttpSession session, Model model) {

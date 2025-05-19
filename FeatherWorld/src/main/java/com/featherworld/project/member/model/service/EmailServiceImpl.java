@@ -114,7 +114,7 @@ public class EmailServiceImpl implements EmailService {
 			// 헬퍼를 이용해서 간단하게 해줌 true는 파일첨부 할건지말건지
 			
 			helper.setTo(email);
-			helper.setSubject("[FeatherWorld] 회원가입 인증번호");
+			helper.setSubject("[FeatherWorld] 인증번호");
 			helper.setText(loadHtml(authKey,name), true);
 			
 			helper.addInline("logo", new ClassPathResource("static/images/logo.png"));
