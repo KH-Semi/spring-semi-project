@@ -8,8 +8,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.featherworld.project.common.dto.Pagination;
 import com.featherworld.project.friend.model.dto.Ilchon;
-import com.featherworld.project.friend.model.dto.Pagination;
 import com.featherworld.project.friend.model.mapper.IlchonMapper;
 
 
