@@ -22,11 +22,11 @@ public class GuestBookServiceImpl implements GuestBookService{
 		
 		
 		//방명록 조회
-		@Override
-		public Map<String, Object> selectGuestBookList(map) {
-			// TODO Auto-generated method stub
-			return mapper.selectGuestBookList(ownerNo, loginMemberNo, cp);
-		}
+//		@Override
+//		public Map<String, Object> selectGuestBookList(map) {
+//			// TODO Auto-generated method stub
+//			return mapper.selectGuestBookList(ownerNo, loginMemberNo, cp);
+//		}
 		
 		
 	
@@ -64,6 +64,29 @@ public class GuestBookServiceImpl implements GuestBookService{
 		@Override
 		public GuestBook selectOne(int guestBookNo) {
 			return mapper.selectOne(guestBookNo);
+		}
+
+
+
+
+		@Override
+		public Map<String, Object> selectGuestBookList(Integer ownerNo, int loginMemberNo, int cp) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
+		public Map<String, Object> selectGuestBookList() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
+		public List<GuestBook> selectGuestBookList(Map<String, Integer> map) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 

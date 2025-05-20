@@ -20,7 +20,7 @@ public interface GuestBookMapper {
 	 * @param cp
 	 * @return
 	 */
-	Map<String, Object> selectGuestBookList(map);
+	//Map<String, Object> selectGuestBookList(map);
 	
 	/** 방명록 작성
 	 * @author 

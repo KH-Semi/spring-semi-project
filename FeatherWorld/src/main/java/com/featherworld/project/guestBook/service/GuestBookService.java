@@ -45,6 +45,12 @@ public interface GuestBookService {
 	 */
 	GuestBook selectOne(int guestBookNo);
 
+
+	List<GuestBook> selectGuestBookList(Map<String, Integer> map);
+
+
+	Map<String, Object> selectGuestBookList();
+
 	
 	
 }
