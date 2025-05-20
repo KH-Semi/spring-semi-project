@@ -21,14 +21,12 @@
               <input
                 type="text"
                 placeholder="Member Search"
-                class="member-search"
-              />
+                class="member-search"/>
               <button class="search-btn">
                 <img
-                  th:src="@{/images/icons/search.png}"
+                  src="/images/icons/search.png"
                   alt="Search"
-                  class="search-icon"
-                />
+                  class="search-icon"/>
               </button>
             </div>
 
@@ -40,19 +38,19 @@
                 <div class="member-row">
                   <div class="member-card highlight">
                     <div class="member-avatar">
-                      <img th:src="@{/images/user.png}" alt="Member Avatar" />
+                      <img th:src="#{user.default.image}" alt="Member Avatar" />
                     </div>
                     <p class="member-name">🔥 안준성</p>
                   </div>
                   <div class="member-card">
                     <div class="member-avatar">
-                      <img th:src="@{/images/user.png}" alt="Member Avatar" />
+                      <img th:src="#{user.default.image}" alt="Member Avatar" />
                     </div>
                     <p class="member-name">손석준</p>
                   </div>
                   <div class="member-card">
                     <div class="member-avatar">
-                      <img th:src="@{/images/user.png}" alt="Member Avatar" />
+                      <img th:src="#{user.default.image}" alt="Member Avatar" />
                     </div>
                     <p class="member-name">이윤진</p>
                   </div>
@@ -62,19 +60,19 @@
                 <div class="member-row">
                   <div class="member-card">
                     <div class="member-avatar">
-                      <img th:src="@{/images/user.png}" alt="Member Avatar" />
+                      <img th:src="#{user.default.image}" alt="Member Avatar" />
                     </div>
                     <p class="member-name">김영민</p>
                   </div>
                   <div class="member-card">
                     <div class="member-avatar">
-                      <img th:src="@{/images/user.png}" alt="Member Avatar" />
+                      <img th:src="#{user.default.image}" alt="Member Avatar" />
                     </div>
                     <p class="member-name">허배령</p>
                   </div>
                   <div class="member-card">
                     <div class="member-avatar">
-                      <img th:src="@{/images/user.png}" alt="Member Avatar" />
+                      <img th:src="#{user.default.image}" alt="Member Avatar" />
                     </div>
                     <p class="member-name">김지호</p>
                   </div>
@@ -85,10 +83,7 @@
 
           <!-- 로그인세션 -->
           <div class="right-panel">
-            <section
-              class="login-section"
-              th:if="${session.loginMember == null}"
-            >
+            <section class="login-section" th:if="${session.loginMember == null}">
               <h2 class="section-title">SIGN IN</h2>
 
               <!-- 로그인이 안되어잇을떄-->
@@ -100,8 +95,7 @@
                     id="username"
                     name="memberEmail"
                     placeholder="Email을입력해주세요"
-                    class="form-input"
-                  />
+                    class="form-input"/>
                 </div>
 
                 <div class="form-group">
@@ -111,64 +105,42 @@
                     id="password"
                     name="memberPw"
                     placeholder="Password를 입력해주세요."
-                    class="form-input"
-                  />
+                    class="form-input"/>
                 </div>
 
                 <button type="submit" class="login-btn">로그인</button>
 
                 <div class="social-login">
-                  <button
-                    type="button"
-                    class="kakao-btn"
-                    onclick="kakaoLogin()"
-                  >
-                    <img
-                      th:src="@{/images/icons/kakao.png}"
-                      alt="Kakao"
-                      class="kakao-icon"
-                    />
+                  <button type="button" class="kakao-btn" onclick="kakaoLogin()">
+                    <img src="/images/icons/kakao.png" alt="Kakao"  class="kakao-icon"/>
                     카카오 로그인
                   </button>
                 </div>
 
                 <div class="login-options">
                   <a href="/findId" class="option-link">아이디/비밀번호 찾기</a>
-                  <a href="/signUp" class="option-link">회원가입</a>
+                  <a href="/signup" class="option-link">회원가입</a>
                 </div>
               </form>
             </section>
 
             <!--로그인이 되었을때 -->
-            <section
-              class="profile-section"
-              th:if="${session.loginMember != null}"
-            >
+            <section class="profile-section" th:if="${session.loginMember != null}">
               <div class="profile-container">
                 <div class="profile-avatar">
-                  <img
-                    th:src="${session.loginMember != null && 
-                            session.loginMember.memberImg != null && 
-                            session.loginMember.memberImg != 'null' ? 
-                            session.loginMember.memberImg : '/images/user.png'}"
-                    alt="Profile Image"
-                  />
+                  <img  th:src="${session.loginMember != null &&
+                            session.loginMember?.memberImg != null ?
+                            session.loginMember?.memberImg : '/images/user.png'}"  alt="Profile Image"/>
                 </div>
-                <h2
-                  class="profile-name"
-                  th:text="${session.loginMember.memberName}"
-                >
+                <h2 class="profile-name" th:text="${session.loginMember?.memberName}">
                   안준성
                 </h2>
-                <p
-                  class="profile-email"
-                  th:text="${session.loginMember.memberEmail}"
-                >
+                <p class="profile-email" th:text="${session.loginMember.memberEmail}">
                   Me@google.com
                 </p>
 
                 <div class="profile-actions">
-                  <a href="/member/home" class="home-btn">
+                  <a th:href="@{/{member}/minihome(member=${session.loginMember?.memberNo})}" class="home-btn">
                     <i class="fa-solid fa-house" alt="Home"></i>
                     My Home
                   </a>
