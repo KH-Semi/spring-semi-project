@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
@@ -19,9 +20,9 @@ public class IlchonController {
 	private IlchonService service;
 	
 	@GetMapping("{memberNo:[0-9]+}/friendlist")
-	public String select(@SessionAttribute Member loginMember
-			,@RequestParam(value = "cp", required = false, defaultValue = "1") int cp
-			,Model model){
+	public String select(@SessionAttribute("loginMember") Member loginMember, @PathVariable("memberNo") int memberNo
+	        ,@RequestParam(value = "cp", required = false, defaultValue = "1") int cp
+	        ,Model model){
 		//Session에서 loginMember의 MEMBER_NO를 불러오기.
 		
 		
@@ -38,7 +39,7 @@ public class IlchonController {
 	}
 	// 250515 아직 로그인 세션기능이 구현되지 않았으므로 시험할수 있는 controller 내부 함수 구현
 	@GetMapping("{memberNo:[0-9]+}/friendList/test")
-	public String selectTest(/* @SessionAttribute Member loginMember*/ 
+	public String selectTest(/* @SessionAttribute Member loginMember*/ @PathVariable("memberNo") int memberNo,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp
 			,Model model){
 		//Session에서 loginMember의 MEMBER_NO를 불러오기.

@@ -1,5 +1,7 @@
 package com.featherworld.project.member.model.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import com.featherworld.project.member.model.dto.Member;
 
@@ -50,4 +52,18 @@ public interface MemberMapper {
 	 * @return
 	 */
 	int resetPassword(Member inputMember);
+
+	/** 메인에서 회원들을 검색
+	 * @param memberName
+	 * @return
+	 * @author 영민
+	 */
+	List<Member> searchMember(String memberName);
+
+	/** 전화번호 중복확인
+	 * @param memberTel
+	 * @return
+	 * @author 영민
+	 */
+	int checkTel(int memberTel);
 }

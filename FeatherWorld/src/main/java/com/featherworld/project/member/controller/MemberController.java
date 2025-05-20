@@ -1,6 +1,7 @@
 package com.featherworld.project.member.controller;
 
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,16 @@ public class MemberController {
 	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
 		return service.checkEmail(memberEmail);
 	}
+	/** 회원가입중 중복 전화번호 있는지 
+	 * @param memberTel
+	 * @return
+	 * @author 영민
+	 */
+	@GetMapping("checkTel")
+	@ResponseBody
+	public int checkTel(@RequestParam("memberTel") int memberTel) {
+		return service.checkTel(memberTel);
+	}
 	
 	/** 로그아웃
 	 * @param status
@@ -169,5 +180,19 @@ public class MemberController {
 		
 	}
 		
+	/** 메인 페이지에서 회원검색
+	 * @param memberName
+	 * @return
+	 * @author 영민
+	 */
+	@GetMapping("/search")
+	@ResponseBody
+	public List<Member> searchMembers(@RequestParam("memberName") String memberName) {
+	   
+	    return service.searchMember(memberName);
+	}
 
+	
+	
+	
 }

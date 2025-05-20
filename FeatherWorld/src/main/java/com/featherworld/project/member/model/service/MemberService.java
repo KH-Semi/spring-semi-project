@@ -1,5 +1,6 @@
 package com.featherworld.project.member.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.featherworld.project.member.model.dto.Member;
@@ -46,7 +47,22 @@ public interface MemberService {
 	/** 가입된 회원의 비밀번호 변경
 	 * @param map
 	 * @return
+	 * @author 영민
 	 */
 	int resetPassword(Map<String, String> map);
+
+	/** 메인홈의 회원들을 검색하는 기능
+	 * @param memberName
+	 * @return
+	 * @author 영민
+	 */
+	List<Member> searchMember(String memberName);
+
+	/** 회원가입중 전화번호 입력값이 중복인지 확인
+	 * @param memberTel
+	 * @return
+	 * @author 영민
+	 */
+	int checkTel(int memberTel);
 
 }

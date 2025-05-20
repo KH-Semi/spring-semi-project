@@ -64,5 +64,20 @@
 	MEMBER_PW = #{memberPw}
 	WHERE MEMBER_EMAIL = #{memberEmail}	
 	</update>
+	
+	<!-- 메인페이지에서 회원이름 검색창 -->
+	<select id="searchMember">
+	SELECT MEMBER_EMAIL, MEMBER_NAME, MEMBER_IMG, MEMBER_NO
+	FROM MEMBER
+	WHERE MEMBER_NAME LIKE '%' || #{memberName} || '%'
+	AND MEMBER_DEL_FL = 'N'
+	</select>
+	
+	<!-- 전화번호 중복확인 -->
+	<select id="checkTel">
+	SELECT MEMBER_TEL
+	FROM MEMBER
+	WHERE MEMBER_TEL = #{memberTel}
+	</select>
 
 </mapper>

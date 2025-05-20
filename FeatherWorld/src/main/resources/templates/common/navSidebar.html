@@ -6,9 +6,7 @@
     <a th:href="@{/{member}/profile(member=${memberNo})}">
       <div class="nav-item"><span class="fas fa-user"></span>Profile</div>
     </a>
-    <a
-      th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}"
-    >
+    <a th:href="@{/{member}/board(member=${memberNo})}">
       <div class="nav-item">
         <span class="fas fa-clipboard-list"></span>Board
       </div>

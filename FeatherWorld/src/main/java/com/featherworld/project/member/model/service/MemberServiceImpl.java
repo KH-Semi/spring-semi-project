@@ -1,5 +1,6 @@
 package com.featherworld.project.member.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,6 +148,15 @@ public class MemberServiceImpl implements MemberService {
 	        return 0;
 	    }
 	}
+	@Override
+	public List<Member> searchMember(String memberName) {
 	
+		return mapper.searchMember(memberName);
+	}
+	@Override
+	public int checkTel(int memberTel) {
+		
+		return mapper.checkTel(memberTel);
+	}
 	
 	}
