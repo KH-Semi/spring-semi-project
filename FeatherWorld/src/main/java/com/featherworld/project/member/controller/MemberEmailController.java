@@ -13,14 +13,13 @@ import com.featherworld.project.member.model.service.EmailService;
 
 @Controller
 @RequestMapping("email")
-public class MemberEmailContoller {
+public class MemberEmailController {
 
 	@Autowired
 	private EmailService service;
 	
 	/** 이메일 발송 
 	 * @param emailMap
-	 * @return
 	 * @author 영민
 	 */
 	@ResponseBody
@@ -39,7 +38,6 @@ public class MemberEmailContoller {
 	
 	/** 이메일 이랑 인증번호가 맞는지 확인하는 컨트롤러
 	 * @param map
-	 * @return
 	 * @author 영민
 	 */
 	@ResponseBody

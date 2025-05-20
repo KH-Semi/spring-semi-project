@@ -328,11 +328,9 @@ function startAuthTimer() {
   //매개변수 전달받은 숫자가 10 미만인 경우 (한자리) 앞에 0 붙어서 반환
   function addZero (number) {
      if (number < 10) return "0" + number;
-     else             return number; 
-    };
+     else             return number;
+    }
   //-------------------------------------------------------------
-  
-
 
     // 주소 관련 기능
     searchAddressBtn.addEventListener('click', function() {
@@ -342,10 +340,10 @@ function startAuthTimer() {
                 // 검색 결과 처리
                 document.getElementById('zipcode').value = data.zonecode;
                 document.getElementById('roadAddress').value = data.roadAddress || data.jibunAddress;
-                
+
                 // 주소 검색 후 상세주소로 포커스 이동
                 document.getElementById('addressDetail').focus();
-                
+
                 // 상세주소가 필수항목임을 알리는 메시지
                 addressDetailMessage.textContent = '상세 주소를 입력해주세요.';
                 addressDetailMessage.className = 'validation-message invalid';

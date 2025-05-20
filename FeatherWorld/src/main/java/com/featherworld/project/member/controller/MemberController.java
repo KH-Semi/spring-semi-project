@@ -1,31 +1,18 @@
 package com.featherworld.project.member.controller;
 
+import com.featherworld.project.member.model.dto.Member;
+import com.featherworld.project.member.model.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.featherworld.project.member.model.dto.Member;
-import com.featherworld.project.member.model.service.MemberService;
-
-import jakarta.websocket.Session;
-
-
-
 
 /** member 컨트롤러 클래스
  * @author 영민
  */
-
 @SessionAttributes({"loginMember"})
-
 @Controller
 public class MemberController {
 
@@ -33,29 +20,21 @@ public class MemberController {
 	private MemberService service;
 	
 	/** 회원가입 하는 페이지로 이동하는 메서드(get)
-	 * @param param
-	 * @return
 	 * @author 영민
 	 */
-	@GetMapping("signUp")
+	@GetMapping("signup")
 	public String signUp() {
-		
 		return "member/signUp";
 	}
 	
-	
-		
-	/** 회원가입 메서드 (post)a
+	/** 회원가입 메서드 (post)
 	 * @author 영민
 	 * @param inputMember
 	 * @param memberAddress
 	 * @param ra
-	 * @return
 	 */
 	@PostMapping("signup")
-	public String signUp(Member inputMember, @RequestParam("memberAddress") String[] memberAddress, RedirectAttributes ra  
-			
-			                 ) {
+	public String signUp(Member inputMember, @RequestParam("memberAddress") String[] memberAddress, RedirectAttributes ra) {
 	 	
 		int result = service.signUp(inputMember,memberAddress); 
 		
@@ -67,25 +46,17 @@ public class MemberController {
 			message = inputMember.getMemberName()+ "님 회원가입완료";
 			path = "/";
 
-			}else {			
+		}else {
 		 
 			message = "회원가입실패..";
-			path = "signUp";
-					
-		     }
+			path = "signup";
+		}
 		ra.addFlashAttribute("message", message);
-		
 		
 		return "redirect:" + path;
 	}
 	
-	
-
-	
-	
-	
-	/**로그인 하는 메서드
-	 * @return
+	/** 로그인 하는 메서드
 	 * @author 영민
 	 */
 	// 아이디 저장은 아직 안함
@@ -104,14 +75,12 @@ public class MemberController {
 			
 			// --- saveId 할꺼면 여기서부터 진행..
 		}
-		
-		
+
 		return "redirect:/";
 	}
 	
 	/** 이메일 중복하는 메서드(비동기..)
 	 * @param memberEmail
-	 * @return
 	 * @author 영민
 	 */
 	@GetMapping("checkEmail")
@@ -122,7 +91,6 @@ public class MemberController {
 	
 	/** 로그아웃
 	 * @param status
-	 * @return
 	 * @author 영민
 	 */
 	@GetMapping("logout")
@@ -133,7 +101,6 @@ public class MemberController {
 	}
 	
 	/** 아이디 찾기 사이트로 포워드
-	 * @return
 	 * @author 영민
 	 */
 	@GetMapping("findId")
@@ -142,8 +109,6 @@ public class MemberController {
 	}
 	
 	/** 아이디 찾는 서비스
-	 * @param memberTel
-	 * @param memberEmail
 	 * @param ra
 	 * @author 영민
 	 * @return memberEmail
@@ -158,14 +123,10 @@ public class MemberController {
 		if(inputMemberEmail == null) {
 		
 			return "";
-	
 		}
 		
-		
 		String getEmail = inputMemberEmail.getMemberEmail();
-		
-		
+
 		return getEmail;
 	}
-	
 }

@@ -6,44 +6,44 @@
     <title>FeatherWorld</title>
     <!-- 공용 css/js 추가 -->
   <th:block th:replace="~{common/common}"></th:block>
-  <!-- 아이콘 -->
-  <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <!-- myPage 전용 CSS -->
-  <link rel="stylesheet" href="/FeatherWorld/src/main/resources/static/css/myPage.css">
+  <link rel="stylesheet" href="../../static/css/myPage/updateProfile.css">
 
   </head>
 <body>
     <div class="container">
-        <!-- Left Panel - Profile Information -->
-        <div class="left-panel">
-            <header class="logo">
-                <p>Today / Total</p>
-            </header>
+       <!-- Left sidebar - Profile Information -->
+      <div class="left-sidebar">
+        <header class="logo">
+          <p>Today / Total</p>
+        </header>
 
-            <div class="profile-info">
-                <div class="profile-image">
-                    <img src="/FeatherWorld/src/main/resources/static/images/user.png" alt="프로필 이미지">
-                </div>
-                <div class="profile-name">반응형</div>
-                <div class="profile-handle">@re</div>
-                <div class="profile-stats">
-                    
-                    <div class="stat">
-                        <div class="stat-number">128</div>
-                        <div class="stat-label">Follower</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number">97</div>
-                        <div class="stat-label">Following</div>
-                    </div>
-                </div>
-                <div class="profile-action">
-                    <button id="confirmEditBtn" class="action-button Edit-button">Confirm</button>
-                   <button id="backToProfileBtn" class="action-button back-button">Back</button>
+        <div class="profile-info">
+          <div class="profile-image">
+            <img
+              th:src="${session.loginMember != null && session.loginMember.
+              memberImg != null} ? @{${session.loginMember.memberImg}} : @{/images/user.png}"
+              alt="Profile Image"
+            />
+          </div>
 
-                </div>
+          <!-- 회원 번호 표시 -->
+          <div class="profile-name" th:text="${memberno}">회원번호</div>
+
+          <!-- 닉네임 (@ 표시 포함) -->
+          <div class="profile-handle" th:text="'@' + ${nickname}">@닉네임</div>
+
+          <!-- 팔로워 / 팔로잉 수 -->
+          <div class="profile-stats">
+            <div class="stat">
+              <div class="stat-number" th:text="${followerCount}">0</div>
+              <div class="stat-label">Follower</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number" th:text="${followingCount}">0</div>
+              <div class="stat-label">Following</div>
+            </div>
+          </div>
             </div>
         
             <!-- 여기 추가 -->
@@ -56,8 +56,8 @@
                 </div>
         </div>
 
-        <!-- Middle Panel - Posts -->
-        <div class="middle-panel">
+        <!-- Middle sidebar - Posts -->
+        <div class="middle-sidebar">
             <div class="header">
                 
             </div>
@@ -86,32 +86,46 @@
             </div>
         </div>
 
-        <!-- Right Panel - Navigation Menu -->
-        <div class="right-panel">
-            <div class="menu-item">
-                <i class="fas fa-house"></i> Home
-            </div>
-            <div class="menu-item menu-item-profile active-profile">
-              <i class="fas fa-user"></i> Profile
-            </div>
-            <div class="menu-item">
-               <i class="fas fa-clipboard-list"></i> Board
-            </div>
-            <div class="menu-item">
-               <i class="fas fa-user-friends"></i> FriendList
-            </div>
-            <div class="menu-item">
-                <i class="fas fa-play"></i> Playlist
-            </div>
-            <div class="menu-item">
-                <i class="fas fa-book"></i> Guestbook
-            </div>
-        </div>
+        <!-- Right sidebar - Navigation Menu -->
+        <div class="right-sidebar">
+  <div class="nav-sidebar">
+    <div class="nav-item">
+      <a th:href="@{/{member}/minihome(member=${memberNo})}">
+        <i class="fas fa-house"></i> Home
+      </a>
     </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/profile(member=${memberNo})}">
+        <i class="fas fa-user"></i> Profile
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}">
+        <i class="fas fa-clipboard-list"></i> Board
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/friendlist(member=${memberNo})}">
+        <i class="fas fa-user-friends"></i> Friendlist
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/playlist(member=${memberNo})}">
+        <i class="fas fa-play"></i> Playlist
+      </a>
+    </div>
+    <div class="nav-item">
+      <a th:href="@{/{member}/guestbook(member=${memberNo})}">
+        <i class="fas fa-book"></i> Guestbook
+      </a>
+    </div>
+  </div>
+</div>
+
 
      <!-- 푸터 추가 -->
    <th:block th:replace="~{common/footer}"></th:block>
 
-   <script src="/FeatherWorld/src/main/resources/static/js/profile/editProfile.js"></script>
+   <script src="/js/profile/updateProfile.js"></script>
 </body>
 </html>
