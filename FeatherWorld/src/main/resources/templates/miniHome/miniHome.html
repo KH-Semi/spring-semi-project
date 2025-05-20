@@ -31,36 +31,12 @@
 
           <div class="recentBoard">Recent Board</div>
 
-          <!-- 이미지 4개 행 추가 -->
-          <div class="small-image-row">
-            <!-- <img
-              th:src="${session.loginMember != null and session.loginMember.memberImg != null} ?
-                @{${session.loginMember.memberImg}} :
-                @{/images/user.png}"
-              alt="Image 1"
-            />
+         <!-- 이미지 업로드 input (multiple 속성 추가) -->
+        <input type="file" id="multiImageInput" accept="image/*" multiple />
 
-            <img
-              th:src="${session.loginMember != null and session.loginMember.memberImg != null} ?
-                @{${session.loginMember.memberImg}} :
-                @{/images/user.png}"
-              alt="Image 2"
-            />
+      <!-- 이미지 미리보기 5장까지 표시할 영역 -->
+      <div class="small-image-row" id="imagePreviewRow"></div>
 
-            <img
-              th:src="${session.loginMember != null and session.loginMember.memberImg != null} ?
-                @{${session.loginMember.memberImg}} :
-                @{/images/user.png}"
-              alt="Image 3"
-            />
-
-            <img
-              th:src="${session.loginMember != null and session.loginMember.memberImg != null} ?
-                @{${session.loginMember.memberImg}} :
-                @{/images/user.png}"
-              alt="Image 4"
-            />
-          </div> -->
 
           <textarea
             class="Comment"
@@ -111,6 +87,7 @@
     <div class="right-sidebar">
       <th:block th:replace="~{common/navsidebar}"></th:block>
     </div>
+
     <!-- 푸터 추가 -->
     <th:block th:replace="~{common/footer}"></th:block>
 

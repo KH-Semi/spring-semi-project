@@ -1,0 +1,215 @@
+/* Pretendard 폰트 기본 적용 */
+.left-sidebar {
+  width: 200px;
+  border-right: 1px solid #e0e0e0;
+  padding: 20px;
+  background-color: #fff;
+  font-family: 'Pretendard', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 방문 번호 표시 */
+.left-sidebar p {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.vistorno {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* 프로필 정보 컨테이너 */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* 프로필 이미지 */
+.profile-image img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #912d2d;
+  margin-bottom: 10px;
+}
+
+/* 회원 이름 */
+.profile-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* 이메일 */
+.profile-handle {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* 팔로워 / 팔로잉 */
+.profile-stats {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.stat {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-number {
+  font-size: 16px;
+  font-weight: bold;
+  color: #912d2d;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #777;
+}
+
+/* 프로필 액션 버튼들 */
+.profile-action {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.action-button {
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* 버튼별 색상 */
+.Edit-button {
+  background-color: #912d2d;
+  color: white;
+}
+
+.Logout-button {
+  background-color: #ddd;
+  color: #333;
+}
+
+.follow-button {
+  background-color: #912d2d;
+  color: white;
+}
+
+.surfing-button {
+  background-color: #f2f2f2;
+  color: #912d2d;
+  border: 1px solid #912d2d;
+}
+
+.action-button:hover {
+  opacity: 0.9;
+}
+ .counter {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #912d2d;
+      font-weight: bold;
+    }
+
+    .visitorno {
+      font-size: 16px;
+      margin-bottom: 15px;
+      color: #a52222;
+      font-weight: bold;
+    }
+
+    .profile-image img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 10px auto;
+      display: block;
+    }
+
+    .profile-name {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 10px 0 5px;
+    }
+
+    .profile-handle {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .profile-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-weight: bold;
+      color: #a52222;
+      font-size: 16px;
+    }
+
+    .stat-label {
+      color: #555;
+      font-size: 12px;
+    }
+
+    .profile-action {
+      margin-top: 10px;
+    }
+
+    .action-button {
+      background-color: #a52222;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      margin: 5px 5px 0 5px;
+      min-width: 100px;
+      transition: background-color 0.3s ease;
+    }
+
+    .action-button:hover {
+      background-color: #7f1b1b;
+    }
+
+    .bio {
+      background-color: #f2f2f2;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      color: #555;
+      font-size: 14px;
+      white-space: pre-wrap; /* 줄바꿈 유지 */
+    }

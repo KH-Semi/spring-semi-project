@@ -11,63 +11,13 @@
     <link rel="stylesheet" href="/css/myPage/Profile.css" />
   </head>
   <body>
-    <!-- 여기서 공통 헤더 삽입 -->
-    <th:block th:replace="~{common/header}"></th:block>
-    <div class="container">
-      <!-- Left Panel - Profile Information -->
-      <div class="left-sidebar">
-        <header class="logo">
-          <p>Today / Total</p>
-        </header>
-
-        <div class="profile-info">
-          <div class="profile-image">
-            <img
-              th:src="${session.loginMember != null && session.loginMember.
-              memberImg != null} ? @{${session.loginMember.memberImg}} : @{/images/user.png}"
-              alt="Profile Image"
-            />
-          </div>
-
-          <!-- 회원 번호 표시 -->
-          <div class="profile-name" th:text="${memberno}">회원번호</div>
-
-          <!-- 닉네임 (@ 표시 포함) -->
-          <div class="profile-handle" th:text="'@' + ${nickname}">@닉네임</div>
-
-          <!-- 팔로워 / 팔로잉 수 -->
-          <div class="profile-stats">
-            <div class="stat">
-              <div class="stat-number" th:text="${followerCount}">0</div>
-              <div class="stat-label">Follower</div>
-            </div>
-            <div class="stat">
-              <div class="stat-number" th:text="${followingCount}">0</div>
-              <div class="stat-label">Following</div>
-            </div>
-          </div>
-
-          <!-- 하단 버튼 -->
-          <div class="profile-action">
-            <a th:href="@{'/' + ${member.memberNo} + '/profile/edit'}">
-                <button>Edit Profile</button>
-            </a>
-            <a th:href="@{'/' + ${member.memberNo} + '/profile/logout'}">
-                <button>Logout</button>
-            </a>
-          </div>
-        </div>
-
-        <!-- 여기 추가 -->
-        <div class="profile-action">
-          <button class="action-button Board-button">Bio</button>
-        </div>
-
-        <div class="profile-action">
-          <button class="action-button surfing-button">surfing</button>
-        </div>
+   <!-- Header Fragment -->
+    <div th:replace="~{common/header}"></div>
+   
+        <!-- Left sidebar - Profile Information -->
+        <div th:replace="~{common/leftsidebar}"></div>
       </div>
-
+      
       <!-- Middle Panel - Posts -->
       <div class="middle-sidebar">
         <div class="header">

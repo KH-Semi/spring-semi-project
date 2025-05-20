@@ -7,54 +7,18 @@
     <!-- 공용 css/js 추가 -->
   <th:block th:replace="~{common/common}"></th:block>
     <!-- myPage 전용 CSS -->
-  <link rel="stylesheet" href="../../static/css/myPage/updateProfile.css">
+  <link rel="stylesheet" href="/css/myPage/updateProfile.css">
 
   </head>
 <body>
-    <div class="container">
-       <!-- Left sidebar - Profile Information -->
+    <!-- Header Fragment -->
+    <div th:replace="~{common/header}"></div>
+
+    <div class="content-container">
       <div class="left-sidebar">
-        <header class="logo">
-          <p>Today / Total</p>
-        </header>
-
-        <div class="profile-info">
-          <div class="profile-image">
-            <img
-              th:src="${session.loginMember != null && session.loginMember.
-              memberImg != null} ? @{${session.loginMember.memberImg}} : @{/images/user.png}"
-              alt="Profile Image"
-            />
-          </div>
-
-          <!-- 회원 번호 표시 -->
-          <div class="profile-name" th:text="${memberno}">회원번호</div>
-
-          <!-- 닉네임 (@ 표시 포함) -->
-          <div class="profile-handle" th:text="'@' + ${nickname}">@닉네임</div>
-
-          <!-- 팔로워 / 팔로잉 수 -->
-          <div class="profile-stats">
-            <div class="stat">
-              <div class="stat-number" th:text="${followerCount}">0</div>
-              <div class="stat-label">Follower</div>
-            </div>
-            <div class="stat">
-              <div class="stat-number" th:text="${followingCount}">0</div>
-              <div class="stat-label">Following</div>
-            </div>
-          </div>
-            </div>
-        
-            <!-- 여기 추가 -->
-              <div class="profile-action">
-                <button class="action-button Board-button">Bio</button>
-              </div>
-            
-            <div class="profile-action">
-                    <button class="action-button surfing-button">surfing</button>
-                </div>
-        </div>
+        <!-- Left sidebar - Profile Information -->
+        <div th:replace="~{common/leftsidebar}"></div>
+      </div>
 
         <!-- Middle sidebar - Posts -->
         <div class="middle-sidebar">
@@ -86,42 +50,11 @@
             </div>
         </div>
 
+       
         <!-- Right sidebar - Navigation Menu -->
-        <div class="right-sidebar">
-  <div class="nav-sidebar">
-    <div class="nav-item">
-      <a th:href="@{/{member}/minihome(member=${memberNo})}">
-        <i class="fas fa-house"></i> Home
-      </a>
+    <div class="right-sidebar">
+      <th:block th:replace="~{common/navsidebar}"></th:block>
     </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/profile(member=${memberNo})}">
-        <i class="fas fa-user"></i> Profile
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}">
-        <i class="fas fa-clipboard-list"></i> Board
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/friendlist(member=${memberNo})}">
-        <i class="fas fa-user-friends"></i> Friendlist
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/playlist(member=${memberNo})}">
-        <i class="fas fa-play"></i> Playlist
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/guestbook(member=${memberNo})}">
-        <i class="fas fa-book"></i> Guestbook
-      </a>
-    </div>
-  </div>
-</div>
-
 
      <!-- 푸터 추가 -->
    <th:block th:replace="~{common/footer}"></th:block>
