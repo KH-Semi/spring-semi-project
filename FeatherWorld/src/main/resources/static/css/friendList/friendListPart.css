@@ -1,4 +1,7 @@
-
+textarea {
+  text-align: right;
+  padding: 3px;
+}
 .friend-item {
   display: flex;
   justify-content: space-between;
@@ -13,62 +16,98 @@
   margin: 5px 5px;
   overflow: hidden;
 }
-    
-.friend-item>*{
+
+.friend-item > * {
   display: flex;
   margin-left: 10px;
- 
-   align-self: center;
+
+  align-self: center;
 }
 
 .rounded-span {
-  display: inline-block;  /* 또는 block */
- 
- align-content : center;
- align-self: center;
+  display: inline-block; /* 또는 block */
+
+  align-content: center;
+  align-items: center;
+  align-self: center;
   border-radius: 20px;
   background-color: #ddd;
-  padding:  10px;
-  margin : 5px 10px;
-  height:15px;
-  font-size:12px;
+  padding: 10px;
+  margin: 5px 10px;
+  height: 15px;
+  font-size: 12px;
 }
-*>.left-align{
-  align-items: center;
 
+.rounded-unfollow-span {
+  display: inline-block; /* 또는 block */
+
+  align-content: center;
+  align-items: center;
+  align-self: center;
+  border-radius: 20px;
+  background-color: #ddd;
+  padding: 10px;
+  margin: 5px 10px;
+  height: 15px;
+  font-size: 12px;
 }
-*>.right-align{
+* > .left-align {
+  align-items: center;
+}
+* > .right-align {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-left: auto;
 }
 
-
-ul, li {
+ul,
+li {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-span{
-  
-  
-  margin : 0px 10px 0px 10px;
+span {
+  margin: 0px 10px 0px 10px;
 }
 
-.color-gray{
-  color:#8E8E8E;
+.color-gray {
+  color: #8e8e8e;
+}
+.color-red {
+  color: #912d2d;
 }
 
-.font-bold{
-
+.font-bold {
   font-weight: bold;
 }
-
-.title{
+.title {
+  display: flex;
+  align-content: center;
+}
+.title-font {
   font-weight: bold;
-  margin:10px;
-  font-size:medium;
+  margin: 10px;
+  font-size: medium;
   justify-self: flex-start;
+}
+.hidden {
+  display: none;
+}
+
+*[name="unfollow-button"]:hover {
+  background-color: #912d2d;
+  color: white;
+  border: 1px solid #ccc;
+  align-items: center;
+  width: auto;
+}
+.button-default {
+  background-color: #912d2d;
+  color: white;
+  border: 1px solid #ccc;
+  align-items: center;
+  padding: 8px 8px;
+  border-radius: 10px;
 }
