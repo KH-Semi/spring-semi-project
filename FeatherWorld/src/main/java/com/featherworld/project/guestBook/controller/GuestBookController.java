@@ -62,6 +62,7 @@ public class GuestBookController {
 		    model.addAttribute("ownerInfo", map.get("ownerInfo"));
 		    model.addAttribute("canWrite", map.get("canWrite"));
 	
+
 	        return "guestbook/guestbook";  // templates/guestBook/guestBook.html
 	    }
 	 
@@ -93,10 +94,12 @@ public class GuestBookController {
 //	}
 
 	// 방명록 작성
+
 	@PostMapping("{memberNo:[0-9]+}/guestbook")
 	public int insertGuestBook(@SessionAttribute(value = "loginMember",required=false) Member loginMember,
 			GuestBook inputGuestBook,
-			@RequestParam(value="cp",required=false,defaultValue="1")int cp) throws Exception {
+			@RequestParam(value="cp",required=false,defaultValue="1")int cp,
+			@PathVariable("memberNo")int memberNo) throws Exception {
 		
 		 // 1. 로그인 체크
 	    if (loginMember == null) return 0;
@@ -113,7 +116,8 @@ public class GuestBookController {
 	@PutMapping("{memberNo:[0-9]+}/guestbook")
 	public int updateGuestBook(@SessionAttribute(value = "loginMember",required=false) Member loginMember,
 								   GuestBook inputGuestBook,
-			@RequestParam(value = "cp" , required=false, defaultValue="1")int cp) throws Exception {
+			@RequestParam(value = "cp" , required=false, defaultValue="1")int cp ,
+			@PathVariable("memberNo")int memberNo) throws Exception {
 		
 		
 		// 로그인 안 한 경우
@@ -136,7 +140,8 @@ public class GuestBookController {
 	@DeleteMapping("{memberNo:[0-9]+}/guestbook")
 	public int deleteGuestBook( @SessionAttribute(value="loginMember",required=false) Member loginMember,
 	        @RequestParam("guestBookNo") int guestBookNo,
-	        @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
+	        @RequestParam(value = "cp", required = false, defaultValue = "1") int cp ,
+	        @PathVariable("memberNo")int memberNo) {
 		
 		
 		//로그인 안한 경우 차단
@@ -145,11 +150,12 @@ public class GuestBookController {
 		}
 		
 		GuestBook guestBook = service.selectOne(guestBookNo);
-		int memberNo = loginMember.getMemberNo();
+		int loginMemberNo = loginMember.getMemberNo();
 		
 		 // 작성자 or 홈피 주인만 삭제 가능
 	    if (guestBook == null ||
-	        (guestBook.getVisitorNo() != memberNo && guestBook.getOwnerNo() != memberNo)) {
+	        (guestBook.getVisitorNo() != loginMemberNo 
+	        && guestBook.getOwnerNo() != loginMemberNo)) {
 	        return 0;
 	    }
 

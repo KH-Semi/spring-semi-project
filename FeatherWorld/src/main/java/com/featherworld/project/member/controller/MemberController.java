@@ -1,13 +1,22 @@
 package com.featherworld.project.member.controller;
 
-import com.featherworld.project.member.model.dto.Member;
-import com.featherworld.project.member.model.service.MemberService;
+
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.featherworld.project.member.model.dto.Member;
+import com.featherworld.project.member.model.service.MemberService;
 
 /** member 컨트롤러 클래스
  * @author 영민
@@ -108,6 +117,15 @@ public class MemberController {
 		return "member/findId";
 	}
 	
+	/** 비밀번호 찾기 로 이동
+	 * @return
+	 */
+	@GetMapping("findPw")
+	public String finePw() {
+		return "member/findPw";
+	}
+	
+	
 	/** 아이디 찾는 서비스
 	 * @param ra
 	 * @author 영민
@@ -129,4 +147,27 @@ public class MemberController {
 
 		return getEmail;
 	}
+
+	/**비밀번호 재설정
+	 * @param map
+	 * @return
+	 * @author 영민
+	 */
+	@PostMapping("/resetPassword")
+	@ResponseBody
+	public int resetPassword(@RequestBody Map<String, String> map) {
+		
+		int result = service.resetPassword(map);
+		
+		if(result >0) {
+			
+			return result;
+		}else {
+			
+			return 0;
+		}
+		
+	}
+		
+
 }

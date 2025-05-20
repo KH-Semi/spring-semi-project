@@ -138,9 +138,8 @@
                 <p class="profile-email" th:text="${session.loginMember.memberEmail}">
                   Me@google.com
                 </p>
-
                 <div class="profile-actions">
-                  <a th:href="@{/{member}/minihome(member=${session.loginMember?.memberNo})}" class="home-btn">
+                 <a th:href="@{/{member}/minihome(member=${session.loginMember?.memberNo})}" class="home-btn">
                     <i class="fa-solid fa-house" alt="Home"></i>
                     My Home
                   </a>

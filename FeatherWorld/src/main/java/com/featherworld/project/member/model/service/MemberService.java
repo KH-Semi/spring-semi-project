@@ -1,5 +1,7 @@
 package com.featherworld.project.member.model.service;
 
+import java.util.Map;
+
 import com.featherworld.project.member.model.dto.Member;
 
 /** 멤버service 인터페이스
@@ -40,5 +42,11 @@ public interface MemberService {
 	 * @return
 	 */
 	Member findId(Member inputMember);
+
+	/** 가입된 회원의 비밀번호 변경
+	 * @param map
+	 * @return
+	 */
+	int resetPassword(Map<String, String> map);
 
 }
