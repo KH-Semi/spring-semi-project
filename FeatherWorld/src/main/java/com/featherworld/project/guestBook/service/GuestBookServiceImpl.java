@@ -19,82 +19,28 @@ public class GuestBookServiceImpl implements GuestBookService{
 	@Autowired
 	private GuestBookMapper mapper;
 	
-		
-		
 		//방명록 조회
-//		@Override
-//		public Map<String, Object> selectGuestBookList(map) {
-//			// TODO Auto-generated method stub
-//			return mapper.selectGuestBookList(ownerNo, loginMemberNo, cp);
-//		}
-		
-		
-	
+		@Override
+		public List<GuestBook> selectGuestBookList(int memberNo) {
+			return mapper.selectGuestBookList(memberNo);
+		}
 	
 		//방명록 작성
 		@Override
-		public int guestBookInsert(GuestBook inputGuestBook) throws Exception {
-			int result = mapper.guestBookInsert(inputGuestBook);
-			return result;
+		public int guestBookInsert(GuestBook guestBook) throws Exception {
+			return mapper.guestBookInsert(guestBook);
 		}
-
 		
 		//방명록 수정
 		@Override
-		public int guestBookUpdate(GuestBook inputGuestBook) throws Exception {
-				
-			int result = mapper.guestBookUpdate(inputGuestBook);
-			
-			if(result ==0) {
-				return 0;
-			}
-			//성공한 경우
-			return result;
-			
+		public int guestBookUpdate(GuestBook guestBook) throws Exception {
+			return mapper.guestBookUpdate(guestBook);
 		}
 		
 		//방명록 삭제
 		@Override
-		public int guestBookDelete(Map<String, Integer> map) {
-			return mapper.guestBookDelete(map);
+		public int guestBookDelete(int guestBookNo) {
+			return mapper.guestBookDelete(guestBookNo);
 		}
 
-
-		//본인이 작성한 글이 아니면 수정 못하게
-		@Override
-		public GuestBook selectOne(int guestBookNo) {
-			return mapper.selectOne(guestBookNo);
-		}
-
-
-
-
-		@Override
-		public Map<String, Object> selectGuestBookList(Integer ownerNo, int loginMemberNo, int cp) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-
-		@Override
-		public Map<String, Object> selectGuestBookList() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-
-		@Override
-		public List<GuestBook> selectGuestBookList(Map<String, Integer> map) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-
-
-
-		
-
-
-
-		
 }

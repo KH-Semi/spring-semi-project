@@ -6,7 +6,7 @@
     <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
 
     <th:block th:replace="~{common/common}"></th:block>
-    <link rel="stylesheet" href="/css/guestBook/guestbook.css" />
+    <link rel="stylesheet" href="/css/guestBook/guestBook.css" />
   </head>
   <body>
     <div class="container">
@@ -15,7 +15,7 @@
 
       <div class="content-container">
         <!-- 좌측 석준이가 만든 프로필 들어올 공간 Include -->
-        <th:block th:replace="~{board/boardTypeSidebar}"></th:block>
+		<th:block th:replace="~{board/boardTypeSidebar}"></th:block>
 
         <!-- 중앙 방명록 목록 -->
         <div class="main-content">
@@ -23,8 +23,8 @@
             <!-- DB에서 가져온 방명록 목록 순회 -->
             <div
               class="guestbook-item"
-              th:each="guestBook : ${guestBookList}"
-              th:object="${guestBook}"
+              th:each="guestBook : ${guestBookList} " th:object="${guestBook}"
+             
             >
               <div class="guestbook-wrap">
                 <div class="guestbook-main">
@@ -34,10 +34,17 @@
                 </div>
               </div>
               <div class="guestbook-info">
-                <span th:text="*{visitorNickname}">닉네임</span>
-                <div class="guestbook-date" th:text="*{guestBookWriteDate}">
-                  게시일
-                </div>
+                <span th:text="*{memberName}">작성자</span>
+                <div class="guestbook-date" th:text="*{guestBookWriteDate}"> 게시일 </div>
+				
+				<!-- 로그인한 회원이 방명록 작성자일 때만 버튼 출력 -->
+				 <th:block th:if="${loginMember != null} and ${loginMember.memberNo} == *{visitorNo}">
+				   <div class="guestbook-actions">
+				     <a href="#" class="edit-btn" th:attr="data-no=*{guestBookNo}">수정</a>
+				     <a href="#" class="delete-btn" th:attr="data-no=*{guestBookNo}">삭제</a>
+				   </div>
+				 </th:block>
+				
               </div>
             </div>
           </div>
@@ -82,7 +89,7 @@
             ></textarea>
             <!-- 글쓰기 버튼 -->
             <div class="write-button">
-              <a id="addGuestBook">Write✏️</a>
+              <span>Write✏️</span>
             </div>
           </div>
         </div>

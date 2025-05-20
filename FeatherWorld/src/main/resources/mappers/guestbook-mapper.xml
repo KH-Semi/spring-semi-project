@@ -7,8 +7,7 @@
 <select id="selectGuestBookList" resultType="GuestBook">
     SELECT *
     FROM GUEST_BOOK
-    WHERE OWNER_NO = #{ownerNo}
-    AND (VISITOR_NO = #{loginMemberNo} OR OWNER_NO = #{loginMemberNo})
+    WHERE OWNER_NO = #{memberNo}
     ORDER BY GUEST_BOOK_NO DESC
 </select>
 
@@ -38,15 +37,8 @@
 <!-- 방명록 삭제 -->
 <delete id="deleteGuestBook">
 DELETE FROM GUEST_BOOK
-WHERE GUEST_BOOK_NO =#{guestbookNo}
+WHERE GUEST_BOOK_NO =#{guestBookNo}
 AND (OWNER_NO = #{memberNo} OR VISITOR_NO = #{memberNo})
 </delete>
- 
- <!-- 본인이 작성한 글이 아니면 수정 못하게 -->
-<select id="selectOne" resultType="GuestBook">
-	SELECT * FROM GUEST_BOOK
-	WHERE GUEST_BOOK_NO = #{guestBookNo}
-</select>
- 
   
 </mapper>
