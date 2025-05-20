@@ -2,10 +2,9 @@ const imageInput = document.getElementById("image");
 const bioInput = document.getElementById("bio-input");
 const previewImage = document.getElementById("previewImage");
 const bioDisplay = document.getElementById("bio-display");
-const bioButton = document.querySelector(".left-panel .Board-button");
+const bioButton = document.querySelector(".left-sidebar .Board-button");
 
 const confirmEditBtn = document.getElementById("confirmEditBtn");
-const confirmBtn = document.getElementById("confirmBtn");
 const backBtn = document.getElementById("backToProfileBtn");
 const profileUpdateBtn = document.getElementById("profileUpdateBtn");
 const deleteAccountBtn = document.getElementById("deleteAccountBtn");
@@ -47,11 +46,10 @@ bioInput.addEventListener("input", () => {
   bioButton.textContent = text.length > 0 ? text : "Bio";
 });
 
-// 확인(수정 반영) 버튼
+// 확인(수정 반영) 버튼 (페이지 내 bio와 이미지 업데이트용)
 if (confirmEditBtn) {
   confirmEditBtn.addEventListener("click", () => {
     const bioText = bioInput.value.trim();
-    const imageSrc = previewImage.src;
 
     if (!bioText) {
       alert("자기소개를 입력해주세요.");
@@ -60,42 +58,11 @@ if (confirmEditBtn) {
 
     bioDisplay.textContent = bioText;
 
-    if (imageSrc && imageSrc !== window.location.href) {
+    if (uploadedImageData) {
       previewImage.style.display = "block";
     }
 
     alert("수정이 반영되었습니다!");
-  });
-}
-
-// 확인 후 서버 전송 (API)
-if (confirmBtn) {
-  confirmBtn.addEventListener("click", async () => {
-    const bioText = bioInput.value.trim();
-    if (bioText.length === 0) {
-      alert("자기소개를 입력해주세요.");
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/updateBio", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ bio: bioText }),
-      });
-
-      if (response.ok) {
-        alert("변경사항이 적용되었습니다!");
-        window.location.href = "/profile";
-      } else {
-        alert("변경사항 적용에 실패했습니다. 다시 시도해주세요.");
-      }
-    } catch (error) {
-      alert("서버와 통신 중 오류가 발생했습니다.");
-      console.error(error);
-    }
   });
 }
 
@@ -119,3 +86,36 @@ if (deleteAccountBtn) {
     window.location.href = "/account/delete";
   });
 }
+
+confirmEditBtn.addEventListener("click", async () => {
+  const bioText = bioInput.value.trim();
+  if (!bioText) {
+    alert("자기소개를 입력해주세요.");
+    return;
+  }
+
+  // 폼 데이터 준비 (이미지 + bio)
+  const formData = new FormData();
+  if (imageInput.files[0]) {
+    formData.append("image", imageInput.files[0]);
+  }
+  formData.append("bio", bioText);
+
+  try {
+    const response = await fetch("/profile/update", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (response.ok) {
+      alert("프로필이 성공적으로 업데이트되었습니다.");
+      // 업데이트 후 프로필 페이지로 이동
+      window.location.href = "/profile";
+    } else {
+      alert("프로필 업데이트에 실패했습니다.");
+    }
+  } catch (error) {
+    alert("서버 오류가 발생했습니다.");
+    console.error(error);
+  }
+});

@@ -1,30 +1,23 @@
-// edit 버튼
-const editProfileBtn = document.getElementById("editProfileBtn");
+document.addEventListener("DOMContentLoaded", () => {
+  const editBtn = document.querySelector(".Edit-button");
+  const updateBtn = document.querySelector(".Profile-update-button");
+  const deleteBtn = document.querySelector(".Delete-account-button");
 
-editProfileBtn.addEventListener("click", () => {
-  window.location.href = "/profile/edit"; // 원하는 경로로 수정 가능
+  if(editBtn) {
+    editBtn.addEventListener("click", () => {
+      window.location.href = "/edit-profile"; // 실제 URL로 수정
+    });
+  }
+
+  if(updateBtn) {
+    updateBtn.addEventListener("click", () => {
+      window.location.href = "/profile-update"; // 실제 URL로 수정
+    });
+  }
+
+  if(deleteBtn) {
+    deleteBtn.addEventListener("click", () => {
+      window.location.href = "/delete-account"; // 실제 URL로 수정
+    });
+  }
 });
-
-// 로그아웃 버튼
-const logoutBtn = document.getElementById("logoutBtn");
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", () => {
-    window.location.href = "/logout"; // 로그아웃 처리 URL
-  });
-}
-
-// 프로필 업데이트 버튼
-const profileUpdateBtn = document.getElementById("profileUpdateBtn");
-if (profileUpdateBtn) {
-  profileUpdateBtn.addEventListener("click", () => {
-    window.location.href = "/profile/edit"; // 프로필 편집 페이지 경로
-  });
-}
-
-// 계정 삭제 버튼
-const deleteAccountBtn = document.getElementById("deleteAccountBtn");
-if (deleteAccountBtn) {
-  deleteAccountBtn.addEventListener("click", () => {
-    window.location.href = "/account/delete"; // 계정 삭제 페이지 경로
-  });
-}

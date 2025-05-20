@@ -3,13 +3,13 @@
   display: flex; /* 가로 정렬 */
   align-items: stretch; /* 자식 요소들 높이 똑같이 맞춤 */
   height: 600px; /* 예시 높이, 필요에 따라 조절 */
-  gap: 20px; /* 패널 간 간격 */
+  gap: 5px; /* 패널 간 간격 */
 }
 
 /* 좌측, 중간, 우측 패널 공통 스타일 */
-.left-panel,
-.middle-panel,
-.right-panel {
+.left-sidebar,
+.middle-sidebar,
+.right-sidebar {
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: white;
@@ -18,19 +18,19 @@
 }
 
 /* 좌측, 우측은 고정 너비 */
-.left-panel,
-.right-panel {
+.left-sidebar,
+.right-sidebar {
   width: 200px; /* 너비 조절 가능 */
 }
 
 /* 가운데는 남은 공간 차지 */
-.middle-panel {
+.middle-sidebar {
   flex: 1;
   overflow-y: auto;
   text-align: center;
 }
 
-.left-panel * {
+.left-sidebar * {
   font-family: "Pretendard", sans-serif;
   font-weight: 600; /* 세미볼드 */
 }
@@ -41,7 +41,7 @@ body {
   font-weight: 600; /* semi-bold */
 }
 
-.left-panel {
+.left-sidebar {
   border: 2px solid #ccc; /* 테두리 두께 및 색상 */
   border-radius: 10px; /* 모서리 둥글게 (선택) */
   padding: 20px; /* 내부 여백 */
@@ -74,7 +74,7 @@ body {
   overflow: hidden;
 }
 
-.left-panel {
+.left-sidebar {
   width: 250px;
   border-right: 1px solid #eee;
   padding: 20px;
@@ -181,22 +181,22 @@ body {
   cursor: pointer;
 }
 
+.common-button {
+  width: 100px; /* 원하는 고정 너비 */
+  height: 40px; /* 원하는 고정 높이 */
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* 개별 색상 지정 */
 .Edit-button {
   background-color: #912d2d;
   color: white;
-}
-
-/* edit back 버튼 */
-.back-button {
-  flex: 1; /* 두 버튼이 동일한 너비 */
-  padding: 6px 0; /* 버튼 높이 줄이기 */
-  font-size: 12px; /* 폰트 크기 줄이기 */
   border: none;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  background-color: #912d2d;
-  color: white;
 }
 
 .Logout-button {
@@ -222,7 +222,7 @@ body {
   border: 1px solid #ccc;
 }
 
-.middle-panel {
+.middle-sidebar {
   flex: 1; /* 가운데 패널이 남은 공간 차지 */
   padding: 20px; /* 내부 여백 */
   border: 2px solid #ccc; /* 테두리 */
@@ -334,7 +334,7 @@ body {
   cursor: pointer;
 }
 
-/* home */
+/* miniHome */
 .boardSummary {
   display: flex;
   justify-content: flex-start; /* 기본은 왼쪽 정렬 */
@@ -370,7 +370,7 @@ body {
   text-align: center;
 }
 
-/* home */
+/* miniHome */
 /* 중간 4개 이미지 넣는 곳 */
 .small-image-row {
   display: flex;
@@ -422,7 +422,7 @@ body {
   line-height: 80px; /* placeholder 수직 중앙 맞춤 */
 }
 
-/* home */
+/* miniHome */
 /* placeholder 스타일 */
 .Comment::placeholder {
   font-size: 16px; /* 폰트 크기 키우기 */
@@ -549,62 +549,62 @@ body {
   box-sizing: border-box; /* 박스 크기 계산 방식 */
 }
 
-.middle-panel {
+.middle-sidebar {
   overflow: hidden; /* 스크롤 제거 */
 }
 
 /* right */
 
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
-
-.right-panel {
-  min-height: 500px; /* 최소 높이 지정 */
+.right-sidebar {
+  min-height: 500px;
 }
 
-.menu-item {
+.nav-item > a {
   display: flex;
   align-items: center;
   padding: 12px;
-  margin-bottom: 5px; /* 각 메뉴 간 간격 */
-  border: 1px solid #ccc; /* 테두리 */
-  border-radius: 10px; /* 모서리 둥글게 */
-  background-color: #fff; /* 배경 흰색 */
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
   color: #333;
   font-size: 14px;
   cursor: pointer;
-  font-weight: bold; /* 글씨 진하게 */
+  font-weight: bold;
   transition: all 0.2s ease;
+  text-decoration: none;
 }
 
-.menu-item:hover {
+.nav-item > a:hover {
   color: #912d2d;
-  border-color: #912d2d; /* hover 시 테두리 색상 변경 */
+  border-color: #912d2d;
   background-color: #f9f1f1;
 }
 
-.menu-item.playlist-list {
+.nav-item > a.active-home,
+.nav-item > a.active-playlist {
   background-color: #912d2d;
   color: white;
-  font-weight: bold;
   border: 1px solid #912d2d;
+  font-weight: bold;
 }
-.menu-item i {
+
+.nav-item > a i {
   margin-right: 10px;
   font-size: 18px;
   width: 20px;
   text-align: center;
 }
 
-/* home */
-.menu-item.active-home {
-  background-color: #912d2d; /* 진한 빨간색 */
+/* 아이콘 색상 변경 */
+/* Profile 메뉴 항목 (두 번째 메뉴)에 스타일 적용 */
+.nav-sidebar .nav-item:nth-child(2) > a {
+  background-color: #912d2d;
   color: white;
   border: 1px solid #912d2d;
+  font-weight: bold;
 }
 
-/* Profile */
-.menu-item.active-profile {
-  background-color: #912d2d; /* 진한 빨간색 */
+.nav-sidebar .nav-item:nth-child(2) > a i {
   color: white;
-  border: 1px solid #912d2d;
 }

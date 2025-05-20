@@ -15,20 +15,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
-
 import com.featherworld.project.guestBook.model.dto.GuestBook;
 import com.featherworld.project.guestBook.service.GuestBookService;
 import com.featherworld.project.member.model.dto.Member;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-
-
 public class GuestBookController {
 
 	@Autowired
 	private GuestBookService service;
-
 	
 	
 	 /** 동기
@@ -64,15 +61,9 @@ public class GuestBookController {
 		    model.addAttribute("pagination", map.get("pagination"));
 		    model.addAttribute("ownerInfo", map.get("ownerInfo"));
 		    model.addAttribute("canWrite", map.get("canWrite"));
-		
-		
+	
 	        return "guestbook/guestbook";  // templates/guestBook/guestBook.html
 	    }
-	 
-	 
-	 
-	 
-	 
 	 
 	 
 	 
@@ -102,7 +93,7 @@ public class GuestBookController {
 //	}
 
 	// 방명록 작성
-	@PostMapping("")
+	@PostMapping("{memberNo:[0-9]+}/guestbook")
 	public int insertGuestBook(@SessionAttribute(value = "loginMember",required=false) Member loginMember,
 			GuestBook inputGuestBook,
 			@RequestParam(value="cp",required=false,defaultValue="1")int cp) throws Exception {
@@ -119,7 +110,7 @@ public class GuestBookController {
 	}
 
 	// 수정
-	@PutMapping("")
+	@PutMapping("{memberNo:[0-9]+}/guestbook")
 	public int updateGuestBook(@SessionAttribute(value = "loginMember",required=false) Member loginMember,
 								   GuestBook inputGuestBook,
 			@RequestParam(value = "cp" , required=false, defaultValue="1")int cp) throws Exception {
@@ -142,7 +133,7 @@ public class GuestBookController {
 	}
 
 	// 삭제
-	@DeleteMapping("")
+	@DeleteMapping("{memberNo:[0-9]+}/guestbook")
 	public int deleteGuestBook( @SessionAttribute(value="loginMember",required=false) Member loginMember,
 	        @RequestParam("guestBookNo") int guestBookNo,
 	        @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
