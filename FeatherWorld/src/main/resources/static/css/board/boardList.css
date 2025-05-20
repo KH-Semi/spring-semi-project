@@ -72,14 +72,21 @@
 
 .board-reads {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
   color: #8E8E8E;
   font-size: 14px;
 }
 
-.icon-read {
-  color: #c62828;
+.board-reads > span:first-child {
+  display: flex;
+  align-items: center;
+  line-height: 0;
   margin-right: 5px;
+}
+
+.write-button > span:hover {
+  opacity: 90%;
+  cursor: pointer;
 }
 
 /* 반응형 디자인 */

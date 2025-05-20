@@ -26,7 +26,7 @@ public class Pagination {
 		this.listCount = listCount;
 		// limit, pageSize 지정해주지 않았을 때의 기본값 설정
 		limit = 3;
-		pageSize = 10;
+		pageSize = 8;
 		
 		calculate();
 	}
