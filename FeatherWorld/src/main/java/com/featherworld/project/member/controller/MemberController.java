@@ -43,12 +43,7 @@ public class MemberController {
 		return "member/signUp";
 	}
 	
-	@GetMapping("/{memberNo:[0-9]+}/minihome")
-	public String miniHome() {
-		
-		return"miniHome/miniHome";
-	}
-	
+
 		
 	/** 회원가입 메서드 (post)a
 	 * @author 영민
