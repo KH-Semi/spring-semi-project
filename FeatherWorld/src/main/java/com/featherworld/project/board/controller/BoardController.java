@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.featherworld.project.board.model.service.BoardTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,10 @@ import com.featherworld.project.board.model.service.BoardService;
 public class BoardController {
 
 	@Autowired
-	private BoardService service;
+	private BoardService boardService;
+
+	@Autowired
+	private BoardTypeService boardTypeService;
 
 	/** 해당 회원의 게시판 목록 조회해서 세션에 저장
 	 * @param memberNo 현재 조회 중인 회원 번호
@@ -41,7 +45,7 @@ public class BoardController {
 									RedirectAttributes ra) {
 
 		// 회원 번호 존재 유무 검사
-		int result = service.checkMember(memberNo);
+		int result = boardService.checkMember(memberNo);
 
 		if(result == 0) { // DB에 존재하지 않는 회원 번호인 경우 main page로 redirect
 			ra.addFlashAttribute("message", "존재하지 않는 회원입니다.");
@@ -49,7 +53,7 @@ public class BoardController {
 		}
 
 		// 현재 회원의 게시판 종류 번호(boardCode) 목록을 조회해서 가져옴
-		List<BoardType> boardTypeList = service.selectBoardType(memberNo);
+		List<BoardType> boardTypeList = boardTypeService.selectBoardType(memberNo);
 
 		// session scope에 boardTypeList 저장
 		session.setAttribute("boardTypeList", boardTypeList);
@@ -98,8 +102,8 @@ public class BoardController {
 		// 해당 게시판의 게시글만 조회
 		Map<String, Object> map = null;
 
-		if(cp == null)	map = service.selectBoardList(boardCode, 1);
-		else map = service.selectBoardList(boardCode, cp);
+		if(cp == null)	map = boardService.selectBoardList(boardCode, 1);
+		else map = boardService.selectBoardList(boardCode, cp);
 
 		log.debug("현재 페이지 : {}", cp);
 
@@ -122,8 +126,8 @@ public class BoardController {
 	public Map<String, Object> selectBoardList(@PathVariable("boardCode") int boardCode,
 											  @RequestParam(value = "cp", required = false) Integer cp) {
 
-		if(cp == null)	return service.selectBoardList(boardCode, 1);
-		else return service.selectBoardList(boardCode, cp);
+		if(cp == null)	return boardService.selectBoardList(boardCode, 1);
+		else return boardService.selectBoardList(boardCode, cp);
 	}
 
 	/** 게시글 쓰기
@@ -164,7 +168,7 @@ public class BoardController {
 			map.put("memberNo", loginMember.getMemberNo());
 		}	
 			// 2) 서비스 호출
-			Board board = service.selectOne(map);
+			Board board = boardService.selectOne(map);
 			
 			String path;
 			
@@ -190,6 +194,6 @@ public class BoardController {
 	@ResponseBody
 	@PostMapping("like") // /board/like (POST)
 	public int boardLike(@RequestBody Map<String, Integer> map) {
-		return service.boardLike(map);
+		return boardService.boardLike(map);
 	}
 }
