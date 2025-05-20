@@ -1,17 +1,23 @@
 // 현재 게시판 종류 번호를 저장하는 boardCode 변수 선언
 let boardCode = currentBoardCode;
 
-// 쓰기 버튼
-const writeBtn = document.querySelector(".write-button");
-
-/** 현재 페이지(cp)를 원하는 값으로 수정, url에 반영
+/** 현재 선택한 페이지(cp)를 url에 반영 (history에 저장)
  * @author Jiho
- * @param page
+ * @param {number} page
  */
-const updateCp = (page) => {
-  const url = new URL(window.location);
-  url.searchParams.set('cp', page);
-  history.replaceState({}, '', url);
+const recodeCp = (page) => {
+  const url = new URL(location);
+  url.searchParams.set('cp', String(page));
+  history.pushState({}, '', url);
+}
+
+/** 현재 url에 cp가 존재한다면 cp, 없다면 null 반환
+ * @author Jiho
+ */
+const searchCp = () => {
+  // URL 에서 cp 파라미터 추출
+  const urlParams = new URLSearchParams(location.search);
+  return parseInt(urlParams.get("cp")) || null;
 }
 
 /** 특정 class를 가진 div 태그 생성
@@ -50,7 +56,11 @@ const createBoardFooter = (pagination) => {
 
     // 페이지 클릭 이벤트 추가
     span.addEventListener("click", async () => {
-      await renderBoardList(boardCode, page);
+      // 변경된 cp값 적용/history 저장
+      recodeCp(page);
+      // 해당 페이지에 맞게 게시글/페이징 목록 갱신
+      renderBoardList(boardCode, page)
+          .catch(console.error);
     });
 
     return span;
@@ -93,6 +103,17 @@ const createBoardFooter = (pagination) => {
   writeSpan.innerText = "Write";
   writeDiv.append(writeSpan);
 
+  // 쓰기 버튼 클릭시 동기식 페이지 전환
+  writeSpan.addEventListener("click", () => {
+
+    if(boardCode === 0) {
+      alert("존재하지 않는 게시판입니다.");
+      return;
+    }
+
+    location.href = `/${memberNo}/board/${boardCode}/write`;
+  });
+
   containerDiv.append(writeDiv);
 
   return containerDiv;
@@ -100,17 +121,22 @@ const createBoardFooter = (pagination) => {
 
 /** 게시판 갱신시 갱신된 게시글/페이징 목록 렌더링
  * @author Jiho
- * @param {number} boardCode 게시판 종류 번호
- * @param {number} page 페이지 번호(cp)
+ * @param {number} boardType 게시판 종류 번호
+ * @param page 페이지 번호(cp)
  */
-const renderBoardList = async (boardCode, page) => {
+const renderBoardList = async (boardType, page) => {
 
   // 중앙 게시글 목록 div 생성
   const mainContent = createDiv("main-content");
   const updatedBoardContainer = createDiv("board-list");
 
+  // page 값에 따라 요청 변경
+  let queryString;
+  if(page == null) queryString = "";
+  else queryString = `?cp=${page}`;
+
   // ajax를 통해 비동기로 회원별 게시판 목록 각 요소 클릭시 boardList & pagination 구해옴
-  const resp = await fetch(`/board/${boardCode}?cp=${page}`);
+  const resp = await fetch(`/board/${boardType}${queryString}`);
   const map = await resp.json();
 
   // map 내부에 있는 pagination & boardList 선언
@@ -194,43 +220,38 @@ const renderBoardList = async (boardCode, page) => {
   document.querySelector(".main-content").replaceWith(mainContent);
 }
 
+/** 현재 url을 통해 현재 선택된 게시판 & 페이지로 게시글 목록 불러오기
+ * @author Jiho
+ * @param boardType 게시판 종류
+ */
+const loadBoardList = (boardType) => {
+  // cp 값으로 렌더링 (새로고침 가능)
+  const cp = searchCp();
+  renderBoardList(boardType, cp).catch(console.error);
+}
+
 // 좌측 게시판 목록 선택
 // 게시판 목록 div 태그들을 차례대로 선택, 안에 있는 th:data-board-code 로부터 boardCode를 얻어와서 click 이벤트 추가
 document.querySelectorAll(".board-type-item").forEach(boardTypeItem => {
 
-  boardTypeItem.addEventListener("click", async () => {
+  boardTypeItem.addEventListener("click", () => {
 
-    // url 속 쿼리 스트링을 통해 현재 페이지 값(cp) 1로 수정
-    // 게시글이 없는 경우에도 cp 값은 1, 반환 map 내용만 다름
-    updateCp(1);
-    
     // 현재 게시판 종류 번호 갱신
     boardCode = boardTypeItem.dataset.boardCode;
+    // boardCode 반영해 url 갱신
+    history.pushState({}, '', boardCode);
+
     // 게시글 목록 갱신
-    renderBoardList(boardCode, 1)
-        .catch(console.error);
+    renderBoardList(boardCode, null).catch(console.error);
   });
 });
 
-// 쓰기 버튼 클릭시 비동기식 페이지 전환
-if(writeBtn) {
+// 뒤로가기 실행 시
+window.addEventListener("popstate", () => {
+  // 현재 게시판 종류 번호를 이전 게시판 종류 번호로 바꿈
+  // 페이지에 맞게 게시글 목록을 다시 불러옴
+  boardCode = location.pathname.split('/')[3];
+  loadBoardList(boardCode);
+});
 
-  /** 글을 작성할 수 있는 요소를 그려주고, 작성 완료 시 다시 게시글/페이징 목록을 업데이트해서 보여주는 메서드
-   * @author Jiho
-   */
-  writeBtn.firstElementChild.addEventListener("click", () => {
-
-    if(boardCode === 0) {
-      alert("존재하지 않는 게시판입니다.");
-      return;
-    }
-    
-    // 1. html 요소 그리기
-    // 2.
-    
-  });
-}
-
-// 보드 메인 페이지 최초 진입 시 renderBoardList() 실행
-renderBoardList(boardCode, 1)
-    .catch(console.error);
+loadBoardList(boardCode);

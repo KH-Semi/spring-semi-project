@@ -22,8 +22,8 @@ public interface BoardService {
 
 	/** 현재 선택된 게시판의 삭제되지 않은 게시글 목록 조회 / pagination 객체 반환
 	 * @author Jiho
-	 * @param currentBoardCode
-	 * @param cp
+	 * @param currentBoardCode 현재 게시판 종류 번호
+	 * @param cp 현재 페이지 번호
 	 * @return {"boardList" : List<Board>, "pagination" : Pagination}
 	 */
 	Map<String, Object> selectBoardList(int currentBoardCode, int cp);

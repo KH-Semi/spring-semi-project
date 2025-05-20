@@ -7,7 +7,7 @@
     <!-- 공용 css/js 추가 -->
     <th:block th:replace="~{common/common}"></th:block>
     <!-- miniHome 전용 CSS -->
-    <link href="/css/myPage.css" rel="stylesheet" />
+    <link href="/css/myPage/editProfile.css" rel="stylesheet" />
   </head>
   <body>
     <div class="container">
@@ -70,8 +70,7 @@
 
           <textarea
             class="Comment"
-            placeholder="Write Friend Comment."
-          ></textarea>
+            placeholder="Write Friend Comment."></textarea>
 
           <div class="comment-header">
             <div class="title">Friend Comment List</div>
@@ -81,8 +80,7 @@
             <textarea
               class="Comment"
               id="comment-input"
-              placeholder="댓글을 작성하세요..."
-            ></textarea>
+              placeholder="댓글을 작성하세요..."></textarea>
             <button class="write-button" id="submit-comment">댓글 등록</button>
           </div>
 
@@ -94,8 +92,7 @@
               <img
                 alt="User avatar"
                 class="avatar"
-                th:src="#{user.default.image}"
-              />
+                th:src="#{user.default.image}"/>
               <div class="comment-content">
                 <span class="username">허태범</span>
                 <span class="comment-text">여기에 댓글 텍스트를 넣으세요.</span>
@@ -106,14 +103,29 @@
                 </div>
               </div>
             </div>
-            <hr />
+            <hr/>
 
             <div class="comment-item">
               <img
                 alt="User avatar"
                 class="avatar"
-                th:src="#{user.default.image}"
-              />
+                th:src="#{user.default.image}"/>
+              <div class="comment-content">
+                <span class="username">김영인</span>
+                <span class="comment-text">안녕하세요~~~</span>
+                <div class="comment-meta">
+                  <span class="user-role">레몬이</span>
+                  <button class="delete-btn">Delete</button>
+                </div>
+              </div>
+            </div>
+            <hr/>
+
+            <div class="comment-item">
+              <img
+                alt="User avatar"
+                class="avatar"
+                th:src="#{user.default.image}"/>
               <div class="comment-content">
                 <span class="username">김영인</span>
                 <span class="comment-text">안녕하세요~~~</span>
@@ -129,25 +141,7 @@
               <img
                 alt="User avatar"
                 class="avatar"
-                th:src="#{user.default.image}"
-              />
-              <div class="comment-content">
-                <span class="username">김영인</span>
-                <span class="comment-text">안녕하세요~~~</span>
-                <div class="comment-meta">
-                  <span class="user-role">레몬이</span>
-                  <button class="delete-btn">Delete</button>
-                </div>
-              </div>
-            </div>
-            <hr />
-
-            <div class="comment-item">
-              <img
-                alt="User avatar"
-                class="avatar"
-                th:src="#{user.default.image}"
-              />
+                th:src="#{user.default.image}"/>
               <div class="comment-content">
                 <span class="username">김영민</span>
                 <span class="comment-text">안녕하세요~~~</span>
@@ -168,6 +162,6 @@
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
 
-    <script src="/js/home/home.js"></script>
+    <script src="/js/miniHome/miniHome.js"></script>
   </body>
 </html>
