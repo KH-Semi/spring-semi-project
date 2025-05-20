@@ -3,6 +3,7 @@ package com.featherworld.project.board.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.featherworld.project.board.model.dto.Board;
 import com.featherworld.project.board.model.dto.BoardType;
 
 public interface BoardService {
@@ -33,6 +34,14 @@ public interface BoardService {
 	 * @return
 	 */
 	int boardLike(Map<String, Integer> map);
+
+	/** 게시글 상세 조회
+	 * @author 허배령
+	 * @param map
+	 * @return
+	 */
+	Board selectOne(Map<String, Integer> map);
+
 
 
 }

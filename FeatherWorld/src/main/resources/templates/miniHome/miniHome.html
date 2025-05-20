@@ -2,13 +2,14 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>FeatherWorld</title>
+    <!-- 공용 css/js 추가 -->
     <th:block th:replace="~{common/common}"></th:block>
-    <link rel="stylesheet" href="/css/miniHome/miniHome.css" />
+    <!-- miniHome 전용 CSS -->
+    <link href="/css/myPage.css" rel="stylesheet" />
   </head>
   <body>
-    <th:block th:replace="~{common/header}"></th:block>
     <div class="container">
       <!-- Left Panel - Profile Information -->
       <div class="left-panel">
@@ -18,10 +19,7 @@
 
         <div class="profile-info">
           <div class="profile-image">
-            <img
-              src="/FeatherWorld/src/main/resources/static/images/user.png"
-              alt="프로필 이미지"
-            />
+            <img alt="프로필 이미지" th:src="#{user.default.image}" />
           </div>
           <div class="profile-name">반응형</div>
           <div class="profile-handle">@re</div>
@@ -40,7 +38,6 @@
             <button class="action-button Logout-button">Logout</button>
           </div>
         </div>
-
         <!-- 여기 추가 -->
         <div class="profile-action">
           <button class="action-button Board-button">Bio</button>
@@ -65,22 +62,10 @@
 
           <!-- 이미지 4개 행 추가 -->
           <div class="small-image-row">
-            <img
-              src="/FeatherWorld/src/main/resources/static/images/sample1.jpg"
-              alt="Image 1"
-            />
-            <img
-              src="/FeatherWorld/src/main/resources/static/images/sample2.jpg"
-              alt="Image 2"
-            />
-            <img
-              src="/FeatherWorld/src/main/resources/static/images/sample3.jpg"
-              alt="Image 3"
-            />
-            <img
-              src="/FeatherWorld/src/main/resources/static/images/sample4.jpg"
-              alt="Image 4"
-            />
+            <img alt="Image 1" th:src="#{user.default.image}" />
+            <img alt="Image 2" th:src="#{user.default.image}" />
+            <img alt="Image 3" th:src="#{user.default.image}" />
+            <img alt="Image 4" th:src="#{user.default.image}" />
           </div>
 
           <textarea
@@ -90,15 +75,15 @@
 
           <div class="comment-header">
             <div class="title">Friend Comment List</div>
-            <button id="write-button" class="write-button">Write</button>
+            <button class="write-button" id="write-button">Write</button>
           </div>
           <div id="comment-form" style="display: none; margin-top: 10px">
             <textarea
-              id="comment-input"
               class="Comment"
+              id="comment-input"
               placeholder="댓글을 작성하세요..."
             ></textarea>
-            <button id="submit-comment" class="write-button">댓글 등록</button>
+            <button class="write-button" id="submit-comment">댓글 등록</button>
           </div>
 
           <!-- 뎃글 부분 -->
@@ -106,7 +91,11 @@
           <!-- 댓글 목록 div에 id 추가 -->
           <div class="comment-list" id="comment-list">
             <div class="comment-item">
-              <img src="avatar1.png" alt="User avatar" class="avatar" />
+              <img
+                alt="User avatar"
+                class="avatar"
+                th:src="#{user.default.image}"
+              />
               <div class="comment-content">
                 <span class="username">허태범</span>
                 <span class="comment-text">여기에 댓글 텍스트를 넣으세요.</span>
@@ -120,7 +109,11 @@
             <hr />
 
             <div class="comment-item">
-              <img src="avatar2.png" alt="User avatar" class="avatar" />
+              <img
+                alt="User avatar"
+                class="avatar"
+                th:src="#{user.default.image}"
+              />
               <div class="comment-content">
                 <span class="username">김영인</span>
                 <span class="comment-text">안녕하세요~~~</span>
@@ -133,7 +126,11 @@
             <hr />
 
             <div class="comment-item">
-              <img src="avatar2.png" alt="User avatar" class="avatar" />
+              <img
+                alt="User avatar"
+                class="avatar"
+                th:src="#{user.default.image}"
+              />
               <div class="comment-content">
                 <span class="username">김영인</span>
                 <span class="comment-text">안녕하세요~~~</span>
@@ -146,9 +143,13 @@
             <hr />
 
             <div class="comment-item">
-              <img src="avatar2.png" alt="User avatar" class="avatar" />
+              <img
+                alt="User avatar"
+                class="avatar"
+                th:src="#{user.default.image}"
+              />
               <div class="comment-content">
-                <span class="username">김영인</span>
+                <span class="username">김영민</span>
                 <span class="comment-text">안녕하세요~~~</span>
                 <div class="comment-meta">
                   <span class="user-role">레몬이</span>
@@ -161,28 +162,12 @@
         </div>
       </div>
 
-      <!--                          -->
+      <th:block th:replace="~{common/navSidebar}"></th:block>
 
-      <!-- Right Panel - Navigation Menu -->
-      <div class="right-panel">
-        <div class="menu-item menu-item-home active-home">
-          <i class="fas fa-house"></i> Home
-        </div>
-        <div class="menu-item profile-menu">
-          <i class="fas fa-user"></i> Profile
-        </div>
-        <div class="menu-item"><i class="fas fa-clipboard-list"></i> Board</div>
-        <div class="menu-item">
-          <i class="fas fa-user-friends"></i> FriendList
-        </div>
-        <div class="menu-item"><i class="fas fa-play"></i> Playlist</div>
-        <div class="menu-item"><i class="fas fa-book"></i> Guestbook</div>
-      </div>
+      <!-- 푸터 추가 -->
+      <th:block th:replace="~{common/footer}"></th:block>
     </div>
 
-    <!-- 푸터 추가 -->
-    <th:block th:replace="~{common/footer}"></th:block>
-
-    <script src="/FeatherWorld/src/main/resources/static/js/home/home.js"></script>
+    <script src="/js/home/home.js"></script>
   </body>
 </html>

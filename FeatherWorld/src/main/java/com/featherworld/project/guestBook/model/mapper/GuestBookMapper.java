@@ -11,18 +11,19 @@ import com.featherworld.project.guestBook.model.dto.GuestBook;
 @Mapper
 public interface GuestBookMapper {
 
+	
+	
 	/** 방명록 조회
+	 * @author 
 	 * @param ownerNo
 	 * @param loginMemberNo
 	 * @param cp
 	 * @return
 	 */
-	List<GuestBook> selectGuestBookList( @Param("ownerNo") int ownerNo,
-										@Param("loginMemberNo") int loginMemberNo,
-										@Param("cp") int cp  );
-
+	//Map<String, Object> selectGuestBookList(map);
 	
 	/** 방명록 작성
+	 * @author 
 	 * @param inputGuestBook
 	 * @return 해당 방명록의 GuestBookNo
 	 */
@@ -30,6 +31,7 @@ public interface GuestBookMapper {
 
 	
 	/** 방명록 수정
+	 * @author 
 	 * @param inputGuestBook
 	 * @return 
 	 */
@@ -38,6 +40,7 @@ public interface GuestBookMapper {
 	
 
 	/** 방명록 삭제
+	 * @author 
 	 * @param map
 	 * @return
 	 */
@@ -45,4 +48,7 @@ public interface GuestBookMapper {
 
 
 	GuestBook selectOne(int guestBookNo);
+
+
+	
 }
