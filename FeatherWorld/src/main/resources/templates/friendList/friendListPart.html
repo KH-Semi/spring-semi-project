@@ -1,32 +1,62 @@
 <head>
-    <link rel="stylesheet" href="/css/common/main.css"> <!-- for pagination -->
-    <link rel="stylesheet" href="/css/friendList/friendListPart.css">
-    
+  <link rel="stylesheet" href="/css/common/main.css" />
+  <!-- for pagination -->
+  <link rel="stylesheet" href="/css/friendList/friendListPart.css" />
 </head>
 
-
-
-
-<div id = "my-friend-list">
-  <ul class="title">내 일촌 목록</ul>
+<div id="my-friend-list">
+  <div class="title">
+    <ul class="title-font">
+      내 일촌 목록
+    </ul>
+    <button id="edit-button" class="right-align button-default">Edit</button>
+    <div id="apply-cancel-button-div" class="right-align hidden">
+      <button id="apply-button" class="button-default hidden">Apply</button>
+      <button id="cancel-button" class="button-default hidden">Cancel</button>
+    </div>
+  </div>
   <ul id="friend-list">
-      
-    <th:block  th:each="ilchon : ${ilchons}">
+    <th:block th:each="ilchon : ${ilchons}">
       <li class="friend-item">
         <div class="left-align">
-          <img th:if="${ilchon.memberImg}" th:src="@{${ilchon.memberImg}}" width="20" />
-          <img th:unless="${ilchon.memberImg}" th:src="@{/images/default-user.png}" width="20" />
-          <span class="font-bold color-gray"th:text="${ilchon.memberName}">별명</span>
-
+          <img
+            th:if="${ilchon.memberImg}"
+            th:src="@{${ilchon.memberImg}}"
+            width="20"
+          />
+          <img
+            th:unless="${ilchon.memberImg}"
+            th:src="@{/images/default-user.png}"
+            width="20"
+          />
+          <span class="font-bold color-gray" th:text="${ilchon.memberName}"
+            >별명</span
+          >
         </div>
-        
+
         <div class="right-align">
+          <span
+            name="fromNickname"
+            class="color-gray"
+            th:text="${ilchon.fromNickname}"
+            >일촌명</span
+          >
 
-          <span class="color-gray"th:text="${ilchon.fromNickname}">일촌명</span> 
-        
-          <span class="rounded-span right-align font-bold">일촌</span>
+          <span name="ilchon-button" class="rounded-span right-align font-bold"
+            >일촌</span
+          >
+          <textarea
+            name="fromNickname-input"
+            class="hidden"
+            rows="1"
+          ></textarea>
+          <span
+            name="unfollow-button"
+            class="rounded-unfollow-span right-align color-red hidden"
+            width="30px"
+            >Unfollow</span
+          >
         </div>
-        
       </li>
     </th:block>
     <th:block th:if="${#lists.isEmpty(ilchons)}">
@@ -43,7 +73,9 @@
     <li><a th:href="@{/friendList(cp=${pagination.prevPage})}">&lt;</a></li>
 
     <!-- Page numbers -->
-    <th:block th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
+    <th:block
+      th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
+    >
       <li th:if="${i == pagination.currentPage}">
         <a class="current" th:text="${i}"></a>
       </li>
@@ -59,6 +91,7 @@
     <li><a th:href="@{/friendList(cp=${pagination.maxPage})}">&gt;&gt;</a></li>
   </ul>
 </div>
+
 <!--***********author : ahn     **********
 ***************2505015 todo :   **********
 

@@ -4,20 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FeatherWorld</title>
-    <!-- 공용 CSS/JS용 headFragment 불러오기 (필요하면) -->
-    <th:block th:replace="~{common/common :: headFragment}"></th:block>
+    <!-- 공용 CSS/JS 불러오기 -->
+    <th:block th:replace="~{common/common}"></th:block>
     
-    <!-- 아이콘 -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
     <!-- myPage 전용 CSS -->
-    <link rel="stylesheet" href="../../static/css/myPage/Profile.css" />
+    <link rel="stylesheet" href="/css/myPage/Profile.css" />
   </head>
   <body>
     <!-- 여기서 공통 헤더 삽입 -->
-    <th:block th:replace="~{common/common :: headerFragment}"></th:block>
+    <th:block th:replace="~{common/header}"></th:block>
     <div class="container">
       <!-- Left Panel - Profile Information -->
       <div class="left-sidebar">
@@ -149,6 +144,6 @@
     <!-- 푸터 추가 -->
     <th:block th:replace="~{common/footer}"></th:block>
 
-    <script src="/FeatherWorld/src/main/resources/static/js/profile/profile.js"></script>
+    <script src="/js/profile/profile.js"></script>
   </body>
 </html>

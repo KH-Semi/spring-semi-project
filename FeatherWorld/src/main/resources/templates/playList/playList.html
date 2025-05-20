@@ -1,109 +1,104 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-  <meta charset="UTF-8">
-  <title>YouTube Embed</title>
-  <!-- 공용 css/js 추가 -->
-  <th:block th:replace="~{common/common}"></th:block>
- <!-- 아이콘 -->
-  <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-    <!-- myPage 전용 CSS -->
-  <link rel="stylesheet" href="../../static/css/playList/playList.css">
-    <link rel="stylesheet" th:href="@{/css/myPage.css}" />
-    
-  </head>
+	<meta charset="UTF-8">
+	<title>YouTube Embed</title>
+	<!-- 공용 css/js 추가 -->
+	<th:block th:replace="~{common/common}"></th:block>
+	<!-- myPage 전용 CSS -->
+	<link rel="stylesheet" href="/css/playList/playList.css">
+	<link rel="stylesheet" href="/css/myPage.css" />
+
+</head>
+
 <body>
-    <div class="container">
-       <!-- Left sidebar - Profile Information -->
-      <div class="left-sidebar">
-        <header class="logo">
-          <p>Today / Total</p>
-        </header>
+	<div class="container">
+		<!-- Left sidebar - Profile Information -->
+		<div class="left-sidebar">
+			<header class="logo">
+				<p>Today / Total</p>
+			</header>
 
-        <div class="profile-info">
-          <div class="profile-image">
-            <img
-              th:src="${session.loginMember != null && session.loginMember.
-              memberImg != null} ? @{${session.loginMember.memberImg}} : @{/images/user.png}"
-              alt="Profile Image"
-            />
-          </div>
+			<div class="profile-info">
+				<div class="profile-image">
+					<img th:src="${session.loginMember != null && session.loginMember.
+              memberImg != null} ? @{${session.loginMember.memberImg}} : @{/images/user.png}" alt="Profile Image" />
+				</div>
 
-          <!-- 회원 번호 표시 -->
-          <div class="profile-name" th:text="${memberno}" aria-placeholder="회원">회원</div>
+				<!-- 회원 번호 표시 -->
+				<div class="profile-name" th:text="${memberno}" aria-placeholder="회원">회원</div>
 
-          <!-- 닉네임 (@ 표시 포함) -->
-          <div class="profile-handle" th:text="'@' + ${nickname}" aria-placeholder="닉네임">@닉네임</div>
+				<!-- 닉네임 (@ 표시 포함) -->
+				<div class="profile-handle" th:text="'@' + ${nickname}" aria-placeholder="닉네임">@닉네임</div>
 
-          <!-- 팔로워 / 팔로잉 수 -->
-          <div class="profile-stats">
-            <div class="stat">
-              <div class="stat-number" th:text="${followerCount}">0</div>
-              <div class="stat-label">Follower</div>
-            </div>
-            <div class="stat">
-              <div class="stat-number" th:text="${followingCount}">0</div>
-              <div class="stat-label">Following</div>
-            </div>
-          </div>
-          
-          <!-- profile 하단 버튼-->
-                <div class="profile-action">
-                    <button id="confirmEditBtn" class="action-button confirm-button">Confirm</button>
-                   <button id="backToProfileBtn" class="action-button back-button">Back</button>
+				<!-- 팔로워 / 팔로잉 수 -->
+				<div class="profile-stats">
+					<div class="stat">
+						<div class="stat-number" th:text="${followerCount}">0</div>
+						<div class="stat-label">Follower</div>
+					</div>
+					<div class="stat">
+						<div class="stat-number" th:text="${followingCount}">0</div>
+						<div class="stat-label">Following</div>
+					</div>
+				</div>
 
-                </div>
-            </div>
-        
-            <!-- 여기 추가 -->
-              <div class="profile-action">
-                <button class="action-button Board-button">Bio</button>
-              </div>
-            
-            <div class="profile-action">
-                    <button class="action-button surfing-button">surfing</button>
-                </div>
-        </div>
+				<!-- profile 하단 버튼-->
+				<div class="profile-action">
+					<button id="confirmEditBtn" class="action-button confirm-button">Confirm</button>
+					<button id="backToProfileBtn" class="action-button back-button">Back</button>
 
-        <!-- middle -->
-         <div class="middle-sidebar">
-            <div class="header">
+				</div>
+			</div>
 
-        <input type="text" id="youtubeUrl" placeholder="Youtube URL Input">
-        <div id="videoContainer"></div>
+			<!-- 여기 추가 -->
+			<div class="profile-action">
+				<button class="action-button Board-button">Bio</button>
+			</div>
+
+			<div class="profile-action">
+				<button class="action-button surfing-button">surfing</button>
+			</div>
+		</div>
+
+		<!-- middle -->
+		<div class="middle-sidebar">
+			<div class="header">
+
+				<input type="text" id="youtubeUrl" placeholder="Youtube URL Input">
+				<div id="videoContainer"></div>
 
 
-        <script>
-    const input = document.getElementById('youtubeUrl');
-    const container = document.getElementById('videoContainer');
-  
-    input.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        const url = input.value.trim();
-  
-        // 기본 초기화
-        let embedUrl = "";
-  
-        // 1. playlist 링크인지 확인
-        const playlistMatch = url.match(/[?&]list=([a-zA-Z0-9_-]+)/);
-        // 2. 단일 영상인지 확인
-        const videoMatch = url.match(/(?:youtube\.com\/.*[?&]v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-  
-        if (playlistMatch && url.includes("playlist")) {
-          const listId = playlistMatch[1];
-          embedUrl = `https://www.youtube.com/embed/videoseries?list=${listId}`;
-        } else if (videoMatch) {
-          const videoId = videoMatch[1];
-          embedUrl = `https://www.youtube.com/embed/${videoId}`;
-        } else {
-          alert("올바른 유튜브 영상 또는 재생목록 URL을 입력해주세요.");
-          return;
-        }
-  
-        // iframe 생성
-        container.innerHTML = `
+				<script>
+					const input = document.getElementById('youtubeUrl');
+					const container = document.getElementById('videoContainer');
+
+					input.addEventListener('keydown', function (e) {
+						if (e.key === 'Enter') {
+							const url = input.value.trim();
+
+							// 기본 초기화
+							let embedUrl = "";
+
+							// 1. playlist 링크인지 확인
+							const playlistMatch = url.match(/[?&]list=([a-zA-Z0-9_-]+)/);
+							// 2. 단일 영상인지 확인
+							const videoMatch = url.match(/(?:youtube\.com\/.*[?&]v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+
+							if (playlistMatch && url.includes("playlist")) {
+								const listId = playlistMatch[1];
+								embedUrl = `https://www.youtube.com/embed/videoseries?list=${listId}`;
+							} else if (videoMatch) {
+								const videoId = videoMatch[1];
+								embedUrl = `https://www.youtube.com/embed/${videoId}`;
+							} else {
+								alert("올바른 유튜브 영상 또는 재생목록 URL을 입력해주세요.");
+								return;
+							}
+
+							// iframe 생성
+							container.innerHTML = `
           <div class="embed-container">
             <iframe 
               src="${embedUrl}" 
@@ -112,61 +107,28 @@
             </iframe>
           </div>
         `;
-      }
-    });
-  </script>
+						}
+					});
+				</script>
 
-   <!-- confirm 버튼 -->
-<div class="post-actions">
-  <button class="post-button" id="confirmYouTubeBtn">
-    <i class="fas fa-check"></i> Confirm
-  </button>
-</div>
+				<!-- confirm 버튼 -->
+				<div class="post-actions">
+					<button class="post-button" id="confirmYouTubeBtn">
+						<i class="fas fa-check"></i> Confirm
+					</button>
+				</div>
 
 
 
-  </div>
-        </div>
-  
-   <!-- Right Panel - Navigation Menu -->
-         <div class="right-sidebar">
-  <div class="nav-sidebar">
-    <div class="nav-item">
-      <a th:href="@{/{member}/minihome(member=${memberNo})}">
-        <i class="fas fa-house"></i> Home
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/profile(member=${memberNo})}">
-        <i class="fas fa-user"></i> Profile
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}">
-        <i class="fas fa-clipboard-list"></i> Board
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/friendlist(member=${memberNo})}">
-        <i class="fas fa-user-friends"></i> Friendlist
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/playlist(member=${memberNo})}">
-        <i class="fas fa-play"></i> Playlist
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/guestbook(member=${memberNo})}">
-        <i class="fas fa-book"></i> Guestbook
-      </a>
-    </div>
-  </div>
-</div>
+			</div>
+		</div>
 
-     <!-- 푸터 추가 -->
-   <th:block th:replace="~{common/footer}"></th:block>
+		<th:block th:replace="~{common/navSidebar}"></th:block>
 
-   <script src="../../static/js/playList/playList.js"></script>
+		<!-- 푸터 추가 -->
+		<th:block th:replace="~{common/footer}"></th:block>
+
+		<script src="../../static/js/playList/playList.js"></script>
 </body>
+
 </html>

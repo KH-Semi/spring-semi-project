@@ -334,7 +334,7 @@ body {
   cursor: pointer;
 }
 
-/* home */
+/* miniHome */
 .boardSummary {
   display: flex;
   justify-content: flex-start; /* 기본은 왼쪽 정렬 */
@@ -370,7 +370,7 @@ body {
   text-align: center;
 }
 
-/* home */
+/* miniHome */
 /* 중간 4개 이미지 넣는 곳 */
 .small-image-row {
   display: flex;
@@ -422,7 +422,7 @@ body {
   line-height: 80px; /* placeholder 수직 중앙 맞춤 */
 }
 
-/* home */
+/* miniHome */
 /* placeholder 스타일 */
 .Comment::placeholder {
   font-size: 16px; /* 폰트 크기 키우기 */

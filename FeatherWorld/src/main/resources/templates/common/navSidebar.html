@@ -1,22 +1,34 @@
-<div class="right-sidebar">
+<div class="right-sidebar" xmlns="http://www.w3.org/1999/html">
   <div class="nav-sidebar">
-    <div class="nav-item">
-      <i class="icon-home"></i> Home
-    </div>
-    <div class="nav-item">
-      <i class="icon-profile"></i> Profile
-    </div>
-    <div class="nav-item">
-      <i class="icon-board"></i> Board
-    </div>
-    <div class="nav-item">
-      <i class="icon-friendlist"></i> Friendlist
-    </div>
-    <div class="nav-item">
-      <i class="icon-playlist"></i> Playlist
-    </div>
-    <div class="nav-item">
-      <i class="icon-guestbook"></i> Guestbook
-    </div>
+    <a id="home" th:href="@{/{member}/minihome(member=${memberNo})}">
+      <div class="nav-item">
+        <span class="fas fa-house"></span>Home
+      </div>
+    </a>
+    <a th:href="@{/{member}/profile(member=${memberNo})}">
+      <div class="nav-item">
+        <span class="fas fa-user"></span>Profile
+      </div>
+    </a>
+    <a th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}">
+      <div class="nav-item">
+        <span class="fas fa-clipboard-list"></span>Board
+      </div>
+    </a>
+    <a th:href="@{/{member}/friendlist(member=${memberNo})}">
+      <div class="nav-item">
+        <span class="fas fa-user-friends"></span>Friendlist
+      </div>
+    </a>
+    <a th:href="@{/{member}/playlist(member=${memberNo})}">
+      <div class="nav-item">
+        <span class="fas fa-play"></span>Playlist
+      </div>
+    </a>
+    <a th:href="@{/{member}/guestbook(member=${memberNo})}">
+      <div class="nav-item">
+        <span class="fas fa-book"></span>Guestbook
+      </div>
+    </a>
   </div>
 </div>
