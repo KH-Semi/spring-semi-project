@@ -1,0 +1,63 @@
+<div class="left-sidebar">
+  <!-- 방문 번호 표시 -->
+  <p>Today / Total</p>
+  <div class="vistorno" th:text="${vistorno}">회원</div>
+
+  <div class="profile-info">
+    <div class="profile-image">
+      <img
+        th:src="${session.loginMember != null && session.loginMember.
+              memberImg != null} ? @{${session.loginMember.memberImg}} : @{/images/user.png}"
+        alt="Profile Image"
+      />
+    </div>
+
+    <!-- 회원 표시 -->
+    <div class="profile-name" th:text="${membername}">회원</div>
+
+    <!-- 이메일 -->
+    <div class="profile-handle" th:text="${memberEmail}">user@email.com</div>
+
+    <!-- 팔로워 / 팔로잉 수 -->
+    <div class="profile-stats">
+      <div class="stat">
+        <div class="stat-number" th:text="${followerCount}">0</div>
+        <div class="stat-label">Follower</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number" th:text="${followingCount}">0</div>
+        <div class="stat-label">Following</div>
+      </div>
+    </div>
+
+    <!-- 로그인한 사용자가 자기 자신의 미니홈피일 때 -->
+    <div
+      class="profile-action"
+      th:if="${session.loginMember != null and session.loginMember.memberNo == member.memberNo}"
+    >
+      <button id="editProfileBtn" class="action-button Edit-button">
+        Edit Profile
+      </button>
+      <button class="action-button Logout-button">Logout</button>
+    </div>
+
+    <!-- 로그인했고, 다른 사람의 미니홈피에 접근한 경우 -->
+    <div
+      class="profile-action"
+      th:if="${session.loginMember != null and session.loginMember.memberNo != member.memberNo}"
+    >
+      <button class="action-button follow-button">Follow</button>
+    </div>
+
+    <!-- 여기 추가 -->
+    <div
+      class="profile-action"
+      th:value="${member != null ? member.intro : ''}"
+    ></div>
+
+    <!-- surfing -->
+    <div class="profile-action" th:if="${session.loginMember != null}">
+      <button class="action-button surfing-button">surfing</button>
+    </div>
+  </div>
+</div>

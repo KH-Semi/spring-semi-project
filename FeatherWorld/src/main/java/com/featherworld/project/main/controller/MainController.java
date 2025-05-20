@@ -1,6 +1,7 @@
 package com.featherworld.project.main.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /** 메인 페이지 컨트롤러
@@ -17,6 +18,10 @@ public class MainController {
 	public String mainPage() {
 		return "common/main";
 	}
-	
+	@RequestMapping("{memberNo:[0-9]+}")
+	public String memberPage(@PathVariable("memberNo") int memberNo) {
+		
+		return "redirect:/"+ memberNo +"/minihome";
+	}
 	
 }

@@ -49,10 +49,12 @@
 
           <!-- 하단 버튼 -->
           <div class="profile-action">
-            <button id="editProfileBtn" class="action-button Edit-button">
-              Edit Profile
-            </button>
-            <button class="action-button Logout-button">Logout</button>
+            <a th:href="@{'/' + ${member.memberNo} + '/profile/edit'}">
+                <button>Edit Profile</button>
+            </a>
+            <a th:href="@{'/' + ${member.memberNo} + '/profile/logout'}">
+                <button>Logout</button>
+            </a>
           </div>
         </div>
 
@@ -105,41 +107,8 @@
         </div>
       </div>
 
-      <!-- Right Panel - Navigation Menu -->
-      <div class="right-sidebar">
-  <div class="nav-sidebar">
-    <div class="nav-item">
-      <a th:href="@{/{member}/minihome(member=${memberNo})}">
-        <i class="fas fa-house"></i> Home
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/profile(member=${memberNo})}">
-        <i class="fas fa-user"></i> Profile
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}">
-        <i class="fas fa-clipboard-list"></i> Board
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/friendlist(member=${memberNo})}">
-        <i class="fas fa-user-friends"></i> Friendlist
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/playlist(member=${memberNo})}">
-        <i class="fas fa-play"></i> Playlist
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/guestbook(member=${memberNo})}">
-        <i class="fas fa-book"></i> Guestbook
-      </a>
-    </div>
-  </div>
-</div>
+     <!-- Right sidebar - Navigation Menu -->
+    <th:block th:replace="~{common/navSidebar}"></th:block>
 
     <!-- 푸터 추가 -->
     <th:block th:replace="~{common/footer}"></th:block>
