@@ -129,9 +129,8 @@
               <div class="profile-container">
                 <div class="profile-avatar">
                   <img  th:src="${session.loginMember != null &&
-                            session.loginMember?.memberImg != null &&
-                            session.loginMember?.memberImg != 'null' ?
-                            session.loginMember?.memberImg : #{user.default.image}}"  alt="Profile Image"/>
+                            session.loginMember?.memberImg != null ?
+                            session.loginMember?.memberImg : '/images/user.png'}"  alt="Profile Image"/>
                 </div>
                 <h2 class="profile-name" th:text="${session.loginMember?.memberName}">
                   안준성
@@ -141,7 +140,7 @@
                 </p>
 
                 <div class="profile-actions">
-                  <a href="/member/home" class="home-btn">
+                  <a th:href="@{/{member}/minihome(member=${session.loginMember?.memberNo})}" class="home-btn">
                     <i class="fa-solid fa-house" alt="Home"></i>
                     My Home
                   </a>
