@@ -1,93 +1,87 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FeatherWorld</title>
     <!-- 공용 css/js 추가 -->
     <th:block th:replace="~{common/common}"></th:block>
     <!-- 아이콘 -->
     <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-        <!-- myPage 전용 CSS -->
-    <link rel="stylesheet" href="/css/friendList/friendList.css">
-
-</head>
-<body>
-     <!-- Header Fragment -->
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- myPage 전용 CSS -->
+    <link rel="stylesheet" href="/css/friendList/friendList.css" />
+  </head>
+  <body>
+    <!-- Header Fragment -->
     <header th:replace="~{common/header.html}"></header>
     <div class="container">
-        <!-- Left Panel - Profile Information -->
-        <div class="left-panel">
-            <header class="logo">
-                <p>Today / Total</p>
-            </header>
+      <!-- Left Panel - Profile Information -->
+      <div class="left-panel">
+        <header class="logo">
+          <p>Today / Total</p>
+        </header>
 
-            <div class="profile-info">
-                <div class="profile-image">
-                    <img src="/FeatherWorld/src/main/resources/static/images/user.png" alt="프로필 이미지">
-                </div>
-                <div class="profile-name">반응형</div>
-                <div class="profile-handle">@re</div>
-                <div class="profile-stats">
-                    
-                    <div class="stat">
-                        <div class="stat-number">128</div>
-                        <div class="stat-label">Follower</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number">97</div>
-                        <div class="stat-label">Following</div>
-                    </div>
-                </div>
-                <div class="profile-action">
-                    <button class="action-button Edit-button">Edit Profile</button>
-                    <button class="action-button Logout-button">Logout</button>
-                </div>
+        <div class="profile-info">
+          <div class="profile-image">
+            <img
+              src="/FeatherWorld/src/main/resources/static/images/user.png"
+              alt="프로필 이미지"
+            />
+          </div>
+          <div class="profile-name">반응형</div>
+          <div class="profile-handle">@re</div>
+          <div class="profile-stats">
+            <div class="stat">
+              <div class="stat-number">128</div>
+              <div class="stat-label">Follower</div>
             </div>
-        
-            <!-- 여기 추가 -->
-              <div class="profile-action">
-                <button class="action-button Board-button">Bio</button>
-              </div>
-            
-            <div class="profile-action">
-                    <button class="action-button surfing-button">surfing</button>
-                </div>
+            <div class="stat">
+              <div class="stat-number">97</div>
+              <div class="stat-label">Following</div>
+            </div>
+          </div>
+          <div class="profile-action">
+            <button class="action-button Edit-button">Edit Profile</button>
+            <button class="action-button Logout-button">Logout</button>
+          </div>
         </div>
 
-        <!-- Middle Panel - Posts -->
-         <div class="middle-panel">
-            <th:block th:replace="~{friendList/friendListPart}"></th:block>
-         </div>
-        
-
-        <!-- Right Panel - Navigation Menu -->
-        <div class="right-panel">
-            <div class="menu-item">
-                <i class="fas fa-house"></i> Home
-            </div>
-            <div class="menu-item profile-menu">
-                 <i class="fas fa-user"></i> Profile
-            </div>
-            <div class="menu-item">
-               <i class="fas fa-clipboard-list"></i> Board
-            </div>
-            <div class="menu-item">
-               <i class="fas fa-user-friends"></i> FriendList
-            </div>
-            <div class="menu-item">
-                <i class="fas fa-play"></i> Playlist
-            </div>
-            <div class="menu-item">
-                <i class="fas fa-book"></i> Guestbook
-            </div>
+        <!-- 여기 추가 -->
+        <div class="profile-action">
+          <button class="action-button Board-button">Bio</button>
         </div>
+
+        <div class="profile-action">
+          <button class="action-button surfing-button">surfing</button>
+        </div>
+      </div>
+
+      <!-- Middle Panel - Posts -->
+      <div class="middle-panel">
+        <th:block th:replace="~{friendList/friendListPart}"></th:block>
+      </div>
+
+      <!-- Right Panel - Navigation Menu -->
+      <div class="right-panel">
+        <div class="menu-item"><i class="fas fa-house"></i> Home</div>
+        <div class="menu-item profile-menu">
+          <i class="fas fa-user"></i> Profile
+        </div>
+        <div class="menu-item"><i class="fas fa-clipboard-list"></i> Board</div>
+        <div class="menu-item">
+          <i class="fas fa-user-friends"></i> FriendList
+        </div>
+        <div class="menu-item"><i class="fas fa-play"></i> Playlist</div>
+        <div class="menu-item"><i class="fas fa-book"></i> Guestbook</div>
+      </div>
     </div>
 
-     <!-- 푸터 추가 -->
-   <footer th:replace="~{common/footer.html}"></footer>
-
-</body>
+    <!-- 푸터 추가 -->
+    <footer th:replace="~{common/footer.html}"></footer>
+    <script src="/js/friendList/friendListPart.js"></script>
+    <!-- script에서는 절대 경로를 써야한다!!-->
+  </body>
 </html>
