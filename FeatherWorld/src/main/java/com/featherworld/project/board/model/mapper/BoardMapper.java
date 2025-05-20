@@ -48,5 +48,12 @@ public interface BoardMapper {
 	 */
 	int selectLikeCount(Integer integer);
 
+	/** 게시글 상세 조회
+	 * @author 허배령
+	 * @param map
+	 * @return
+	 */
+	Board selectOne(Map<String, Integer> map);
+
 
 }
