@@ -1,5 +1,6 @@
 package com.featherworld.project.board.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +13,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.featherworld.project.board.model.dto.Board;
 import com.featherworld.project.board.model.dto.BoardType;
 import com.featherworld.project.board.model.service.BoardService;
+import com.featherworld.project.member.model.dto.Member;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
@@ -95,6 +103,49 @@ public class BoardController {
 
 		return "board/boardWrite";
 	}
+	
+	@GetMapping("{memberNo:[0-9]+}/board/{boardCode:[0-9]+}/{boardNo:[0-9]+}")
+	public String boardDetail(@PathVariable("memberNo") int memberNo,
+							  @PathVariable("boardCode") int boardCode,
+							  @PathVariable("boardNo") int boardNo,
+							  
+							  Model model,
+							  @SessionAttribute(value="loginMember", required = false) Member loginMember,
+							  RedirectAttributes ra,
+							  HttpServletRequest req,
+							  HttpServletResponse resp) {
+		
+		// 게시글 상세 조회 서비스 호출
+		
+		// 1) Map으로 전달할 파라미터
+		Map<String, Integer> map = new HashMap<>();
+		map.put("boardCode", boardCode);
+		map.put("boardNo", boardNo);
+		
+		
+		if(loginMember != null) {
+			map.put("memberNo", loginMember.getMemberNo());
+		}	
+			// 2) 서비스 호출
+			Board board = service.selectOne(map);
+			
+			String path;
+			
+			
+			// 조회결과가 없는 경우
+			if(board == null) {
+				ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
+				path = "redirect:/board/" + boardCode; // 게시글 목록으로 재요청
+				
+			} else {
+				model.addAttribute("board", board);
+				path = "board/boardDetail"; // boardDetail.html로 forward
+			}
+			
+			return path;
+			
+		}
+		
     
 	/** 게시글 좋아요 체크/해제
 	 * @author 허배령

@@ -99,4 +99,10 @@ public class BoardServiceImpl implements BoardService {
 		
 		return -1; // 좋아요 처리 실패
   }
+
+	@Override
+	public Board selectOne(Map<String, Integer> map) {
+		
+		return mapper.selectOne(map);
+	}
 }

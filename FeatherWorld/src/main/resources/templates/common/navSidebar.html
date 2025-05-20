@@ -1,22 +1,35 @@
 <div class="right-sidebar">
   <div class="nav-sidebar">
     <div class="nav-item">
-      <i class="icon-home"></i> Home
+      <a th:href="@{/{member}/minihome(member=${memberNo})}"
+        ><i class="icon-home"></i> Home</a
+      >
     </div>
     <div class="nav-item">
-      <i class="icon-profile"></i> Profile
+      <a th:href="@{/{member}/profile(member=${memberNo})}"
+        ><i class="icon-profile"></i> Profile</a
+      >
     </div>
     <div class="nav-item">
-      <i class="icon-board"></i> Board
+      <a
+        th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}"
+        ><i class="icon-board"></i> Board</a
+      >
     </div>
     <div class="nav-item">
-      <i class="icon-friendlist"></i> Friendlist
+      <a th:href="@{/{member}/friendlist(member=${memberNo})}"
+        ><i class="icon-friendlist"></i> Friendlist</a
+      >
     </div>
     <div class="nav-item">
-      <i class="icon-playlist"></i> Playlist
+      <a th:href="@{/{member}/playlist(member=${memberNo})}"
+        ><i class="icon-playlist"></i> Playlist</a
+      >
     </div>
     <div class="nav-item">
-      <i class="icon-guestbook"></i> Guestbook
+      <a th:href="@{/{member}/guestbook(member=${memberNo})}"
+        ><i class="icon-guestbook"></i> Guestbook</a
+      >
     </div>
   </div>
 </div>
