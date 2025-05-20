@@ -51,19 +51,6 @@ public class MyPageController {
         return "myPage/myPage-info"; // Thymeleaf 뷰 파일 경로
     }
     
-    @PostMapping("/profile/saveYoutubeUrl")
-    @ResponseBody
-    public ResponseEntity<?> saveYoutubeUrl(@RequestBody Map<String, String> payload, HttpSession session) {
-        String url = payload.get("youtubeUrl");
-        Member loginMember = (Member) session.getAttribute("loginMember");
-
-        if (loginMember == null) return ResponseEntity.status(401).build();
-
-        // 유튜브 링크 DB 저장 (서비스 호출)
-        memberService.updateYoutubeUrl(loginMember.getMemberNo(), url);
-
-        return ResponseEntity.ok().build();
-    }
-
+    
     
 }

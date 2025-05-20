@@ -18,9 +18,9 @@
     <div class="container">
       <!-- Left sidebar - Profile Information -->
       <div class="left-sidebar">
-        <header class="logo">
+        <middle class="logo">
           <p>Today / Total</p>
-        </header>
+        </middle>
 
         <div class="profile-info">
           <div class="profile-image">
@@ -83,19 +83,30 @@
           <!-- 이미지 4개 행 추가 -->
           <div class="small-image-row">
             <img
-              src="/FeatherWorld/src/main/resources/static/images/sample1.jpg"
+              th:src="${session.loginMember != null and session.loginMember.memberImg != null} ?
+                @{${session.loginMember.memberImg}} :
+                @{/images/user.png}"
               alt="Image 1"
             />
+
             <img
-              src="/FeatherWorld/src/main/resources/static/images/sample2.jpg"
+              th:src="${session.loginMember != null and session.loginMember.memberImg != null} ?
+                @{${session.loginMember.memberImg}} :
+                @{/images/user.png}"
               alt="Image 2"
             />
+
             <img
-              src="/FeatherWorld/src/main/resources/static/images/sample3.jpg"
+              th:src="${session.loginMember != null and session.loginMember.memberImg != null} ?
+                @{${session.loginMember.memberImg}} :
+                @{/images/user.png}"
               alt="Image 3"
             />
+
             <img
-              src="/FeatherWorld/src/main/resources/static/images/sample4.jpg"
+              th:src="${session.loginMember != null and session.loginMember.memberImg != null} ?
+                @{${session.loginMember.memberImg}} :
+                @{/images/user.png}"
               alt="Image 4"
             />
           </div>
@@ -119,66 +130,75 @@
           </div>
 
           <!-- 댓글 부분 -->
-<div class="comment-list" id="comment-list">
-  <div th:each="comment : ${comments}">
-    <div class="comment-item">
-      <img 
-        th:src="${comment.memberImg != null} ? @{${comment.memberImg}} : @{/images/user.png}" 
-        alt="User avatar" 
-        class="avatar" />
-      <div class="comment-content">
-        <span class="username" th:text="${comment.username}">사용자명</span>
-        <span class="comment-text" th:text="${comment.commentText}">댓글 내용</span>
-        <div class="comment-meta">
-          <span class="user-role" th:text="${comment.userRole}">역할</span>
-          <button class="delete-btn">Delete</button>
-        </div>
-      </div>
-    </div>
-    <hr />
-  </div>
-</div>
+          <div class="comment-list" id="comment-list">
+            <div th:each="comment : ${comments}">
+              <div class="comment-item">
+                <img
+                  th:src="${comment.memberImg != null} ? @{${comment.memberImg}} : @{/images/user.png}"
+                  alt="User avatar"
+                  class="avatar"
+                />
+                <div class="comment-content">
+                  <span class="username" th:text="${comment.username}"
+                    >사용자명</span
+                  >
+                  <span class="comment-text" th:text="${comment.commentText}"
+                    >댓글 내용</span
+                  >
+                  <div class="comment-meta">
+                    <span class="user-role" th:text="${comment.userRole}"
+                      >역할</span
+                    >
+                    <button class="delete-btn">Delete</button>
+                  </div>
+                </div>
+              </div>
+              <hr />
+            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!--                          -->
+    <!--                          -->
 
-       <!-- Right sidebar - Navigation Menu -->
-         <div class="right-sidebar">
-  <div class="nav-sidebar">
-    <div class="nav-item">
-      <a th:href="@{/{member}/minihome(member=${memberNo})}">
-        <i class="fas fa-house"></i> Home
-      </a>
+    <!-- Right sidebar - Navigation Menu -->
+    <div class="right-sidebar">
+      <div class="nav-sidebar">
+        <div class="nav-item">
+          <a th:href="@{/{member}/minihome(member=${memberNo})}">
+            <i class="fas fa-house"></i> Home
+          </a>
+        </div>
+        <div class="nav-item">
+          <a th:href="@{/{member}/profile(member=${memberNo})}">
+            <i class="fas fa-user"></i> Profile
+          </a>
+        </div>
+        <div class="nav-item">
+          <a
+            th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}"
+          >
+            <i class="fas fa-clipboard-list"></i> Board
+          </a>
+        </div>
+        <div class="nav-item">
+          <a th:href="@{/{member}/friendlist(member=${memberNo})}">
+            <i class="fas fa-user-friends"></i> Friendlist
+          </a>
+        </div>
+        <div class="nav-item">
+          <a th:href="@{/{member}/playlist(member=${memberNo})}">
+            <i class="fas fa-play"></i> Playlist
+          </a>
+        </div>
+        <div class="nav-item">
+          <a th:href="@{/{member}/guestbook(member=${memberNo})}">
+            <i class="fas fa-book"></i> Guestbook
+          </a>
+        </div>
+      </div>
     </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/profile(member=${memberNo})}">
-        <i class="fas fa-user"></i> Profile
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}">
-        <i class="fas fa-clipboard-list"></i> Board
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/friendlist(member=${memberNo})}">
-        <i class="fas fa-user-friends"></i> Friendlist
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/playlist(member=${memberNo})}">
-        <i class="fas fa-play"></i> Playlist
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/guestbook(member=${memberNo})}">
-        <i class="fas fa-book"></i> Guestbook
-      </a>
-    </div>
-  </div>
-</div>
 
     <!-- 푸터 추가 -->
     <th:block th:replace="~{common/footer}"></th:block>
