@@ -3,7 +3,7 @@ const selectGuestBookList = () => {
   const cp = 1; // or 현재 페이지 번호
   const ownerNo = document.querySelector("#ownerNo")?.value || 1; // 기본값 1번 주인
 
-  fetch(`/guestbook?cp=${cp}&ownerNo=${ownerNo}`)
+  fetch(`/${ownerNo}/guestbook`)
     .then((resp) => resp.json())
     .then((guestBookList) => {
       console.log(guestBookList);
@@ -22,38 +22,50 @@ const selectGuestBookList = () => {
       console.error("방명록 조회 실패:", err);
     });
 };
+// 방명록 등록 (ajax)
+document.addEventListener("DOMContentLoaded", () => {
+  const guestBookContent = document.querySelector("#guestBookContent");
+  const addGuestBook = document.querySelector("#addGuestBook");
+  const loginMemberNo = document.querySelector("#loginMemberNo")?.value || null;
 
-//방명록 작성
-document.addEventListener('DOMContentLoaded', function () {
-  const writeBtn = document.querySelector('#addGuestBookBtn');
-  const textArea = document.querySelector('.guestBook-textbox');
-  const ownerNo = /*[[${ownerNo}]]*/ 0; // 타임리프로 주입
-
-  writeBtn.addEventListener('click', function () {
-    const content = textArea.value.trim();
-    if (content === '') {
-      alert('내용을 입력해주세요.');
+  addGuestBook.addEventListener("click", () => {
+    // 방명록 등록 버튼 클릭 시
+    if (loginMemberNo === null) {
+      alert("로그인 후 작성 가능합니다.");
+      return;
+    }
+    // 댓글 내용이 작성되지 않은 경우(textarea 비우고 눌렀을 때)
+    if (guestBookContent.value.trim().length === 0) {
+      alert("내용 작성 후 등록 버튼 클릭해주세요");
+      guestBookContent.focus();
       return;
     }
 
+    const ownerNo = document.querySelector("#ownerNo")?.value || 1; // gpt 추천 문구
+
+    //ajax를 이용해 방명록 등록 요청
+    const data = {
+      guestBookContent: guestBookContent.value,
+      visitorNo: loginMemberNo,
+    };
+
     fetch(`/${ownerNo}/guestbook`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ guestBookContent: content })
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     })
-      .then(response => response.text())
-      .then(result => {
-        if (result == 1) {
-          alert('방명록이 등록되었습니다.');
-          location.reload();
+      .then((resp) => resp.json())
+      .then((result) => {
+        console.log(result);
+
+        if (result < 0) {
+          alert("방명록 등록 실패");
         } else {
-          alert('등록 실패');
+          alert("방명록이 등록되었습니다.");
+          selectGuestBookList(); // 방명록 목록을 다시 조회해서 화면에 출력
+          guestBookContent.value = ""; // textarea에 작성한 방명록 내용 지우기
         }
       })
-      .catch(error => {
-        console.error('오류 발생:', error);
-      });
+      .catch((err) => console.log("에러 발생:", err));
   });
 });

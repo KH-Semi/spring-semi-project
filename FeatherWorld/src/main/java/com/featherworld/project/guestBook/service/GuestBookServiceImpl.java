@@ -43,4 +43,12 @@ public class GuestBookServiceImpl implements GuestBookService{
 			return mapper.guestBookDelete(guestBookNo);
 		}
 
+//		@Override
+//		public Map<String, Object> selectGuestBookList(int guestBookNo, int cp) {
+//			// TODO Auto-generated method stub
+//			return null;
+//		}
+//
+
+
 }

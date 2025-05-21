@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.featherworld.project.guestBook.model.dto.GuestBook;
@@ -58,26 +60,62 @@ public class GuestBookController {
 	        return "guestBook/guestBook";  // templates/guestBook/guestBook.html
 	    }
 	
-	
+//		/** 비동기로 방명록 목록
+//	    * @author 
+//	    * @param guestbookno
+//	    * @param cp 현재 페이지 번호
+//	    */
+//	   @ResponseBody
+//	   @GetMapping("{memberNo:[0-9]+}/guestbook")
+//	   public Map<String, Object> selectBoardList(@PathVariable  ("guestBookNo") int guestBookNo,
+//	                                   @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
+//
+//	      return service.selectGuestBookList(guestBookNo, cp);
+//	   }
+//	
+//	
+//	
+//	
+//	
+
 
 	// 방명록 작성
 
 	@PostMapping("{memberNo:[0-9]+}/guestbook")
-	public int insertGuestBook(@SessionAttribute(value = "loginMember",required=false) Member loginMember,
-			GuestBook inputGuestBook,
+	@ResponseBody
+	public Map<String, Object> insertGuestBook(@SessionAttribute(value = "loginMember",required=false) Member loginMember,
+			@RequestBody GuestBook guestBook,
 			@RequestParam(value="cp",required=false,defaultValue="1")int cp,
 			@PathVariable("memberNo")int memberNo) throws Exception {
 		
+		
+		 Map<String, Object> map = new HashMap<>();
 		 // 1. 로그인 체크
-	    if (loginMember == null) return 0;
+	   // if (loginMember == null) return 0;
+		 
+		 if (loginMember == null) {
+		        map.put("result", 0);
+		        return map;
+		    }
 
 	    // 2. 작성자/홈피 주인 정보 설정
-	    inputGuestBook.setVisitorNo(loginMember.getMemberNo());
-	    inputGuestBook.setOwnerNo(loginMember.getMemberNo());
+	    guestBook.setVisitorNo(loginMember.getMemberNo());
+	    guestBook.setOwnerNo(memberNo);
 
 	    // 3. 삽입 후 결과 반환 (성공 시 1)
-	    return service.guestBookInsert(inputGuestBook);
+	    //return service.guestBookInsert(guestBook);
+	    
+	    int result = service.guestBookInsert(guestBook);
+	    map.put("result", result);
+	    return map;
 	}
+	
+	
+	
+	
+	
+	
+	
 
 //	// 수정
 //	@PutMapping("{memberNo:[0-9]+}/guestbook")

@@ -71,7 +71,7 @@
   border-radius: 6px;
   border: 1px solid #ccc;
   resize: vertical;
-  resize : none;
+  resize: none;
 }
 
 /* 반응형 디자인 */
@@ -91,8 +91,6 @@
   padding-right: 8px;
 }
 
-
-
 /* 글쓰기 버튼 스타일 */
 .write-button {
   display: flex;
@@ -100,17 +98,17 @@
   margin-top: 20px;
 }
 
-.write-button > span {
+#addGuestBook {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
   border-radius: 5px;
   text-decoration: none;
   font-weight: bold;
 }
 
-.write-button a:hover {
+#addGuestBook:hover {
   opacity: 90%;
   cursor: pointer;
 }
