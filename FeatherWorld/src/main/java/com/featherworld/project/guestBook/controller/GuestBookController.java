@@ -41,13 +41,18 @@ public class GuestBookController {
 	    		@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 	    		Model model) {
 		    
-		   List<GuestBook> guestBookList = service.selectGuestBookList(memberNo); 		
-		  
-		    
+		 		
+		  // Map<String, Object> map = service.selectGuestBookList(memberNo, cp);
+		   List<GuestBook> guestBookList = service.selectGuestBookList(memberNo);
+		   //List<GuestBook> guestBookList = (List<GuestBook>) map.get("guestBookList");
+		   
 		    model.addAttribute("guestBookList",guestBookList);
 		    model.addAttribute("loginMember",loginMember);
 		    model.addAttribute("ownerNo",memberNo);
-		 
+		    
+		    
+		   
+		   // model.addAttribute("pagination", map.get("pagination"));
 		    
 		    
 	        return "guestBook/guestBook";  // templates/guestBook/guestBook.html

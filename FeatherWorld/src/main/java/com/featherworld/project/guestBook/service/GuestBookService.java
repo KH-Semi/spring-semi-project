@@ -36,4 +36,6 @@ public interface GuestBookService {
 	 */
 	int guestBookDelete(int guestBookNo);
 
+	//Map<String, Object> selectGuestBookList(int memberNo, int cp);
+
 }

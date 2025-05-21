@@ -34,7 +34,7 @@
                 </div>
               </div>
               <div class="guestbook-info">
-                <span th:text="*{memberName}">작성자</span>
+                <span th:text="${loginMember.memberName}">작성자</span>
                 <div class="guestbook-date" th:text="*{guestBookWriteDate}"> 게시일 </div>
 				
 				<!-- 로그인한 회원이 방명록 작성자일 때만 버튼 출력 -->
