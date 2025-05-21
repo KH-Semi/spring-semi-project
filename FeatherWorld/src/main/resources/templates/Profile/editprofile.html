@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>Profile Update</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FeatherWorld</title>
     <!-- 공용 css/js 추가 -->
     <th:block th:replace="~{common/common}"></th:block>
     <!-- myPage 전용 CSS -->
-    <link rel="stylesheet" th:href="@{/css/profile/profileupdate.css}" />
+    <link rel="stylesheet" href="/css/profile/editprofile.css" />
   </head>
   <body>
     <!-- Header Fragment -->
     <div th:replace="~{common/header}"></div>
 
     <div class="content-container">
-      <!-- Left Sidebar -->
-      <div class="left-sidebar" th:replace="~{common/leftsidebar}"></div>
+      <!-- Left sidebar - Profile Information -->
+      <div th:replace="~{common/leftsidebar}"></div>
 
       <!-- Middle Content -->
       <div class="middle-sidebar">
@@ -59,8 +61,20 @@
 
         <!-- 버튼 -->
         <div class="post-actions">
-          <button id="backToProfileBtn" class="back-button">Back</button>
-          <button id="confirmBtn" class="confirm-button">Confirm</button>
+          <button
+            id="profileUpdateBtn"
+            class="post-button"
+            onclick="location.href='/profile/update'"
+          >
+            Profile Update
+          </button>
+          <button
+            id="deleteAccountBtn"
+            class="post-button"
+            onclick="location.href='/account/delete'"
+          >
+            Delete Account
+          </button>
         </div>
       </div>
 
@@ -68,9 +82,9 @@
       <th:block th:replace="~{common/navSidebar}"></th:block>
     </div>
 
-    <!-- Footer -->
+    <!-- 푸터 추가 -->
     <th:block th:replace="~{common/footer}"></th:block>
 
-    <script src="/js/profile/profileupdate.js"></script>
+    <script src="js/profile/editprofile.js"></script>
   </body>
 </html>

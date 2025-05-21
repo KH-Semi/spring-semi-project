@@ -1,0 +1,197 @@
+/* ========== Layout ========== */
+.content-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  background-color: transparent;
+  min-height: 600px;
+}
+
+.left-sidebar {
+  width: 200px;
+  border-right: 1px solid #e0e0e0;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.middle-sidebar {
+  flex: 1;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #fdfdfd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  overflow-y: auto;
+}
+
+.right-sidebar {
+  width: 180px;
+  padding: 20px;
+  border-left: 1px solid #e0e0e0;
+  background-color: #fff;
+}
+
+/* ========== Post ========== */
+/* post, bio-section 너비 조절 (선택 사항) */
+.post,
+.bio-section {
+  width: 100%;
+  max-width: 700px; /* 최대 너비 설정 */
+  margin: 0 auto; /* 좌우 자동 마진으로 중앙 정렬 */
+}
+.post {
+  margin-bottom: 30px;
+}
+
+.post-image {
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.post-image img {
+  width: 100%;
+  height: 200%;
+  object-fit: cover;
+}
+
+.upload-bio-container {
+  max-width: 700px; /* 최대 너비 맞춤 */
+  width: 100%; /* 부모 컨테이너에 맞춤 */
+  margin: 0 auto; /* 가운데 정렬 */
+  border-radius: 1px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+}
+
+.image-upload-box {
+  width: 100%;
+  height: 150px; /* 자기소개와 같은 높이 */
+  border: 2px solid #ccc;
+  border-radius: 1px;
+  background-color: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-family: inherit;
+  color: #666;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.image-upload-box img {
+  max-width: 100%;
+  max-height: 150px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.bio-textarea {
+  width: 100%;
+  max-width: 700px;
+  height: 150px;
+  border: 2px solid #ccc;
+  background-color: #fafafa;
+  border-radius: 1px;
+  padding: 12px 20px;
+  font-size: 18px;
+  font-family: inherit;
+  box-sizing: border-box;
+  resize: none;
+  margin-top: 20px;
+}
+
+/* ========== Bio Section ========== */
+.bio-section {
+  margin-top: 20px;
+}
+
+.bio-textarea {
+  width: 100%;
+  max-width: 700px;
+  height: 150px;
+  border: 2px solid #ccc;
+  background-color: #fafafa;
+  border-radius: 1px;
+  padding: 12px 20px;
+  font-size: 18px;
+  font-family: inherit;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.bio-display {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* ========== Button ========== */
+.post-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.profile-button {
+  min-width: 120px;
+  height: 35px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  color: white;
+  font-size: 16px;
+  background-color: #912d2d;
+  cursor: pointer;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.post-button {
+  min-width: 140px;
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: "Pretendard", sans-serif;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* back/confirm Button */
+.post-actions {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  gap: 10px; /* 버튼 사이 간격 */
+  margin-top: 20px;
+}
+
+.back-button,
+.confirm-button {
+  min-width: 140px;
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: "Pretendard", sans-serif;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  background-color: #912d2d;
+  color: white;
+}
+
+/* Hover 효과 */
+.back-button:hover,
+.confirm-button:hover {
+  background-color: #7a2525; /* 좀 더 어두운 색으로 변경 */
+  color: white;
+}

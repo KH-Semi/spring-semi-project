@@ -1,10 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   // 댓글 관련 요소
-  const writeBtn = document.getElementById('write-button');
-  const commentForm = document.getElementById('comment-form');
-  const submitBtn = document.getElementById('submit-comment');
-  const commentInput = document.getElementById('comment-input');
-  const commentList = document.getElementById('comment-list');
+  const writeBtn = document.getElementById("write-button");
+  const commentForm = document.getElementById("comment-form");
+  const submitBtn = document.getElementById("submit-comment");
+  const commentInput = document.getElementById("comment-input");
+  const commentList = document.getElementById("comment-list");
 
   // 프로필 관련 (현재 HTML에는 bio, profile 버튼 없으니 프로필 부분 주석 처리 가능)
   const bioInput = document.getElementById("bio"); // 없으면 null
@@ -14,31 +14,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const backBtn = document.getElementById("backToProfileBtn");
   const profileUpdateBtn = document.getElementById("profileUpdateBtn");
   const deleteAccountBtn = document.getElementById("deleteAccountBtn");
-  
+
   // 이미지 업로드 및 미리보기 관련
   const multiImageInput = document.getElementById("multiImageInput");
   const imagePreviewRow = document.getElementById("imagePreviewRow");
 
   // --- 댓글 기능 ---
 
-  writeBtn?.addEventListener('click', () => {
-    if (commentForm.style.display === 'none' || commentForm.style.display === '') {
-      commentForm.style.display = 'block';
+  writeBtn?.addEventListener("click", () => {
+    if (
+      commentForm.style.display === "none" ||
+      commentForm.style.display === ""
+    ) {
+      commentForm.style.display = "block";
       commentInput.focus();
     } else {
-      commentForm.style.display = 'none';
+      commentForm.style.display = "none";
     }
   });
 
-  submitBtn?.addEventListener('click', () => {
+  submitBtn?.addEventListener("click", () => {
     const commentText = commentInput.value.trim();
     if (!commentText) {
-      alert('댓글을 입력해주세요!');
+      alert("댓글을 입력해주세요!");
       return;
     }
 
-    const newComment = document.createElement('div');
-    newComment.classList.add('comment-item');
+    const newComment = document.createElement("div");
+    newComment.classList.add("comment-item");
     newComment.innerHTML = `
       <img src="/images/user.png" alt="User avatar" class="avatar" />
       <div class="comment-content">
@@ -51,26 +54,26 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
-    const hr = document.createElement('hr');
+    const hr = document.createElement("hr");
 
     commentList.appendChild(newComment);
     commentList.appendChild(hr);
 
-    newComment.querySelector('.delete-btn').addEventListener('click', () => {
+    newComment.querySelector(".delete-btn").addEventListener("click", () => {
       newComment.remove();
       hr.remove();
     });
 
-    commentInput.value = '';
-    commentForm.style.display = 'none';
+    commentInput.value = "";
+    commentForm.style.display = "none";
   });
 
-  document.querySelectorAll('.delete-btn').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      const commentItem = e.target.closest('.comment-item');
+  document.querySelectorAll(".delete-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const commentItem = e.target.closest(".comment-item");
       if (commentItem) {
         const next = commentItem.nextElementSibling;
-        if (next && next.tagName === 'HR') next.remove();
+        if (next && next.tagName === "HR") next.remove();
         commentItem.remove();
       }
     });
@@ -90,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.src = e.target.result;
         img.alt = `Uploaded Image ${index + 1}`;
         img.style.cursor = "pointer";
-        img.style.width = "80px";  // 필요 시 조정
+        img.style.width = "80px"; // 필요 시 조정
         img.style.height = "80px";
         img.style.objectFit = "cover";
         img.style.marginRight = "5px";
@@ -155,4 +158,18 @@ document.addEventListener('DOMContentLoaded', () => {
   deleteAccountBtn?.addEventListener("click", () => {
     window.location.href = "/account/delete";
   });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const path = window.location.pathname;
+
+  // 홈 페이지일 경우, 해당 메뉴에 클래스 추가
+  if (path === "/home") {
+    const homeLink = document.querySelector(
+      '.right-sidebar .nav-sidebar a[href="/home"]'
+    );
+    if (homeLink) {
+      homeLink.classList.add("active-home");
+    }
+  }
 });

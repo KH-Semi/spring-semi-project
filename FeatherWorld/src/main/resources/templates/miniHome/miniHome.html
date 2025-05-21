@@ -31,12 +31,11 @@
 
           <div class="recentBoard">Recent Board</div>
 
-         <!-- 이미지 업로드 input (multiple 속성 추가) -->
-        <input type="file" id="multiImageInput" accept="image/*" multiple />
+          <!-- 이미지 업로드 input (multiple 속성 추가) -->
+          <input type="file" id="multiImageInput" accept="image/*" multiple />
 
-      <!-- 이미지 미리보기 5장까지 표시할 영역 -->
-      <div class="small-image-row" id="imagePreviewRow"></div>
-
+          <!-- 이미지 미리보기 5장까지 표시할 영역 -->
+          <div class="small-image-row" id="imagePreviewRow"></div>
 
           <textarea
             class="Comment"
@@ -60,7 +59,9 @@
           <div class="comment-list" id="comment-list">
             <div th:each="comment : ${comments}">
               <div class="comment-item">
-                <img th:src="${comment.memberImg != null} ? ${comment.memberImg} : '/images/user.png'" />
+                <img
+                  th:src="${#strings.isEmpty(comment.memberImg)} ? '/images/user.png' : comment.memberImg"
+                />
                 <div class="comment-content">
                   <span class="username" th:text="${comment.username}"
                     >사용자명</span
@@ -81,14 +82,14 @@
           </div>
         </div>
       </div>
+
+      <!-- Right sidebar - Navigation Menu -->
+      <div class="right-sidebar">
+        <th:block th:replace="~{common/navsidebar}"></th:block>
+      </div>
     </div>
 
-    <!-- Right sidebar - Navigation Menu -->
-    <div class="right-sidebar">
-      <th:block th:replace="~{common/navsidebar}"></th:block>
-    </div>
-
-    <!-- 푸터 추가 -->
+    <!-- 푸터 -->
     <th:block th:replace="~{common/footer}"></th:block>
 
     <script src="/js/miniHome/miniHome.js"></script>
