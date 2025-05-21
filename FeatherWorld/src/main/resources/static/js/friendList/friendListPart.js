@@ -1,3 +1,7 @@
+//현재 로그인한 유저 정보(지금은 테스트중)
+let members = /*[[${members}]]*/ [];
+
+//buttons
 const editBtn = document.getElementById("edit-button"); // edit
 const applyCancelBtnDiv = document.getElementById("apply-cancel-button-div"); //apply-cancel btn 을 담는 div
 const applyBtn = document.getElementById("apply-button");
@@ -25,10 +29,11 @@ if (editBtn) {
       friend.querySelector("[name=fromNickname-input]").innerText =
         friend.querySelector("[name=fromNickname]").innerText;
       friend.querySelector("[name=unfollow-button]").classList.remove("hidden");
+      /* 첫 요소밖에 뜨지않는 이슈로 잠시 주석처리해둠.
       //unfollow 요청 서버로 보내기
       friend.querySelector("[name=unfollow-button]").addEventListener(() => {
         // unfollow 비동기 요청
-      });
+      });*/
     });
   });
 }
@@ -48,10 +53,34 @@ if (cancelBtn) {
     });
   });
 }
-
+/*
 if (applyBtn) {
   applyBtn.addEventListener("click", () => {
     // 1. fetch (or submit?)
+
     // 2. 각 요소들이 삽입되면 다시 th:block만 refresh 하거나 현재 페이지로 redirect(pagination 유지할것)
   });
-}
+}*/
+
+//각 friendSpans의 <textarea>안 change이벤트 발생시 submit하는 이벤트 핸들러 지정
+friendSpans.forEach(function (friend) {
+  friend
+    .querySelector("[name=fromNickname-input]")
+    .addEventListener("change", (e) => {
+      // 1. fetch
+      let newNickName = e.target.value;
+      console.log(e.target.value);
+      fetch("/update/nickname", {
+        method: "POST", // ← POST로 바꿔야 body 사용 가능
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          memberNo: parseInt(friend.dataset.memberNo),
+          nickname: newNickName,
+        }), // TO_NICKNAME/FROM_NICKNAME 판별 여부는 서버측에서 판단
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+    });
+});

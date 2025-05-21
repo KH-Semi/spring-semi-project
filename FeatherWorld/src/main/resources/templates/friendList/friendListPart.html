@@ -9,7 +9,13 @@
     <ul class="title-font">
       내 일촌 목록
     </ul>
-    <button id="edit-button" class="right-align button-default">Edit</button>
+    <button
+      id="edit-button"
+      th:if="${session.loginMember.memberNo == memberNo}"
+      class="right-align button-default"
+    >
+      Edit
+    </button>
     <div id="apply-cancel-button-div" class="right-align hidden">
       <button id="apply-button" class="button-default hidden">Apply</button>
       <button id="cancel-button" class="button-default hidden">Cancel</button>
@@ -17,7 +23,12 @@
   </div>
   <ul id="friend-list">
     <th:block th:each="ilchon : ${ilchons}">
-      <li class="friend-item">
+      <li
+        class="friend-item"
+        th:attr="data-member-no=${ilchon.toMemberNo == session.loginMember.memberNo?ilchon.fromMemberNo:ilchon.toMemberNo}"
+      >
+        <!-- 나중에 수정해야 함-->
+        <!--th:attr="data-member-no=${ilchon.memberNo}"-->
         <div class="left-align">
           <img
             th:if="${ilchon.memberImg}"
