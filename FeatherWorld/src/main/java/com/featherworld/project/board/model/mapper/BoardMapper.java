@@ -17,9 +17,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface BoardMapper {
 
-
-	int checkMember(int memberNo);
-
 	List<BoardType> selectBoardType(int memberNo);
 
 	int getListCount(int currentBoardCode);

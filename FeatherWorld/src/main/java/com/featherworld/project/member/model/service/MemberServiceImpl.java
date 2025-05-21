@@ -28,7 +28,14 @@ public class MemberServiceImpl implements MemberService {
 	//암호화 객체 의존성 주입
 
 	// --------------------------------------------
-	
+
+	// 회원 여부 확인
+	@Override
+	public int checkMember(int memberNo) {
+		return mapper.checkMember(memberNo);
+	}
+
+
 	/** 회원가입 메서드
 	 *	@author 영민
 	 *

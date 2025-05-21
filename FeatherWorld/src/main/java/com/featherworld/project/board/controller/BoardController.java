@@ -44,14 +44,6 @@ public class BoardController {
 	public String prevBoardMainPage(@PathVariable("memberNo") int memberNo, HttpSession session,
 									RedirectAttributes ra) {
 
-		// 회원 번호 존재 유무 검사
-		int result = boardService.checkMember(memberNo);
-
-		if(result == 0) { // DB에 존재하지 않는 회원 번호인 경우 main page로 redirect
-			ra.addFlashAttribute("message", "존재하지 않는 회원입니다.");
-			return "redirect:/";
-		}
-
 		// 현재 회원의 게시판 종류 번호(boardCode) 목록을 조회해서 가져옴
 		List<BoardType> boardTypeList = boardTypeService.selectBoardType(memberNo);
 
@@ -66,21 +58,19 @@ public class BoardController {
 	 * @param memberNo 현재 조회 중인 회원 번호
 	 * @param boardCode 해당 게시판 종류 번호
 	 * @param cp 현재 페이지 번호
-	 * @param boardTypeList 현재 조회 중인 회원의 게시판 목록 리스트
 	 * @param model 게시글/페이징 목록 전달
 	 * @param ra message 전달
 	 */
 	@GetMapping("{memberNo:[0-9]+}/board/{boardCode:[0-9]+}")
 	public String boardMainPage(@PathVariable("memberNo") int memberNo, @PathVariable("boardCode") int boardCode,
-								@SessionAttribute(value = "boardTypeList", required = false) List<BoardType> boardTypeList,
-								@RequestParam(value = "cp", required = false) Integer cp,
+								@RequestParam(value = "cp", required = false) Integer cp, HttpSession session,
 								Model model, RedirectAttributes ra) {
 
-		// 게시판 번호를 입력하여 직접적으로 접근할 때
-		// 해당 회원의 게시판 목록부터 조회해서 session에 넣을 수 있도록 함
-		if(boardTypeList == null || boardTypeList.isEmpty()) {
-			return String.format("redirect:/%d/board", memberNo);
-		}
+		// 현재 회원의 게시판 종류 번호(boardCode) 목록을 조회해서 가져옴
+		List<BoardType> boardTypeList = boardTypeService.selectBoardType(memberNo);
+
+		// session scope에 boardTypeList 저장
+		session.setAttribute("boardTypeList", boardTypeList);
 
 		// boardCode가 현재 회원이 소유한 게시판 종류 번호인지 확인
 		for(BoardType boardType : boardTypeList) {

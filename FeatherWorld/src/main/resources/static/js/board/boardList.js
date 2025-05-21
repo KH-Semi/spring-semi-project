@@ -1,6 +1,12 @@
 // 현재 게시판 종류 번호를 저장하는 boardCode 변수 선언
 let boardCode = currentBoardCode;
 
+// 좌측 사이드 바
+const leftSidebar = document.querySelector(".left-sidebar");
+
+// 수정 모드 flag
+let editMode = false;
+
 /** 현재 선택한 페이지(cp)를 url에 반영 (history에 저장)
  * @author Jiho
  * @param {number} page
@@ -207,6 +213,10 @@ const renderBoardList = async (boardType, page) => {
     // 게시글 하나에 모든 내용 넣기
     boardItem.append(boardWrap, boardInfo);
 
+    boardItem.addEventListener("click", () => {
+      location.href = `/${board.memberNo}/board/${boardCode}/${board.boardNo}`;
+    });
+
     // 게시글 목록 div에 게시글 하나 넣기
     updatedBoardContainer.append(boardItem);
   }
@@ -245,6 +255,126 @@ document.querySelectorAll(".board-type-item").forEach(boardTypeItem => {
     renderBoardList(boardCode, null).catch(console.error);
   });
 });
+
+const createAddFolder = () => {
+  const div = createDiv("add-folder", "Add Folder");
+  const span = document.createElement("span");
+  span.classList.add("fa-solid", "fa-folder-plus");
+
+  div.append(span);
+
+  return div;
+}
+
+if(leftSidebar) {
+
+  leftSidebar.addEventListener("click", async e => {
+
+    if(e.target === document.querySelector(".add-folder")) {
+        const addFolderForm = document.createElement("form");
+        addFolderForm.classList.add("add-folder-form");
+
+        const folderTitleInput = document.createElement("input");
+        folderTitleInput.classList.add("add-folder-input");
+        folderTitleInput.name = "boardTitle";
+        folderTitleInput.placeholder = "Input Folder Title";
+
+        const folderFormFooter = createDiv("folder-form-footer");
+
+        const tempDiv = document.createElement("div");
+        const lockSpan = document.createElement("span");
+        lockSpan.classList.add("fa-solid", "fa-lock-open");
+
+        const toggleAuthority = createDiv("toggle-authority");
+        const toggleDiv = document.createElement("div");
+        toggleAuthority.append(toggleDiv);
+
+        const cancel = document.createElement("span");
+        cancel.classList.add("cancel-add-folder");
+        cancel.innerText = "Cancel";
+
+        const confirm = document.createElement("span");
+        confirm.classList.add("confirm-add-folder");
+        confirm.innerText = "Confirm";
+
+        tempDiv.append(lockSpan, toggleAuthority);
+
+        const authority = document.createElement("input");
+        authority.type = "hidden";
+        authority.name = "authority";
+        authority.value = "0";
+        authority.required = true;
+
+        toggleAuthority.addEventListener("click", () => {
+
+          toggleDiv.style.left = toggleDiv.style.left === "" ? "15px" : "";
+
+          if(lockSpan.classList.contains("fa-lock-open")) {
+            lockSpan.classList.replace("fa-lock-open", "fa-lock");
+
+          } else {
+            lockSpan.classList.replace("fa-lock", "fa-lock-open");
+          }
+
+          authority.value = authority.value === "0" ? "1" : "0";
+        });
+
+        folderFormFooter.append(tempDiv);
+        folderFormFooter.append(cancel, confirm);
+
+        addFolderForm.append(folderTitleInput);
+        addFolderForm.append(folderFormFooter);
+        addFolderForm.append(authority);
+
+        leftSidebar.append(addFolderForm);
+
+        folderTitleInput.focus();
+        e.target.remove();
+    }
+
+    if(e.target === document.querySelector(".cancel-add-folder")) {
+
+      document.querySelector(".add-folder-form").remove();
+      leftSidebar.append(createAddFolder());
+    }
+
+    if(e.target === document.querySelector(".confirm-add-folder")) {
+
+      document.querySelector(".add-folder-form").submit();
+
+      const resp = await fetch(`${memberNo}/board/insert`);
+      const result = await resp.text();
+
+      if(result > 0) {
+        alert("새로운 게시판이 생성되었습니다.");
+
+
+        document.querySelector(".add-folder-form")?.remove();
+        leftSidebar.append(createAddFolder());
+      }
+
+
+    }
+
+    if(e.target === document.querySelector(".edit-button")) {
+
+      // 수정모드 전환
+      editMode = !editMode;
+
+      const editIcons = document.querySelectorAll(".board-type-item .fa-solid");
+
+      if(editMode) {
+        editIcons.forEach(icon => {
+          icon.style.display = "inline-block";
+        });
+      } else {
+        editIcons.forEach(icon => {
+          icon.style.display = "none";
+        });
+      }
+    }
+  });
+}
 
 // 뒤로가기 실행 시
 window.addEventListener("popstate", () => {

@@ -12,22 +12,26 @@ public class BoardTypeController {
     @Autowired
     private BoardTypeService boardTypeService;
 
-    @PostMapping()
-    public int createBoardType(@RequestBody BoardType boardType) {
+    @PostMapping("{memberNo:[0-9]+}/board/insert")
+    public int createBoardType(@PathVariable("memberNo") int memberNo,
+                               @RequestBody BoardType boardType) {
+
+
+
+        return boardTypeService.insertBoardType(memberNo);
+    }
+
+    @PutMapping("{memberNo:[0-9]+}/board/update")
+    public int updateBoardType(@PathVariable("memberNo") int memberNo,
+                               @RequestBody BoardType boardType) {
 
         int result = 1;
         return result;
     }
 
-    @PutMapping()
-    public int updateBoardType(@RequestBody BoardType boardType) {
-
-        int result = 1;
-        return result;
-    }
-
-    @DeleteMapping()
-    public int deleteBoardType(@RequestBody BoardType boardType) {
+    @DeleteMapping("{memberNo:[0-9]+}/board/delete")
+    public int deleteBoardType(@PathVariable("memberNo") int memberNo,
+                               @RequestBody BoardType boardType) {
 
         int result = 1;
         return result;

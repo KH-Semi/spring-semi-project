@@ -1,0 +1,116 @@
+.board-detail {
+    margin: 20px auto;
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.board-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 12px;
+}
+
+.board-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.like-area {
+    color: #b3002d;
+}
+
+.board-writer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.board-writer img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.board-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    white-space: pre-line;
+}
+
+.board-btn-area {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.board-btn-area button {
+    background-color: #b3002d;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.back-button {
+    background-color: #b3002d;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 16px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* 전체 스크롤 제거 */
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-container {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* 사이드바들 */
+.boardTypeSidebar,
+.navSidebar {
+    width: 200px;
+    flex-shrink: 0;
+    background-color: #f8f8f8;
+}
+
+/* ✨ 가운데 영역 전용 wrapper */
+.board-scroll-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 30px;
+    background-color: #fff;
+}

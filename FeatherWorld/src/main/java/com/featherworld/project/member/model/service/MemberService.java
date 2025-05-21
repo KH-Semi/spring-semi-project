@@ -9,6 +9,12 @@ import com.featherworld.project.member.model.dto.Member;
  */
 public interface MemberService {
 
+	/** 회원 여부 확인
+	 * @author Jiho
+	 * @param memberNo 현재 조회 중인 회원 번호
+	 */
+	int checkMember(int memberNo);
+
 	/** 회원가입 메서드
 	 * @author 영민
 	 * @param inputMember

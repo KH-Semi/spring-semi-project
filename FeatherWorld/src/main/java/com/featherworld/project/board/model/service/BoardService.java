@@ -8,12 +8,6 @@ import com.featherworld.project.board.model.dto.BoardType;
 
 public interface BoardService {
 
-	/** 회원 여부 확인
-	 * @author Jiho
-	 * @param memberNo 현재 조회 중인 회원 번호
-	 */
-	int checkMember(int memberNo);
-
 	/** 현재 선택된 게시판의 삭제되지 않은 게시글 목록 조회 / pagination 객체 반환
 	 * @author Jiho
 	 * @param currentBoardCode 현재 게시판 종류 번호

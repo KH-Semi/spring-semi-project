@@ -19,4 +19,10 @@ public class BoardTypeServiceImpl implements BoardTypeService {
         return mapper.selectBoardType(memberNo);
     }
 
+    @Override
+    public int insertBoardType(int memberNo) {
+        return 0;
+    }
+
+
 }

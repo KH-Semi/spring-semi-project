@@ -1,103 +1,120 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="|${board.boardNo}번 글|">게시판 이름</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title th:text="|${board.boardNo}번 글|">게시판 이름</title>
 
-    <th:block th:replace="~{common/common}"></th:block>
+  <th:block th:replace="~{common/common}"></th:block>
 
-    <link rel="stylesheet" href="/css/board/boardDetail-style.css" />
-    <link rel="stylesheet" href="/css/board/comment-style.css" />
-  </head>
-  <body>
-    <main>
-      <th:block th:replace="~{common/header}"></th:block>
+  <link rel="stylesheet" href="/css/board/boardDetail.css" />
+  <link rel="stylesheet" href="/css/board/comment.css" />
+</head>
+<body>
+
+<div class="container">
+  <!-- 헤더 Include -->
+  <th:block th:replace="~{common/header}"></th:block>
+
+  <div class="content-container">
+    <!-- 좌측 게시판 리스트 Include -->
+    <th:block th:replace="~{board/boardTypeSidebar}"></th:block>
+
+    <div class="board-scroll-wrapper">
 
       <section class="board-detail" th:object="${board}">
-        <!-- 제목 -->
-        <h1 class="board-title" th:text="*{boardTitle}">게시글 제목</h1>
+
+        <!-- 뒤로가기 버튼 -->
+        <button class="back-button">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+
+        <div class="board-header">
+
+          <!-- 제목 -->
+          <h1 class="board-title" th:text="*{boardTitle}">게시글 제목</h1>
+          <p><span>조회수 : </span> [[*{readCount}]]</p>
+
+        </div>
 
         <!-- 프로필 + 닉네임 + 작성일 + 조회수 -->
-        <div class="board-header">
-          <div class="board-writer">
-            <!-- 프로필 이미지 -->
-            <!-- 프로필 이미지가 없을 경우 기본 이미지 출력 -->
-            <img th:unless="*{memberImg}" th:src="#{user.default.image}" />
+        <div class="board-writer">
+          <!-- 프로필 이미지 -->
+          <!-- 프로필 이미지가 없을 경우 기본 이미지 출력 -->
+          <img th:unless="*{memberImg}" th:src="#{user.default.image}" />
 
-            <!-- 프로필 이미지가 있을 경우 출력-->
-            <img th:if="*{memberImg}" th:src="*{memberImg}" />
+          <!-- 프로필 이미지가 있을 경우 출력-->
+          <img th:if="*{memberImg}" th:src="*{memberImg}" />
 
-            <span th:text="*{memberName}">작성자 닉네임</span>
-
-            <!-- 좋아요 하트 -->
-            <span class="like-area">
-              <!-- 좋아요 누른적이 있으면 fa-solid, 없으면 fa-regular 클래스 추가 -->
-              <i
-                class="fa-heart"
-                id="boardLike"
-                th:classappend="*{likeCheck == 1} ? fa-solid : fa-regular"
-              ></i>
-
-              <!-- 좋아요 개수 -->
-              <span th:text="*{likeCount}">0</span>
-            </span>
-          </div>
-
-          <div class="board-info">
-            <p><span>작성일</span> [[*{boardWriteDate}]]</p>
-
-            <!-- 수정한 게시글인 경우 -->
-
-            <!-- 참조하는 객체가 있으면 true, 없으면 false -->
-            <p th:if="*{boardUpdateDate}">
-              <span>마지막 수정일</span> [[*{boardUpdateDate}]]
-            </p>
-
-            <p><span>조회수 : </span> [[*{readCount}]]</p>
-          </div>
+          <span th:text="*{memberName}">작성자</span>
         </div>
 
         <!-- 내용 -->
         <div class="board-content" th:text="*{boardContent}">내용</div>
 
+        <!-- 좋아요 하트 -->
+        <span class="like-area">
+            <!-- 좋아요 누른적이 있으면 fa-solid, 없으면 fa-regular 클래스 추가 -->
+            <i
+                    class="fa-heart"
+                    id="boardLike"
+                    th:classappend="*{likeCheck == 1} ? fa-solid : fa-regular"
+            ></i>
+
+          <!-- 좋아요 개수 -->
+            <span th:text="*{likeCount}">0</span>
+          </span>
+        <div class="board-info">
+          <p><span>작성일</span> [[*{boardWriteDate}]]</p>
+
+          <!-- 수정한 게시글인 경우 -->
+
+          <!-- 참조하는 객체가 있으면 true, 없으면 false -->
+          <p th:if="*{boardUpdateDate}">
+            <span>마지막 수정일</span> [[*{boardUpdateDate}]]
+          </p>
+        </div>
+
         <!-- 버튼 영역-->
         <div class="board-btn-area">
           <!-- 로그인한 회원과 게시글 작성한 회원의 번호가 같은 경우 -->
-
           <th:block th:if="${board.memberNo == session.loginMember?.memberNo}">
             <button id="updateBtn">Edit</button>
             <button id="deleteBtn">Delete</button>
-            <button id="deleteBtn2">삭제(POST)</button>
           </th:block>
-
-          <button id="goToListBtn">←</button>
         </div>
-      </section>
 
-      <!-- 댓글 영역-->
-      <th:block th:replace="~{board/comment}"></th:block>
-    </main>
 
-    <th:block th:replace="~{common/footer}"></th:block>
+        <!-- 댓글 영역-->
+        <th:block th:replace="~{board/comment}"></th:block>
+    </div>
 
-    <script th:inline="javascript">
-      // - loginMember가 null 인 경우 null 반환
-      const loginMemberNo =
-        /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
 
-      // 현재 게시글 번호를 전역 변수로 저장
-      const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
 
-      // 현재 게시글 좋아요 여부를 전역 변수로 저장
-      let likeCheck = /*[[${board.likeCheck}]]*/ "좋아요 여부";
+    <!-- 우측 네비게이션 바 Include -->
+    <th:block th:replace="~{common/navSidebar}"></th:block>
+  </div>
 
-      // message.properties에서 얻어온 기본이미지
-      const userDefaultImage = /*[[#{user.default.image}]]*/ "기본이미지";
-    </script>
+  <!-- 푸터 Include -->
+  <th:block th:replace="~{common/footer}"></th:block>
+</div>
 
-    <script src="/js/board/boardDetail.js"></script>
-    <script src="/js/board/comment.js"></script>
-  </body>
+<script th:inline="javascript">
+  // - loginMember가 null 인 경우 null 반환
+  const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인 회원 번호";
+
+  // 현재 게시글 번호를 전역 변수로 저장
+  const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
+
+  // 현재 게시글 좋아요 여부를 전역 변수로 저장
+  let likeCheck = /*[[${board.likeCheck}]]*/ "좋아요 여부";
+
+  // message.properties에서 얻어온 기본이미지
+  const userDefaultImage = /*[[#{user.default.image}]]*/ "기본이미지";
+</script>
+
+<script src="/js/board/boardDetail.js"></script>
+<script src="/js/board/comment.js"></script>
+</body>
 </html>
