@@ -12,5 +12,5 @@ public interface IlchonService {
 	/*Ilchon updateIlchon();*/
 	
 	int updateIlchonNickname(int loginMemberNo, int memberNo,String nickname);
-
+	public Ilchon selectOne(int loginMemberNo, int memberNo);
 }

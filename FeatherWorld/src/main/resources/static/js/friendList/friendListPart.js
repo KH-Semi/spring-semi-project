@@ -68,7 +68,7 @@ friendSpans.forEach(function (friend) {
     .querySelector("[name=fromNickname-input]")
     .addEventListener("change", (e) => {
       // 1. fetch
-      let newNickName = e.target.value;
+      const newNickName = e.target.value;
       console.log(e.target.value);
       fetch("/update/nickname", {
         method: "POST", // ← POST로 바꿔야 body 사용 가능
@@ -81,6 +81,48 @@ friendSpans.forEach(function (friend) {
         }), // TO_NICKNAME/FROM_NICKNAME 판별 여부는 서버측에서 판단
       })
         .then((response) => response.json())
-        .then((data) => console.log(data));
+        .then((data) => {
+          console.log(data);
+          if (data.status == 2) {
+            console.log("toNickname 수정 성공!");
+            e.target.value = data.Ilchon.toNickname;
+            if (friend) {
+              friend.querySelector("[name=fromNickname]").textContent =
+                data.Ilchon.toNickname;
+            } //refresh
+            checkIcon(friend);
+          } else if (data.status == 1) {
+            console.log("fromNickname 수정 성공!");
+            e.target.value = data.Ilchon.fromNickname;
+            if (friend) {
+              friend.querySelector("[name=fromNickname]").textContent =
+                data.Ilchon.fromNickname;
+            } //refresh
+            checkIcon(friend);
+          } else {
+            console.log("수정 실패!");
+            xIcon(friend);
+          }
+        });
     });
 });
+
+const checkIcon = (friend) => {
+  // 매개변수로 현재 일촌<span> 전달
+  const icon = friend.querySelector(".check-icon");
+  icon.classList.remove("hidden");
+
+  setTimeout(() => {
+    icon.classList.add("hidden");
+  }, 1500);
+};
+
+const xIcon = (friend) => {
+  // 매개변수로 현재 일촌<span> 전달
+  const icon = friend.querySelector(".x-icon");
+  icon.classList.remove("hidden");
+
+  setTimeout(() => {
+    icon.classList.add("hidden");
+  }, 1500);
+};

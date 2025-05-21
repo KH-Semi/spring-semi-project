@@ -93,7 +93,7 @@ span {
   justify-self: flex-start;
 }
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 *[name="unfollow-button"]:hover {
@@ -110,4 +110,24 @@ span {
   align-items: center;
   padding: 8px 8px;
   border-radius: 10px;
+}
+
+.check-icon {
+  color: green;
+  margin-left: 5px;
+  animation: fadeOut 1.5s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
 }

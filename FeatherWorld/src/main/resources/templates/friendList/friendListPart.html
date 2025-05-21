@@ -2,16 +2,32 @@
   <link rel="stylesheet" href="/css/common/main.css" />
   <!-- for pagination -->
   <link rel="stylesheet" href="/css/friendList/friendListPart.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <!-- DB 수정완료 되었을시 뜨는 v표시 애니메이션-->
 </head>
 
 <div id="my-friend-list">
   <div class="title">
-    <ul class="title-font">
+    <ul
+      class="title-font"
+      th:text="${session.loginMember?.memberNo == memberNo?'내 ': memberNo + '님의 '} + '일촌 목록'"
+    >
+      <!-- 250521 나중에 미니홈피 profile 구현 후 서버에서 member정보를 model 등에 구현했을떄 다시 수정할것.-->
       내 일촌 목록
     </ul>
     <button
+      id="send-friend-request-button"
+      th:if="${session.loginMember != null and session.loginMember.memberNo != memberNo}"
+      class="left-align button-default"
+    >
+      일촌 요청 보내기
+    </button>
+    <button
       id="edit-button"
-      th:if="${session.loginMember.memberNo == memberNo}"
+      th:unless="${session.loginMember == null or session.loginMember.memberNo != memberNo}"
       class="right-align button-default"
     >
       Edit
@@ -25,10 +41,8 @@
     <th:block th:each="ilchon : ${ilchons}">
       <li
         class="friend-item"
-        th:attr="data-member-no=${ilchon.toMemberNo == session.loginMember.memberNo?ilchon.fromMemberNo:ilchon.toMemberNo}"
+        th:attr="data-member-no=${ilchon.toMemberNo == session.loginMember?.memberNo?ilchon.fromMemberNo:ilchon.toMemberNo}"
       >
-        <!-- 나중에 수정해야 함-->
-        <!--th:attr="data-member-no=${ilchon.memberNo}"-->
         <div class="left-align">
           <img
             th:if="${ilchon.memberImg}"
@@ -56,6 +70,10 @@
           <span name="ilchon-button" class="rounded-span right-align font-bold"
             >일촌</span
           >
+          <i class="fas fa-check-circle check-icon hidden"></i
+          ><!--DB 닉네임 업데이트 성공시 나타나는 V표식-->
+          <i class="fas fa-check-circle x-icon hidden"></i
+          ><!--DB 닉네임 업데이트 실패시 나타나는 V표식-->
           <textarea
             name="fromNickname-input"
             class="hidden"

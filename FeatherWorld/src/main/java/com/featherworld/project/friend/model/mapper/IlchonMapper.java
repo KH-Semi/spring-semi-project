@@ -12,8 +12,8 @@ import com.featherworld.project.friend.model.dto.Ilchon;
 public interface IlchonMapper {
 	
 	
-	//Ilchon selectOne(int memberNo1, int memberNo2);
-	Ilchon selectOne(Map<String, Object> map);
+	Ilchon selectOne(int memberNo1, int memberNo2);
+	//Ilchon selectOne(Map<String, Object> map);
 	/**일촌 리스트를 select하는 함수(IS_ILCHON = 'Y' 한정)
 	 * @param loginMemberNo
 	 * @param rowBounds
@@ -26,9 +26,9 @@ public interface IlchonMapper {
 	 * @return
 	 */
 	int countIlchons(int loginMemberNo);
-	int updateToIlchonNickName(Map<String, Object> paramMap);
-	int updateFromIlchonNickName(Map<String, Object> paramMap);
-	//int updateToIlchonNickName(@Param("loginMemberNo") int loginMemberNo/*session*/,@Param("memberNo") int memberNo,@Param("nickname") String nickname);
-	//int updateFromIlchonNickName(@Param("loginMemberNo")int loginMemberNo/*session*/,@Param("memberNo") int memberNo,@Param("nickname") String nickname);
+	//int updateToIlchonNickName(Map<String, Object> paramMap);
+	//int updateFromIlchonNickName(Map<String, Object> paramMap);
+	int updateToIlchonNickName(@Param("loginMemberNo") int loginMemberNo/*session*/,@Param("memberNo") int memberNo,@Param("nickname") String nickname);
+	int updateFromIlchonNickName(@Param("loginMemberNo")int loginMemberNo/*session*/,@Param("memberNo") int memberNo,@Param("nickname") String nickname);
 	
 }

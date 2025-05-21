@@ -1,5 +1,6 @@
 package com.featherworld.project.friend.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class IlchonController {
 	
 	@GetMapping("{memberNo:[0-9]+}/friendList")
 	public String select(@SessionAttribute(name = "loginMember", required = false) Member loginMember, 
-			@PathVariable("memberNo") int memberNo
+			@PathVariable("memberNo") int memberNo 
 			,@RequestParam(value = "cp", required = false, defaultValue = "1") int cp
 			,Model model){
 		//Session에서 loginMember의 MEMBER_NO를 불러오기.
@@ -38,6 +39,8 @@ public class IlchonController {
 		
 		Map<String, Object> map = service.selectIlchonMemberList(memberNo, cp);
 		//map에서 ilchons 따로 변수로 뺴낼것
+		
+		//friendList page에 전달한 현재 홈피 주인의 member DTO
 		
 		model.addAttribute("ilchons", map.get("ilchons"));
 		model.addAttribute("memberNo", memberNo);
@@ -67,8 +70,9 @@ public class IlchonController {
 	
 	@PostMapping("/update/nickname")
 	@ResponseBody
-	public Ilchon updateIlchonNickname(@SessionAttribute(name = "loginMember", required = false) Member loginMember,
-			@RequestBody Map<String, String> payload ) {
+	public Map<String, Object> updateIlchonNickname(@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			@RequestBody Map<String, String> payload /*클라이언트쪽에서 건너오는 요청*/
+			, Model model) {
 		String memberNoStr = 	payload.get("memberNo");
 		
 		int memberNo =  Integer.parseInt(memberNoStr); // 1. loginMember의 일촌의 memberId 값
@@ -78,9 +82,34 @@ public class IlchonController {
 		
 		String nickname = payload.get("nickname");
 		System.out.println("loginMember: "+loginMemberNo + ",memberNo: "+ memberNo +",nickname:"+ nickname);
-		 service.updateIlchonNickname(loginMemberNo,memberNo,nickname);
+		int result = service.updateIlchonNickname(loginMemberNo,memberNo,nickname);
 		 
-		return new Ilchon();
+		if(result == 2) { // 수정 성공시
+			Ilchon ilchon = service.selectOne(loginMemberNo, memberNo);
+		
+		    //model.addAttribute("pagination", map.get("pagination"));
+			Map<String, Object> response = new HashMap<>();
+			response.put("Ilchon", ilchon);
+			response.put("status", 2);//TO_NICKNAME update success
+			return response;
+			
+		}
+		else if(result == 1) { // 수정 성공시
+			Ilchon ilchon = service.selectOne(loginMemberNo, memberNo);
+			Map<String, Object> response = new HashMap<>();
+			response.put("Ilchon", ilchon);
+			response.put("status", 1);//FROM_NICKNAME update success
+		    //model.addAttribute("pagination", map.get("pagination"));
+			return response;
+			
+		}else {//수정 실패시
+			Map<String, Object> response = new HashMap<>();
+			
+			response.put("status", 0);//NICKNAME update failure
+			return response;
+			
+		}//홍길동, 김철수
+		
 	}
 	
 }

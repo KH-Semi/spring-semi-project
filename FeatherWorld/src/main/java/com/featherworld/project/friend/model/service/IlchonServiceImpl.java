@@ -17,7 +17,7 @@ import com.featherworld.project.common.dto.Pagination;
 import com.featherworld.project.friend.model.dto.Ilchon;
 import com.featherworld.project.friend.model.mapper.IlchonMapper;
 
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 @Service
 public class IlchonServiceImpl implements IlchonService {
 
@@ -38,6 +38,11 @@ public class IlchonServiceImpl implements IlchonService {
         this.boardServiceImpl = boardServiceImpl;
         this.commentController = commentController;
         this.commentServiceImpl = commentServiceImpl;
+    }
+    
+    public Ilchon selectOne(int loginMemberNo, int memberNo) {
+    	
+    	return mapper.selectOne(loginMemberNo, memberNo);
     }
 	@Override
 	public Map<String, Object> selectIlchonMemberList(int loginMemberNo, int cp) {
@@ -90,6 +95,7 @@ public class IlchonServiceImpl implements IlchonService {
 	@Override
 	public int updateIlchonNickname(int loginMemberNo,int memberNo,String nickname) {
 		// TODO Auto-generated method stub
+		/*
 		Map<String, Object> mapSelect = new HashMap<String, Object>();
 		
 		mapSelect.put("loginMemberNo", loginMemberNo);
@@ -111,19 +117,21 @@ public class IlchonServiceImpl implements IlchonService {
 			return resultTo;
 			
 		}
-		resultTo = mapper.updateToIlchonNickName( mapUpdate );
-		System.out.println("resultTo else : " +  resultTo);
+		resultTo = mapper.updateToIlchonNickName( mapUpdate );*/
+
+		int resultTo= mapper.updateToIlchonNickName( loginMemberNo, memberNo, nickname); 
+		
+		
+		int resultFrom = mapper.updateFromIlchonNickName( loginMemberNo, memberNo, nickname);
+		if(resultTo == 1 && resultFrom == 0) {
+			return 2 ; 
+		}else if(resultTo == 0 && resultFrom == 1){
+			return 1;
 			
-		System.out.println("resultTo : " + resultTo);
-		System.out.println("서비스 메서드 진입 확인");
-		//int resultTo= mapper.updateToIlchonNickName( loginMemberNo, memberNo, nickname); 
-		
-		
-		/*int resultFrom = mapper.updateFromIlchonNickName( loginMemberNo, memberNo, nickname);*/
-		
+		}else {return 0;}
 		/*System.out.println("Mapper 호출 결과 resultFrom: " + resultFrom);*/
 		
-		return 0;
+		
 	}
 
 }
