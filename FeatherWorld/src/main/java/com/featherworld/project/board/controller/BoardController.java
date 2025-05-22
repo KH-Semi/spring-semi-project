@@ -72,6 +72,7 @@ public class BoardController {
 		// session scope에 boardTypeList 저장
 		session.setAttribute("boardTypeList", boardTypeList);
 
+		boolean isValid = false;
 		// boardCode가 현재 회원이 소유한 게시판 종류 번호인지 확인
 		for(BoardType boardType : boardTypeList) {
 
@@ -80,11 +81,12 @@ public class BoardController {
 				// boardList.js 에서 활용하기 위해 현재 게시판 종류 번호 선언
 				model.addAttribute("currentBoardCode", boardCode);
 
-				log.debug("회원 {}의 게시판 번호 {}", memberNo, boardCode);
-
+				isValid = true;
 				break;
 			}
+		}
 
+		if(!isValid) {
 			ra.addFlashAttribute("message", "존재하지 않는 게시판입니다.");
 			return "redirect:/";
 		}

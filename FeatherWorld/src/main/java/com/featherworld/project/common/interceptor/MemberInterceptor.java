@@ -25,6 +25,7 @@ public class MemberInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String uri = request.getRequestURI();
+        log.debug("uri = {}", uri);
 
         // 정규식 활용 -> memberNo 가져오기
         Pattern pattern = Pattern.compile("^/(\\d+)(/.*)?$");

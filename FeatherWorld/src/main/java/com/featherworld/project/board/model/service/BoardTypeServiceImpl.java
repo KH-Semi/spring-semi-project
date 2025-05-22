@@ -20,9 +20,25 @@ public class BoardTypeServiceImpl implements BoardTypeService {
     }
 
     @Override
-    public int insertBoardType(int memberNo) {
-        return 0;
+    public int insertBoardType(BoardType boardType) {
+        return mapper.insertBoardType(boardType);
     }
 
+    @Override
+    public int deleteBoardType(BoardType boardType) {
 
+        // 현재 회원의 게시판 목록을 가져옴
+        List<BoardType> boardTypes = mapper.selectBoardType(boardType.getMemberNo());
+
+        // 현재 회원이 해당 게시판을 가지고 있는지 확인
+        for(BoardType memberBoard : boardTypes) {
+
+            // 가지고 있다면 mapper 호출 & return
+            if(memberBoard.getBoardCode() == boardType.getBoardCode()) {
+                return mapper.deleteBoardType(boardType);
+            }
+        }
+
+        return 0;
+    }
 }

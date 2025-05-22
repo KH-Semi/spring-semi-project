@@ -107,11 +107,13 @@ body {
   opacity: 90%;
 }
 .edit-button > i {
-  margin-right: 5px;
+  margin-left: 5px;
 }
 
-.board-type-item .fa-solid {
+.board-type-item > span:last-child {
   display: none;
+}
+.board-type-item .fa-solid {
   margin: 0 5px;
   padding: 0 10px;
 }
@@ -177,7 +179,7 @@ body {
   margin-top: 10px;
 }
 
-.folder-form-footer > div {
+.folder-form-footer > div:first-child {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -185,11 +187,11 @@ body {
 }
 
 .folder-form-footer span {
-  margin-right: 5px;
+  margin: 0 5px;
   color: #9F2120;
 }
 
-.folder-form-footer > span {
+.folder-form-footer > div:last-child > span {
   background-color: #9F2120;
   width: 60px;
   padding: 5px;

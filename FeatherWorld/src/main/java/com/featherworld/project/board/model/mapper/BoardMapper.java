@@ -23,6 +23,9 @@ public interface BoardMapper {
 
 	List<Board> selectBoardList(int currentBoardCode, RowBounds rowBounds);
 
+	int insertBoardType(BoardType boardType);
+
+	int deleteBoardType(BoardType boardType);
 
 	/** 게시글 좋아요 해제
 	 * @author 허배령
