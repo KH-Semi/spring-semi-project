@@ -6,7 +6,7 @@
     <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
 
     <th:block th:replace="~{common/common}"></th:block>
-    <link rel="stylesheet" href="/css/guestBook/guestbook.css" />
+    <link rel="stylesheet" href="/css/guestBook/guestBook.css" />
   </head>
   <body>
     <div class="container">
@@ -19,11 +19,11 @@
 
         <!-- 중앙 방명록 목록 -->
         <div class="main-content">
-          <div class="guestbook-list">
+          <div class="guestbook-list" id="guestbook-list">
             <!-- DB에서 가져온 방명록 목록 순회 -->
             <div
               class="guestbook-item"
-              th:each="guestBook : ${guestBookList}"
+              th:each="guestBook : ${guestBookList} "
               th:object="${guestBook}"
             >
               <div class="guestbook-wrap">
@@ -34,9 +34,28 @@
                 </div>
               </div>
               <div class="guestbook-info">
-                <span th:text="*{visitorNickname}">닉네임</span>
+                <span th:text="${loginMember.memberName}">작성자</span>
+
+                <!-- <span th:text="*{visitorName}">작성자</span> -->
+                <!-- guestBook 작성자 필드명에 맞춰 수정 -->
                 <div class="guestbook-date" th:text="*{guestBookWriteDate}">
                   게시일
+                </div>
+
+                <!-- 로그인한 회원이 방명록 작성자일 때만 버튼 출력 -->
+                <div class="guestbook-actions">
+                  <th:block
+                    th:if="${loginMember != null} and ${loginMember.memberNo} == *{visitorNo}"
+                  >
+                    <button
+                      th:onclick="|showUpdateGuestBook(*{guestBookNo}, this)|"
+                    >
+                      Edit
+                    </button>
+                    <button th:onclick="|deleteGuestBook(*{guestBookNo})|">
+                      Delete
+                    </button>
+                  </th:block>
                 </div>
               </div>
             </div>
@@ -68,6 +87,12 @@
 
           <!-- 방명록 작성 부분 -->
           <div class="guestBook-write-area">
+            <input
+              type="hidden"
+              id="loginMemberNo"
+              th:value="${loginMember?.memberNo}"
+            />
+            <input type="hidden" id="ownerNo" th:value="${ownerNo}" />
             <!-- 아이콘 -->
             <div class="icon-bar">
               <i class="fa-solid fa-lock-open"></i>
@@ -76,14 +101,13 @@
             </div>
             <textarea
               class="guestBook-textbox"
-              name="guestBookContent"
+              id="guestBookContent"
               placeholder="방명록을 작성해보세요 :)"
               required
             ></textarea>
             <!-- 글쓰기 버튼 -->
-            <div class="write-button">
-              <a id="addGuestBook">Write✏️</a>
-            </div>
+
+            <button id="addGuestBook">Write✏️</button>
           </div>
         </div>
         <!-- /.main-content -->
