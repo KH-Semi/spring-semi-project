@@ -10,6 +10,7 @@ public class MiniHomeController {
 
     @GetMapping("{memberNo:[0-9]+}/minihome")
     public String miniHome(@PathVariable ("memberNo")int memberNo, Model model) {
+
         return "miniHome/miniHome";
     }
 }

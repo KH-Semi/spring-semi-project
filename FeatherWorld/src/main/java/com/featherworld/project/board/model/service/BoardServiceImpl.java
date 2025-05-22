@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.featherworld.project.board.model.dto.Board;
+import com.featherworld.project.board.model.dto.BoardImg;
 import com.featherworld.project.board.model.dto.BoardType;
+import com.featherworld.project.board.model.dto.Comment;
 import com.featherworld.project.board.model.mapper.BoardMapper;
 import com.featherworld.project.common.dto.Pagination;
 
@@ -100,9 +102,43 @@ public class BoardServiceImpl implements BoardService {
 		return -1; // 좋아요 처리 실패
   }
 
+	/** 게시글 상세 조회 서비스
+	 * @author 허배령
+	 */
 	@Override
 	public Board selectOne(Map<String, Integer> map) {
 		
-		return mapper.selectOne(map);
+		Board board = mapper.selectOne(map);
+		
+		if(board != null) {
+	        
+	        // 2) 해당 게시글의 이미지 목록 조회
+	        List<BoardImg> imageList = mapper.selectImageList(map.get("boardNo"));
+	        board.setImageList(imageList);
+	        
+	    }
+	    
+	    return board;
+	}
+	
+
+	/** 조회수 1 증가 서비스
+	 * @author 허배령
+	 */
+	@Override
+	public int updateReadCount(int boardNo) {
+		
+		// 1. 조회 수 1 증가 (UPDATE)
+		int result = mapper.updateReadCount(boardNo);
+		
+		// 2. 현재 조회 수 조회
+		if(result > 0) {
+			return mapper.selectReadCount(boardNo);
+		}
+		
+		// 실패한 경우 -1 반환
+		return -1;
+		
+		
 	}
 }
