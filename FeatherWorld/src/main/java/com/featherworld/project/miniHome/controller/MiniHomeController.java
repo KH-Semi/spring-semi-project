@@ -69,25 +69,4 @@ public class MiniHomeController {
 		
 		return "redirect:/miniHome/miniHome";
 	}
-	
-	
-	
-	
-	
-	
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
