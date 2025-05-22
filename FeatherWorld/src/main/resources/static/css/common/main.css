@@ -1,6 +1,6 @@
 body {
   box-sizing: border-box;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   font-weight: 400;
   font-style: normal;
   margin: 0;
@@ -30,7 +30,7 @@ body {
 .logo {
   display: flex;
   align-items: center;
-  text-decoration : none;
+  text-decoration: none;
 }
 
 .logo img {
@@ -39,8 +39,8 @@ body {
 }
 
 .site-title {
-  font-family: 'Pacifico', cursive;
-  color: #9F2120;
+  font-family: "Pacifico", cursive;
+  color: #9f2120;
   font-weight: 400;
   font-size: 28px;
   margin-left: 10px;
@@ -90,15 +90,15 @@ body {
   padding: 8px;
   margin-bottom: 5px;
   border-radius: 5px;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
 }
 
 .board-type-sidebar .board-type-item:hover {
   transition-duration: 0.2s;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
-  border-color: #9F2120;
+  border-color: #9f2120;
 }
 
 .add-folder {
@@ -114,9 +114,9 @@ body {
 
 .add-folder:hover {
   transition-duration: 0.2s;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
-  border-color: #9F2120;
+  border-color: #9f2120;
 }
 
 /* 우측 사이드바 스타일 */
@@ -153,9 +153,9 @@ body {
 
 .nav-sidebar > a:hover {
   transition-duration: 0.2s;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
-  border-color: #9F2120;
+  border-color: #9f2120;
 }
 
 .nav-sidebar .nav-item i {
@@ -191,16 +191,16 @@ body {
 
 .pagination span:hover {
   transition-duration: 0.2s;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
-  border-color: #9F2120;
+  border-color: #9f2120;
   cursor: pointer;
 }
 
 .pagination span.current {
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
-  border-color: #9F2120;
+  border-color: #9f2120;
 }
 
 /* 글쓰기 버튼 스타일 */
@@ -213,7 +213,7 @@ body {
 .write-button > span {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
   border-radius: 5px;
   text-decoration: none;
@@ -226,13 +226,15 @@ body {
 }
 
 /* 아이콘 스타일 */
-.icon-edit, .icon-delete {
+.icon-edit,
+.icon-delete {
   color: #777;
   cursor: pointer;
   margin-left: 5px;
 }
 
-.icon-edit:hover, .icon-delete:hover {
+.icon-edit:hover,
+.icon-delete:hover {
   color: #c62828;
 }
 
@@ -242,7 +244,8 @@ body {
     flex-direction: column;
   }
 
-  .left-sidebar, .right-sidebar {
+  .left-sidebar,
+  .right-sidebar {
     border: none;
   }
 

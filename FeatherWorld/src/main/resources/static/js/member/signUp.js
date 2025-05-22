@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return false;
     } else {
       // 이메일 중복확인 (비동기요청)
-      fetch("/checkEmail?memberEmail=" + userId.value)
+      fetch("/member/checkEmail?memberEmail=" + userId.value)
         .then((resp) => resp.text())
         .then((count) => {
           if (count == 1) {
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
       phoneMessage.className = "validation-message invalid";
       return false;
     } else {
-      fetch("/checkTel?memberTel=" + phoneValue)
+      fetch("/member/checkTel?memberTel=" + phoneValue)
         .then((resp) => resp.text())
         .then((result) => {
           if (result >= 1) {

@@ -65,4 +65,42 @@ public interface MemberService {
 	 */
 	int checkTel(int memberTel);
 
+
+
+	/** 카카오 로그인중 우리회원이라면 그토큰값을 넣어줌
+	 * @param memberEmail
+	 * @param kakaoToken
+	 * @return
+	 * @author 영민
+	 */
+	int kakaoMemberUpdate(String memberEmail, String kakaoToken);
+
+	/** 기존회원의 이메일을 통해 정보들을 가져옴
+	 * @param memberEmail
+	 * @return
+	 */
+	Member checkmemberEmail(String memberEmail);
+
+	
+
+	/** 카카오 토큰으로 새로운 회원 가입
+	 * @param insertMember
+	 * @return
+	 * @author 영민
+	 */
+	int insertMember(Member insertMember);
+
+	/** 회원정보수정에서 비밀번호 확인
+	 * @param memberEmail
+	 * @param password
+	 * @return
+	 */
+	boolean validatePassword(String memberEmail, String password);
+
+	/** 회원정보 수정페이지에서 닉네임 , 전화번호 , 비밀번호 수정 
+	 * @param inputMember
+	 * @return
+	 */
+	int updateMember(Member inputMember);
+
 }
