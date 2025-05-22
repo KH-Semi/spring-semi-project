@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.featherworld.project.miniHome.model.mapper.MiniHomeMapper">
+
+    <!-- 회원 정보 조회 -->
+    <select id="selectMemberByNo" parameterType="int" resultType="com.featherworld.project.member.model.dto.Member">
+        SELECT MEMBER_NO, MEMBER_ID, MEMBER_NAME, ...
+        FROM MEMBER
+        WHERE MEMBER_NO = #{memberNo}
+    </select>
+
+    <!-- 이미지 정보 저장 -->
+    <insert id="insertImage">
+        INSERT INTO MINI_HOME_IMAGE (
+            MEMBER_NO,
+            ORIGINAL_NAME,
+            RENAMED_NAME,
+            TYPE,
+            UPLOAD_DATE
+        )
+        VALUES (
+            #{memberNo},
+            #{originalName},
+            #{renamed},
+            #{type},
+            SYSDATE
+        )
+    </insert>
+
+</mapper>
+	
+</mapper>

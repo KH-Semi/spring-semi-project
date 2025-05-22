@@ -8,6 +8,7 @@
     <th:block th:replace="~{common/common}"></th:block>
 
     <link rel="stylesheet" href="/css/miniHome/miniHome.css" />
+    <link rel="stylesheet" href="/css/miniHome/Comment.css" />
   </head>
   <body>
     <!-- Header Fragment -->
@@ -31,56 +32,39 @@
 
           <div class="recentBoard">Recent Board</div>
 
-          <form action="/profile/file/test1"
-                      method="POST"
-                      enctype="multipart/form-data"
+         <form action="/{memberNo:[0-9]+}/minihome"
+          method="POST" enctype="multipart/form-data" >
 
-          <!-- 이미지 5장까지 표시할 영역 -->
-          <div class="small-image-row" id="imagePreviewRow"></div>
-
-          <textarea
-            class="Comment"
-            placeholder="Write Friend Comment."
-          ></textarea>
-
-          <div class="comment-header">
-            <div class="title">Friend Comment List</div>
-            <button id="write-button" class="write-button">Write</button>
-          </div>
-          <div id="comment-form" style="display: none; margin-top: 10px">
-            <textarea
-              id="comment-input"
-              class="Comment"
-              placeholder="댓글을 작성하세요..."
-            ></textarea>
-            <button id="submit-comment" class="write-button">댓글 등록</button>
+          <div>
+            1번) type="file" 요소를 여러 개 작성
+            <br>
+            <input type="file" name="aaa">
+            <br>
+            <input type="file" name="aaa">
           </div>
 
-          <!-- 댓글 부분 -->
-          <div class="comment-list" id="comment-list">
-            <div th:each="comment : ${comments}">
-              <div class="comment-item">
-                <img
-                  th:src="${#strings.isEmpty(comment.memberImg)} ? '/images/user.png' : comment.memberImg"
-                />
-                <div class="comment-content">
-                  <span class="username" th:text="${comment.username}"
-                    >사용자명</span
-                  >
-                  <span class="comment-text" th:text="${comment.commentText}"
-                    >댓글 내용</span
-                  >
-                  <div class="comment-meta">
-                    <span class="user-role" th:text="${comment.userRole}"
-                      >역할</span
-                    >
-                    <button class="delete-btn">Delete</button>
-                  </div>
-                </div>
-              </div>
-              <hr />
-            </div>
+          <hr>
+
+          <div>
+            2번) multiple 사용(드래그 가능)
+            <input type="file" name="bbb" multiple>
           </div>
+
+          <button class="miniHome">제출하기</button>
+
+        </form>
+
+          
+        <th:block th:if="${isIlchon}">
+          <button class="write-button" id="showCommentAreaBtn">write</button>
+        </th:block>
+
+
+          
+           <!-- 댓글 영역-->
+        <th:block th:replace="~{miniHome/comment}"></th:block>
+
+          
         </div>
       </div>
 
@@ -94,5 +78,6 @@
     <th:block th:replace="~{common/footer}"></th:block>
 
     <script src="/js/miniHome/miniHome.js"></script>
+    <script src="/js/board/comment.js"></script>
   </body>
 </html>

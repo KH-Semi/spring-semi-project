@@ -1,27 +1,26 @@
 package com.featherworld.project.miniHome.model.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.featherworld.project.member.model.dto.Member;
+import com.featherworld.project.miniHome.model.dto.UploadFile;
 
-@Service
 public interface MiniHomeService {
 
-	Member selectMemberByNo(int memberNo);
+	
 
-//	/** 사진 업로드
-//	 * @param uploadFile
-//	 * @return
-//	 */
-//	String fileUpload1(MultipartFile uploadFile) throws Exception;
-//
-//	/** 사진 db 저장
-//	 * @param uploaFile
-//	 * @param memberNo
-//	 * @return
-//	 */
-//	int fileUpload2(MultipartFile uploaFile, int memberNo) throws Exception;
-
+	/** minihome 업로드 서비스
+	 * @param aaaList
+	 * @param bbbList
+	 * @param memberNo
+	 * @return
+	 * @throws Exception
+	 */
+	int fileUpload3(List<MultipartFile> aaaList, 
+					List<MultipartFile> bbbList, 
+					int memberNo) throws Exception;
 	
 }

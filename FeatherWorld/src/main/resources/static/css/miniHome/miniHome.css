@@ -181,26 +181,7 @@
     transform: scale(1.05);
 }
 
-/* comment 부분 */
-.Comment {
-    width: 600px; /* 원하는 가로 너비 */
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 6px 20px;
-    border: 4px solid #ebeaea;
-    border-radius: 30px;
-    background-color: #f8f8f8;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    font-family: "Pretendard", sans-serif;
-    font-weight: 600;
-    font-size: 16px;
-    text-align: center;
-    box-sizing: border-box;
-    resize: none; /* 크기 조절 못하게 */
-    height: 80px;
-    overflow-y: hidden; /* 수직 스크롤 숨기기 */
-    line-height: 80px; /* placeholder 수직 중앙 맞춤 */
-}
+
 
 /* miniHome */
 /* placeholder 스타일 */
@@ -245,66 +226,4 @@
 
 .write-button:hover {
     background-color: #b33a3a;
-}
-
-/* Friend Comment List */
-/* 댓글 리스트 영역 */
-.comment-list {
-    width: 600px !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    /* 기타 속성도 동일하게 */
-    padding: 8px 12px;
-    background-color: #fafafa;
-    box-sizing: border-box;
-    font-family: "Pretendard", sans-serif;
-    max-height: 200px;
-    overflow-y: auto;
-    padding-right: 10px;
-}
-
-.comment-item {
-    display: flex;
-    align-items: center;
-    padding: 6px 8px;
-    font-size: 9px;
-    gap: 5px;
-    border-radius: 4px;
-    margin-bottom: 6px; /* 댓글 간 간격 */
-}
-
-.avatar {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-}
-
-.comment-content {
-    flex-grow: 1;
-}
-
-.comment-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 4px;
-}
-
-.username {
-    font-weight: 600;
-    font-size: 10px;
-    color: #333;
-}
-
-.comment-text {
-    font-size: 9px;
-    color: #555;
-    margin-bottom: 2px;
-}
-
-.comment-meta {
-    font-size: 8px;
-    color: #666464;
-    display: flex;
-    justify-content: space-between;
-
 }
