@@ -72,6 +72,93 @@
 	WHERE MEMBER_EMAIL = #{memberEmail}	
 	</update>
 	
+
+	<!-- 메인페이지에서 회원이름 검색창 -->
+	<select id="searchMember">
+	SELECT MEMBER_EMAIL, MEMBER_NAME, MEMBER_IMG, MEMBER_NO
+	FROM MEMBER
+	WHERE MEMBER_NAME LIKE '%' || #{memberName} || '%'
+	AND MEMBER_DEL_FL = 'N'
+	</select>
 	
+	<!-- 전화번호 중복확인 -->
+	<select id="checkTel">
+	SELECT MEMBER_TEL
+	FROM MEMBER
+	WHERE MEMBER_TEL = #{memberTel}
+	</select>
+	
+	<!-- kakaotoken이 null인지 아닌지확인 -->
+	<select id="findKakaoMember" resultType="Member">
+        SELECT 
+            MEMBER_NO,
+            MEMBER_EMAIL,
+            MEMBER_NAME,
+            KAKAO_ACCESS_TOKEN
+        FROM MEMBER
+        WHERE MEMBER_EMAIL = #{memberEmail}
+    </select>
+
+    <!-- kakaoToken 업데이트 (매개변수 이름 오타 수정) -->
+    <update id="updateKakaToken" parameterType="map">
+        UPDATE MEMBER SET
+            KAKAO_ACCESS_TOKEN = #{kakaoAccessToken}
+        WHERE MEMBER_EMAIL = #{memberEmail}
+    </update>
+    
+    <select id="checkmemberEmail" resultType="Member">
+  	    SELECT 
+        MEMBER_NO,
+        MEMBER_PW, 
+        MEMBER_EMAIL, 
+        MEMBER_NAME, 
+        MEMBER_TEL, 
+        MEMBER_ADDRESS,
+        MEMBER_IMG, 
+        MEMBER_INTRO,
+        HOME_TITLE, 
+        VISITOR_TOTAL,
+        KAKAO_ACCESS_TOKEN
+        FROM MEMBER
+        WHERE MEMBER_EMAIL = #{memberEmail}
+        AND MEMBER_DEL_FL = 'N'
+</select>
+
+    <!-- 카카오 회원 가입 -->
+    <insert id="insertMember" parameterType="Member">
+        <selectKey keyProperty="memberNo" resultType="int" order="BEFORE">
+            SELECT SEQ_MEMBER_NO.NEXTVAL FROM DUAL
+        </selectKey>
+        
+            INSERT INTO MEMBER VALUES(
+            #{memberNo},
+            #{memberEmail},
+            NULL,
+            #{memberName},
+            NULL,
+            NULL,
+            NULL,
+            DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, #{kakaoAccessToken}
+        )
+    </insert>
+    
+    
+     <!--  선택적으로 회원정보 수정 가능함 -->
+	<update id="updateMember">
+    UPDATE MEMBER
+    	<set>
+        <if test="memberTel != null and memberTel != ''">
+            MEMBER_TEL = #{memberTel},
+        </if>
+        <if test="memberPw != null and memberPw != ''">
+            MEMBER_PW = #{memberPw},
+        </if>
+        <if test="memberName != null and memberName != ''">
+            MEMBER_NAME = #{memberName},
+        </if>
+    	</set>
+    WHERE MEMBER_NO = #{memberNo}
+	</update>
+
 
 </mapper>

@@ -30,6 +30,7 @@ public class GuestBookController {
 
 	@Autowired
 	private GuestBookService service;
+
 //
 //	/**
 //	 * 동기 해당 회원의 삭제되지 않은 방명록 목록 조회

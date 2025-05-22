@@ -18,10 +18,11 @@ public class MainController {
 	public String mainPage() {
 		return "common/main";
 	}
+
 	@RequestMapping("{memberNo:[0-9]+}")
 	public String memberPage(@PathVariable("memberNo") int memberNo) {
-		
 		return "redirect:/"+ memberNo +"/minihome";
+
 	}
 	
 }

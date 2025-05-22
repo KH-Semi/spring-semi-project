@@ -153,9 +153,9 @@ body {
 
 .add-folder:hover {
   transition-duration: 0.2s;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
-  border-color: #9F2120;
+  border-color: #9f2120;
 }
 
 .add-folder > span {
@@ -262,9 +262,9 @@ body {
 
 .nav-sidebar > a:hover {
   transition-duration: 0.2s;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
-  border-color: #9F2120;
+  border-color: #9f2120;
 }
 
 .nav-sidebar .nav-item i {
@@ -300,9 +300,9 @@ body {
 
 .pagination span:hover {
   transition-duration: 0.2s;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
-  border-color: #9F2120;
+  border-color: #9f2120;
   cursor: pointer;
 }
 
@@ -334,7 +334,8 @@ body {
   cursor: pointer;
 }
 
-/* 아이콘 */
+/* 아이콘 스타일 */
+
 .icon-edit,
 .icon-delete {
   color: #777;

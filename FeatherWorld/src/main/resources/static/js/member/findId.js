@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('memberName', nameInput.value); // HTML의 name 속성과 일치시킴
         formData.append('memberTel', phoneInput.value);  // HTML의 name 속성과 일치시킴
         
-        fetch("findId", {
+        fetch("/member/findId", {
             method: 'POST',
             body: formData
         })

@@ -24,9 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Controller
 @Slf4j
 public class BoardController {
+
 
 	@Autowired
 	private BoardService service;
@@ -75,13 +77,13 @@ public class BoardController {
 		// boardCode가 현재 회원이 소유한 게시판 종류 번호인지 확인
 		for(BoardType boardType : boardTypeList) {
 
-         if(boardType.getBoardCode() == boardCode) {
-            // 해당 게시판 종류 번호
-            // boardList.js 에서 활용하기 위해 현재 게시판 종류 번호 선언
-            model.addAttribute("currentBoardCode", boardCode);
+     if(boardType.getBoardCode() == boardCode) {
+        // 해당 게시판 종류 번호
+        // boardList.js 에서 활용하기 위해 현재 게시판 종류 번호 선언
+        model.addAttribute("currentBoardCode", boardCode);
 
-			isValid = true;
-			break;
+        isValid = true;
+        break;
 			}
 		}
 
@@ -291,15 +293,15 @@ public class BoardController {
 			
 			return path;
 			
-		}
+     }
 
     
-	/** 게시글 좋아요 체크/해제
-	 * @author 허배령
-	 */
-	@ResponseBody
-	@PostMapping("like") // /board/like (POST)
-	public int boardLike(@RequestBody Map<String, Integer> map) {
-		return service.boardLike(map);
-	}
+   /** 게시글 좋아요 체크/해제
+    * @author 허배령
+    */
+   @ResponseBody
+   @PostMapping("like") // /board/like (POST)
+   public int boardLike(@RequestBody Map<String, Integer> map) {
+      return service.boardLike(map);
+   }
 }

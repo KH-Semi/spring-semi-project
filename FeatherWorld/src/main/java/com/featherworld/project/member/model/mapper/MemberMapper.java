@@ -1,5 +1,8 @@
 package com.featherworld.project.member.model.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import com.featherworld.project.member.model.dto.Member;
 
@@ -52,4 +55,52 @@ public interface MemberMapper {
 	 * @return
 	 */
 	int resetPassword(Member inputMember);
+
+	/** 메인에서 회원들을 검색
+	 * @param memberName
+	 * @return
+	 * @author 영민
+	 */
+	List<Member> searchMember(String memberName);
+
+	/** 전화번호 중복확인
+	 * @param memberTel
+	 * @return
+	 * @author 영민
+	 */
+	int checkTel(int memberTel);
+
+	/** 카카오토큰의 null 인지 아닌지 확인하는메서드
+	 * @param memberEmail
+	 * @return
+	 * @author 영민
+	 */
+	Member findKakaoMember(String memberEmail);
+
+	/** 기존회원 이 카카오토큰이 null 이면 변경해줌
+	 * @param map
+	 * @return
+	 * @author 영민
+	 */
+	int updateKakaToken(Map<String, String> map);
+
+	/**
+	 * @param memberEmail
+	 * @return
+	 */
+	Member checkmemberEmail(String memberEmail);
+
+	/** 카카오 토큰으로 회원가입
+	 * @param insertMember
+	 * @return
+	 */
+	int insertMember(Member insertMember);
+
+	/** 닉네임 , 전화번호 , 비밀번호 수정
+	 * @param inputMember
+	 * @return
+	 */
+	int updateMember(Member inputMember);
+
+
 }

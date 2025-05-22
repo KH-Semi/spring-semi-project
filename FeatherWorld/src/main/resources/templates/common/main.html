@@ -30,8 +30,9 @@
                   class="search-icon"
                 />
               </button>
+              <span id="closeBtn">&times;</span>
+              <ul id="searchResults" class="search-results"></ul>
             </div>
-
             <!-- Today's Best Section -->
             <section class="todays-best">
               <h2 class="section-title">TODAY'S BEST</h2>
@@ -92,7 +93,7 @@
               <h2 class="section-title">SIGN IN</h2>
 
               <!-- 로그인이 안되어잇을떄-->
-              <form class="login-form" action="/login" method="post">
+              <form class="login-form" action="/member/login" method="post">
                 <div class="form-group">
                   <label for="username">Email :</label>
                   <input
@@ -118,11 +119,9 @@
                 <button type="submit" class="login-btn">로그인</button>
 
                 <div class="social-login">
-                  <button
-                    type="button"
-                    class="kakao-btn"
-                    onclick="kakaoLogin()"
-                  >
+
+                  <button type="button" class="kakao-btn">
+
                     <img
                       src="/images/icons/kakao.png"
                       alt="Kakao"
@@ -133,8 +132,10 @@
                 </div>
 
                 <div class="login-options">
-                  <a href="/findId" class="option-link">아이디/비밀번호 찾기</a>
-                  <a href="/signup" class="option-link">회원가입</a>
+                  <a href="/member/findId" class="option-link"
+                    >아이디/비밀번호 찾기</a
+                  >
+                  <a href="/member/signup" class="option-link">회원가입</a>
                 </div>
               </form>
             </section>
@@ -173,7 +174,7 @@
                     <i class="fa-solid fa-house" alt="Home"></i>
                     My Home
                   </a>
-                  <a href="/logout" class="logout-btn">Logout</a>
+                  <button type="button" class="logout-btn">Logout</button>
                 </div>
               </div>
             </section>
@@ -184,5 +185,11 @@
 
     <!-- Footer Fragment -->
     <div th:replace="~{common/footer}"></div>
+    <script th:inline="javascript">
+      // 서버에서 memberNo를 JavaScript 변수로 전달
+      const memberNo = /*[[${session.loginMember?.memberNo}]]*/ null;
+    </script>
+    <script src="/js/home/mainhome.js"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
   </body>
 </html>

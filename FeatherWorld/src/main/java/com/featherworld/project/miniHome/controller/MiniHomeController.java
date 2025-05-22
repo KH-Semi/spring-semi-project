@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class MiniHomeController {
 
+
 	@Autowired
 	private MiniService service;
 
@@ -69,4 +70,5 @@ public class MiniHomeController {
 		
 		return "redirect:/miniHome/miniHome";
 	}
+
 }
