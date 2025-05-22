@@ -134,6 +134,7 @@ public class BoardController {
    }
    
 
+
    /** 게시글 상세 조회
     * @author 허배령
 	 * @param memberNo
@@ -290,6 +291,7 @@ public class BoardController {
 			return path;
 			
 		}
+
 
 
 

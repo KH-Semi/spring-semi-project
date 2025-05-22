@@ -1,131 +1,69 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FeatherWorld</title>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Profile Update</title>
     <!-- 공용 css/js 추가 -->
-  <th:block th:replace="~{common/common}"></th:block>
+    <th:block th:replace="~{common/common}"></th:block>
     <!-- myPage 전용 CSS -->
-  <link rel="stylesheet" href="../../static/css/myPage/updateProfile.css">
-
+    <link rel="stylesheet" th:href="@{/css/profile/profileupdate.css}" />
   </head>
-<body>
-    <div class="container">
-       <!-- Left sidebar - Profile Information -->
-      <div class="left-sidebar">
-        <header class="logo">
-          <p>Today / Total</p>
-        </header>
+  <body>
+    <!-- Header Fragment -->
+    <div th:replace="~{common/header}"></div>
 
-        <div class="profile-info">
-          <div class="profile-image">
-            <img
-              th:src="${session.loginMember != null && session.loginMember.
-              memberImg != null} ? @{${session.loginMember.memberImg}} : @{/images/user.png}"
-              alt="Profile Image"
-            />
-          </div>
+    <div class="content-container">
+      <!-- Left Sidebar -->
+      <div class="left-sidebar" th:replace="~{common/leftsidebar}"></div>
 
-          <!-- 회원 번호 표시 -->
-          <div class="profile-name" th:text="${memberno}">회원번호</div>
+      <!-- Middle Content -->
+      <div class="middle-sidebar">
+        <!-- 사진 업로드 -->
+        <div
+          class="upload-bio-container"
+          onclick="document.getElementById('image').click()"
+        >
+          <form
+            action="/profile/file/test1"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            <input type="file" name="uploadFile" />
+          </form>
 
-          <!-- 닉네임 (@ 표시 포함) -->
-          <div class="profile-handle" th:text="'@' + ${nickname}">@닉네임</div>
-
-          <!-- 팔로워 / 팔로잉 수 -->
-          <div class="profile-stats">
-            <div class="stat">
-              <div class="stat-number" th:text="${followerCount}">0</div>
-              <div class="stat-label">Follower</div>
-            </div>
-            <div class="stat">
-              <div class="stat-number" th:text="${followingCount}">0</div>
-              <div class="stat-label">Following</div>
-            </div>
-          </div>
-            </div>
-        
-            <!-- 여기 추가 -->
-              <div class="profile-action">
-                <button class="action-button Board-button">Bio</button>
-              </div>
-            
-            <div class="profile-action">
-                    <button class="action-button surfing-button">surfing</button>
-                </div>
+          <a
+            th:if="${path != null}"
+            th:text="${path}"
+            th:href="${path}"
+            download
+            >업로드한 파일</a
+          >
         </div>
 
-        <!-- Middle sidebar - Posts -->
-        <div class="middle-sidebar">
-            <div class="header">
-                
-            </div>
-            <div class="post">
-                <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
-                    <label for="image"></label>
-                    <input type="file" id="image" name="image" accept="image/*" class="file-input" />
-                </form>
+        <img th:src="${path}" />
 
-            <div class="bio-section">
-                <textarea id="bio-input" class="Comment-home" placeholder="자기소개를 입력하세요..."></textarea>
-                <div id="bio-display" class="bio-display" style="margin-top: 10px;"></div>
-            </div>
-
-            <div id="previewContainer" style="margin-top: 15px;">
-                <img id="previewImage" src="" alt="이미지 미리보기" style="max-width: 300px; display:none; border-radius: 8px;"/>
-            </div>
-            </div>
-
-                <!-- 업데이트 삭제 버튼 -->
-              <div class="post-actions">
-                <button id="backToProfileBtn" class="update-button">Back</button>
-                <button id="confirmBtn" class="update-button">Confirm</button>
-              </div>
-
-            </div>
+        <!-- 자기소개 텍스트 영역 -->
+        <div class="bio-section">
+          <textarea
+            id="bio-input"
+            class="bio-textarea"
+            placeholder="자기소개를 입력하세요..."
+          ></textarea>
         </div>
 
-        <!-- Right sidebar - Navigation Menu -->
-        <div class="right-sidebar">
-  <div class="nav-sidebar">
-    <div class="nav-item">
-      <a th:href="@{/{member}/minihome(member=${memberNo})}">
-        <i class="fas fa-house"></i> Home
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/profile(member=${memberNo})}">
-        <i class="fas fa-user"></i> Profile
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/board/{type}(member=${memberNo}, type=${session.boardTypeList[0]?.boardCode})}">
-        <i class="fas fa-clipboard-list"></i> Board
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/friendlist(member=${memberNo})}">
-        <i class="fas fa-user-friends"></i> Friendlist
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/playlist(member=${memberNo})}">
-        <i class="fas fa-play"></i> Playlist
-      </a>
-    </div>
-    <div class="nav-item">
-      <a th:href="@{/{member}/guestbook(member=${memberNo})}">
-        <i class="fas fa-book"></i> Guestbook
-      </a>
-    </div>
-  </div>
-</div>
+        <!-- 버튼 -->
+        <div class="post-actions">
+          <button id="backToProfileBtn" class="back-button">Back</button>
+          <button id="confirmBtn" class="confirm-button">Confirm</button>
+        </div>
+      </div>
 
+      <!-- Right Sidebar -->
+      <th:block th:replace="~{common/navSidebar}"></th:block>
+    </div>
 
-     <!-- 푸터 추가 -->
-   <th:block th:replace="~{common/footer}"></th:block>
+    <!-- Footer -->
+    <th:block th:replace="~{common/footer}"></th:block>
 
-   <script src="/js/profile/updateProfile.js"></script>
-</body>
+    <script src="/js/profile/profileupdate.js"></script>
+  </body>
 </html>
