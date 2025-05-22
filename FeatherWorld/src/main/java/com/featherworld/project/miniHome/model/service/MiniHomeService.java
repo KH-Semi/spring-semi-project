@@ -2,7 +2,7 @@ package com.featherworld.project.miniHome.model.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public interface MiniService {
+public interface MiniHomeService {
 
 	/** 사진 업로드
 	 * @param uploadFile

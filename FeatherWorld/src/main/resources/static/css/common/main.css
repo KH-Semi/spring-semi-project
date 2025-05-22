@@ -60,11 +60,11 @@ body {
 /* 좌측 사이드바 스타일 */
 .left-sidebar {
   min-width: 250px;
-  max-height: 560px;
+  max-height: calc(100vh - 200px); /* 화면 높이에 맞춰 동적 조정 */
   padding: 20px;
   border-right: 1px solid #e0e0e0;
-  overflow-y: scroll;
-  scrollbar-width: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
 
 .right-sidebar {
@@ -170,7 +170,7 @@ body {
   padding: 10px;
   margin-top: 20px;
   border-radius: 5px;
-  border: 2px solid #9F2120;
+  border: 2px solid #9f2120;
 }
 
 .add-folder-input {
@@ -194,11 +194,11 @@ body {
 
 .folder-form-footer span {
   margin: 0 5px;
-  color: #9F2120;
+  color: #9f2120;
 }
 
 .folder-form-footer > div:last-child > span {
-  background-color: #9F2120;
+  background-color: #9f2120;
   width: 60px;
   padding: 5px;
   border-radius: 5px;
@@ -226,7 +226,7 @@ body {
   width: 15px;
   height: 100%;
   border-radius: 20px;
-  background-color: #9F2120;
+  background-color: #9f2120;
 }
 
 /* 우측 사이드바 스타일 */
