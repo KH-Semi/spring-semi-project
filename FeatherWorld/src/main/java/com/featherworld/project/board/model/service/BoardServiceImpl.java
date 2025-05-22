@@ -22,19 +22,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	BoardMapper mapper;
-	
-	// 회원 여부 확인
-	@Override
-	public int checkMember(int memberNo) {
-		return mapper.checkMember(memberNo);
-	}
-	
-	// 현재 회원의 게시판 종류 번호(boardCode) 조회
-	@Override
-	public List<BoardType> selectBoardType(int memberNo) {
-		return mapper.selectBoardType(memberNo);
-	}
-	
+
 	// 현재 선택된 게시판의 삭제되지 않은 게시글 목록 조회/해당 pagination 객체 반환
 	@Override
 	public Map<String, Object> selectBoardList(int currentBoardCode, int cp) {

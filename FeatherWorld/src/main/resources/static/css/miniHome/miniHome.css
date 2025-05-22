@@ -1,308 +1,308 @@
 .content-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 /* 기본적인 각 영역 너비 설정 */
 .left-sidebar {
-  width: 20%;
+    width: 20%;
 }
 
 .content-area {
-  width: 60%;
+    width: 60%;
 }
 
 .right-sidebar {
-  width: 20%;
+    width: 20%;
 }
 
 /* 좌측 사이드바 넓이 조정 및 스타일 */
 .left-sidebar {
-  width: 200px; /* 최소 너비 고정 */
-  border-right: 1px solid #e0e0e0;
-  padding: 20px;
-  background-color: #fff;
+    width: 200px; /* 최소 너비 고정 */
+    border-right: 1px solid #e0e0e0;
+    padding: 20px;
+    background-color: #fff;
 }
 
 /* 중앙 콘텐츠 영역 */
 .content-area {
-  flex: 1; /* 남은 공간 모두 차지 */
-  padding: 20px;
-  background-color: #fff;
-  min-height: 600px;
+    flex: 1; /* 남은 공간 모두 차지 */
+    padding: 20px;
+    background-color: #fff;
+    min-height: 600px;
 }
 
 /* 우측 사이드바 고정 너비와 배경 */
 .right-sidebar {
-  width: 180px; /* 고정 너비 */
-  padding: 20px;
-  border-left: 1px solid #e0e0e0;
-  background-color: #fff;
+    width: 180px; /* 고정 너비 */
+    padding: 20px;
+    border-left: 1px solid #e0e0e0;
+    background-color: #fff;
 }
 
 /* .content-container flex layout 유지 */
 .content-container {
-  display: flex;
-  flex-direction: row;
-  gap: 10px; /* 영역 간 간격 */
-  background-color: transparent; /* 배경이 두 번째 이미지처럼 흰색  */
-  min-height: 600px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px; /* 영역 간 간격 */
+    background-color: transparent; /* 배경이 두 번째 이미지처럼 흰색  */
+    min-height: 600px;
 }
 
 /* 우측 네비게이션 메뉴 스타일 */
 .nav-sidebar {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .nav-sidebar > a {
-  padding: 10px 12px;
-  margin-bottom: 8px;
-  border-radius: 5px;
-  color: black;
-  font-weight: 600;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
 }
 
 .nav-sidebar > a:hover {
-  background-color: #9f2120;
-  color: white;
+    background-color: #9f2120;
+    color: white;
 }
 
 .nav-sidebar .nav-item > span {
-  width: 24px;
-  margin-right: 8px;
-  text-align: center;
+    width: 24px;
+    margin-right: 8px;
+    text-align: center;
 }
 
 /* right */
 .right-sidebar a.active-home > .nav-item {
-  background-color: #912d2d;
-  color: white;
-  border: 1px solid #912d2d;
-  font-weight: bold;
+    background-color: #912d2d;
+    color: white;
+    border: 1px solid #912d2d;
+    font-weight: bold;
 }
 /* 이미지 */
 .small-image-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
 }
 
 .small-image-row img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  cursor: pointer;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    cursor: pointer;
 }
 
 /* miniHome */
 .boardSummary {
-  display: flex;
-  justify-content: flex-start; /* 기본은 왼쪽 정렬 */
-  align-items: center;
-  position: relative; /* recentBoard 절대 위치 기준 */
-  margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-start; /* 기본은 왼쪽 정렬 */
+    align-items: center;
+    position: relative; /* recentBoard 절대 위치 기준 */
+    margin-bottom: 20px;
 }
 
 .summary-links a {
-  font-size: 14px;
-  margin: 0 5px;
-  color: #555 !important; /* !important로 강제 적용 */
-  text-decoration: none;
+    font-size: 14px;
+    margin: 0 5px;
+    color: #555 !important; /* !important로 강제 적용 */
+    text-decoration: none;
 }
 
 /* recentBoard를 절대 위치로 부모 중앙에 배치 */
 .recentBoard {
-  /* position: absolute;  삭제 */
-  /* left: 52%;           삭제 */
-  /* transform: translateX(-50%);  삭제 */
-  display: inline-block;
-  border: 4px solid #ebeaea;
-  border-radius: 5px;
-  padding: 6px 20px;
-  background-color: #f8f8f8;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-size: 10px;
-  font-weight: 600;
-  font-family: "Pretendard", sans-serif;
-  margin: 0px auto 0px auto; /* 위아래 마진 주고 좌우 중앙 정렬 */
-  width: 400px; /* 원하는 가로 넓이 지정 */
-  box-sizing: border-box;
-  text-align: center;
+    /* position: absolute;  삭제 */
+    /* left: 52%;           삭제 */
+    /* transform: translateX(-50%);  삭제 */
+    display: inline-block;
+    border: 4px solid #ebeaea;
+    border-radius: 5px;
+    padding: 6px 20px;
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 10px;
+    font-weight: 600;
+    font-family: "Pretendard", sans-serif;
+    margin: 0px auto 0px auto; /* 위아래 마진 주고 좌우 중앙 정렬 */
+    width: 400px; /* 원하는 가로 넓이 지정 */
+    box-sizing: border-box;
+    text-align: center;
 }
 
 /* miniHome */
 
 .boardContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 가로 중앙 정렬 */
-  justify-content: center; /* 세로 중앙 정렬 (필요하면) */
-  gap: 20px; /* 요소 사이 간격 */
-  width: 100%; /* 필요 시 너비 조정 */
-  box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 가로 중앙 정렬 */
+    justify-content: center; /* 세로 중앙 정렬 (필요하면) */
+    gap: 20px; /* 요소 사이 간격 */
+    width: 100%; /* 필요 시 너비 조정 */
+    box-sizing: border-box;
 }
 
 /* 중간 4개 이미지 넣는 곳 */
 .small-image-row {
-  display: flex;
-  justify-content: center; /* 가운데 정렬 */
-  gap: 20px; /* 이미지 간격 */
-  margin-top: 12px; /* recentBoard와 간격 */
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    gap: 20px; /* 이미지 간격 */
+    margin-top: 12px; /* recentBoard와 간격 */
 }
 
 .small-image-row {
-  display: flex;
-  justify-content: space-between; /* 이미지 사이 최대한 간격 벌리기 */
-  width: 320px; /* 70px 이미지 4개 + 간격 충분히 들어가도록 */
-  margin: 0 auto; /* 가운데 정렬 */
-  gap: 30px; /* 이미지 사이 간격 */
+    display: flex;
+    justify-content: space-between; /* 이미지 사이 최대한 간격 벌리기 */
+    width: 320px; /* 70px 이미지 4개 + 간격 충분히 들어가도록 */
+    margin: 0 auto; /* 가운데 정렬 */
+    gap: 30px; /* 이미지 사이 간격 */
 }
 
 .small-image-row img {
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: transform 0.2s ease;
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
 .small-image-row img:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 /* comment 부분 */
 .Comment {
-  width: 600px; /* 원하는 가로 너비 */
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 6px 20px;
-  border: 4px solid #ebeaea;
-  border-radius: 30px;
-  background-color: #f8f8f8;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-family: "Pretendard", sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-  text-align: center;
-  box-sizing: border-box;
-  resize: none; /* 크기 조절 못하게 */
-  height: 80px;
-  overflow-y: hidden; /* 수직 스크롤 숨기기 */
-  line-height: 80px; /* placeholder 수직 중앙 맞춤 */
+    width: 600px; /* 원하는 가로 너비 */
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 6px 20px;
+    border: 4px solid #ebeaea;
+    border-radius: 30px;
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: "Pretendard", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    box-sizing: border-box;
+    resize: none; /* 크기 조절 못하게 */
+    height: 80px;
+    overflow-y: hidden; /* 수직 스크롤 숨기기 */
+    line-height: 80px; /* placeholder 수직 중앙 맞춤 */
 }
 
 /* miniHome */
 /* placeholder 스타일 */
 .Comment::placeholder {
-  font-size: 16px; /* 폰트 크기 키우기 */
-  color: #aaa;
-  text-align: center; /* placeholder도 중앙 정렬 */
-  font-weight: 600;
-  line-height: 80px; /* textarea 높이와 맞춰서 수직 중앙 정렬 */
+    font-size: 16px; /* 폰트 크기 키우기 */
+    color: #aaa;
+    text-align: center; /* placeholder도 중앙 정렬 */
+    font-weight: 600;
+    line-height: 80px; /* textarea 높이와 맞춰서 수직 중앙 정렬 */
 }
 
 /* Friend Comment List, write */
 
 .comment-header {
-  display: flex;
-  justify-content: space-between; /* 좌우 끝 정렬 */
-  align-items: center; /* 수직 가운데 정렬 */
-  width: 100%; /* 필요에 따라 조절 */
-  margin: 20px auto 10px auto; /* 가운데 정렬 및 위아래 여백 */
-  font-family: "Pretendard", sans-serif;
-  font-weight: 600;
-  font-size: 16px;
+    display: flex;
+    justify-content: space-between; /* 좌우 끝 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+    width: 100%; /* 필요에 따라 조절 */
+    margin: 20px auto 10px auto; /* 가운데 정렬 및 위아래 여백 */
+    font-family: "Pretendard", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
 }
 
 .title {
-  color: #333;
+    color: #333;
 }
 
 /* 작성 버튼 */
 .write-button {
-  background-color: #912d2d;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 6px 15px;
-  cursor: pointer;
-  font-weight: 600; /* semi-bold 정도 */
-  font-size: 14px;
-  font-family: "Pretendard", sans-serif; /* 폰트 지정 */
-  transition: background-color 0.3s ease;
+    background-color: #912d2d;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 15px;
+    cursor: pointer;
+    font-weight: 600; /* semi-bold 정도 */
+    font-size: 14px;
+    font-family: "Pretendard", sans-serif; /* 폰트 지정 */
+    transition: background-color 0.3s ease;
 }
 
 .write-button:hover {
-  background-color: #b33a3a;
+    background-color: #b33a3a;
 }
 
 /* Friend Comment List */
 /* 댓글 리스트 영역 */
 .comment-list {
-  width: 600px !important;
-  max-width: 100% !important;
-  margin: 0 auto !important;
-  /* 기타 속성도 동일하게 */
-  padding: 8px 12px;
-  background-color: #fafafa;
-  box-sizing: border-box;
-  font-family: "Pretendard", sans-serif;
-  max-height: 200px;
-  overflow-y: auto;
-  padding-right: 10px;
+    width: 600px !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    /* 기타 속성도 동일하게 */
+    padding: 8px 12px;
+    background-color: #fafafa;
+    box-sizing: border-box;
+    font-family: "Pretendard", sans-serif;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 10px;
 }
 
 .comment-item {
-  display: flex;
-  align-items: center;
-  padding: 6px 8px;
-  font-size: 9px;
-  gap: 5px;
-  border-radius: 4px;
-  margin-bottom: 6px; /* 댓글 간 간격 */
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    font-size: 9px;
+    gap: 5px;
+    border-radius: 4px;
+    margin-bottom: 6px; /* 댓글 간 간격 */
 }
 
 .avatar {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
 }
 
 .comment-content {
-  flex-grow: 1;
+    flex-grow: 1;
 }
 
 .comment-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
 }
 
 .username {
-  font-weight: 600;
-  font-size: 10px;
-  color: #333;
+    font-weight: 600;
+    font-size: 10px;
+    color: #333;
 }
 
 .comment-text {
-  font-size: 9px;
-  color: #555;
-  margin-bottom: 2px;
+    font-size: 9px;
+    color: #555;
+    margin-bottom: 2px;
 }
 
 .comment-meta {
-  font-size: 8px;
-  color: #666464;
-  display: flex;
-  justify-content: space-between;
+    font-size: 8px;
+    color: #666464;
+    display: flex;
+    justify-content: space-between;
 }

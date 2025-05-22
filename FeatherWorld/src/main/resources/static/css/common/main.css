@@ -58,15 +58,13 @@ body {
 }
 
 /* 좌측 사이드바 스타일 */
-.left-sidebar,
-.right-sidebar {
-  padding: 20px;
-  border-color: #e0e0e0;
-}
-
 .left-sidebar {
   min-width: 250px;
+  max-height: 560px;
+  padding: 20px;
   border-right: 1px solid #e0e0e0;
+  overflow-y: scroll;
+  scrollbar-width: none;
 }
 
 .right-sidebar {
@@ -94,20 +92,48 @@ body {
 .board-type-sidebar > div:first-child {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
 }
 
-.board-type-sidebar > div:first-child span {
+.board-type-sidebar > div:first-child > span {
   display: inline-block;
+  align-items: center;
   padding: 8px;
-  margin-bottom: 5px;
   border-radius: 5px;
   background-color: #9f2120;
   color: white;
 }
 
-.board-type-sidebar .board-type-item:hover,
-.add-folder:hover,
-.nav-sidebar > a:hover {
+.edit-button {
+  cursor: pointer;
+  font-size: 12px;
+}
+.edit-button:hover {
+  opacity: 90%;
+}
+.edit-button > i {
+  margin-left: 5px;
+}
+
+.board-type-item > span:last-child {
+  display: none;
+}
+.board-type-item .fa-solid {
+  margin: 0 5px;
+  padding: 0 10px;
+}
+.board-type-item .fa-solid:hover {
+  transition-duration: 0.2s;
+  opacity: 50%;
+}
+
+.board-type-sidebar .board-type-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.board-type-sidebar .board-type-item:hover {
   transition-duration: 0.2s;
   background-color: #9f2120;
   color: white;
@@ -125,7 +151,91 @@ body {
   cursor: pointer;
 }
 
-/* 우측 네비게이션 */
+.add-folder:hover {
+  transition-duration: 0.2s;
+  background-color: #9F2120;
+  color: white;
+  border-color: #9F2120;
+}
+
+.add-folder > span {
+  margin: 0 10px;
+}
+
+.add-folder-form {
+  display: flex;
+  flex-direction: column;
+  transition-duration: 0.5s;
+  background-color: white;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 5px;
+  border: 2px solid #9F2120;
+}
+
+.add-folder-input {
+  padding: 5px;
+  margin: 5px;
+  font-weight: 600;
+}
+
+.folder-form-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.folder-form-footer > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60px;
+}
+
+.folder-form-footer span {
+  margin: 0 5px;
+  color: #9F2120;
+}
+
+.folder-form-footer > div:last-child > span {
+  background-color: #9F2120;
+  width: 60px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+}
+
+/* 권한 토글 */
+.toggle-authority {
+  position: relative;
+  width: 30px;
+  height: 15px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.toggle-authority > div {
+  position: absolute;
+  transition-duration: 0.2s;
+  top: 0;
+  left: 0;
+  width: 15px;
+  height: 100%;
+  border-radius: 20px;
+  background-color: #9F2120;
+}
+
+/* 우측 사이드바 스타일 */
+.right-sidebar {
+  min-width: 200px;
+  padding: 20px;
+  border-left: 1px solid #e0e0e0;
+}
+
 .nav-sidebar {
   display: flex;
   flex-direction: column;
@@ -148,6 +258,13 @@ body {
   width: 20px;
   margin-right: 10px;
   text-align: center;
+}
+
+.nav-sidebar > a:hover {
+  transition-duration: 0.2s;
+  background-color: #9F2120;
+  color: white;
+  border-color: #9F2120;
 }
 
 .nav-sidebar .nav-item i {
@@ -179,10 +296,16 @@ body {
   border-radius: 3px;
   text-decoration: none;
   color: #333;
+}
+
+.pagination span:hover {
+  transition-duration: 0.2s;
+  background-color: #9F2120;
+  color: white;
+  border-color: #9F2120;
   cursor: pointer;
 }
 
-.pagination span:hover,
 .pagination span.current {
   background-color: #9f2120;
   color: white;

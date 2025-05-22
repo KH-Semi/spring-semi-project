@@ -91,10 +91,10 @@
 /* 전체 스크롤 제거 */
 html,
 body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* 전체 스크롤 제거 */
 }
 
 .container {

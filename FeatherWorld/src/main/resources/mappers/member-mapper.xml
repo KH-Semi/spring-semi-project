@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.featherworld.project.member.model.mapper.MemberMapper">
 
+		<!-- 회원 여부 확인 -->
+		<select id="checkMember" resultType="_int">
+			SELECT COUNT(*)
+			FROM MEMBER
+			WHERE MEMBER_NO = ${memberNo}
+		</select>
+
 		<!-- 회원가입 SQL 영민 -->
 		
 		<insert id="signUp" parameterType="Member">

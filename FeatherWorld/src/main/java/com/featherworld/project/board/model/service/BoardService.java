@@ -8,22 +8,10 @@ import com.featherworld.project.board.model.dto.BoardType;
 
 public interface BoardService {
 
-	/** 회원 여부 확인
-	 * @author Jiho
-	 * @param memberNo 현재 조회 중인 회원 번호
-	 */
-	int checkMember(int memberNo);
-	
-	/** 현재 회원의 게시판 종류 번호(boardCode) 조회
-	 * @author Jiho
-	 * @param memberNo : 현재 조회 중인 회원 번호
-	 */
-	List<BoardType> selectBoardType(int memberNo);
-
 	/** 현재 선택된 게시판의 삭제되지 않은 게시글 목록 조회 / pagination 객체 반환
 	 * @author Jiho
-	 * @param currentBoardCode
-	 * @param cp
+	 * @param currentBoardCode 현재 게시판 종류 번호
+	 * @param cp 현재 페이지 번호
 	 * @return {"boardList" : List<Board>, "pagination" : Pagination}
 	 */
 	Map<String, Object> selectBoardList(int currentBoardCode, int cp);

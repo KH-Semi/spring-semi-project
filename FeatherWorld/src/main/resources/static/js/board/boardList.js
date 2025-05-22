@@ -1,18 +1,30 @@
 // 현재 게시판 종류 번호를 저장하는 boardCode 변수 선언
 let boardCode = currentBoardCode;
 
-// 쓰기 버튼
-const writeBtn = document.querySelector(".write-button");
+// 좌측 사이드 바
+const leftSidebar = document.querySelector(".left-sidebar");
 
-/** 현재 페이지(cp)를 원하는 값으로 수정, url에 반영
+// 수정 모드 flag
+let editMode = false;
+
+/** 현재 선택한 페이지(cp)를 url에 반영 (history에 저장)
  * @author Jiho
- * @param page
+ * @param {number} page
  */
-const updateCp = (page) => {
-  const url = new URL(window.location);
-  url.searchParams.set("cp", page);
-  history.replaceState({}, "", url);
-};
+const recodeCp = (page) => {
+  const url = new URL(location);
+  url.searchParams.set('cp', String(page));
+  history.pushState({}, '', url);
+}
+
+/** 현재 url에 cp가 존재한다면 cp, 없다면 null 반환
+ * @author Jiho
+ */
+const searchCp = () => {
+  // URL 에서 cp 파라미터 추출
+  const urlParams = new URLSearchParams(location.search);
+  return parseInt(urlParams.get("cp")) || null;
+}
 
 /** 특정 class를 가진 div 태그 생성
  * @author Jiho
@@ -34,6 +46,7 @@ const createDiv = (className = "", text = "") => {
  * @return 페이징 목록/글쓰기 버튼 포함 div
  */
 const createBoardFooter = (pagination) => {
+
   /** 각각의 페이징 목록을 생성하고, 페이지 변경 click 이벤트 부여
    * @author Jiho
    * @param {number} page 페이지 번호(cp)
@@ -49,7 +62,11 @@ const createBoardFooter = (pagination) => {
 
     // 페이지 클릭 이벤트 추가
     span.addEventListener("click", async () => {
-      await renderBoardList(boardCode, page);
+      // 변경된 cp값 적용/history 저장
+      recodeCp(page);
+      // 해당 페이지에 맞게 게시글/페이징 목록 갱신
+      renderBoardList(boardCode, page)
+          .catch(console.error);
     });
 
     return span;
@@ -57,7 +74,7 @@ const createBoardFooter = (pagination) => {
 
   const containerDiv = document.createElement("div");
 
-  if (pagination) {
+  if(pagination) {
     // 임시 페이징 목록 div
     const updatedPagination = document.createElement("div");
     updatedPagination.classList.add("pagination");
@@ -66,9 +83,7 @@ const createBoardFooter = (pagination) => {
     updatedPagination.append(createPageSpan(1, "<<"));
 
     // < 이전 페이지
-    updatedPagination.append(
-      createPageSpan(pagination.prevPage, "<", "page-nav")
-    );
+    updatedPagination.append(createPageSpan(pagination.prevPage, "<", "page-nav"));
 
     // 페이지 번호 목록
     for (let i = pagination.startPage; i <= pagination.endPage; i++) {
@@ -80,9 +95,7 @@ const createBoardFooter = (pagination) => {
     }
 
     // > 다음 페이지
-    updatedPagination.append(
-      createPageSpan(pagination.nextPage, ">", "page-nav")
-    );
+    updatedPagination.append(createPageSpan(pagination.nextPage, ">", "page-nav"));
 
     // >> 마지막 페이지
     updatedPagination.append(createPageSpan(pagination.maxPage, ">>"));
@@ -96,6 +109,17 @@ const createBoardFooter = (pagination) => {
   writeSpan.innerText = "Write";
   writeDiv.append(writeSpan);
 
+  // 쓰기 버튼 클릭시 동기식 페이지 전환
+  writeSpan.addEventListener("click", () => {
+
+    if(boardCode === 0) {
+      alert("존재하지 않는 게시판입니다.");
+      return;
+    }
+
+    location.href = `/${memberNo}/board/${boardCode}/write`;
+  });
+
   containerDiv.append(writeDiv);
 
   return containerDiv;
@@ -103,16 +127,22 @@ const createBoardFooter = (pagination) => {
 
 /** 게시판 갱신시 갱신된 게시글/페이징 목록 렌더링
  * @author Jiho
- * @param {number} boardCode 게시판 종류 번호
- * @param {number} page 페이지 번호(cp)
+ * @param {number} boardType 게시판 종류 번호
+ * @param page 페이지 번호(cp)
  */
-const renderBoardList = async (boardCode, page) => {
+const renderBoardList = async (boardType, page) => {
+
   // 중앙 게시글 목록 div 생성
   const mainContent = createDiv("main-content");
   const updatedBoardContainer = createDiv("board-list");
 
+  // page 값에 따라 요청 변경
+  let queryString;
+  if(page == null) queryString = "";
+  else queryString = `?cp=${page}`;
+
   // ajax를 통해 비동기로 회원별 게시판 목록 각 요소 클릭시 boardList & pagination 구해옴
-  const resp = await fetch(`/board/${boardCode}?cp=${page}`);
+  const resp = await fetch(`/board/${boardType}${queryString}`);
   const map = await resp.json();
 
   // map 내부에 있는 pagination & boardList 선언
@@ -135,13 +165,10 @@ const renderBoardList = async (boardCode, page) => {
   }
 
   // 비동기로 가져온 게시글 내용을 꺼내서 html 요소로 대입
-  for (const board of boardList) {
+  for(const board of boardList) {
+
     // 게시글 하나를 담는 div 생성
     const boardItem = createDiv("board-item");
-
-    boardItem.addEventListener("click", () => {
-      location.href = `/${memberNo}/board/${boardCode}/${board.boardNo}`;
-    });
 
     // 게시글 썸네일과 게시글 제목/내용을 담는 묶음 div 생성
     const boardWrap = createDiv("board-wrap");
@@ -186,6 +213,10 @@ const renderBoardList = async (boardCode, page) => {
     // 게시글 하나에 모든 내용 넣기
     boardItem.append(boardWrap, boardInfo);
 
+    boardItem.addEventListener("click", () => {
+      location.href = `/${memberNo}/board/${boardCode}/${board.boardNo}`;
+    });
+
     // 게시글 목록 div에 게시글 하나 넣기
     updatedBoardContainer.append(boardItem);
   }
@@ -213,6 +244,178 @@ document.querySelectorAll(".board-type-item").forEach((boardTypeItem) => {
     renderBoardList(boardCode, 1).catch(console.error);
   });
 });
+/** 현재 url을 통해 현재 선택된 게시판 & 페이지로 게시글 목록 불러오기
+ * @author Jiho
+ * @param boardType 게시판 종류
+ */
+const loadBoardList = (boardType) => {
+  // cp 값으로 렌더링 (새로고침 가능)
+  const cp = searchCp();
+  renderBoardList(boardType, cp).catch(console.error);
+}
+
+/** 게시판 목록 갱신시 갱신된 게시판 목록 렌더링
+ * @author Jiho
+ */
+const renderBoardTypeList = async () => {
+
+  const resp = await fetch(`/${memberNo}/board/select`);
+  const boardTypeList = await resp.json();
+
+  const boardTypeSidebar = createDiv("board-type-sidebar");
+
+  const div = document.createElement("div");
+  const titleSpan = document.createElement("span");
+  titleSpan.innerText = "Board Type";
+  titleSpan.classList.add("board-type-title");
+
+  div.append(titleSpan);
+
+  if(loginMemberNo === memberNo) {
+    const editBtn = document.createElement("span");
+    editBtn.classList.add("edit-button");
+    editBtn.innerText = "edit";
+    const editIcon = document.createElement("i");
+    editIcon.classList.add("fa-solid", "fa-pen-to-square");
+
+    editBtn.append(editIcon);
+    div.append(editBtn);
+  }
+
+  boardTypeSidebar.append(div);
+
+  boardTypeList.forEach(boardType => {
+
+    if(boardType.authority == 0 || boardType.authority == 1 && loginMemberNo === memberNo) {
+
+      const boardTypeItem = document.createElement("div");
+      boardTypeItem.classList.add("board-type-item");
+      boardTypeItem.dataset.boardCode = boardType.boardCode;
+
+      const boardTypeTitle = document.createElement("span");
+      boardTypeTitle.classList.add("board-type-title");
+      boardTypeTitle.innerText = boardType.boardName;
+
+      const iconSpan = document.createElement("span");
+
+      const editIcon = document.createElement("span");
+      editIcon.classList.add("edit-icon");
+      const pencilIcon = document.createElement("span");
+      editIcon.classList.add("fa-solid","fa-pencil");
+
+      editIcon.append(pencilIcon);
+
+      const deleteIcon = document.createElement("span");
+      deleteIcon.classList.add("delete-icon");
+      const trashIcon = document.createElement("span");
+      trashIcon.classList.add("fa-solid", "fa-trash");
+
+      deleteIcon.append(trashIcon);
+
+      iconSpan.append(editIcon, deleteIcon);
+
+      boardTypeItem.append(boardTypeTitle, iconSpan);
+
+      boardTypeSidebar.append(boardTypeItem);
+    }
+
+  });
+
+  document.querySelector(".board-type-sidebar").replaceWith(boardTypeSidebar);
+}
+
+const createAddFolder = () => {
+  const div = createDiv("add-folder", "Add Folder");
+  const span = document.createElement("span");
+  span.classList.add("fa-solid", "fa-folder-plus");
+
+  div.append(span);
+
+  return div;
+}
+
+if(leftSidebar) {
+
+  leftSidebar.addEventListener("click", async e => {
+
+    // 좌측 게시판 목록 선택
+    if(e.target.classList.contains("board-type-item")) {
+
+        // 현재 게시판 종류 번호 갱신
+        boardCode = e.target.dataset.boardCode;
+        // boardCode 반영해 url 갱신
+        history.pushState({}, '', boardCode);
+
+        // 게시글 목록 갱신
+        renderBoardList(boardCode, null).catch(console.error);
+    }
+
+    if(e.target === document.querySelector(".add-folder")) {
+      const addFolderForm = createDiv("add-folder-form");
+
+      const folderTitleInput = document.createElement("input");
+      folderTitleInput.classList.add("add-folder-input");
+      folderTitleInput.name = "boardName";
+      folderTitleInput.placeholder = "Input Folder Title";
+
+      const folderFormFooter = createDiv("folder-form-footer");
+
+      // 푸터 좌측 권한 설정 부분
+      const leftTempDiv = document.createElement("div");
+
+      const lockSpan = document.createElement("span");
+      lockSpan.classList.add("fa-solid", "fa-lock-open");
+
+      const toggleAuthority = createDiv("toggle-authority");
+      const toggleDiv = document.createElement("div");
+      toggleAuthority.append(toggleDiv);
+
+      leftTempDiv.append(lockSpan, toggleAuthority);
+
+      // 푸터 우측 취소, 확정 부분
+      const rightTempDiv = document.createElement("div");
+
+      const cancel = document.createElement("span");
+      cancel.classList.add("cancel-add-folder");
+      cancel.innerText = "Cancel";
+
+      const confirm = document.createElement("span");
+      confirm.classList.add("confirm-add-folder");
+      confirm.innerText = "Confirm";
+
+      rightTempDiv.append(cancel, confirm);
+
+      const authority = document.createElement("input");
+      authority.type = "hidden";
+      authority.name = "authority";
+      authority.value = "0";
+      authority.required = true;
+
+      toggleAuthority.addEventListener("click", () => {
+
+        toggleDiv.style.left = toggleDiv.style.left === "" ? "15px" : "";
+
+        if(lockSpan.classList.contains("fa-lock-open")) {
+          lockSpan.classList.replace("fa-lock-open", "fa-lock");
+
+        } else {
+          lockSpan.classList.replace("fa-lock", "fa-lock-open");
+        }
+
+        authority.value = authority.value === "0" ? "1" : "0";
+      });
+
+      folderFormFooter.append(leftTempDiv, rightTempDiv);
+
+      addFolderForm.append(folderTitleInput);
+      addFolderForm.append(folderFormFooter);
+      addFolderForm.append(authority);
+
+      leftSidebar.append(addFolderForm);
+
+      folderTitleInput.focus();
+      e.target.remove();
+    }
 
 // 쓰기 버튼 클릭시 비동기식 페이지 전환
 if (writeBtn) {
@@ -229,6 +432,80 @@ if (writeBtn) {
     // 2.
   });
 }
+    if(e.target === document.querySelector(".cancel-add-folder")) {
+
+      document.querySelector(".add-folder-form").remove();
+      leftSidebar.append(createAddFolder());
+    }
+
+    if(e.target === document.querySelector(".confirm-add-folder")) {
+
+      const boardName = document.querySelector("input[name='boardName']").value;
+      if(boardName.trim().length === 0) {
+        alert("게시판 이름을 작성해주세요.");
+        document.querySelector(".add-folder-input").focus();
+        return;
+      }
+
+      const authority = document.querySelector("input[name='authority']").value
+
+      const folderForm = {
+        boardName: boardName,
+        authority: authority
+      };
+
+      // 입력한 값들을 모두 ajax로 비동기 요청
+      const resp = await fetch(`/${memberNo}/board/insert`, {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(folderForm)
+      });
+      const result = await resp.text();
+
+      if(result > 0) {
+        alert("새로운 게시판이 생성되었습니다.");
+
+        // 현재 세션 갱신 후 화면에 게시판 목록 렌더링
+        renderBoardTypeList().catch(console.error);
+
+        document.querySelector(".add-folder-form")?.remove();
+        leftSidebar.append(createAddFolder());
+      }
+
+    }
 
 // 보드 메인 페이지 최초 진입 시 renderBoardList() 실행
 renderBoardList(boardCode, 1).catch(console.error);
+
+    if(e.target === document.querySelector(".edit-button")) {
+
+      // 수정모드 전환
+      editMode = !editMode;
+
+      const iconSpan = document.querySelectorAll(".board-type-item > span:last-child");
+
+      // 수정모드일 때 클릭 이벤트 발생 시 수정(put, delete 요청 수행)
+      if(editMode) {
+        iconSpan.forEach(icon => {
+          icon.style.display = "inline-block";
+        });
+
+      } else {
+        iconSpan.forEach(icon => {
+          icon.style.display = "none";
+        });
+      }
+    }
+  });
+}
+
+// 뒤로가기 실행 시
+window.addEventListener("popstate", () => {
+  // 현재 게시판 종류 번호를 이전 게시판 종류 번호로 바꿈
+  // 페이지에 맞게 게시글 목록을 다시 불러옴
+  boardCode = location.pathname.split('/')[3];
+  loadBoardList(boardCode);
+});
+
+loadBoardList(boardCode);
+renderBoardTypeList().catch(console.error);

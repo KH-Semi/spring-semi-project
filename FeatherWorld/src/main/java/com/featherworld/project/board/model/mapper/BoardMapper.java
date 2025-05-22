@@ -18,15 +18,15 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface BoardMapper {
 
-
-	int checkMember(int memberNo);
-
 	List<BoardType> selectBoardType(int memberNo);
 
 	int getListCount(int currentBoardCode);
 
 	List<Board> selectBoardList(int currentBoardCode, RowBounds rowBounds);
 
+	int insertBoardType(BoardType boardType);
+
+	int deleteBoardType(BoardType boardType);
 
 	/** 게시글 좋아요 해제
 	 * @author 허배령
