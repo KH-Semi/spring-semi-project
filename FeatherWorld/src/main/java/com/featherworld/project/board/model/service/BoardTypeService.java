@@ -19,6 +19,12 @@ public interface BoardTypeService {
      */
     int insertBoardType(BoardType boardType);
 
+    /** 현재 회원의 기존 게시판 수정
+     * @param boardType 전달받은 현재 회원 번호, 수정된 게시판 이름 & 권한(0, 1)
+     * @return result : 1(성공), 0(실패)
+     */
+    int updateBoardType(BoardType boardType);
+
     /** 현재 회원의 기존 게시판 삭제
      * @param boardType 전달받은 현재 회원 번호, 게시판 종류 번호
      * @return result: 1(성공), 0(실패)
