@@ -71,5 +71,7 @@
 	MEMBER_PW = #{memberPw}
 	WHERE MEMBER_EMAIL = #{memberEmail}	
 	</update>
+	
+	
 
 </mapper>

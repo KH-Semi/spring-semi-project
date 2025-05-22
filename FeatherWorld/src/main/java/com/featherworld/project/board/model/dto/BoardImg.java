@@ -1,5 +1,7 @@
 package com.featherworld.project.board.model.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +19,7 @@ public class BoardImg {
 	private String imgRename;
 	private int imgOrder;
 	private int boardNo;
+	
+	// 게시글 이미지 삽입/수정 할 때 사용
+	private MultipartFile uploadFile;
 }

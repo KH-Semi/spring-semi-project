@@ -1,23 +1,50 @@
 package com.featherworld.project.friend.model.service;
 
-import com.featherworld.project.common.dto.Pagination;
-import com.featherworld.project.friend.model.dto.Ilchon;
-import com.featherworld.project.friend.model.mapper.IlchonMapper;
-import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.featherworld.project.board.controller.BoardController;
+import com.featherworld.project.board.controller.CommentController;
+import com.featherworld.project.board.model.service.BoardServiceImpl;
+import com.featherworld.project.board.model.service.CommentServiceImpl;
+import com.featherworld.project.common.dto.Pagination;
+import com.featherworld.project.friend.model.dto.Ilchon;
+import com.featherworld.project.friend.model.mapper.IlchonMapper;
+import com.featherworld.project.member.model.dto.Member;
+
+@Transactional(rollbackFor=Exception.class)
 @Service
 public class IlchonServiceImpl implements IlchonService {
+
+    private final CommentServiceImpl commentServiceImpl;
+
+    private final CommentController commentController;
+
+    private final BoardServiceImpl boardServiceImpl;
+
+    private final BoardController boardController;
 
 	
 	@Autowired
 	private IlchonMapper mapper;
+
+    IlchonServiceImpl(BoardController boardController, BoardServiceImpl boardServiceImpl, CommentController commentController, CommentServiceImpl commentServiceImpl) {
+        this.boardController = boardController;
+        this.boardServiceImpl = boardServiceImpl;
+        this.commentController = commentController;
+        this.commentServiceImpl = commentServiceImpl;
+    }
+    
+    public Ilchon selectOne(int loginMemberNo, int memberNo) {
+    	
+    	return mapper.selectOne(loginMemberNo, memberNo);
+    }
 	@Override
 	public Map<String, Object> selectIlchonMemberList(int loginMemberNo, int cp) {
 		// TODO Auto-generated method stub
@@ -52,17 +79,80 @@ public class IlchonServiceImpl implements IlchonService {
 		// rowBounds를 이용할때!
 		// -> 첫번째 매개변수 -> SQL 에 전달할 파라미터
 		// -> 두번째 매개변수 -> RowBounds 객체 전달
-		List<Ilchon> ilchons = mapper.select(loginMemberNo, rowBounds);
+		List<Ilchon> ilchons = mapper.selectPagination(loginMemberNo, rowBounds);
 	
 		// 4. 목록 조회 결과 + Pagination 객체를 Map으로 묶음
 		Map<String, Object> map = new HashMap<>();
 				
 		map.put("pagination", pagination);
 		map.put("ilchons", ilchons);
-				
+		
 				
 		return map;
 	
+	}
+	
+	
+	@Override
+	public int updateIlchonNickname(int loginMemberNo,int memberNo,String nickname) {
+		// TODO Auto-generated method stub
+		/*
+		Map<String, Object> mapSelect = new HashMap<String, Object>();
+		
+		mapSelect.put("loginMemberNo", loginMemberNo);
+		mapSelect.put("memberNo", memberNo);
+		
+		
+		Map<String, Object> mapUpdate = new HashMap<String, Object>();
+		mapUpdate.put("loginMemberNo", loginMemberNo);
+		mapUpdate.put("memberNo", memberNo);
+		mapUpdate.put("nickname", nickname);
+		
+		int resultTo = 0;
+		Ilchon friend = mapper.selectOne(mapSelect);
+		System.out.println("selectOne : " + friend.getFromMemberNo());
+		System.out.println("loginMemberNo : " + loginMemberNo);
+		
+		if(loginMemberNo == friend.getFromMemberNo()) { //!= 시 query 지연되는듯?
+			resultTo = mapper.updateFromIlchonNickName( mapUpdate );
+			return resultTo;
+			
+		}
+		resultTo = mapper.updateToIlchonNickName( mapUpdate );*/
+
+		int resultTo= mapper.updateToIlchonNickName( loginMemberNo, memberNo, nickname); 
+		
+		
+		int resultFrom = mapper.updateFromIlchonNickName( loginMemberNo, memberNo, nickname);
+		if(resultTo == 1 && resultFrom == 0) {
+			return 2 ; 
+		}else if(resultTo == 0 && resultFrom == 1){
+			return 1;
+			
+		}else {return 0;}
+		/*System.out.println("Mapper 호출 결과 resultFrom: " + resultFrom);*/
+		
+		
+	}
+
+	@Override
+	public int insertNewIlchon(int loginMemberNo, int targetMemberNo) {
+		
+		Ilchon il = selectOne(loginMemberNo, targetMemberNo);
+		if (il == null){ // 일촌이 존재하지 않는다면 
+			int result = mapper.insertIlchon(loginMemberNo, targetMemberNo);
+			if(result == 1) {// 삽입 성공시
+				return 1;
+				
+			}else { // 삽입 실패시(아무것도 삽입되지 않음)
+				return 0;
+			}
+			
+		} else {// 이미 일촌이 존재한다면
+			return -1; 
+		}
+		
+		
 	}
 
 }

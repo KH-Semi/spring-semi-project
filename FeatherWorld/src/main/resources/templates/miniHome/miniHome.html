@@ -6,50 +6,21 @@
     <title>FeatherWorld</title>
     <!-- 공용 css/js 추가 -->
     <th:block th:replace="~{common/common}"></th:block>
-    <!-- miniHome 전용 CSS -->
-    <link href="/css/myPage/editProfile.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="/css/miniHome/miniHome.css" />
   </head>
   <body>
-    <div class="container">
-      <!-- Left Panel - Profile Information -->
-      <div class="left-panel">
-        <header class="logo">
-          <p>Today / Total</p>
-        </header>
+    <!-- Header Fragment -->
+    <div th:replace="~{common/header}"></div>
 
-        <div class="profile-info">
-          <div class="profile-image">
-            <img alt="프로필 이미지" th:src="#{user.default.image}" />
-          </div>
-          <div class="profile-name">반응형</div>
-          <div class="profile-handle">@re</div>
-          <div class="profile-stats">
-            <div class="stat">
-              <div class="stat-number">128</div>
-              <div class="stat-label">Follower</div>
-            </div>
-            <div class="stat">
-              <div class="stat-number">97</div>
-              <div class="stat-label">Following</div>
-            </div>
-          </div>
-          <div class="profile-action">
-            <button class="action-button Edit-button">Edit Profile</button>
-            <button class="action-button Logout-button">Logout</button>
-          </div>
-        </div>
-        <!-- 여기 추가 -->
-        <div class="profile-action">
-          <button class="action-button Board-button">Bio</button>
-        </div>
-
-        <div class="profile-action">
-          <button class="action-button surfing-button">surfing</button>
-        </div>
+    <div class="content-container">
+      <div class="left-sidebar">
+        <!-- Left sidebar - Profile Information -->
+        <div th:replace="~{common/leftsidebar}"></div>
       </div>
 
-      <!-- Middle Panel - Posts -->
-      <div class="middle-panel">
+      <!-- Middle sidebar - Posts -->
+      <div class="content-area">
         <div class="boardContainer">
           <div class="boardSummary">
             <div class="summary-links">
@@ -60,107 +31,67 @@
 
           <div class="recentBoard">Recent Board</div>
 
-          <!-- 이미지 4개 행 추가 -->
-          <div class="small-image-row">
-            <img alt="Image 1" th:src="#{user.default.image}" />
-            <img alt="Image 2" th:src="#{user.default.image}" />
-            <img alt="Image 3" th:src="#{user.default.image}" />
-            <img alt="Image 4" th:src="#{user.default.image}" />
-          </div>
+          <form action="/profile/file/test1"
+                      method="POST"
+                      enctype="multipart/form-data"
+
+          <!-- 이미지 5장까지 표시할 영역 -->
+          <div class="small-image-row" id="imagePreviewRow"></div>
 
           <textarea
             class="Comment"
-            placeholder="Write Friend Comment."></textarea>
+            placeholder="Write Friend Comment."
+          ></textarea>
 
           <div class="comment-header">
             <div class="title">Friend Comment List</div>
-            <button class="write-button" id="write-button">Write</button>
+            <button id="write-button" class="write-button">Write</button>
           </div>
           <div id="comment-form" style="display: none; margin-top: 10px">
             <textarea
-              class="Comment"
               id="comment-input"
-              placeholder="댓글을 작성하세요..."></textarea>
-            <button class="write-button" id="submit-comment">댓글 등록</button>
+              class="Comment"
+              placeholder="댓글을 작성하세요..."
+            ></textarea>
+            <button id="submit-comment" class="write-button">댓글 등록</button>
           </div>
 
-          <!-- 뎃글 부분 -->
-
-          <!-- 댓글 목록 div에 id 추가 -->
+          <!-- 댓글 부분 -->
           <div class="comment-list" id="comment-list">
-            <div class="comment-item">
-              <img
-                alt="User avatar"
-                class="avatar"
-                th:src="#{user.default.image}"/>
-              <div class="comment-content">
-                <span class="username">허태범</span>
-                <span class="comment-text">여기에 댓글 텍스트를 넣으세요.</span>
-
-                <div class="comment-meta">
-                  <span class="user-role">남양스트롱</span>
-                  <button class="delete-btn">Delete</button>
+            <div th:each="comment : ${comments}">
+              <div class="comment-item">
+                <img
+                  th:src="${#strings.isEmpty(comment.memberImg)} ? '/images/user.png' : comment.memberImg"
+                />
+                <div class="comment-content">
+                  <span class="username" th:text="${comment.username}"
+                    >사용자명</span
+                  >
+                  <span class="comment-text" th:text="${comment.commentText}"
+                    >댓글 내용</span
+                  >
+                  <div class="comment-meta">
+                    <span class="user-role" th:text="${comment.userRole}"
+                      >역할</span
+                    >
+                    <button class="delete-btn">Delete</button>
+                  </div>
                 </div>
               </div>
+              <hr />
             </div>
-            <hr/>
-
-            <div class="comment-item">
-              <img
-                alt="User avatar"
-                class="avatar"
-                th:src="#{user.default.image}"/>
-              <div class="comment-content">
-                <span class="username">김영인</span>
-                <span class="comment-text">안녕하세요~~~</span>
-                <div class="comment-meta">
-                  <span class="user-role">레몬이</span>
-                  <button class="delete-btn">Delete</button>
-                </div>
-              </div>
-            </div>
-            <hr/>
-
-            <div class="comment-item">
-              <img
-                alt="User avatar"
-                class="avatar"
-                th:src="#{user.default.image}"/>
-              <div class="comment-content">
-                <span class="username">김영인</span>
-                <span class="comment-text">안녕하세요~~~</span>
-                <div class="comment-meta">
-                  <span class="user-role">레몬이</span>
-                  <button class="delete-btn">Delete</button>
-                </div>
-              </div>
-            </div>
-            <hr />
-
-            <div class="comment-item">
-              <img
-                alt="User avatar"
-                class="avatar"
-                th:src="#{user.default.image}"/>
-              <div class="comment-content">
-                <span class="username">김영민</span>
-                <span class="comment-text">안녕하세요~~~</span>
-                <div class="comment-meta">
-                  <span class="user-role">레몬이</span>
-                  <button class="delete-btn">Delete</button>
-                </div>
-              </div>
-            </div>
-            <hr />
           </div>
         </div>
       </div>
 
-      <th:block th:replace="~{common/navSidebar}"></th:block>
-
-      <!-- 푸터 추가 -->
-      <th:block th:replace="~{common/footer}"></th:block>
+      <!-- Right sidebar - Navigation Menu -->
+      <div class="right-sidebar">
+        <th:block th:replace="~{common/navsidebar}"></th:block>
+      </div>
     </div>
+
+    <!-- 푸터 -->
+    <th:block th:replace="~{common/footer}"></th:block>
 
     <script src="/js/miniHome/miniHome.js"></script>
   </body>

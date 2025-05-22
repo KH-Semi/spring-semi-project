@@ -30,6 +30,13 @@ public interface BoardService {
 	 */
 	Board selectOne(Map<String, Integer> map);
 
+	/** 조회수 1 증가 서비스
+	 * @author 허배령
+	 * @param boardNo
+	 * @return
+	 */
+	int updateReadCount(int boardNo);
+
 
 
 }

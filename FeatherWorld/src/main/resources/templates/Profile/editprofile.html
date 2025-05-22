@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FeatherWorld</title>
+    <!-- 공용 css/js 추가 -->
+    <th:block th:replace="~{common/common}"></th:block>
+    <!-- myPage 전용 CSS -->
+    <link rel="stylesheet" href="/css/profile/editprofile.css" />
+  </head>
+  <body>
+    <!-- Header Fragment -->
+    <div th:replace="~{common/header}"></div>
+
+    <div class="content-container">
+      <!-- Left sidebar - Profile Information -->
+      <div th:replace="~{common/leftsidebar}"></div>
+
+      <!-- Middle Content -->
+      <div class="middle-sidebar">
+        <!-- 사진 업로드 -->
+        <div
+          class="upload-bio-container"
+          onclick="document.getElementById('image').click()"
+        >
+          <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/*"
+            class="file-input"
+            onchange="previewImage(event)"
+            style="display: none"
+          />
+          <div class="image-upload-box">
+            <p>여기를 클릭해서 사진을 업로드하세요</p>
+            <img
+              id="preview"
+              src=""
+              alt="이미지 미리보기"
+              style="
+                display: none;
+                max-width: 100%;
+                max-height: 180px;
+                border-radius: 8px;
+                margin-top: 10px;
+              "
+            />
+          </div>
+        </div>
+
+        <!-- 자기소개 텍스트 영역 -->
+        <div class="bio-section">
+          <textarea
+            id="bio-input"
+            class="bio-textarea"
+            placeholder="자기소개를 입력하세요..."
+          ></textarea>
+        </div>
+
+        <!-- 버튼 -->
+        <div class="post-actions">
+          <button
+            id="profileUpdateBtn"
+            class="post-button"
+            onclick="location.href='/profile/update'"
+          >
+            Profile Update
+          </button>
+          <button
+            id="deleteAccountBtn"
+            class="post-button"
+            onclick="location.href='/account/delete'"
+          >
+            Delete Account
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Sidebar -->
+      <th:block th:replace="~{common/navSidebar}"></th:block>
+    </div>
+
+    <!-- 푸터 추가 -->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+    <script src="js/profile/editprofile.js"></script>
+  </body>
+</html>
