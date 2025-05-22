@@ -1,30 +1,10 @@
 <div class="left-sidebar">
   <div class="board-type-sidebar">
-    <div>
-      <span class="board-type-title">Board Type</span>
-      <!-- <th:block th:if="${session.loginMember?.memberNo == memberNo}"> -->
-        <span class="edit-button">
-          <i class="fa-solid fa-pen-to-square"></i>edit
-        </span>
-      <!-- </th:block> -->
-    </div>
-    <!-- th:data-board-code="*{boardCode}" 해당 boardCode 값을 각각의 게시판 div에 추가 -->
-    <div class="board-type-item" th:data-board-code="*{boardCode}" th:each="boardType : ${session.boardTypeList}" th:object="${boardType}">
-      <span class="board-type-title" th:text="*{boardName}">Daily</span>
-      <span>
-        <span class="edit-icon">
-          <span class="fa-solid fa-pencil"></span>
-        </span>
-        <span class="delete-icon">
-          <span class="fa-solid fa-trash"></span>
-        </span>
-      </span>
-    </div>
   </div>
 
-  <!-- <th:block th:if="${session.loginMember?.memberNo == memberNo}"> -->
+  <th:block th:if="${session.loginMember != null and session.loginMember.memberNo == memberNo}">
     <div class="add-folder">
-      <span class="fa-solid fa-folder-plus"></span>Add Folder
+      Add Folder<span class="fa-solid fa-folder-plus"></span>
     </div>
-  <!-- </th:block> -->
+  </th:block>
 </div>
