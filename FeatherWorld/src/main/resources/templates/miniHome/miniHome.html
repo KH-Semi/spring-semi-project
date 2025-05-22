@@ -31,10 +31,11 @@
 
           <div class="recentBoard">Recent Board</div>
 
-          <!-- 이미지 업로드 input (multiple 속성 추가) -->
-          <input type="file" id="multiImageInput" accept="image/*" multiple />
+          <form action="/profile/file/test1"
+                      method="POST"
+                      enctype="multipart/form-data"
 
-          <!-- 이미지 미리보기 5장까지 표시할 영역 -->
+          <!-- 이미지 5장까지 표시할 영역 -->
           <div class="small-image-row" id="imagePreviewRow"></div>
 
           <textarea

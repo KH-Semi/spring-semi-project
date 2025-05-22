@@ -10,13 +10,15 @@
     <!-- myPage 전용 CSS -->
     <link rel="stylesheet" href="/css/profile/Profile.css" />
   </head>
-  <body>
+  <body data-member-no="${member.memberNo}">
     <!-- Header Fragment -->
     <div th:replace="~{common/header}"></div>
 
     <div class="content-container">
-      <!-- Left sidebar - Profile Information -->
-      <div th:replace="~{common/leftsidebar}"></div>
+      <div class="left-sidebar">
+        <!-- Left sidebar - Profile Information -->
+        <div th:replace="~{common/leftsidebar}"></div>
+      </div>
 
       <!-- Middle Panel - Posts -->
       <div class="middle-sidebar">
@@ -41,10 +43,12 @@
 
         <div class="post-actions">
           <a
-            th:href="@{/{memberNo}/editprofile(memberNo=${memberNo})}"
+            th:href="@{/{memberNo}/profileupdate(memberNo=${memberNo})}"
             class="post-button"
-            >Profile Update</a
           >
+            Profile Update
+          </a>
+
           <a th:href="@{/account/delete}" class="post-button">Delete Account</a>
         </div>
       </div>
@@ -57,5 +61,6 @@
     <th:block th:replace="~{common/footer}"></th:block>
 
     <script src="/js/profile/profile.js"></script>
+    <script src="/js/miniHome/sidebar.js"></script>
   </body>
 </html>

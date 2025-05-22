@@ -22,31 +22,24 @@
           class="upload-bio-container"
           onclick="document.getElementById('image').click()"
         >
-          <input
-            type="file"
-            id="image"
-            name="image"
-            accept="image/*"
-            class="file-input"
-            onchange="previewImage(event)"
-            style="display: none"
-          />
-          <div class="image-upload-box">
-            <p>여기를 클릭해서 사진을 업로드하세요</p>
-            <img
-              id="preview"
-              src=""
-              alt="이미지 미리보기"
-              style="
-                display: none;
-                max-width: 100%;
-                max-height: 180px;
-                border-radius: 8px;
-                margin-top: 10px;
-              "
-            />
-          </div>
+          <form
+            action="/profile/file/test1"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            <input type="file" name="uploadFile" />
+          </form>
+
+          <a
+            th:if="${path != null}"
+            th:text="${path}"
+            th:href="${path}"
+            download
+            >업로드한 파일</a
+          >
         </div>
+
+        <img th:src="${path}" />
 
         <!-- 자기소개 텍스트 영역 -->
         <div class="bio-section">

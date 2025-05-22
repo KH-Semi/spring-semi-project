@@ -11,17 +11,18 @@
 }
 
 /* 방문 번호 표시 */
-.left-sidebar p {
-  font-size: 14px;
-  color: #777;
-  margin-bottom: 5px;
+.visitorno {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #a52222; /* 더 진한 붉은색으로 통일 */
 }
 
-.vistorno {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: #333;
+.counter {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #912d2d;
+  font-weight: bold;
 }
 
 /* 프로필 정보 컨테이너 */
@@ -39,31 +40,33 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #912d2d;
-  margin-bottom: 10px;
+  margin: 0 auto 10px auto;
+  display: block;
 }
 
 /* 회원 이름 */
 .profile-name {
   font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 5px;
+  font-weight: bold;
+  margin: 10px 0 5px;
   color: #333;
 }
 
 /* 이메일 */
 .profile-handle {
   font-size: 14px;
-  color: #888;
-  margin-bottom: 15px;
+  color: #aaa; /* 통일된 색상 */
+  margin-bottom: 10px;
   text-align: center;
 }
 
 /* 팔로워 / 팔로잉 */
 .profile-stats {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: space-around; /* 공간 균등 분배 */
   margin-bottom: 15px;
+  font-size: 14px;
+  width: 100%;
 }
 
 .stat {
@@ -72,141 +75,93 @@
 }
 
 .stat-number {
-  font-size: 16px;
   font-weight: bold;
-  color: #912d2d;
+  color: #a52222;
+  font-size: 16px;
 }
 
 .stat-label {
   font-size: 12px;
-  color: #777;
+  color: #555;
 }
 
-/* 프로필 액션 버튼들 */
-.profile-action {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.action-button {
-  padding: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* 버튼별 색상 */
+/* Edit 버튼 */
 .Edit-button {
   background-color: #912d2d;
-  color: white;
-}
-
-.Logout-button {
-  background-color: #ddd;
-  color: #333;
-}
-
-.follow-button {
-  background-color: #912d2d;
-  color: white;
-}
-
-.surfing-button {
-  background-color: #f2f2f2;
-  color: #912d2d;
-  border: 1px solid #912d2d;
-}
-
-.action-button:hover {
-  opacity: 0.9;
-}
-.counter {
-  font-size: 14px;
-  margin-bottom: 10px;
-  color: #912d2d;
-  font-weight: bold;
-}
-
-.visitorno {
-  font-size: 16px;
-  margin-bottom: 15px;
-  color: #a52222;
-  font-weight: bold;
-}
-
-.profile-image img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 0 auto 10px auto;
-  display: block;
-}
-
-.profile-name {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 10px 0 5px;
-}
-
-.profile-handle {
-  color: #aaa;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-.profile-stats {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 15px;
-  font-size: 14px;
-}
-
-.stat {
-  text-align: center;
-}
-
-.stat-number {
-  font-weight: bold;
-  color: #a52222;
-  font-size: 16px;
-}
-
-.stat-label {
-  color: #555;
-  font-size: 12px;
-}
-
-.profile-action {
-  margin-top: 10px;
-}
-
-.action-button {
-  background-color: #a52222;
   color: white;
   border: none;
   border-radius: 8px;
   padding: 6px 12px;
   font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
-  margin: 5px 5px 0 5px;
   min-width: 100px;
+  margin: 5px 5px 0 5px;
   transition: background-color 0.3s ease;
 }
-
-.action-button:hover {
-  background-color: #7f1b1b;
+.Edit-button:hover {
+  background-color: #7a2323;
 }
 
+/* Logout 버튼 */
+.Logout-button {
+  background-color: #ddd;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 100px;
+  margin: 5px 5px 0 5px;
+  transition: background-color 0.3s ease;
+}
+.Logout-button:hover {
+  background-color: #bbb;
+  color: #222;
+}
+
+/* Surfing 버튼 */
+.surfing-button {
+  background-color: #f2f2f2;
+  color: #912d2d;
+  border: 1px solid #912d2d;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 100px;
+  margin: 5px 5px 0 5px;
+  transition: background-color 0.3s ease;
+}
+.surfing-button:hover {
+  background-color: #e5d9d9;
+}
+
+/* Follow 버튼 */
+.follow-button {
+  background-color: #912d2d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 100px;
+  margin: 5px 5px 0 5px;
+  transition: background-color 0.3s ease;
+}
+.follow-button:hover {
+  background-color: #7a2323;
+}
+
+/* 바이오(소개글) 표시 */
 .bio-display {
   min-height: 150px;
-  width: 150%; /* 혹은 적당한 max-width */
+  width: 150%; /* 필요에 따라 조절 가능 */
   max-width: 200px;
   padding: 10px;
   background-color: #eedfdf;
