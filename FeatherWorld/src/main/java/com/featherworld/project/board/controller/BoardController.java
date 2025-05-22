@@ -289,12 +289,13 @@ public class BoardController {
 			
 		}
 
+
     
    /** 게시글 좋아요 체크/해제
     * @author 허배령
     */
    @ResponseBody
-   @PostMapping("board/like") // /board/like (POST)
+   @PostMapping("like") // /board/like (POST)
    public int boardLike(@RequestBody Map<String, Integer> map) {
       return service.boardLike(map);
    }
