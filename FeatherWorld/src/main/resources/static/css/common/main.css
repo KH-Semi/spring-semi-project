@@ -60,10 +60,19 @@ body {
 /* 좌측 사이드바 스타일 */
 .left-sidebar {
   min-width: 250px;
+  max-height: 560px;
   padding: 20px;
   border-right: 1px solid #e0e0e0;
+  overflow-y: scroll;
+  scrollbar-width: none;
 }
 
+.right-sidebar {
+  min-width: 200px;
+  border-left: 1px solid #e0e0e0;
+}
+
+/* 보드 타입 사이드바 */
 .board-type-sidebar {
   display: flex;
   flex-direction: column;
@@ -83,15 +92,45 @@ body {
 .board-type-sidebar > div:first-child {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
 }
 
-.board-type-sidebar > div:first-child span {
+.board-type-sidebar > div:first-child > span {
   display: inline-block;
+  align-items: center;
   padding: 8px;
-  margin-bottom: 5px;
   border-radius: 5px;
   background-color: #9f2120;
   color: white;
+}
+
+.edit-button {
+  cursor: pointer;
+  font-size: 12px;
+}
+.edit-button:hover {
+  opacity: 90%;
+}
+.edit-button > i {
+  margin-left: 5px;
+}
+
+.board-type-item > span:last-child {
+  display: none;
+}
+.board-type-item .fa-solid {
+  margin: 0 5px;
+  padding: 0 10px;
+}
+.board-type-item .fa-solid:hover {
+  transition-duration: 0.2s;
+  opacity: 50%;
+}
+
+.board-type-sidebar .board-type-item {
+  display: flex;
+  justify-content: space-between;
 }
 
 .board-type-sidebar .board-type-item:hover {
@@ -119,6 +158,77 @@ body {
   border-color: #9f2120;
 }
 
+.add-folder > span {
+  margin: 0 10px;
+}
+
+.add-folder-form {
+  display: flex;
+  flex-direction: column;
+  transition-duration: 0.5s;
+  background-color: white;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 5px;
+  border: 2px solid #9F2120;
+}
+
+.add-folder-input {
+  padding: 5px;
+  margin: 5px;
+  font-weight: 600;
+}
+
+.folder-form-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.folder-form-footer > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60px;
+}
+
+.folder-form-footer span {
+  margin: 0 5px;
+  color: #9F2120;
+}
+
+.folder-form-footer > div:last-child > span {
+  background-color: #9F2120;
+  width: 60px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+}
+
+/* 권한 토글 */
+.toggle-authority {
+  position: relative;
+  width: 30px;
+  height: 15px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.toggle-authority > div {
+  position: absolute;
+  transition-duration: 0.2s;
+  top: 0;
+  left: 0;
+  width: 15px;
+  height: 100%;
+  border-radius: 20px;
+  background-color: #9F2120;
+}
+
 /* 우측 사이드바 스타일 */
 .right-sidebar {
   min-width: 200px;
@@ -138,7 +248,6 @@ body {
   margin-bottom: 5px;
   border-radius: 5px;
   cursor: pointer;
-
   color: black;
   text-decoration: none;
   font-weight: 600;
@@ -162,7 +271,7 @@ body {
   margin-right: 10px;
 }
 
-/* 푸터 스타일 */
+/* 푸터 */
 .footer-container {
   text-align: center;
   padding: 15px 0;
@@ -172,7 +281,7 @@ body {
   font-size: 14px;
 }
 
-/* 페이지네이션 스타일 */
+/* 페이지네이션 */
 .pagination {
   display: flex;
   justify-content: center;
@@ -203,7 +312,7 @@ body {
   border-color: #9f2120;
 }
 
-/* 글쓰기 버튼 스타일 */
+/* 글쓰기 버튼 */
 .write-button {
   display: flex;
   justify-content: flex-end;
@@ -226,6 +335,7 @@ body {
 }
 
 /* 아이콘 스타일 */
+
 .icon-edit,
 .icon-delete {
   color: #777;
@@ -238,7 +348,7 @@ body {
   color: #c62828;
 }
 
-/* 반응형 디자인 */
+/* 반응형 */
 @media (max-width: 992px) {
   .content-container {
     flex-direction: column;

@@ -20,50 +20,28 @@
 
         <!-- 중앙 게시글 상세 -->
         <div class="main-content">
-          <div class="board-write">
-            <div class="back-button">
-              <button class="btn-back">
-                <span class="fa-solid fa-left-long"></span>
-              </button>
-            </div>
+          <div class="back-button">
+            <span class="fa-solid fa-left-long"></span>
+          </div>
 
-            <div class="board-form">
+          <div class="board-write">
+            <form class="board-form">
               <div class="input-group mb-4">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Board Title"
-                  aria-label="Board Title"
-                />
+                <input type="text" class="form-control"
+                  placeholder="Board Title" aria-label="Board Title"/>
               </div>
 
               <div class="content-area">
-                <textarea
-                  class="form-control"
-                  placeholder="Board Content"
-                  rows="10">
-                </textarea>
+                <textarea class="form-control" placeholder="Board Content"
+                          rows="20" cols="70"></textarea>
                 <div class="byte-counter">(12/2000)bytes</div>
               </div>
 
               <div class="button-group">
                 <button class="btn-cancel">Cancel</button>
-                <button class="btn-confirm">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  Confirm
-                </button>
+                <button class="btn-confirm">Confirm</button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
 
@@ -79,6 +57,6 @@
     <script th:inline="javascript">
       const currentBoardCode = /*[[${boardCode}]]*/ 0;
     </script>
-    <script src="/js/board/boardList.js"></script>
+    <script src="/js/board/boardWrite.js"></script>
   </body>
 </html>

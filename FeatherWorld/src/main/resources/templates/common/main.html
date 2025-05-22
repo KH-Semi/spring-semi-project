@@ -119,7 +119,9 @@
                 <button type="submit" class="login-btn">로그인</button>
 
                 <div class="social-login">
+
                   <button type="button" class="kakao-btn">
+
                     <img
                       src="/images/icons/kakao.png"
                       alt="Kakao"
@@ -166,7 +168,7 @@
                 </p>
                 <div class="profile-actions">
                   <a
-                    th:href="@{/{memberNo}/minihome(memberNo=${session.loginMember?.memberNo})}"
+                    th:href="@{/{member}/minihome(member=${session.loginMember?.memberNo})}"
                     class="home-btn"
                   >
                     <i class="fa-solid fa-house" alt="Home"></i>

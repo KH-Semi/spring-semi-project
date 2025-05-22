@@ -11,6 +11,7 @@
   max-width: 630px;
 }
 
+/* 게시글 박스 */
 .board-item {
   display: flex;
   justify-content: space-between;
@@ -21,6 +22,14 @@
   padding: 15px;
   margin-bottom: 20px;
   overflow: hidden;
+  cursor: pointer;
+}
+
+/* 게시글 마우스 호버 (삭제해도 됨 걍 실험해봄) */
+.board-item:hover {
+  transition-duration: 0.2s;
+  background-color: #8e8e8e;
+  color: #f9f9f9;
 }
 
 .board-wrap {
@@ -66,14 +75,14 @@
 }
 
 .board-date {
-  color: #8E8E8E;
+  color: #8e8e8e;
   font-size: 12px;
 }
 
 .board-reads {
   display: flex;
   justify-content: space-between;
-  color: #8E8E8E;
+  color: #8e8e8e;
   font-size: 14px;
 }
 
@@ -82,6 +91,12 @@
   align-items: center;
   line-height: 0;
   margin-right: 5px;
+}
+
+/* 호버 시 내부 요소까지 색상 바꾸기 */
+.board-item:hover .board-date,
+.board-item:hover .board-reads {
+  color: #f9f9f9;
 }
 
 .write-button > span:hover {

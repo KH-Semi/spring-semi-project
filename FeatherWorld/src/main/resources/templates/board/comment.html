@@ -29,7 +29,7 @@
 	
 					<!-- 버튼 영역 -->
 					<div class="comment-btn-area">
-						<button th:onclick="|showInsertComment(*{boardCommentNo}, this)|">Reply</button>
+						<button class="reply-btn" th:onclick="|showInsertComment(*{boardCommentNo}, this)|">Reply</button>
 	
 						<th:block th:if="${session.loginMember != null and session.loginMember.memberNo == comment.memberNo}">
 							<button th:onclick="|showUpdateComment(*{boardCommentNo}, this)|">Edit</button>

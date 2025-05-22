@@ -1,0 +1,226 @@
+.content-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* 기본적인 각 영역 너비 설정 */
+.left-sidebar {
+  width: 20%;
+}
+
+.content-area {
+  width: 60%;
+}
+
+.right-sidebar {
+  width: 20%;
+}
+
+/* 좌측 사이드바 넓이 조정 및 스타일 */
+.left-sidebar {
+  width: 200px; /* 최소 너비 고정 */
+  border-right: 1px solid #e0e0e0;
+  padding: 20px;
+  background-color: #fff;
+}
+
+/* 중앙 콘텐츠 영역 */
+.content-area {
+  flex: 1; /* 남은 공간 모두 차지 */
+  padding: 20px;
+  background-color: #fff;
+  min-height: 600px;
+}
+
+/* 우측 사이드바 고정 너비와 배경 */
+.right-sidebar {
+  width: 180px; /* 고정 너비 */
+  padding: 20px;
+  border-left: 1px solid #e0e0e0;
+  background-color: #fff;
+}
+
+/* .content-container flex layout 유지 */
+.content-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px; /* 영역 간 간격 */
+  background-color: transparent; /* 배경이 두 번째 이미지처럼 흰색  */
+  min-height: 600px;
+}
+
+/* 우측 네비게이션 메뉴 스타일 */
+.nav-sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-sidebar > a {
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  color: black;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.nav-sidebar > a:hover {
+  background-color: #9f2120;
+  color: white;
+}
+
+.nav-sidebar .nav-item > span {
+  width: 24px;
+  margin-right: 8px;
+  text-align: center;
+}
+
+/* middle-sidebar 내부 요소 */
+
+.header {
+  margin-bottom: 20px;
+}
+
+.post {
+  margin-bottom: 30px;
+}
+
+.post-image {
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.post-image img {
+  width: 100%;
+  height: 200%;
+  object-fit: cover;
+}
+
+.file-input {
+  font-size: 18px;
+  padding: 12px 20px;
+  width: 100%;
+  max-width: 700px;
+  height: 200px;
+  border: 2px solid #ccc;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+#bio-input {
+  width: 100%;
+  max-width: 700px;
+  height: 150px;
+  border: 2px solid #ccc;
+  background-color: #fafafa;
+  border-radius: 1px;
+  padding: 12px 20px;
+  font-size: 18px;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.bio-section {
+  margin-top: 20px;
+}
+
+.Comment-home {
+  width: 100%;
+  height: 120px;
+  resize: none;
+  font-family: "Pretendard", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  background-color: #f8f4f0;
+  border: none;
+  color: #fcf5f5;
+  padding: 15px;
+  border-radius: 12px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+/* 자기소개 관련 스타일 */
+.bio-section {
+  width: 400px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  border: none; /* 테두리 제거 */
+  border-radius: 12px;
+  background-color: #f8f8f8;
+  box-shadow: none; /* 그림자 제거 (네모 느낌 줄이기) */
+  font-family: "Pretendard", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  text-align: left;
+  resize: vertical; /* 필요시 사용자가 높이 조절 가능 */
+  height: auto;
+  min-height: 80px;
+  overflow-y: auto;
+  line-height: 1.5;
+}
+
+/* 버튼 */
+.post-actions {
+  text-align: right;
+  gap: 10px;
+  height: 50px;
+}
+
+.post-button {
+  padding: 6px 12px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  color: white;
+  font-size: 12px;
+  background-color: #912d2d;
+  cursor: pointer;
+}
+
+/* 우측 사이드바 내부 메뉴 */
+.right-sidebar {
+  min-height: 500px;
+}
+
+.nav-item > a {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.nav-item > a:hover {
+  color: #912d2d;
+  border-color: #912d2d;
+  background-color: #f9f1f1;
+}
+
+.nav-item > a.active-home,
+.nav-item > a.active-playlist {
+  background-color: #912d2d;
+  color: white;
+  border: 1px solid #912d2d;
+  font-weight: bold;
+}
+
+.nav-item > a i {
+  margin-right: 10px;
+  font-size: 18px;
+  width: 20px;
+  text-align: center;
+}

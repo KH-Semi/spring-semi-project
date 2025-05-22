@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
 
-  <th:block th:replace="~{common/common}"></th:block>
-  <link rel="stylesheet" href="/css/board/boardList.css">
-</head>
+    <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" href="/css/board/boardList.css" />
+  </head>
   <body>
-    
     <div class="container">
       <!-- 헤더 Include -->
       <th:block th:replace="~{common/header}"></th:block>
-      
+
       <div class="content-container">
         <!-- 좌측 게시판 리스트 Include -->
         <th:block th:replace="~{board/boardTypeSidebar}"></th:block>
-        
+
         <!-- 중앙 게시글 목록 -->
         <div class="main-content">
           <div class="board-list">
@@ -44,7 +43,10 @@
 
     <!-- JS 에서 쓰기 버튼 클릭 이벤트에 활용할 현재 게시판 종류 번호 선언 -->
     <script th:inline="javascript">
+      const memberNo = /*[[${memberNo}]]*/ 0
+      const loginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ 0
       const currentBoardCode = /*[[${currentBoardCode}]]*/ 0;
+      const memberNo = /*[[${memberNo}]]*/ 0;
     </script>
     <script src="/js/board/boardList.js"></script>
   </body>

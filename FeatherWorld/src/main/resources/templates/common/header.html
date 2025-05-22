@@ -4,8 +4,9 @@
       <img src="/images/logo.png" alt="FeatherWorld" />
       <span class="site-title">FeatherWorld</span>
     </a>
-    <div class="site-subtitle" th:text="${session.loginMember?.homeTitle}">
-      익명 미니홈피
-    </div>
+    <div
+      class="site-subtitle"
+      th:text="${session.loginMember?.memberName}"
+    ></div>
   </div>
 </header>
