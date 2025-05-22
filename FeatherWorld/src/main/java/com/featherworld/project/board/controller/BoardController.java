@@ -31,6 +31,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
+
 @Controller
 @Slf4j
 public class BoardController {
@@ -132,6 +133,7 @@ public class BoardController {
       return "board/boardWrite";
    }
    
+
    /** 게시글 상세 조회
     * @author 허배령
 	 * @param memberNo
@@ -288,6 +290,7 @@ public class BoardController {
 			return path;
 			
 		}
+
 
 
     
