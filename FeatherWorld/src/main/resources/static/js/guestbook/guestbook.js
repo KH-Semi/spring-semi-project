@@ -3,7 +3,7 @@ const selectGuestBookList = () => {
   const cp = 1; // or 현재 페이지 번호
   const ownerNo = document.querySelector("#ownerNo")?.value || 1; // 기본값 1번 주인
 
-  fetch(`/guestbook?cp=${cp}&ownerNo=${ownerNo}`)
+  fetch(`/${ownerNo}/guestbook?cp=${cp}`)
     .then((resp) => resp.json())
     .then((guestBookList) => {
       console.log(guestBookList);
@@ -12,6 +12,13 @@ const selectGuestBookList = () => {
       const container = document.querySelector("#guestbook-list");
       container.innerHTML = "";
 
+      //방명록이 없는 경우
+      if (guestBookList.length === 0) {
+        container.innerHTML = "<p>등록된 방명록이 없습니다.</p>";
+        return;
+      }
+
+      //방명록이 있는 경우
       guestBookList.forEach((item) => {
         const div = document.createElement("div");
         div.textContent = item.guestBookContent;
@@ -22,111 +29,162 @@ const selectGuestBookList = () => {
       console.error("방명록 조회 실패:", err);
     });
 };
+// 방명록 등록 (ajax)
+document.addEventListener("DOMContentLoaded", () => {
+  const guestBookContent = document.querySelector("#guestBookContent");
+  const addGuestBook = document.querySelector("#addGuestBook");
+  const loginMemberNo = document.querySelector("#loginMemberNo")?.value || null;
 
-//방명록 등록 (ajax)
+  addGuestBook.addEventListener("click", () => {
+    // 방명록 등록 버튼 클릭 시
+    if (loginMemberNo === null) {
+      alert("로그인 후 작성 가능합니다.");
+      return;
+    }
+    // 댓글 내용이 작성되지 않은 경우(textarea 비우고 눌렀을 때)
+    if (guestBookContent.value.trim().length === 0) {
+      alert("내용 작성 후 등록 버튼 클릭해주세요");
+      guestBookContent.focus();
+      return;
+    }
 
+    const ownerNo = document.querySelector("#ownerNo")?.value || 1; // gpt 추천 문구
 
+    //ajax를 이용해 방명록 등록 요청
+    const data = {
+      guestBookContent: guestBookContent.value,
+      visitorNo: loginMemberNo,
+    };
 
-// JavaScript 코드
-document.addEventListener("DOMContentLoaded", function () {
-  // 페이지 아이템 클릭 이벤트
-  const pageItems = document.querySelectorAll(".page-item");
-  pageItems.forEach((item) => {
-    item.addEventListener("click", function () {
-      pageItems.forEach((pi) => pi.classList.remove("active"));
-      this.classList.add("active");
-    });
+    fetch(`/${ownerNo}/guestbook`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((resp) => resp.json())
+      .then((result) => {
+        console.log(result);
+
+        if (result < 0) {
+          alert("방명록 등록 실패");
+        } else {
+          alert("방명록이 등록되었습니다.");
+          selectGuestBookList(); // 방명록 목록을 다시 조회해서 화면에 출력
+          guestBookContent.value = ""; // textarea에 작성한 방명록 내용 지우기
+        }
+      })
+      .catch((err) => console.log("에러 발생:", err));
   });
+});
 
-  // 메뉴 아이템 클릭 이벤트
-  const menuItems = document.querySelectorAll(".menu-item");
-  menuItems.forEach((item) => {
-    item.addEventListener("click", function () {
-      menuItems.forEach((mi) => mi.classList.remove("active"));
-      this.classList.add("active");
-    });
-  });
+//방명록 삭제 ( ajax)
+const deleteGuestBook = (guestBookNo) => {
+  //취소 선택 시
+  if (!confirm("삭제 하시겠습니까?")) return;
 
-  // 삭제 버튼 클릭 이벤트
-  const deleteButtons = document.querySelectorAll(".delete-btn");
-  deleteButtons.forEach((button) => {
-    button.addEventListener("click", function (e) {
-      e.preventDefault();
-      if (confirm("정말로 이 메시지를 삭제하시겠습니까?")) {
-        this.closest(".guestbook-entry").remove();
+  fetch(`/${ownerNo}/guestbook`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ guestBookNo: guestBookNo }),
+  })
+    .then((resp) => resp.text())
+    .then((result) => {
+      if (result > 0) {
+        alert("삭제 되었습니다");
+        selectGuestBookList();
+      } else {
+        alert("삭제 실패");
       }
     });
-  });
+};
 
-  // 글쓰기 버튼 클릭 이벤트
-  const writeButton = document.querySelector(".write-button");
-  const inputArea = document.querySelector(".guestBook-textbox");
+//방명록 수정
 
-  writeButton.addEventListener("click", function () {
-    const content = inputArea.value.trim();
-    if (content) {
-      const now = new Date();
-      const formattedDate = `${now.getFullYear()}.${(now.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}.${now.getDate().toString().padStart(2, "0")} ${now
-        .getHours()
-        .toString()
-        .padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+// 수정 취소 시 원래 방명록 형태로 돌아가기 위한 백업 변수
+let beforeGuestBookRow;
 
-      // 새 방명록 항목 생성
-      const newEntry = document.createElement("div");
-      newEntry.className = "guestbook-entry";
-      newEntry.innerHTML = `
-                        <div class="entry-header">
-                            
-                            <div class="entry-info">
-                                <div class="entry-author">안준성 (${formattedDate})</div>
-                            </div>
-                        </div>
-                        <div class="entry-content">${content}</div>
-                        <a href="#" class="delete-btn">Delete</a>
-                    `;
+const showUpdateGuestBook = (guestBookNo, btn) => {
+  const ownerNo = document.querySelector("#ownerNo")?.value || 1;
+  const temp = document.querySelector(".update-textarea");
 
-      // 삭제 버튼에 이벤트 리스너 추가
-      const newDeleteBtn = newEntry.querySelector(".delete-btn");
-      newDeleteBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        if (confirm("정말로 이 메시지를 삭제하시겠습니까?")) {
-          this.closest(".guestbook-entry").remove();
-        }
-      });
-
-      // 방명록 맨 위에 새 항목 추가
-      const entriesContainer = document.querySelector(".guestbook-entries");
-      entriesContainer.insertBefore(newEntry, entriesContainer.firstChild);
-
-      // 입력 필드 비우기
-      inputArea.value = "";
+  if (temp != null) {
+    if (
+      confirm("수정 중인 방명록이 있습니다. 현재 방명록을 수정 하시겠습니까?")
+    ) {
+      const guestBookRow = temp.parentElement;
+      guestBookRow.after(beforeGuestBookRow);
+      guestBookRow.remove();
     } else {
-      alert("내용을 입력해주세요.");
+      return;
     }
-  });
-});
+  }
 
-// 수정 버튼 클릭 시 textarea에 글 복사
-const editButtons = document.querySelectorAll(".edit-btn");
-editButtons.forEach((button) => {
-  button.addEventListener("click", function (e) {
-    e.preventDefault();
+  const guestBookRow = btn.closest("li");
+  beforeGuestBookRow = guestBookRow.cloneNode(true);
+  const beforeContent =
+    guestBookRow.querySelector(".guestbook-content").innerText;
 
-    const content =
-      this.closest(".guestbook-entry").querySelector(
-        ".entry-content"
-      ).innerText;
+  guestBookRow.innerHTML = "";
 
-    const inputArea = document.querySelector(".input-area");
-    inputArea.value = content;
+  const textarea = document.createElement("textarea");
+  textarea.classList.add("update-textarea");
+  textarea.value = beforeContent;
+  guestBookRow.append(textarea);
 
-    // 혹시 수정 모드 표시하고 싶으면
-    document.querySelector(".write-btn").textContent = "수정하기";
-  });
-});
+  const btnArea = document.createElement("div");
+  btnArea.classList.add("guestbook-btn-area");
 
-//방명록 삭제(ajax)
+  const updateBtn = document.createElement("button");
+  updateBtn.innerText = "수정";
+  updateBtn.setAttribute("onclick", `updateGuestBook(${guestBookNo}, this)`);
 
-//방명록 수정 (ajax)
+  const cancelBtn = document.createElement("button");
+  cancelBtn.innerText = "취소";
+  cancelBtn.setAttribute("onclick", "cancelGuestBookUpdate(this)");
+
+  btnArea.append(updateBtn, cancelBtn);
+  guestBookRow.append(btnArea);
+};
+
+const cancelGuestBookUpdate = (btn) => {
+  if (confirm("수정을 취소하시겠습니까?")) {
+    const guestBookRow = btn.closest("li");
+    guestBookRow.after(beforeGuestBookRow);
+    guestBookRow.remove();
+  }
+};
+
+const updateGuestBook = (guestBookNo, btn) => {
+  const textarea = btn.parentElement.previousElementSibling;
+
+  if (textarea.value.trim().length === 0) {
+    alert("내용 작성 후 수정 버튼을 클릭해주세요.");
+    textarea.focus();
+    return;
+  }
+
+  const ownerNo = document.querySelector("#ownerNo")?.value || 1;
+
+  const data = {
+    guestBookNo: guestBookNo,
+    guestBookContent: textarea.value,
+  };
+
+  fetch(`/${ownerNo}/guestbook`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((resp) => resp.text())
+    .then((result) => {
+      if (parseInt(result) > 0) {
+        alert("수정되었습니다.");
+        selectGuestBookList();
+      } else {
+        alert("수정 실패");
+      }
+    })
+    .catch((err) => console.error("수정 중 오류:", err));
+};
