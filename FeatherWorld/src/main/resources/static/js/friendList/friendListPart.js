@@ -1,13 +1,57 @@
 //현재 로그인한 유저 정보(지금은 테스트중)
 let members = /*[[${members}]]*/ [];
 
+document
+  .getElementById("send-friend-request-button")
+  .addEventListener("click", () => {
+    window.location.href = `/${memberNo}/newFriend/input`; //
+  });
+
 //buttons
 const editBtn = document.getElementById("edit-button"); // edit
 const applyCancelBtnDiv = document.getElementById("apply-cancel-button-div"); //apply-cancel btn 을 담는 div
 const applyBtn = document.getElementById("apply-button");
 const cancelBtn = document.getElementById("cancel-button");
-
+const sendFriendReqBtn = document.getElementById("send-friend-request-button");
 const friendSpans = document.querySelectorAll(".friend-item");
+/*
+sendFriendReqBtn.addEventListener("click", () => {
+  fetch("/insert/new", {
+    method: "POST", // ← POST로 바꿔야 body 사용 가능
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      memberNo: "00",
+      nickname: newNickName,
+    }), // TO_NICKNAME/FROM_NICKNAME 판별 여부는 서버측에서 판단
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      if (data.status == 2) {
+        console.log("toNickname 수정 성공!");
+        e.target.value = data.Ilchon.toNickname;
+        if (friend) {
+          friend.querySelector("[name=fromNickname]").textContent =
+            data.Ilchon.toNickname;
+        } //refresh
+        checkIcon(friend);
+      } else if (data.status == 1) {
+        console.log("fromNickname 수정 성공!");
+        e.target.value = data.Ilchon.fromNickname;
+        if (friend) {
+          friend.querySelector("[name=fromNickname]").textContent =
+            data.Ilchon.fromNickname;
+        } //refresh
+        checkIcon(friend);
+      } else {
+        console.log("수정 실패!");
+        xIcon(friend);
+      }
+    });
+});*/
+
 friendSpans.forEach(function (friend) {
   console.log(friend);
 });
@@ -106,7 +150,7 @@ friendSpans.forEach(function (friend) {
         });
     });
 });
-
+/**일촌명 수정 성공시 뜨는 초록색 V아이콘 */
 const checkIcon = (friend) => {
   // 매개변수로 현재 일촌<span> 전달
   const icon = friend.querySelector(".check-icon");
@@ -116,7 +160,7 @@ const checkIcon = (friend) => {
     icon.classList.add("hidden");
   }, 1500);
 };
-
+/**일촌명 수정 실패시 뜨는 빨간색 V아이콘 */
 const xIcon = (friend) => {
   // 매개변수로 현재 일촌<span> 전달
   const icon = friend.querySelector(".x-icon");

@@ -60,7 +60,8 @@
 
       <!-- Middle Panel - Posts -->
       <div class="middle-panel">
-        <th:block th:replace="~{friendList/friendListPart}"></th:block>
+        <th:block th:replace="~{friendList/friendListPart}"></th:block
+        ><!--replace 조각에 memberNo변수를 넘겨야함.-->
       </div>
 
       <th:block th:replace="~{common/navSidebar}"></th:block>
@@ -74,5 +75,8 @@
       th:inline="javascript"
     ></script>
     <!-- script에서는 절대 경로를 써야한다!!-->
+    <script th:inline="javascript">
+      let memberNo = /*[[${memberNo}]]*/ [];
+    </script>
   </body>
 </html>

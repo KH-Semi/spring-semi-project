@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--boardWrite.html 그대로 복붙함.-->
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
+
+    <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" href="/css/board/boardList.css" />
+    <link rel="stylesheet" href="/css/board/boardWrite.css" />
+  </head>
+  <body th:attr="member-no=${memberNo}">
+    <h1>이 HTML은 Thymeleaf로 렌더링된 페이지입니다.</h1>
+    <div class="container">
+      <!-- 헤더 Include -->
+      <th:block th:replace="~{common/header}"></th:block>
+
+      <div class="content-container">
+        <!-- 좌측 게시판 리스트 Include -->
+
+        <!-- 중앙 게시글 상세 -->
+        <div class="main-content">
+          <div class="board-write">
+            <div class="back-button">
+              <button class="btn-back">
+                <span class="fa-solid fa-left-long"></span>
+              </button>
+            </div>
+            <button class="btn-cancel">Cancel</button>
+
+            <div class="board-form">
+              <div class="input-group mb-4">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="새로 정할 일촌명을 입력하세요"
+                  aria-label="Board Title"
+                />
+                <div class="byte-counter">(12/2000)bytes</div>
+              </div>
+
+              <div class="button-group">
+                <button class="btn-confirm">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  SEND
+                </button>
+                <p th:text="${memberNo}"></p>
+
+                <form action="/insert/newFriend" method="post">
+                  <input type="text" name="nickname" />
+                  <button type="submit">보내기</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 우측 네비게이션 바 Include -->
+        <th:block th:replace="~{common/navSidebar}"></th:block>
+      </div>
+
+      <!-- 푸터 Include -->
+      <th:block th:replace="~{common/footer}"></th:block>
+    </div>
+
+    <!-- JS 에서 쓰기 버튼 클릭 이벤트에 활용할 현재 게시판 종류 번호 선언 -->
+    <script th:inline="javascript">
+      const memberNo = /*[[${memberNo}]]*/ 0;
+    </script>
+    <!--<script src="/js/board/boardList.js"></script>-->
+    <script src="/js/friendList/sendFriendRequest.js"></script>
+  </body>
+</html>

@@ -16,6 +16,7 @@ import com.featherworld.project.board.model.service.CommentServiceImpl;
 import com.featherworld.project.common.dto.Pagination;
 import com.featherworld.project.friend.model.dto.Ilchon;
 import com.featherworld.project.friend.model.mapper.IlchonMapper;
+import com.featherworld.project.member.model.dto.Member;
 
 @Transactional(rollbackFor=Exception.class)
 @Service
@@ -130,6 +131,26 @@ public class IlchonServiceImpl implements IlchonService {
 			
 		}else {return 0;}
 		/*System.out.println("Mapper 호출 결과 resultFrom: " + resultFrom);*/
+		
+		
+	}
+
+	@Override
+	public int insertNewIlchon(int loginMemberNo, int targetMemberNo) {
+		
+		Ilchon il = selectOne(loginMemberNo, targetMemberNo);
+		if (il == null){ // 일촌이 존재하지 않는다면 
+			int result = mapper.insertIlchon(loginMemberNo, targetMemberNo);
+			if(result == 1) {// 삽입 성공시
+				return 1;
+				
+			}else { // 삽입 실패시(아무것도 삽입되지 않음)
+				return 0;
+			}
+			
+		} else {// 이미 일촌이 존재한다면
+			return -1; 
+		}
 		
 		
 	}

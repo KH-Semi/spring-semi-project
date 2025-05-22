@@ -112,4 +112,38 @@ public class IlchonController {
 		
 	}
 	
+	
+	@GetMapping("{memberNo:[0-9]+}/newFriend/input")
+	public String inputNewIlchonReq(@PathVariable("memberNo") int memberNo /*클라이언트쪽에서 건너오는 요청*/,
+			Model model) {
+		model.addAttribute("memberNo", memberNo);
+		return "friendList/sendFriendReq";
+	}
+	
+	//@PostMapping("insert/newFriend")
+	//@ResponseBody // 비동기? 동기?
+	@PostMapping("insert/newFriend")
+	public String insertNewIlchon(@SessionAttribute(name = "loginMember", required = false) Member loginMember,
+			/*클라이언트쪽에서 건너오는 요청*/@RequestBody Map<String, String> payload ,
+			/*@RequestParam String nickname*/ Model model) {
+		
+		
+		String memberNoStr = 	payload.get("memberNo");
+		
+		int memberNo =  Integer.parseInt(memberNoStr); 
+		int loginMemberNo = loginMember.getMemberNo();
+		int result = service.insertNewIlchon(loginMemberNo,memberNo);
+		if(result == 1) {
+			return "redirect:/" + memberNo + "/friendList";  //pagination 보존 안함
+		}else if(result == 0)  {
+			return "redirect:/" + memberNo + "/friendList"; //pagination 보존 안함
+			
+		}else if(result == -1) {
+			return "redirect:/" + memberNo + "/friendList";  //pagination 보존 안함
+		}
+		return "redirect:/" + memberNo + "/friendList"; //pagination 보존 안함
+
+	}
+	
+	
 }

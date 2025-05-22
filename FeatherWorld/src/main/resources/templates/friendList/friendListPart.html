@@ -72,7 +72,7 @@
           >
           <i class="fas fa-check-circle check-icon hidden"></i
           ><!--DB 닉네임 업데이트 성공시 나타나는 V표식-->
-          <i class="fas fa-check-circle x-icon hidden"></i
+          <i class="fas fa-times-circle x-icon hidden"></i
           ><!--DB 닉네임 업데이트 실패시 나타나는 V표식-->
           <textarea
             name="fromNickname-input"
@@ -119,6 +119,9 @@
     <!-- >> -->
     <li><a th:href="@{/friendList(cp=${pagination.maxPage})}">&gt;&gt;</a></li>
   </ul>
+  <script th:inline="javascript">
+    let memberNo = /*[[${memberNo}]]*/ [];
+  </script>
 </div>
 
 <!--***********author : ahn     **********

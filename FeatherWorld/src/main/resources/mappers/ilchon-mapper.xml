@@ -67,6 +67,19 @@
   	AND TO_MEMBER_NO = #{memberNo}
   </update>
   
+  <insert id="insertIlchon">
+  	INSERT INTO ILCHON (FROM_MEMBER_NO, TO_MEMBER_NO, FROM_NICKNAME, TO_NICKNAME, IS_ILCHON)
+  	VALUES(
+		#{loginMemberNo}, #{targetMemberNo},
+		
+		 SELECT MEMBER_NAME FROM MEMBER WHERE MEMBER_NO = #{loginMemberNo}, 
+		 
+		 SELECT MEMBER_NAME FROM MEMBER WHERE MEMBER_NO = #{targetMemberNo}, 
+		 
+		 DEFAULT
+		
+		)
+  </insert>
 </mapper>
 <!-- 
 	5월 15일 수정사항 
