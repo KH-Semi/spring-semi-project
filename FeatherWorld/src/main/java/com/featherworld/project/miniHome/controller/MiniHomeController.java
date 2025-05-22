@@ -11,57 +11,58 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.featherworld.project.friend.model.dto.Ilchon;
 import com.featherworld.project.member.model.dto.Member;
+
 import com.featherworld.project.miniHome.model.service.MiniHomeService;
 
-import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 public class MiniHomeController {
 
     @Autowired
-    private MiniHomeService service;
+    private MiniHomeService miniHomeService;
+    
 
+
+    
     @GetMapping("{memberNo:[0-9]+}/minihome")
-    public String miniHome(@PathVariable("memberNo") int memberNo, Model model, HttpSession session) {
-        
-        // 기본 데이터 설정
-        model.addAttribute("memberNo", memberNo);
-        
-        Member loginMember = (Member) session.getAttribute("loginMember");
-        model.addAttribute("loginMember", loginMember);
-        
-        // Fragment에서 필요한 데이터들 추가
-        // TODO: 실제로는 Service에서 회원 정보를 조회해서 설정해야 함
-        
-        // 임시 데이터 (나중에 실제 데이터로 교체)
-        if (loginMember != null && loginMember.getMemberNo() == memberNo) {
-            // 내 프로필인 경우
-            model.addAttribute("membername", loginMember.getMemberName());
-            model.addAttribute("memberEmail", loginMember.getMemberEmail());
-            model.addAttribute("memberIntro", "안녕하세요! " + loginMember.getMemberName() + "입니다.");
-        } else {
-            // 다른 사용자 프로필인 경우 - 실제로는 DB에서 조회
-            model.addAttribute("membername", "사용자" + memberNo);
-            model.addAttribute("memberEmail", "user" + memberNo + "@example.com");
-            model.addAttribute("memberIntro", "안녕하세요!");
-        }
-        
-        // 팔로워/팔로잉 수 (임시 데이터)
-        model.addAttribute("followerCount", 48);
-        model.addAttribute("followingCount", 48);
-        
-        // 방문자 수 (임시 데이터)
-        model.addAttribute("vistorno", "10 / 50");
-        
-        return "miniHome/miniHome";
+    public String miniHome(@PathVariable("memberNo") int memberNo ,
+    		               @SessionAttribute(value ="loginMember", required=false) Member loginMember ,
+    		               Model model) {
+    	
+       Member member = miniHomeService.findmember(memberNo);
+       
+       model.addAttribute("member",member);
+       
+       //일촌 관계 초기값
+       boolean isIlchon = false;
+       if(loginMember != null && loginMember.getMemberNo() != memberNo) {
+    	   Ilchon friend = new Ilchon();
+    	   friend.setFromMemberNo(loginMember.getMemberNo());
+    	   friend.setToMemberNo(memberNo);
+    	   
+    	   int count = miniHomeService.findilchon(friend);
+    	   // 둘이 일촌관계인지아닌지좀 확인 ..
+    	   
+    	   if(count >= 1) {
+    		   isIlchon = true;
+    	   }else {
+    		   isIlchon = false;
+    	   }
+    	   model.addAttribute("isIlchon",isIlchon);
+       }
+    	
+    	
+    	return "miniHome/miniHome";
     }
-
+    
     @PostMapping("{memberNo:[0-9]+}/prifleupdate")
     public String fileUpload1(@RequestParam("uploadFile") MultipartFile uploadFile,
             RedirectAttributes ra) throws Exception {
 
-        String path = service.fileUpload1(uploadFile);
+        String path = miniHomeService.fileUpload1(uploadFile);
 
         if (path != null) {
             ra.addFlashAttribute("path", path);
@@ -84,7 +85,7 @@ public class MiniHomeController {
         int loginMemberNo = loginMember.getMemberNo();
 
         // 업로드된 파일 정보를 db로
-        int result = service.fileUpload2(uploadFile, loginMemberNo);
+        int result = miniHomeService.fileUpload2(uploadFile, loginMemberNo);
 
         return "redirect:/" + memberNo + "/minihome";
     }

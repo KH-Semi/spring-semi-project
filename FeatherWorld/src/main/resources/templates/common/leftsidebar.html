@@ -1,84 +1,92 @@
-<!-- leftsidebar.html Fragment -->
-<div th:fragment="sidebarFragment" class="left-sidebar" xmlns:th="http://www.thymeleaf.org">
-  <!-- 방문 번호 표시 -->
-  <p>Today / Total</p>
-  <div class="vistorno" th:text="${vistorno ?: '1 / 10'}">1 / 10</div>
+<div th:fragment="leftsidebar" id="leftProfileContainer">
+        <!-- Today/Total 통계 -->
+        <div id="profileStatsSection">
+            <span>Today <span id="todayCount" th:text="${todayVisits ?: 10}">10</span> / Total <span id="totalCount" th:text="${totalVisits ?: 50}">50</span></span>
+        </div>
 
-  <div class="profile-info">
-    <div class="profile-image">
-      <img
-        th:src="${session.loginMember != null and session.loginMember.memberImg != null} ? @{${session.loginMember.memberImg}} : @{/images/user.png}"
-        alt="Profile Image"
-      />
+        <!-- 프로필 이미지 영역 -->
+        <div id="profileImageContainer">
+            <div id="profileImageWrapper">
+                <img id="profileMainImage" 
+                     th:src="${member.memberImg != null ? member.memberImg : '/images/user.png'}" 
+                     alt="Profile Image" />
+                <!-- 프로필 수정 버튼 (본인만 보임) -->
+                <div id="profileImageEditIcon" 
+                     th:if="${session.loginMember != null and session.loginMember.memberNo == member.memberNo}"
+                     onclick="editProfileImage()">
+                    <i class="fas fa-edit"></i> edit
+                </div>
+            </div>
+        </div>
+
+        <!-- 사용자 정보 영역 -->
+        <div id="profileInfoSection">
+            <!-- 사용자명 -->
+            <div id="profileUsernameSection">
+                <span id="profileUsernameDisplay" th:text="${member.memberName}">사용자명</span>
+                <input type="text" id="profileUsernameInput" th:value="${member.memberName}" style="display: none;" />
+            </div>
+            
+            <!-- 이메일 -->
+            <div id="profileEmailSection">
+                <span id="profileEmailDisplay" th:text="${member.memberEmail}">Email@sample.com</span>
+            </div>
+
+            <!-- 팔로워/팔로잉 수 -->
+            <div id="profileFollowStats">
+                <div id="profileFollowerCount">
+                    <span id="profileFollowerNumber" th:text="${followerCount ?: 48}">48</span>
+                    <span id="profileFollowerLabel">Follower</span>
+                </div>
+                <div id="profileFollowingCount">
+                    <span id="profileFollowingNumber" th:text="${followingCount ?: 48}">48</span>
+                    <span id="profileFollowingLabel">Following</span>
+                </div>
+            </div>
+
+            <!-- 버튼 영역 -->
+            <div id="profileActionButtons">
+                <!-- 본인 프로필인 경우 -->
+                <div id="profileOwnerButtons" 
+                     th:if="${session.loginMember != null and session.loginMember.memberNo == member.memberNo}">
+                    <button id="profileEditBtn" onclick="editProfile()">Edit Profile</button>
+                    <button id="profileLogoutBtn" onclick="logout()">Logout</button>
+                </div>
+
+                <!-- 타인 프로필인 경우 -->
+                <div id="profileOtherButtons" 
+                     th:if="${session.loginMember != null and session.loginMember.memberNo != member.memberNo}">
+                    <!-- 팔로우 버튼 (일촌 관계가 없는 경우) -->
+                    <button id="profileFollowBtn" 
+                            th:if="${!isIlchon}"
+                            th:onclick="'follow(' + ${member.memberNo} + ')'">
+                        Follow
+                    </button>
+                </div>
+            </div>
+
+            <!-- 프로필 수정 모드 (본인만) -->
+            <div id="profileEditModeButtons" 
+                 th:if="${session.loginMember != null and session.loginMember.memberNo == member.memberNo}"
+                 style="display: none;">
+                <button id="profileConfirmBtn" onclick="confirmEdit()">Confirm</button>
+                <button id="profileCancelBtn" onclick="cancelEdit()">Back</button>
+            </div>
+        </div>
+
+        <!-- Bio 영역 -->
+        <div id="profileBioContainer">
+            <div id="profileBioTitle">Bio</div>
+            <div id="profileBioContent">
+                <span id="profileBioDisplay" th:text="${member.memberIntro ?: '자기소개가없습니다'}">Sola Gratia</span>
+                <textarea id="profileBioInput" th:text="${member.memberIntro ?: '자기 소개가없습니다.'}" style="display: none;"></textarea>
+            </div>
+        </div>
+
+        <!-- Surfing 버튼 (본인만) -->
+        <div id="profileSurfingSection" 
+             th:if="${session.loginMember != null and session.loginMember.memberNo == member.memberNo}">
+            <button id="profileSurfingBtn" onclick="goSurfing()">Surfing</button>
+        </div>
     </div>
-
-    <!-- 회원 표시 -->
-    <div class="profile-name" th:text="${membername ?: '사용자'}">사용자</div>
-
-    <!-- 이메일 -->
-    <div class="profile-handle" th:text="${memberEmail ?: 'user@email.com'}">
-      user@email.com
-    </div>
-
-    <!-- 팔로워 / 팔로잉 수 -->
-    <div class="profile-stats">
-      <div class="stat">
-        <div class="stat-number" th:text="${followerCount ?: 0}">0</div>
-        <div class="stat-label">Follower</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number" th:text="${followingCount ?: 0}">0</div>
-        <div class="stat-label">Following</div>
-      </div>
-    </div>
-
-    <!-- 내 프로필일 때 -->
-    <div
-      class="profile-action button-container"
-      th:if="${session.loginMember != null and session.loginMember.memberNo == memberNo}"
-    >
-      <a
-        th:href="@{'/member/edit/' + ${memberNo}}"
-        class="action-button Edit-button"
-      >
-        Edit Profile
-      </a>
-
-      <form th:action="@{/logout}" method="post" style="display: inline">
-        <button type="submit" class="action-button Logout-button">
-          Logout
-        </button>
-      </form>
-
-      <button class="action-button surfing-button">surfing</button>
-    </div>
-
-    <!-- 다른 사람 프로필일 때 follow 버튼 -->
-    <div
-      class="profile-action"
-      th:if="${session.loginMember != null and session.loginMember.memberNo != memberNo}"
-    >
-      <button class="action-button follow-button">follow</button>
-    </div>
-
-    <!-- edit 모드 -->
-    <div class="profile-action" th:if="${isEditMode}">
-      <button id="confirmEditBtn" class="action-button Edit-button">
-        Confirm
-      </button>
-      <button id="backToProfileBtn" class="action-button back-button">
-        Back
-      </button>
-    </div>
-
-    <div
-      id="bio-display"
-      class="bio-display"
-      th:text="${memberIntro ?: '소개가 없습니다.'}"
-    >
-      소개가 없습니다.
-    </div>
-  </div>
-</div>
-
-<script th:src="@{/js/miniHome/sidebar.js}"></script>
+ 
