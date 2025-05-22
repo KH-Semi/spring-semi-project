@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.featherworld.project.member.model.dto.Member;
-import com.featherworld.project.miniHome.model.service.MiniService;
+import com.featherworld.project.miniHome.model.service.MiniHomeService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -20,22 +20,23 @@ public class MiniHomeController {
 
 
 	@Autowired
-	private MiniService service;
-
-	private Object loginMemberNo;
-
-	private Object cp;
+	private MiniHomeService service;
 
 	@GetMapping("{memberNo:[0-9]+}/minihome")
 	public String miniHome(@PathVariable("memberNo") int memberNo, Model model, HttpSession session) {
-	    model.addAttribute("member", memberNo);
+	    
+	    Member member = service.selectMemberByNo(memberNo); // 서비스에서 회원 객체 조회
+	    model.addAttribute("member", member); // ✅ 이제 member는 객체(Member)
+
 	    model.addAttribute("memberNo", memberNo);
 
-	    Member loginMember = (Member) session.getAttribute("loginMember"); // 여기서 꺼내서
-	    model.addAttribute("loginMember", loginMember);                     // 모델에 다시 넣어줘야 함
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    model.addAttribute("loginMember", loginMember);
 
 	    return "miniHome/miniHome";
 	}
+
+
 
 
 	@PostMapping("{memberNo:[0-9]+}/prifleupdate")
@@ -43,11 +44,11 @@ public class MiniHomeController {
 								RedirectAttributes ra) 
 					throws Exception {
 		
-		String path = service.fileUpload1(uploadFile);
+		// String path = service.fileUpload1(uploadFile);
 		
-		if( path != null) {
-			ra.addFlashAttribute("path", path);
-		}
+//		if( path != null) {
+//			ra.addFlashAttribute("path", path);
+//		}
 				
 		return "profile/profileupdate";
 		
@@ -66,7 +67,7 @@ public class MiniHomeController {
 		int memberNo = loginMember.getMemberNo();
 		
 		// 업로드된 파일 정보를 db로
-		int result = service.fileUpload2(uploaFile, memberNo);
+		//int result = service.fileUpload2(uploaFile, memberNo);
 		
 		return "redirect:/miniHome/miniHome";
 	}

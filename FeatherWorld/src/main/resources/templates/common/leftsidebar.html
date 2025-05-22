@@ -5,7 +5,7 @@
     <title>FeatherWorld Sidebar</title>
     <link rel="stylesheet" th:href="@{/css/common/leftsidebar.css}" />
   </head>
-  <body th:attr="data-member-no=${member != null ? member.memberNo : 0}">
+  <body th:attr="data-member-no=${member != null ? member : 0}">
     <!-- sidebar.html -->
     <div th:fragment="sidebarFragment" class="left-sidebar">
       <!--th:object="member"-->
@@ -89,5 +89,6 @@
 
     <!-- sidebar.js 파일 연결 -->
     <script th:src="@{/js/miniHome/sidebar.js}"></script>
+    s
   </body>
 </html>
