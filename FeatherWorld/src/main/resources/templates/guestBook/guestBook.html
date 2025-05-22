@@ -19,7 +19,7 @@
 
         <!-- 중앙 방명록 목록 -->
         <div class="main-content">
-          <div class="guestbook-list">
+          <div class="guestbook-list" id="guestbook-list">
             <!-- DB에서 가져온 방명록 목록 순회 -->
             <div
               class="guestbook-item"
@@ -35,29 +35,28 @@
               </div>
               <div class="guestbook-info">
                 <span th:text="${loginMember.memberName}">작성자</span>
+
+                <!-- <span th:text="*{visitorName}">작성자</span> -->
+                <!-- guestBook 작성자 필드명에 맞춰 수정 -->
                 <div class="guestbook-date" th:text="*{guestBookWriteDate}">
                   게시일
                 </div>
 
                 <!-- 로그인한 회원이 방명록 작성자일 때만 버튼 출력 -->
-                <th:block
-                  th:if="${loginMember != null} and ${loginMember.memberNo} == *{visitorNo}"
-                >
-                  <div class="guestbook-actions">
-                    <a
-                      href="#"
-                      class="edit-btn"
-                      th:attr="data-no=*{guestBookNo}"
-                      >수정</a
+                <div class="guestbook-actions">
+                  <th:block
+                    th:if="${loginMember != null} and ${loginMember.memberNo} == *{visitorNo}"
+                  >
+                    <button
+                      th:onclick="|showUpdateGuestBook(*{guestBookNo}, this)|"
                     >
-                    <a
-                      href="#"
-                      class="delete-btn"
-                      th:attr="data-no=*{guestBookNo}"
-                      >삭제</a
-                    >
-                  </div>
-                </th:block>
+                      Edit
+                    </button>
+                    <button th:onclick="|deleteGuestBook(*{guestBookNo})|">
+                      Delete
+                    </button>
+                  </th:block>
+                </div>
               </div>
             </div>
           </div>

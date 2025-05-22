@@ -1,5 +1,7 @@
 package com.featherworld.project.guestBook.model.dto;
 
+import com.featherworld.project.member.model.dto.Member;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +19,13 @@ public class GuestBook {
 	private String guestBookWriteDate;
 	private int ownerNo;
 	private int visitorNo;
+	private Member visitor;
 	
+	public Member getVisitor() {
+	    return visitor;
+	}
+
+	public void setVisitor(Member visitor) {
+	    this.visitor = visitor;
+	}
 }
