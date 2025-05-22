@@ -1,15 +1,17 @@
 package com.featherworld.project.friend.controller;
 
-import com.featherworld.project.friend.model.service.IlchonService;
-import com.featherworld.project.member.model.dto.Member;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import java.util.Map;
+import com.featherworld.project.friend.model.service.IlchonService;
+import com.featherworld.project.member.model.dto.Member;
 
 @Controller
 //@RestController // @Controller + @ResponseBody
@@ -19,9 +21,10 @@ public class IlchonController {
 	private IlchonService service;
 	
 	@GetMapping("{memberNo:[0-9]+}/friendlist")
-	public String select(@SessionAttribute Member loginMember
-			,@RequestParam(value = "cp", required = false, defaultValue = "1") int cp
-			,Model model){
+	public String select(@SessionAttribute Member loginMember,
+						 @PathVariable("memberNo") int memberNo,
+						 @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+						 Model model){
 		//Session에서 loginMember의 MEMBER_NO를 불러오기.
 		
 		

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class MiniHomeController {
 
     @GetMapping("{memberNo:[0-9]+}/minihome")
-    public String miniHome(@PathVariable int memberNo, Model model) {
+    public String miniHome(@PathVariable("memberNo") int memberNo, Model model) {
         return "miniHome/miniHome";
     }
 }

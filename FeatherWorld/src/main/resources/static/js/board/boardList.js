@@ -10,9 +10,9 @@ const writeBtn = document.querySelector(".write-button");
  */
 const updateCp = (page) => {
   const url = new URL(window.location);
-  url.searchParams.set('cp', page);
-  history.replaceState({}, '', url);
-}
+  url.searchParams.set("cp", page);
+  history.replaceState({}, "", url);
+};
 
 /** 특정 class를 가진 div 태그 생성
  * @author Jiho
@@ -34,7 +34,6 @@ const createDiv = (className = "", text = "") => {
  * @return 페이징 목록/글쓰기 버튼 포함 div
  */
 const createBoardFooter = (pagination) => {
-
   /** 각각의 페이징 목록을 생성하고, 페이지 변경 click 이벤트 부여
    * @author Jiho
    * @param {number} page 페이지 번호(cp)
@@ -58,7 +57,7 @@ const createBoardFooter = (pagination) => {
 
   const containerDiv = document.createElement("div");
 
-  if(pagination) {
+  if (pagination) {
     // 임시 페이징 목록 div
     const updatedPagination = document.createElement("div");
     updatedPagination.classList.add("pagination");
@@ -67,7 +66,9 @@ const createBoardFooter = (pagination) => {
     updatedPagination.append(createPageSpan(1, "<<"));
 
     // < 이전 페이지
-    updatedPagination.append(createPageSpan(pagination.prevPage, "<", "page-nav"));
+    updatedPagination.append(
+      createPageSpan(pagination.prevPage, "<", "page-nav")
+    );
 
     // 페이지 번호 목록
     for (let i = pagination.startPage; i <= pagination.endPage; i++) {
@@ -79,7 +80,9 @@ const createBoardFooter = (pagination) => {
     }
 
     // > 다음 페이지
-    updatedPagination.append(createPageSpan(pagination.nextPage, ">", "page-nav"));
+    updatedPagination.append(
+      createPageSpan(pagination.nextPage, ">", "page-nav")
+    );
 
     // >> 마지막 페이지
     updatedPagination.append(createPageSpan(pagination.maxPage, ">>"));
@@ -104,7 +107,6 @@ const createBoardFooter = (pagination) => {
  * @param {number} page 페이지 번호(cp)
  */
 const renderBoardList = async (boardCode, page) => {
-
   // 중앙 게시글 목록 div 생성
   const mainContent = createDiv("main-content");
   const updatedBoardContainer = createDiv("board-list");
@@ -118,13 +120,13 @@ const renderBoardList = async (boardCode, page) => {
   const boardList = map.boardList;
 
   // 게시글이 없는 경우
-  if(boardList == null) {
+  if (boardList == null) {
     const span = document.createElement("span");
     span.innerText = "게시글이 존재하지 않습니다.";
 
     updatedBoardContainer.append(span);
     mainContent.append(updatedBoardContainer);
-    
+
     mainContent.append(createBoardFooter(pagination));
 
     document.querySelector(".main-content").replaceWith(mainContent);
@@ -133,16 +135,19 @@ const renderBoardList = async (boardCode, page) => {
   }
 
   // 비동기로 가져온 게시글 내용을 꺼내서 html 요소로 대입
-  for(const board of boardList) {
-
+  for (const board of boardList) {
     // 게시글 하나를 담는 div 생성
     const boardItem = createDiv("board-item");
+
+    boardItem.addEventListener("click", () => {
+      location.href = `/${memberNo}/board/${boardCode}/${board.boardNo}`;
+    });
 
     // 게시글 썸네일과 게시글 제목/내용을 담는 묶음 div 생성
     const boardWrap = createDiv("board-wrap");
 
     // 게시글 썸네일이 있을 경우에만 썸네일 이미지가 들어간 div 넣어줌
-    if(board.thumbnail) {
+    if (board.thumbnail) {
       const boardThumbnail = createDiv("board-thumbnail");
 
       const thumbnailImg = document.createElement("img");
@@ -192,45 +197,38 @@ const renderBoardList = async (boardCode, page) => {
 
   // 기존 중앙 컨텐츠 영역 교체
   document.querySelector(".main-content").replaceWith(mainContent);
-}
+};
 
 // 좌측 게시판 목록 선택
 // 게시판 목록 div 태그들을 차례대로 선택, 안에 있는 th:data-board-code 로부터 boardCode를 얻어와서 click 이벤트 추가
-document.querySelectorAll(".board-type-item").forEach(boardTypeItem => {
-
+document.querySelectorAll(".board-type-item").forEach((boardTypeItem) => {
   boardTypeItem.addEventListener("click", async () => {
-
     // url 속 쿼리 스트링을 통해 현재 페이지 값(cp) 1로 수정
     // 게시글이 없는 경우에도 cp 값은 1, 반환 map 내용만 다름
     updateCp(1);
-    
+
     // 현재 게시판 종류 번호 갱신
     boardCode = boardTypeItem.dataset.boardCode;
     // 게시글 목록 갱신
-    renderBoardList(boardCode, 1)
-        .catch(console.error);
+    renderBoardList(boardCode, 1).catch(console.error);
   });
 });
 
 // 쓰기 버튼 클릭시 비동기식 페이지 전환
-if(writeBtn) {
-
+if (writeBtn) {
   /** 글을 작성할 수 있는 요소를 그려주고, 작성 완료 시 다시 게시글/페이징 목록을 업데이트해서 보여주는 메서드
    * @author Jiho
    */
   writeBtn.firstElementChild.addEventListener("click", () => {
-
-    if(boardCode === 0) {
+    if (boardCode === 0) {
       alert("존재하지 않는 게시판입니다.");
       return;
     }
-    
+
     // 1. html 요소 그리기
     // 2.
-    
   });
 }
 
 // 보드 메인 페이지 최초 진입 시 renderBoardList() 실행
-renderBoardList(boardCode, 1)
-    .catch(console.error);
+renderBoardList(boardCode, 1).catch(console.error);

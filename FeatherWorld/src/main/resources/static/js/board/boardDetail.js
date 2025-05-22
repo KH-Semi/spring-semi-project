@@ -38,3 +38,12 @@ document.querySelector("#boardLike").addEventListener("click", (e) => {
       e.target.nextElementSibling.innerText = count;
     });
 });
+
+// 뒤로가기 버튼 처리
+document.addEventListener("DOMContentLoaded", () => {
+  const boardDetailBackBtn = document.querySelector(".back-button");
+
+  boardDetailBackBtn.addEventListener("click", () => {
+    location.href = `/${memberNo}/board/${boardCode}`;
+  });
+});

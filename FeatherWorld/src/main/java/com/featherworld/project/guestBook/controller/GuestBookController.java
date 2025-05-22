@@ -35,7 +35,7 @@ public class GuestBookController {
 	 */
 	@GetMapping("/{memberNo:[0-9]+}/guestbook")
 	    public String guestBookPage(@SessionAttribute(value = "loginMember", required = false) Member loginMember,
-	    		@PathVariable int memberNo,
+	    		@PathVariable("memberNo") int memberNo,
 	    		@RequestParam(value = "ownerNo", required = false) Integer ownerNo,
 	    		@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 	    		Model model) {
