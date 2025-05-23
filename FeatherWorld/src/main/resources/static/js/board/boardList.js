@@ -325,11 +325,9 @@ if(leftSidebar) {
   leftSidebar.addEventListener("click", async e => {
 
     // 좌측 게시판 목록 선택
-    const boardItem = e.target.closest(".board-type-item");
-    // 게시판 수정, 삭제 버튼 클릭시 넘어가도록 설정 필요
-    if (boardItem && !boardItem.classList.contains("fa-trash") && !boardItem.classList.contains("fa-pencil")) {
+    if (e.target.classList.contains("board-type-item")) {
       // 현재 게시판 종류 번호 갱신
-      boardCode = boardItem.dataset.boardCode;
+      boardCode = e.target.dataset.boardCode;
 
       // boardCode 반영해 url 갱신
       history.pushState({}, '', boardCode);
