@@ -1,0 +1,57 @@
+<div id="commentArea">
+
+  <!-- ✅ 댓글 작성 부분 (위로 이동됨) -->
+  <div class="comment-write-area">
+    <textarea
+      id="commentContent"
+      class="Comment"
+      placeholder="Write Friend Comment.">
+    </textarea>
+    <button id="addComment" class="comment-submit-btn">
+      댓글<br>
+      등록
+    </button>
+  </div>
+
+  <!-- 댓글 목록 -->
+  <div class="comment-list-area">
+    <ul id="commentList">
+      <li class="comment-row"
+          th:each="comment : ${board.commentList}"
+          th:object="${comment}">
+
+        <!-- 살아있는 댓글 표시 -->
+        <th:block th:if="*{commentDelFl} == 'N'">
+          <p class="comment-writer">
+            <!-- 프로필 이미지 없을 경우 -->
+            <img th:unless="*{profileImg}" th:src="#{user.default.image}">
+            <!-- 프로필 이미지 있을 경우 -->
+            <img th:if="*{profileImg}" th:src="*{profileImg}">
+
+            <!-- 닉네임 -->
+            <span th:text="*{memberNickname}">닉네임</span>
+
+            <!-- 작성일 -->
+            <span class="comment-date" th:text="*{commentWriteDate}">작성일</span>
+          </p>
+
+          <!-- 댓글 내용 -->
+          <p class="comment-content" th:text="*{commentContent}">댓글 내용</p>
+
+          <!-- 버튼 or 닉네임만 -->
+          <div class="comment-btn-area">
+            <th:block th:if="${session.loginMember != null}">
+              <th:block th:if="${isIlchon}">
+                <th:block th:if="*{memberNo} == ${session.loginMember.memberNo}">
+                  <button th:onclick="|deleteComment(*{commentNo})|">Delete</button>
+                </th:block>
+              </th:block>
+            </th:block>
+          </div>
+        </th:block>
+
+      </li>
+    </ul>
+  </div>
+
+</div>

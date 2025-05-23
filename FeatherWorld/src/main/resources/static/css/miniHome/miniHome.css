@@ -378,6 +378,7 @@ body {
   font-size: 13px;
   transition: all 0.3s ease;
 }
+<<<<<<< HEAD
 
 .miniHome-comment-wrapper:hover {
   border-color: #9f2120;
@@ -422,3 +423,5 @@ body {
     height: 120px !important;
   }
 }
+=======
+>>>>>>> b6da7ccec79560c19c67138e96dcb4c612e28227
