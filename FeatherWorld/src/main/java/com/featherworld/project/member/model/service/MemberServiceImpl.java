@@ -32,7 +32,6 @@ public class MemberServiceImpl implements MemberService {
 	// --------------------------------------------
 
 	// 회원 여부 확인
-	@Override
 	public int checkMember(int memberNo) {
 		return mapper.checkMember(memberNo);
 	}

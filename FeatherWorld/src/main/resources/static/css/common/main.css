@@ -177,8 +177,7 @@ body {
   cursor: pointer;
 }
 
-/* 아이콘 스타일 */
-
+/* 아이콘 */
 .icon-edit,
 .icon-delete {
   color: #777;

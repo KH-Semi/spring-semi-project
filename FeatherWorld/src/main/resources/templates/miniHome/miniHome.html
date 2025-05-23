@@ -1,98 +1,67 @@
 <!DOCTYPE html>
-<html lang="ko">
-  <head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="UTF-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>FeatherWorld</title>
-    <!-- 공용 css/js 추가 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FeatherWorld - MiniHome</title>
+    
+    <!-- 공통 CSS -->
+ 
     <th:block th:replace="~{common/common}"></th:block>
-
+    <!-- 미니홈피 전용 CSS -->
     <link rel="stylesheet" href="/css/miniHome/miniHome.css" />
-  </head>
-  <body>
+</head>
+<body>
     <!-- Header Fragment -->
     <div th:replace="~{common/header}"></div>
 
     <div class="content-container">
-      <div class="left-sidebar">
-        <!-- Left sidebar - Profile Information -->
-        <div th:replace="~{common/leftsidebar}"></div>
-      </div>
-
-      <!-- Middle sidebar - Posts -->
-      <div class="content-area">
-        <div class="boardContainer">
-          <div class="boardSummary">
-            <div class="summary-links">
-              <a href="#">Board Total</a>
-              <a href="#">Guest Book Total</a>
-            </div>
-          </div>
-
-          <div class="recentBoard">Recent Board</div>
-
-          <form action="/profile/file/test1"
-                      method="POST"
-                      enctype="multipart/form-data"
-
-          <!-- 이미지 5장까지 표시할 영역 -->
-          <div class="small-image-row" id="imagePreviewRow"></div>
-
-          <textarea
-            class="Comment"
-            placeholder="Write Friend Comment."
-          ></textarea>
-
-          <div class="comment-header">
-            <div class="title">Friend Comment List</div>
-            <button id="write-button" class="write-button">Write</button>
-          </div>
-          <div id="comment-form" style="display: none; margin-top: 10px">
-            <textarea
-              id="comment-input"
-              class="Comment"
-              placeholder="댓글을 작성하세요..."
-            ></textarea>
-            <button id="submit-comment" class="write-button">댓글 등록</button>
-          </div>
-
-          <!-- 댓글 부분 -->
-          <div class="comment-list" id="comment-list">
-            <div th:each="comment : ${comments}">
-              <div class="comment-item">
-                <img
-                  th:src="${#strings.isEmpty(comment.memberImg)} ? '/images/user.png' : comment.memberImg"
-                />
-                <div class="comment-content">
-                  <span class="username" th:text="${comment.username}"
-                    >사용자명</span
-                  >
-                  <span class="comment-text" th:text="${comment.commentText}"
-                    >댓글 내용</span
-                  >
-                  <div class="comment-meta">
-                    <span class="user-role" th:text="${comment.userRole}"
-                      >역할</span
-                    >
-                    <button class="delete-btn">Delete</button>
-                  </div>
-                </div>
-              </div>
-              <hr />
-            </div>
-          </div>
+        <!-- Left sidebar - Profile -->
+        <div class="left-sidebar">
+            <div th:replace="~{common/leftsidebar}"></div>
         </div>
-      </div>
 
-      <!-- Right sidebar - Navigation Menu -->
-      <div class="right-sidebar">
-        <th:block th:replace="~{common/navsidebar}"></th:block>
-      </div>
+        <!-- Middle Content Area -->
+        <div class="content-area">
+            <div class="boardContainer">
+                <!-- Board Summary Links -->
+                <div class="boardSummary">
+                    <div class="summary-links">
+                        <a href="#">Board Total</a>
+                        <a href="#">Guest Book Total</a>
+                    </div>
+                </div>
+
+                <!-- Recent Board Header -->
+                <div class="recentBoard">Recent Board</div>
+
+                <!-- 최근 게시글 이미지들 -->
+                <div class="small-image-row">
+                    <div class="no-recent-posts">
+                        <p>최근 게시글이 없습니다</p>
+                    </div>
+                </div>
+
+                <!-- Friend Comment List -->
+                <div class="comment-header">
+                    <div class="title">Friend Comment List</div>
+                </div>
+
+                <div class="miniHome-no-comments">
+                    <p>아직 일촌평이 없습니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right sidebar -->
+       
+            <div th:replace="~{common/navsidebar}"></div>
+        
     </div>
 
-    <!-- 푸터 -->
-    <th:block th:replace="~{common/footer}"></th:block>
+    <!-- Footer -->
+    <div th:replace="~{common/footer}"></div>
 
-    <script src="/js/miniHome/miniHome.js"></script>
-  </body>
+
+</body>
 </html>
