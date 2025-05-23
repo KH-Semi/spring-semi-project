@@ -40,6 +40,13 @@
 		WHERE BOARD_CODE = ${boardCode}
 		AND MEMBER_NO = ${memberNo}
 	</delete>
+
+	<update id="updateBoardType" parameterType="BoardType">
+		UPDATE BOARD_TYPE
+		SET BOARD_NAME = #{boardName}, AUTHORITY = ${authority}
+		WHERE BOARD_CODE = ${boardCode}
+		AND MEMBER_NO = ${memberNo}
+	</update>
 	
 	<!-- 게시글 상세 조회 -->
 	<select id="selectOne" parameterType="map" resultType="Board">

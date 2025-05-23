@@ -3,10 +3,12 @@ package com.featherworld.project.board.controller;
 import com.featherworld.project.board.model.dto.BoardType;
 import com.featherworld.project.board.model.service.BoardService;
 import com.featherworld.project.board.model.service.BoardTypeService;
+import com.featherworld.project.member.model.dto.Member;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -34,14 +36,23 @@ public class BoardTypeController {
         return boardTypeList;
     }
 
-    /**
+    /** 현재 회원의 새로운 게시판 생성
      * @param memberNo 현재 회원번호
      * @param boardType 전달받은 게시판 제목, 권한(0, 1)
+     * @param loginMember 로그인한 회원
+     * @param ra message 전달
      * @return result 새로운 게시판 생성 성공 1, 실패 0
      */
     @PostMapping("{memberNo:[0-9]+}/board/insert")
     public int createBoardType(@PathVariable("memberNo") int memberNo,
-                               @RequestBody BoardType boardType) {
+                               @RequestBody BoardType boardType,
+                               @SessionAttribute("loginMember") Member loginMember,
+                               RedirectAttributes ra) {
+
+        if(loginMember.getMemberNo() != memberNo) {
+            ra.addFlashAttribute("message", "본인의 게시판만 수정할 수 있습니다!");
+            return 0;
+        }
 
         // 현재 회원번호 정보를 세팅
         boardType.setMemberNo(memberNo);
@@ -49,17 +60,43 @@ public class BoardTypeController {
         return boardTypeService.insertBoardType(boardType);
     }
 
+    /** 현재 회원의 기존 게시판 수정(이름, 권한)
+     * @param memberNo 현재 회원번호
+     * @param boardType 전달받은 게시판 제목, 권한(0, 1)
+     * @param loginMember 로그인한 회원
+     * @param ra message 전달
+     * @return 기존 게시판 수정 성공 1, 실패 0
+     */
     @PutMapping("{memberNo:[0-9]+}/board/update")
     public int updateBoardType(@PathVariable("memberNo") int memberNo,
-                               @RequestBody BoardType boardType) {
+                               @RequestBody BoardType boardType,
+                               @SessionAttribute("loginMember") Member loginMember,
+                               RedirectAttributes ra) {
 
-        int result = 1;
-        return result;
+        if(loginMember.getMemberNo() != memberNo) {
+            ra.addFlashAttribute("message", "본인의 게시판만 수정할 수 있습니다!");
+            return 0;
+        }
+        return boardTypeService.updateBoardType(boardType);
     }
 
+    /** 현재 회원의 기존 게시판 삭제
+     * @param memberNo 현재 회원번호
+     * @param boardType 전달받은 게시판 종류 번호 포함
+     * @param loginMember 로그인한 회원
+     * @param ra message 전달
+     * @return 기존 게시판 삭제 성공 1, 실패 0
+     */
     @DeleteMapping("{memberNo:[0-9]+}/board/delete")
     public int deleteBoardType(@PathVariable("memberNo") int memberNo,
-                               @RequestBody BoardType boardType) {
+                               @RequestBody BoardType boardType,
+                               @SessionAttribute("loginMember") Member loginMember,
+                               RedirectAttributes ra) {
+
+        if(loginMember.getMemberNo() != memberNo) {
+            ra.addFlashAttribute("message", "본인의 게시판만 수정할 수 있습니다!");
+            return 0;
+        }
 
         // 현재 회원번호 정보를 세팅
         boardType.setMemberNo(memberNo);

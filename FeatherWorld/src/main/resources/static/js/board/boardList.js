@@ -324,14 +324,19 @@ if (leftSidebar) {
     if (e.target.classList.contains("board-type-item")) {
       // 현재 게시판 종류 번호 갱신
       boardCode = e.target.dataset.boardCode;
+
       // boardCode 반영해 url 갱신
-      history.pushState({}, "", boardCode);
+      history.pushState({}, '', boardCode);
 
       // 게시글 목록 갱신
       renderBoardList(boardCode, null).catch(console.error);
+
+      return;
     }
 
-    if (e.target === document.querySelector(".add-folder")) {
+    // 폴더 추가 버튼 선택
+    const addFolder = e.target.closest(".add-folder");
+    if(addFolder) {
       const addFolderForm = createDiv("add-folder-form");
 
       const folderTitleInput = document.createElement("input");
@@ -393,15 +398,23 @@ if (leftSidebar) {
       leftSidebar.append(addFolderForm);
 
       folderTitleInput.focus();
-      e.target.remove();
+      addFolder.remove();
+
+      return;
     }
 
-    if (e.target === document.querySelector(".cancel-add-folder")) {
+    // 폴더 추가 취소 버튼
+    const cancelAddFolder = e.target.closest(".cancel-add-folder");
+    if(cancelAddFolder) {
       document.querySelector(".add-folder-form").remove();
       leftSidebar.append(createAddFolder());
-    }
 
-    if (e.target === document.querySelector(".confirm-add-folder")) {
+      return;
+    }
+    
+    // 폴더 추가 확정 버튼
+    const confirmAddFolder = e.target.closest(".confirm-add-folder");
+    if(confirmAddFolder) {
       const boardName = document.querySelector("input[name='boardName']").value;
       if (boardName.trim().length === 0) {
         alert("게시판 이름을 작성해주세요.");
@@ -424,18 +437,25 @@ if (leftSidebar) {
       });
       const result = await resp.text();
 
-      if (result > 0) {
-        alert("새로운 게시판이 생성되었습니다.");
-
-        // 현재 세션 갱신 후 화면에 게시판 목록 렌더링
-        renderBoardTypeList().catch(console.error);
-
-        document.querySelector(".add-folder-form")?.remove();
-        leftSidebar.append(createAddFolder());
+      if(result == 0) {
+        alert("게시판 추가 실패");
+        return;
       }
+
+      alert("새로운 게시판이 생성되었습니다.");
+
+      // 현재 세션 갱신 후 화면에 게시판 목록 렌더링
+      renderBoardTypeList().catch(console.error);
+
+      document.querySelector(".add-folder-form")?.remove();
+      leftSidebar.append(createAddFolder());
+
+      return;
     }
 
-    if (e.target === document.querySelector(".edit-button")) {
+    // edit 버튼
+    const editBtn = e.target.closest(".edit-button");
+    if(editBtn) {
       // 수정모드 전환
       editMode = !editMode;
 
@@ -443,9 +463,8 @@ if (leftSidebar) {
         ".board-type-item > span:last-child"
       );
 
-      // 수정모드일 때 클릭 이벤트 발생 시 수정(put, delete 요청 수행)
-      if (editMode) {
-        iconSpan.forEach((icon) => {
+      if(editMode) {
+        iconSpan.forEach(icon => {
           icon.style.display = "inline-block";
         });
       } else {
@@ -453,6 +472,52 @@ if (leftSidebar) {
           icon.style.display = "none";
         });
       }
+
+      return;
+    }
+
+    // 연필 아이콘 클릭시
+    const editIcon = e.target.closest(".edit-icon");
+    if(editMode && editIcon) {
+
+      // input으로 수정값 받아오기 필요
+      const boardName = "수정 이름";
+      const authority = 1;
+
+      const folderForm = {
+        boardName: boardName,
+        authority: authority
+      };
+
+
+      // 수정 모드 초기화
+      editMode = !editMode;
+    }
+
+    // 쓰레기통 아이콘 클릭시
+    const deleteIcon = e.target.closest(".delete-icon");
+    if(editMode && deleteIcon) {
+
+      const resp = await fetch(`/${memberNo}/board/delete`, {
+        method: "delete",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ boardCode: boardCode })
+      });
+      const result = await resp.text();
+
+      if(result == 0) {
+        alert("게시판 삭제 실패");
+        return;
+      }
+
+      alert("게시판을 삭제했습니다.");
+
+      renderBoardTypeList().catch(console.error);
+
+      // 수정 모드 초기화
+      editMode = !editMode;
+      // boardCode & 게시글 초기화 필요
+
     }
   });
 }
