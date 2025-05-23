@@ -23,7 +23,7 @@ public class BoardTypeController {
      * @return 게시판 목록
      */
     @GetMapping("{memberNo:[0-9]+}/board/select")
-    public List<BoardType> selectBoardType(@PathVariable int memberNo, HttpSession session) {
+    public List<BoardType> selectBoardType(@PathVariable("memberNo") int memberNo, HttpSession session) {
 
         // 현재 회원의 게시판 목록을 조회해서 가져옴
         List<BoardType> boardTypeList = boardTypeService.selectBoardType(memberNo);
