@@ -8,8 +8,6 @@ import com.featherworld.project.member.model.dto.Member;
 @Mapper
 public interface MiniHomeMapper {
 
-	Member findmember(int memberNo);
-
-	int findilchon(Ilchon friend);
+	
 
 }

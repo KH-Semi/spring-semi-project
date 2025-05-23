@@ -15,11 +15,17 @@ import jakarta.servlet.http.HttpSession;
 public class ProfileController {
 	
 	// 프로필 화면
-	 @GetMapping("{memberNo:[0-9]+}/profile")
-	    public String miniHome(@PathVariable("memberNo") int memberNo, Model model) {
-	    	model.addAttribute("memberNo", memberNo);  // memberNo 추가
-	        return "profile/profile";
-	    }
+	@GetMapping("{memberNo:[0-9]+}/profile")
+	public String miniHome(@PathVariable("memberNo") int memberNo, Model model, HttpSession session) {
+	    model.addAttribute("memberNo", memberNo);
+
+	    Member member = (Member) session.getAttribute("loginMember");
+	    model.addAttribute("member", member); // 이걸 추가해야 ${member.memberNo}가 동작함
+
+	    return "profile/profile";
+	}
+
+
 
  
     // 프로필 수정 화면으로 이동

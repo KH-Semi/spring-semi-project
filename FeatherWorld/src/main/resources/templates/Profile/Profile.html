@@ -10,7 +10,7 @@
     <!-- myPage 전용 CSS -->
     <link rel="stylesheet" href="/css/profile/Profile.css" />
   </head>
-  <body data-member-no="${member.memberNo}">
+  <body data-member-no="${memberNo}">
     <!-- Header Fragment -->
     <div th:replace="~{common/header}"></div>
 
@@ -25,7 +25,7 @@
         <div class="post">
           <div id="previewContainer" style="margin-bottom: 15px">
             <img
-              src="/FeatherWorld/src/main/resources/static/images/sample-profile.png"
+              src="/images/sample-profile.png"
               alt="프로필 이미지"
               style="max-width: 300px; display: block; border-radius: 8px"
             />
