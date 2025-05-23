@@ -1,9 +1,41 @@
 /* ===== MiniHome 페이지 전용 CSS ===== */
 
 /* 전체 컨테이너 크기 조정 및 가운데 정렬 */
-.container {
-  max-width: 900px !important;
-  margin: 20px auto !important;
+/* 전체 컨텐츠 레이아웃 */
+.content-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 20px; /* 선택: 좌우 여백 */
+}
+
+/* 좌측 사이드바 */
+.left-sidebar {
+  width: 200px;
+  min-width: 200px;
+  border-right: 1px solid #e0e0e0;
+  padding: 20px;
+  background-color: #fff;
+}
+
+/* 중앙 컨텐츠 (가변 너비) */
+.content-area {
+  flex: 1; /* 남은 공간을 모두 차지 */
+  padding: 20px;
+  background-color: #fff;
+  min-height: 600px;
+}
+
+/* 우측 사이드바 */
+.right-sidebar {
+  width: 180px;
+  min-width: 180px;
+  border-left: 1px solid #e0e0e0;
+  padding: 20px;
+  background-color: #fff;
 }
 
 /* body 배경 */
@@ -127,12 +159,12 @@ body {
   border: 1px solid #e0e0e0;
 }
 
-#profileFollowerCount, 
+#profileFollowerCount,
 #profileFollowingCount {
   text-align: center;
 }
 
-#profileFollowerNumber, 
+#profileFollowerNumber,
 #profileFollowingNumber {
   display: block;
   font-size: 16px;
@@ -141,7 +173,7 @@ body {
   margin-bottom: 3px;
 }
 
-#profileFollowerLabel, 
+#profileFollowerLabel,
 #profileFollowingLabel {
   font-size: 10px;
   color: #888;
@@ -160,7 +192,7 @@ body {
   justify-content: center;
 }
 
-#profileEditBtn, 
+#profileEditBtn,
 #profileLogoutBtn {
   flex: 1;
   padding: 8px 12px;
@@ -401,22 +433,22 @@ body {
   body {
     padding: 10px 0 !important;
   }
-  
+
   .container {
     max-width: 95% !important;
     margin: 10px auto !important;
   }
-  
+
   .left-sidebar,
   .right-sidebar {
     min-width: 100% !important;
     padding: 15px !important;
   }
-  
+
   .content-area {
     padding: 20px !important;
   }
-  
+
   #profileMainImage {
     width: 120px !important;
     height: 120px !important;

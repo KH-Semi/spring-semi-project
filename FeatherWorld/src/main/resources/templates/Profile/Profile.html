@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FeatherWorld</title>
+    <title>FeatherWorld - Profile</title>
+
     <!-- 공용 CSS/JS 불러오기 -->
     <th:block th:replace="~{common/common}"></th:block>
-
     <!-- myPage 전용 CSS -->
     <link rel="stylesheet" href="/css/profile/Profile.css" />
   </head>
-  <body data-member-no="${member.memberNo}">
+  <body th:attr="data-member-no=${memberNo != null} ? ${memberNo} : 0">
     <!-- Header Fragment -->
     <div th:replace="~{common/header}"></div>
 
@@ -24,11 +24,7 @@
       <div class="middle-sidebar">
         <div class="post">
           <div id="previewContainer" style="margin-bottom: 15px">
-            <img
-              src="/FeatherWorld/src/main/resources/static/images/sample-profile.png"
-              alt="프로필 이미지"
-              style="max-width: 300px; display: block; border-radius: 8px"
-            />
+            <img th:src="@{/images/logo.png}" alt="logo" />
           </div>
         </div>
 
@@ -41,6 +37,7 @@
           ></textarea>
         </div>
 
+        <!-- 하단 버튼 -->
         <div class="post-actions">
           <a
             th:href="@{/{memberNo}/profileupdate(memberNo=${memberNo})}"
