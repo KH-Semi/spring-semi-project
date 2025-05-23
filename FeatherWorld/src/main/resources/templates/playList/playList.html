@@ -1,134 +1,185 @@
 <!DOCTYPE html>
 <html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>YouTube Embed</title>
+    <!-- 공용 css/js 추가 -->
+    <th:block th:replace="~{common/common}"></th:block>
+    <!-- myPage 전용 CSS -->
+    <link rel="stylesheet" href="/css/playList/playList.css" />
+  </head>
 
-<head>
-	<meta charset="UTF-8">
-	<title>YouTube Embed</title>
-	<!-- 공용 css/js 추가 -->
-	<th:block th:replace="~{common/common}"></th:block>
-	<!-- myPage 전용 CSS -->
-	<link rel="stylesheet" href="/css/playList/playList.css">
-	<link rel="stylesheet" href="/css/myPage.css" />
+  <body>
+    <div class="container">
+      <!-- 헤더 Include -->
+      <th:block th:replace="~{common/header}"></th:block>
+      <div class="container-main">
+        <!-- Left sidebar - Profile Information -->
+        <div class="left-sidebar">
+          <header class="logo">
+            <p>Today / Total</p>
+          </header>
 
-</head>
+          <div class="profile-info">
+            <div class="profile-image">
+              <img
+                th:src="${session.loginMember != null && session.loginMember.
+              memberImg != null} ? @{${session.loginMember.memberImg}} : @{/images/user.png}"
+                alt="Profile Image"
+              />
+            </div>
 
-<body>
-	<div class="container">
-		<!-- Left sidebar - Profile Information -->
-		<div class="left-sidebar">
-			<header class="logo">
-				<p>Today / Total</p>
-			</header>
+            <!-- 회원 번호 표시 -->
+            <div
+              class="profile-name"
+              th:text="${memberno}"
+              aria-placeholder="회원"
+            >
+              회원
+            </div>
 
-			<div class="profile-info">
-				<div class="profile-image">
-					<img th:src="${session.loginMember != null && session.loginMember.
-              memberImg != null} ? @{${session.loginMember.memberImg}} : @{/images/user.png}" alt="Profile Image" />
-				</div>
+            <!-- 닉네임 (@ 표시 포함) -->
+            <div
+              class="profile-handle"
+              th:text="'@' + ${nickname}"
+              aria-placeholder="닉네임"
+            >
+              @닉네임
+            </div>
 
-				<!-- 회원 번호 표시 -->
-				<div class="profile-name" th:text="${memberno}" aria-placeholder="회원">회원</div>
+            <!-- 팔로워 / 팔로잉 수 -->
+            <div class="profile-stats">
+              <div class="stat">
+                <div class="stat-number" th:text="${followerCount}">0</div>
+                <div class="stat-label">Follower</div>
+              </div>
+              <div class="stat">
+                <div class="stat-number" th:text="${followingCount}">0</div>
+                <div class="stat-label">Following</div>
+              </div>
+            </div>
 
-				<!-- 닉네임 (@ 표시 포함) -->
-				<div class="profile-handle" th:text="'@' + ${nickname}" aria-placeholder="닉네임">@닉네임</div>
-
-				<!-- 팔로워 / 팔로잉 수 -->
-				<div class="profile-stats">
-					<div class="stat">
-						<div class="stat-number" th:text="${followerCount}">0</div>
-						<div class="stat-label">Follower</div>
-					</div>
-					<div class="stat">
-						<div class="stat-number" th:text="${followingCount}">0</div>
-						<div class="stat-label">Following</div>
-					</div>
-				</div>
-
-				<!-- profile 하단 버튼-->
-				<div class="profile-action">
-					<button id="confirmEditBtn" class="action-button confirm-button">Confirm</button>
-					<button id="backToProfileBtn" class="action-button back-button">Back</button>
-
-				</div>
-			</div>
-
-			<!-- 여기 추가 -->
-			<div class="profile-action">
-				<button class="action-button Board-button">Bio</button>
-			</div>
-
-			<div class="profile-action">
-				<button class="action-button surfing-button">surfing</button>
-			</div>
-		</div>
-
-		<!-- middle -->
-		<div class="middle-sidebar">
-			<div class="header">
-
-				<input type="text" id="youtubeUrl" placeholder="Youtube URL Input">
-				<div id="videoContainer"></div>
-
-
-				<script>
-					const input = document.getElementById('youtubeUrl');
-					const container = document.getElementById('videoContainer');
-
-					input.addEventListener('keydown', function (e) {
-						if (e.key === 'Enter') {
-							const url = input.value.trim();
-
-							// 기본 초기화
-							let embedUrl = "";
-
-							// 1. playlist 링크인지 확인
-							const playlistMatch = url.match(/[?&]list=([a-zA-Z0-9_-]+)/);
-							// 2. 단일 영상인지 확인
-							const videoMatch = url.match(/(?:youtube\.com\/.*[?&]v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-
-							if (playlistMatch && url.includes("playlist")) {
-								const listId = playlistMatch[1];
-								embedUrl = `https://www.youtube.com/embed/videoseries?list=${listId}`;
-							} else if (videoMatch) {
-								const videoId = videoMatch[1];
-								embedUrl = `https://www.youtube.com/embed/${videoId}`;
-							} else {
-								alert("올바른 유튜브 영상 또는 재생목록 URL을 입력해주세요.");
-								return;
-							}
-
-							// iframe 생성
-							container.innerHTML = `
-          <div class="embed-container">
-            <iframe 
-              src="${embedUrl}" 
-              allowfullscreen 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
-            </iframe>
+            <!-- profile 하단 버튼-->
+            <div class="profile-action">
+              <button id="confirmEditBtn" class="action-button confirm-button">
+                Confirm
+              </button>
+              <button id="backToProfileBtn" class="action-button back-button">
+                Back
+              </button>
+            </div>
           </div>
-        `;
-						}
-					});
-				</script>
 
-				<!-- confirm 버튼 -->
-				<div class="post-actions">
-					<button class="post-button" id="confirmYouTubeBtn">
-						<i class="fas fa-check"></i> Confirm
-					</button>
-				</div>
+          <!-- 여기 추가 -->
+          <div class="profile-action">
+            <button class="action-button Board-button">Bio</button>
+          </div>
 
+          <div class="profile-action">
+            <button class="action-button surfing-button">surfing</button>
+          </div>
+        </div>
 
+        <!-- middle -->
+        <div class="middle-sidebar">
+          <!-- 본인 홈피 보는중일때 -->
+          <th:block
+            th:if="${session.loginMember != null and session.loginMember.memberNo == memberNo}"
+          >
+            <div class="header">
+              <input
+                type="text"
+                id="youtubeUrl"
+                placeholder="Youtube URL 입력 후 엔터를 입력하세요."
+              />
+              <div id="videoContainer">
+                <!-- 홈피 주인이 등록한 플리가 있을 때-->
+                <th:block th:if="${youtubeUrl != null}">
+                  <div class="embed-container">
+                    <iframe
+                      th:src="${youtubeUrl}"
+                      allowfullscreen
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    >
+                    </iframe>
+                  </div>
+                </th:block>
 
-			</div>
-		</div>
+                <!-- 홈피 주인이 등록한 플리가 없을 때-->
+                <th:block th:if="${youtubeUrl == null}">
+                  <div class="embed-container">
+                    <p>
+                      위 입력창에 Youtube URL 입력 후 엔터를 입력하세요.
+                      <br />
+                      해당 위치에 Youtube 미리보기가 제공됩니다.
+                    </p>
+                  </div>
+                </th:block>
+              </div>
 
-		<th:block th:replace="~{common/navSidebar}"></th:block>
+              <!-- confirm 버튼 -->
+              <div class="post-actions">
+                <button class="post-button" id="confirmYouTubeBtn">
+                  <i class="fas fa-check"></i>
+                  <!-- 플리가 있을 때 -->
+                  <th:block th:if="${youtubeUrl != null}"> 수정 </th:block>
+                  <!-- 플리가 없을 때 -->
+                  <th:block th:unless="${youtubeUrl != null}"> 저장 </th:block>
+                </button>
 
-		<!-- 푸터 추가 -->
-		<th:block th:replace="~{common/footer}"></th:block>
+                <!-- 플리가 있을 때 삭제버튼 노출-->
+                <th:block th:if="${youtubeUrl != null}">
+                  <button
+                    class="post-button"
+                    id="deleteYouTubeBtn"
+                    th:data-url="${youtubeUrl}"
+                  >
+                    <i class="fas fa-check"></i> 삭제
+                  </button>
+                </th:block>
+              </div>
+            </div>
+          </th:block>
 
-		<script src="../../static/js/playList/playList.js"></script>
-</body>
+          <!-- 다른사람 홈피 보는중일때 -->
+          <th:block
+            th:if="${session.loginMember != null and session.loginMember.memberNo != memberNo}"
+          >
+            <div class="header">
+              <div id="videoContainer">
+                <!-- 홈피 주인이 등록한 플리가 있을 때-->
+                <th:block th:if="${youtubeUrl != null}">
+                  <div class="embed-container">
+                    <iframe
+                      th:src="${youtubeUrl}"
+                      allowfullscreen
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    >
+                    </iframe>
+                  </div>
+                </th:block>
 
+                <!-- 홈피 주인이 등록한 플리가 없을 때-->
+                <th:block th:unless="${youtubeUrl != null}">
+                  <p>아직 등록된 플레이리스트가 없어요!</p>
+                </th:block>
+              </div>
+            </div>
+          </th:block>
+        </div>
+
+        <th:block th:replace="~{common/navSidebar}"></th:block>
+      </div>
+      <!-- 푸터 추가-->
+      <th:block th:replace="~{common/footer}"></th:block>
+    </div>
+
+    <script th:inline="javascript">
+      const memberNo = /*[[${memberNo}]]*/ "회원번호";
+      const loginMemberNo =
+        /*[[${session.loginMember?.memberNo}]]*/ "로그인회원번호";
+    </script>
+
+    <script src="/js/playList/playList.js"></script>
+  </body>
 </html>
