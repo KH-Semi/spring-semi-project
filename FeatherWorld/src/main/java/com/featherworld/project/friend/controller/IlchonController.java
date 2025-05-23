@@ -234,7 +234,7 @@ public class IlchonController {
 		if(loginMember != null) {loginMemberNo = loginMember.getMemberNo(); }// 2. loginMember본인의 memberId 값
 
 		String nickname = payload.get("nickname");
-		System.out.println("loginMember: "+loginMemberNo + ",memberNo: "+ memberNo +",nickname:"+ nickname);
+		System.out.println("/delete info: loginMember: "+loginMemberNo + ",memberNo: "+ memberNo +",nickname:"+ nickname);
 		int result = service.deleteIlchon(loginMemberNo,memberNo);
 
 		if(result == 1) { // 수정 성공시
