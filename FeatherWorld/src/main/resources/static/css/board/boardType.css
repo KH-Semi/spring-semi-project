@@ -42,7 +42,7 @@
     margin-left: 5px;
 }
 
-.board-type-item > span:last-child {
+.board-type-item > .icon-wrap {
     display: none;
 }
 .board-type-item .fa-solid {
@@ -94,7 +94,7 @@
     transition-duration: 0.5s;
     background-color: white;
     padding: 10px;
-    margin-top: 20px;
+    margin-top: 10px;
     border-radius: 5px;
     border: 2px solid #9F2120;
 }

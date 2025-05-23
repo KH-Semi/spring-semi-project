@@ -43,7 +43,7 @@
 
 	<update id="updateBoardType" parameterType="BoardType">
 		UPDATE BOARD_TYPE
-		SET BOARD_NAME = #{boardName}, AUTHORITY = ${authority}
+		SET BOARD_NAME = #{boardName}
 		WHERE BOARD_CODE = ${boardCode}
 		AND MEMBER_NO = ${memberNo}
 	</update>
