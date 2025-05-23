@@ -1,0 +1,95 @@
+<head>
+  <link rel="stylesheet" href="/css/common/main.css" />
+  <!-- for pagination -->
+    <!--<link rel="stylesheet" href="/css/friendList/incomingFriendListPart.css" />-->
+  <link rel="stylesheet" href="/css/friendList/incomingFriendListPart.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <!-- DB 수정완료 되었을시 뜨는 v표시 애니메이션-->
+
+  
+</head>
+
+<div id="my-incoming-friend-list">
+    <div class="title">
+      <ul
+        class="title-font"
+        th:text="${session.loginMember?.memberNo == memberNo?'내 ': memberNo + '님의 '} + '일촌신청 목록'"
+      >
+        <!-- 250521 나중에 미니홈피 profile 구현 후 서버에서 member정보를 model 등에 구현했을떄 다시 수정할것.-->
+        내 일촌신청 목록
+      </ul>
+    </div>
+    <ul id="friend-list">
+    <th:block th:each="ilchon : ${ilchons}">
+      <li
+        class="friend-item fade-slide"
+        th:attr="data-member-no=${ilchon.toMemberNo == memberNo?ilchon.fromMemberNo:ilchon.toMemberNo}"
+      >
+        <!-- session이랑 비교하도록 되어있음. -->
+        <div class="left-align">
+          <img
+            th:if="${ilchon.memberImg}"
+            th:src="@{${ilchon.memberImg}}" 
+            width="20"
+          />
+          <img
+            th:unless="${ilchon.memberImg}"
+            th:src="@{/images/default-user.png}"
+            width="20"
+          />
+          <span class="font-bold color-gray" th:text="${ilchon.memberName}"
+            >별명</span
+          >
+        </div>
+
+        <div class="right-align">
+          <span
+            name="fromNickname"
+            class="color-gray"
+            th:text="${ilchon.fromNickname}"
+            >일촌명</span
+          >
+
+          <span name="ilchon-button" class="rounded-span right-align font-bold hidden"
+            >일촌</span
+          >
+          <i class="fas fa-check-circle check-icon hidden"></i
+          ><!--DB 닉네임 업데이트 성공시 나타나는 V표식-->
+          <i class="fas fa-times-circle x-icon hidden"></i
+          ><!--DB 닉네임 업데이트 실패시 나타나는 V표식-->
+          
+          <button name="accept-button"
+            class=" rounded-span right-align color-red"
+            style="border-radius : 30px"
+            width="50px">Accept</button>
+            <textarea
+            name="fromNickname-input"
+            class="hidden"
+            rows="1"
+            placeholder="등록할 일촌명을 입력해주세요!"
+          ></textarea>
+          <button name="deny-button"
+            class="  rounded-span right-align color-red"
+            style="border-radius : 30px"
+            width="50px">Deny</button>
+          <span
+            name="unfollow-button"
+            class="rounded-unfollow-span right-align color-red hidden"
+            width="30px"
+            >Unfollow</span
+          >
+        </div>
+      </li>
+    </th:block>
+    <th:block th:if="${#lists.isEmpty(ilchons)}">
+      <li>일촌신청이 없습니다.</li>
+    </th:block>
+
+    <script th:inline="javascript">
+    let memberNo = /*[[${memberNo}]]*/ 0; // 현재 보고있는 미니홈피 주인(=/?/friendList)의 MemberNo
+  </script>
+  <script src="/js/friendList/incomingFriendListPart.js"></script>
+</div>

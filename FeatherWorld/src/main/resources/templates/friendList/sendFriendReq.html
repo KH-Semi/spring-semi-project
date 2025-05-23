@@ -60,6 +60,7 @@
 
                 <form action="/insert/newFriend" method="post">
                   <input type="text" name="nickname" />
+                  <input type="hidden" name="memberNo" th:value="${memberNo}" />
                   <button type="submit">보내기</button>
                 </form>
               </div>
