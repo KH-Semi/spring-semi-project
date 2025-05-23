@@ -1,49 +1,14 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Pretendard", sans-serif;
-}
-
-body {
-  background-color: #f5f5f5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-weight: 600;
-}
+/* 공통 사이드바 스타일 */
 
 .container {
   display: flex;
-  width: 900px;
-  height: 500px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  gap: 5px;
-}
-
-/* 공통 사이드바 스타일 */
-.left-sidebar,
-.middle-sidebar,
-.right-sidebar {
-  border-radius: 10px;
-  background-color: #fdfdfd;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* 왼쪽 사이드바 */
-.left-sidebar {
-  width: 250px;
-  border-right: 1px solid #eee;
-  display: flex;
   flex-direction: column;
-  align-items: center;
+}
+
+.container-main {
+  display: flex;
 }
 
 /* 가운데 영역 */
@@ -51,7 +16,8 @@ body {
   flex: 1;
   overflow-y: auto;
   text-align: center;
-  border: 2px solid #ccc;
+  background-color: #fdfdfd;
+  padding: 20px;
 }
 
 /* 프로필 관련 스타일 */
@@ -194,6 +160,11 @@ body {
   overflow: hidden;
   max-width: 100%;
   margin: 20px auto;
+  border: 1px solid #bbb;
+}
+
+.embed-container p {
+  color: #bbb;
 }
 
 .embed-container iframe {
