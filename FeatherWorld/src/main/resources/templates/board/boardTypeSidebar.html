@@ -1,10 +1,18 @@
 <div class="left-sidebar">
   <div class="board-type-sidebar">
+    <div>
+      <span class="board-type-title">Board Type</span>
+    </div>
+
+    <th:block th:each="boardType : ${session.boardTypeList}">
+      <th:block th:if="${boardType.authority == 0 or (boardType.authority == 1 and session.loginMember != null and session.loginMember.memberNo == memberNo)}">
+        <a th:href="@{/{memberNo}/board/{boardCode}(memberNo=${memberNo}, boardCode=${boardType.boardCode})}">
+          <div class="board-type-item" th:data-board-code="${boardType.boardCode}">
+            <span class="board-type-title" th:text="${boardType.boardName}">게시판</span>
+          </div>
+        </a>
+      </th:block>
+    </th:block>
   </div>
 
-  <th:block th:if="${session.loginMember != null and session.loginMember.memberNo == memberNo}">
-    <div class="add-folder">
-      Add Folder<span class="fa-solid fa-folder-plus"></span>
-    </div>
-  </th:block>
 </div>

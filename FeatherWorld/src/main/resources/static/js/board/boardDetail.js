@@ -44,6 +44,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const boardDetailBackBtn = document.querySelector(".back-button");
 
   boardDetailBackBtn.addEventListener("click", () => {
-    location.href = `/${memberNo}/board/${boardCode}`;
+      const urlParams = new URLSearchParams(location.search);
+      const cp = parseInt(urlParams.get("cp")) || null;
+
+      // cp 값에 따라 요청 변경
+      let queryString;
+      if (cp == null) queryString = "";
+      else queryString = `?cp=${cp}`;
+
+    location.href = `/${memberNo}/board/${boardCode}${queryString}`;
   });
 });
