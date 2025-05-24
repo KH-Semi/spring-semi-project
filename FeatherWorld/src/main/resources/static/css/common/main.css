@@ -364,6 +364,7 @@ body {
   }
 }
 
+
 /* ===== MiniHome 페이지 전용 CSS (간소화 버전) ===== */
 
 /* body에 클래스 추가용 */
@@ -661,3 +662,4 @@ body.minihome-page {
   text-align: center;
   position: relative;
 }
+

@@ -12,12 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import com.featherworld.project.member.model.dto.Today;
 import com.featherworld.project.friend.model.dto.Ilchon;
 import com.featherworld.project.member.model.dto.Member;
-import com.featherworld.project.member.model.dto.Today;
 import com.featherworld.project.miniHome.model.service.MiniHomeService;
 
 

@@ -20,7 +20,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.featherworld.project.member.model.dto.Member;
-import com.featherworld.project.member.model.dto.Today;
+
 import com.featherworld.project.member.model.service.MemberService;
 import com.featherworld.project.miniHome.model.service.MiniHomeService;
 
