@@ -12,10 +12,20 @@
 }
 
 .board-type-sidebar .board-type-item {
+    display: flex;
+    justify-content: space-between;
     padding: 10px;
     margin-bottom: 5px;
     border-radius: 5px;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.board-type-sidebar .board-type-item:hover {
+    transition-duration: 0.2s;
+    background-color: #9f2120;
+    color: white;
+    border-color: #9f2120;
 }
 
 .board-type-sidebar > div:first-child {
@@ -55,18 +65,6 @@
 .board-type-item .fa-solid:hover {
     transition-duration: 0.2s;
     opacity: 50%;
-}
-
-.board-type-sidebar .board-type-item {
-    display: flex;
-    justify-content: space-between;
-}
-
-.board-type-sidebar .board-type-item:hover {
-    transition-duration: 0.2s;
-    background-color: #9f2120;
-    color: white;
-    border-color: #9f2120;
 }
 
 .add-folder {

@@ -319,11 +319,16 @@ const renderBoardTypeList = async () => {
     }
   });
 
-  if(loginMemberNo === memberNo)
-    document.querySelector(".board-type-sidebar").replaceWith(boardTypeSidebar, createAddFolder());
-  else
-    document.querySelector(".board-type-sidebar").replaceWith(boardTypeSidebar);
+  document.querySelector(".board-type-sidebar").replaceWith(boardTypeSidebar);
 };
+
+const loadBoardTypeList = () => {
+  renderBoardTypeList().catch(console.error);
+
+  if(loginMemberNo === memberNo) {
+    leftSidebar.append(createAddFolder());
+  }
+}
 
 /** 폴더 추가 버튼 생성
  * @author Jiho
@@ -434,24 +439,20 @@ if (leftSidebar) {
     const editIcon = e.target.closest(".edit-icon");
     if(editMode && editIcon) {
 
-      const parentBoardItem = editIcon.parentElement.parentElement;
-
+      // 선택한 게시판
+      const parentBoardItem = editIcon.closest(".board-type-item");
+      // 선택한 게시판 종류 번호
       const editBoardCode = parentBoardItem.dataset.boardCode;
-
       // 기존 게시판명
       const title = parentBoardItem.firstElementChild.innerText;
 
-      const input = document.createElement("input");
-      input.name = "boardName";
-      input.value = title;
-
-      async function updateBoardName() {
+      const editFn = async input => {
         if (input.value.trim() === "") {
           alert("게시판 이름을 입력하세요.");
           return;
         }
 
-        const folderForm = {
+        const folderObj = {
           boardCode: editBoardCode,
           boardName: input.value
         };
@@ -459,28 +460,24 @@ if (leftSidebar) {
         const resp = await fetch(`/${memberNo}/board/update`, {
           method: "put",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(folderForm)
+          body: JSON.stringify(folderObj)
         });
         const result = await resp.text();
 
-        if (result == 0) {
+        if (result == 0)
           alert("게시판 수정 실패");
 
-          await renderBoardTypeList().catch(console.error);
-
-          // 수정 모드 초기화
-          editMode = false;
-          return;
-        }
-
-        alert("게시판을 수정했습니다.");
-        await renderBoardTypeList().catch(console.error);
+        renderBoardTypeList().catch(console.error);
 
         // 수정 모드 초기화
         editMode = false;
       }
 
-      editIcon.addEventListener("click", updateBoardName);
+      const input = document.createElement("input");
+      input.name = "boardName";
+      input.value = title;
+
+      editIcon.addEventListener("click", () => editFn(input));
 
       parentBoardItem.firstElementChild.replaceWith(input);
       input.focus();
@@ -517,15 +514,16 @@ if (leftSidebar) {
       renderBoardTypeList().catch(console.error);
 
       // 수정 모드 초기화
-      editMode = !editMode;
+      editMode = false;
 
       return;
     }
 
     // 좌측 게시판 목록 선택
-    if (e.target.closest(".board-type-item")) {
+    const boardTypeItem = e.target.closest(".board-type-item");
+    if (boardTypeItem) {
       // 현재 게시판 종류 번호 갱신
-      boardCode = e.target.dataset.boardCode;
+      boardCode = boardTypeItem.dataset.boardCode;
 
       // boardCode 반영해 url 갱신
       history.pushState({}, '', boardCode);
@@ -595,6 +593,7 @@ if (leftSidebar) {
       editMode = false;
 
       document.querySelector(".add-folder-form")?.remove();
+      leftSidebar.append(createAddFolder());
     }
   });
 }
@@ -608,4 +607,4 @@ window.addEventListener("popstate", () => {
 });
 
 loadBoardList(defaultBoardCode);
-renderBoardTypeList().catch(console.error);
+loadBoardTypeList();
