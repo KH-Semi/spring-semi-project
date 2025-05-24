@@ -153,9 +153,9 @@ body {
 
 .add-folder:hover {
   transition-duration: 0.2s;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
-  border-color: #9F2120;
+  border-color: #9f2120;
 }
 
 .add-folder > span {
@@ -170,7 +170,7 @@ body {
   padding: 10px;
   margin-top: 20px;
   border-radius: 5px;
-  border: 2px solid #9F2120;
+  border: 2px solid #9f2120;
 }
 
 .add-folder-input {
@@ -194,11 +194,11 @@ body {
 
 .folder-form-footer span {
   margin: 0 5px;
-  color: #9F2120;
+  color: #9f2120;
 }
 
 .folder-form-footer > div:last-child > span {
-  background-color: #9F2120;
+  background-color: #9f2120;
   width: 60px;
   padding: 5px;
   border-radius: 5px;
@@ -226,7 +226,7 @@ body {
   width: 15px;
   height: 100%;
   border-radius: 20px;
-  background-color: #9F2120;
+  background-color: #9f2120;
 }
 
 /* 우측 사이드바 스타일 */
@@ -262,9 +262,9 @@ body {
 
 .nav-sidebar > a:hover {
   transition-duration: 0.2s;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
-  border-color: #9F2120;
+  border-color: #9f2120;
 }
 
 .nav-sidebar .nav-item i {
@@ -300,9 +300,9 @@ body {
 
 .pagination span:hover {
   transition-duration: 0.2s;
-  background-color: #9F2120;
+  background-color: #9f2120;
   color: white;
-  border-color: #9F2120;
+  border-color: #9f2120;
   cursor: pointer;
 }
 
@@ -362,4 +362,302 @@ body {
     flex-direction: row;
     justify-content: center;
   }
+}
+
+/* ===== MiniHome 페이지 전용 CSS (간소화 버전) ===== */
+
+/* body에 클래스 추가용 */
+body.minihome-page {
+  background-color: #f0f0f0 !important;
+  padding: 20px 0 !important;
+}
+
+/* 프로필 컨테이너 스타일 */
+#leftProfileContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 10px;
+  background-color: white;
+  text-align: center;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+/* 방문자 통계 스타일 */
+#profileStatsSection {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 15px;
+  text-align: center;
+  width: 100%;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+#profileStatsSection #todayCount,
+#profileStatsSection #totalCount {
+  color: #9f2120;
+  font-weight: bold;
+}
+
+/* 프로필 이미지 스타일 */
+#profileImageContainer {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+#profileMainImage {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f0f0f0;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#profileMainImage:hover {
+  border-color: #9f2120;
+  transform: scale(1.05);
+}
+
+#profileImageEditIcon {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: #9f2120;
+  color: white;
+  padding: 3px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#profileImageEditIcon:hover {
+  background-color: #c62828;
+  transform: scale(1.05);
+}
+
+/* 사용자 정보 스타일 */
+#profileInfoSection {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+#profileUsernameDisplay {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+#profileEmailDisplay {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+/* 팔로우 통계 스타일 */
+#profileFollowStats {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+#profileFollowerCount,
+#profileFollowingCount {
+  text-align: center;
+}
+
+#profileFollowerNumber,
+#profileFollowingNumber {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  color: #9f2120;
+  margin-bottom: 3px;
+}
+
+#profileFollowerLabel,
+#profileFollowingLabel {
+  font-size: 10px;
+  color: #888;
+  text-transform: uppercase;
+}
+
+/* 버튼 영역 스타일 */
+#profileActionButtons {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+#profileOwnerButtons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+#profileEditBtn,
+#profileLogoutBtn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#profileEditBtn {
+  background-color: #9f2120;
+  color: white;
+}
+
+#profileEditBtn:hover {
+  background-color: #c62828;
+  transform: translateY(-1px);
+}
+
+#profileLogoutBtn {
+  background-color: #6c757d;
+  color: white;
+}
+
+#profileLogoutBtn:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
+/* Bio 섹션 스타일 */
+#profileBioContainer {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+#profileBioTitle {
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+#profileBioContent {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  min-height: 50px;
+  border: 1px solid #e0e0e0;
+}
+
+#profileBioDisplay {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+/* Surfing 버튼 스타일 */
+#profileSurfingSection {
+  width: 100%;
+}
+
+#profileSurfingBtn {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: #9f2120;
+  color: white;
+  border: none;
+  border-radius: 18px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+#profileSurfingBtn:hover {
+  background-color: #c62828;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(159, 33, 32, 0.3);
+}
+
+#profileFollowBtn {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #9f2120;
+  color: white;
+  text-transform: uppercase;
+}
+
+#profileFollowBtn:hover {
+  background-color: #c62828;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(159, 33, 32, 0.3);
+}
+
+/* 타인 프로필 버튼 영역 스타일 */
+#profileOtherButtons {
+  width: 100%;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 알림 벨 아이콘 스타일 */
+.notification-bell {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-left: 5px;
+  cursor: pointer;
+  animation: ring 2s ease-in-out infinite;
+  position: relative;
+}
+
+.notification-bell:hover {
+  color: #e55656;
+  transform: scale(1.1);
+}
+
+/* 벨 흔들림 애니메이션 */
+@keyframes ring {
+  0%,
+  90%,
+  100% {
+    transform: rotate(0deg);
+  }
+  10%,
+  30% {
+    transform: rotate(-10deg);
+  }
+  20%,
+  40% {
+    transform: rotate(10deg);
+  }
+}
+
+/* 팔로워 카운트 영역 조정 */
+#profileFollowerCount {
+  text-align: center;
+  position: relative;
 }

@@ -28,8 +28,8 @@
         #{memberTel},
         #{memberAddress},
         NULL,
-        DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, NULL
-          )
+        DEFAULT, DEFAULT, DEFAULT, DEFAULT, NULL
+        )
       </insert>
 	
 	<!-- 회원가입을 하고나서 바로 boardType 하나 추가함 -->
@@ -43,7 +43,7 @@
 	<select id="login">
 	SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NAME, MEMBER_ADDRESS,
 	MEMBER_PW, MEMBER_TEL, MEMBER_IMG, MEMBER_INTRO,
-	HOME_TITLE, VISITOR_TOTAL
+	HOME_TITLE
 	FROM MEMBER
 	WHERE MEMBER_EMAIL = #{memberEmail}
 	AND MEMBER_DEL_FL = 'N'
@@ -117,7 +117,6 @@
         MEMBER_IMG, 
         MEMBER_INTRO,
         HOME_TITLE, 
-        VISITOR_TOTAL,
         KAKAO_ACCESS_TOKEN
         FROM MEMBER
         WHERE MEMBER_EMAIL = #{memberEmail}
@@ -138,7 +137,7 @@
             NULL,
             NULL,
             NULL,
-            DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, #{kakaoAccessToken}
+            DEFAULT, DEFAULT, DEFAULT, DEFAULT, #{kakaoAccessToken}
         )
     </insert>
     

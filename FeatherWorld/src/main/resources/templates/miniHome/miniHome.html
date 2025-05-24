@@ -6,62 +6,64 @@
     <title>FeatherWorld - MiniHome</title>
     
     <!-- 공통 CSS -->
- 
     <th:block th:replace="~{common/common}"></th:block>
     <!-- 미니홈피 전용 CSS -->
     <link rel="stylesheet" href="/css/miniHome/miniHome.css" />
 </head>
 <body>
-    <!-- Header Fragment -->
-    <div th:replace="~{common/header}"></div>
+    <div class="container">
+        <!-- Header Fragment -->
+        <div th:replace="~{common/header}"></div>
 
-    <div class="content-container">
-        <!-- Left sidebar - Profile -->
-        <div class="left-sidebar">
-            <div th:replace="~{common/leftsidebar}"></div>
-        </div>
+        <div class="content-container">
+            <!-- Left sidebar - Profile -->
+            <div class="left-sidebar">
+                <div th:replace="~{common/leftsidebar}"></div>
+            </div>
 
-        <!-- Middle Content Area -->
-        <div class="content-area">
-            <div class="boardContainer">
-                <!-- Board Summary Links -->
-                <div class="boardSummary">
-                    <div class="summary-links">
-                        <a href="#">Board Total</a>
-                        <a href="#">Guest Book Total</a>
+            <!-- Middle Content Area -->
+            <div class="main-content">
+                <div class="boardContainer">
+                    <!-- Board Summary Links -->
+                    <div class="boardSummary">
+                        <div class="summary-links">
+                            <a th:href="@{/{member}/board(member=${memberNo})}">Board Total</a>
+                            <a th:href="@{/{member}/guestbook(member=${memberNo})}">Guest Book Total</a>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Recent Board Header -->
-                <div class="recentBoard">Recent Board</div>
+                    <!-- Recent Board Header -->
+                    <div class="recentBoard">Recent Board</div>
 
-                <!-- 최근 게시글 이미지들 -->
-                <div class="small-image-row">
-                    <div class="no-recent-posts">
-                        <p>최근 게시글이 없습니다</p>
+                    <!-- 최근 게시글 이미지들 -->
+                    <div class="small-image-row">
+                        <div class="no-recent-posts">
+                            <p>최근 게시글이 없습니다</p>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Friend Comment List -->
-                <div class="comment-header">
-                    <div class="title">Friend Comment List</div>
-                </div>
+                    <!-- Friend Comment List -->
+                    <div class="comment-header">
+                        <div class="title">Friend Comment List</div>
+                    </div>
 
-                <div class="miniHome-no-comments">
-                    <p>아직 일촌평이 없습니다.</p>
+                    <div class="miniHome-no-comments">
+                        <p>아직 일촌평이 없습니다.</p>
+                    </div>
                 </div>
             </div>
+
+            <!-- Right sidebar -->
+           
+                <div th:replace="~{common/navsidebar}"></div>
+            
         </div>
 
-        <!-- Right sidebar -->
-       
-            <div th:replace="~{common/navsidebar}"></div>
-        
+        <!-- Footer -->
+        <div th:replace="~{common/footer}"></div>
     </div>
 
-    <!-- Footer -->
-    <div th:replace="~{common/footer}"></div>
 
-
+    <script src="/js/miniHome/miniHome.js"></script>
 </body>
 </html>
