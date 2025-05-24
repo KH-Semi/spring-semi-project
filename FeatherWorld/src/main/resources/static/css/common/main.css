@@ -64,11 +64,8 @@ a {
 /* 좌측 사이드바 스타일 */
 .left-sidebar {
   min-width: 250px;
-  max-height: 560px;
   padding: 20px;
   border-right: 1px solid #e0e0e0;
-  overflow-y: scroll;
-  scrollbar-width: none;
 }
 
 .right-sidebar {

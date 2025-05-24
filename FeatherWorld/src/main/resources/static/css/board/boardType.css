@@ -2,6 +2,9 @@
 .board-type-sidebar {
     display: flex;
     flex-direction: column;
+    max-height: 560px;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 
 .board-type-sidebar .board-type-title {
@@ -153,4 +156,11 @@
     height: 100%;
     border-radius: 20px;
     background-color: #9F2120;
+}
+
+/* 반응형 */
+@media (max-width: 992px) {
+    .board-type-sidebar {
+        max-height: 240px;
+    }
 }

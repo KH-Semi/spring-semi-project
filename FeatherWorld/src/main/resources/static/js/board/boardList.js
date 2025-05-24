@@ -279,7 +279,7 @@ const renderBoardTypeList = async () => {
   boardTypeSidebar.append(div);
 
   boardTypeList.forEach(boardType => {
-    if (boardType.authority == 0 || (boardType.authority == 1 && loginMemberNo === memberNo)) {
+    if (boardType.authority === 0 || (boardType.authority === 1 && loginMemberNo === memberNo)) {
       const boardTypeItem = document.createElement("div");
       boardTypeItem.classList.add("board-type-item");
       boardTypeItem.dataset.boardCode = boardType.boardCode;
@@ -319,7 +319,10 @@ const renderBoardTypeList = async () => {
     }
   });
 
-  document.querySelector(".board-type-sidebar").replaceWith(boardTypeSidebar);
+  if(loginMemberNo === memberNo)
+    document.querySelector(".board-type-sidebar").replaceWith(boardTypeSidebar, createAddFolder());
+  else
+    document.querySelector(".board-type-sidebar").replaceWith(boardTypeSidebar);
 };
 
 /** 폴더 추가 버튼 생성
@@ -549,7 +552,7 @@ if (leftSidebar) {
     // 폴더 추가 취소 버튼
     const cancelAddFolder = e.target.closest(".cancel-add-folder");
     if(cancelAddFolder) {
-      document.querySelector(".add-folder-form").remove();
+      document.querySelector(".add-folder-form")?.remove();
       leftSidebar.append(createAddFolder());
 
       return;
@@ -592,7 +595,6 @@ if (leftSidebar) {
       editMode = false;
 
       document.querySelector(".add-folder-form")?.remove();
-      leftSidebar.append(createAddFolder());
     }
   });
 }
