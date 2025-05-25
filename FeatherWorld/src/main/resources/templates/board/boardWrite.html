@@ -25,15 +25,15 @@
       </div>
 
       <div class="board-write">
-        <form class="board-form" enctype="multipart/form-data" method="post">
+        <form class="board-form">
           <div class="input-group mb-4">
-            <input type="text" class="form-control"
+            <input type="text" class="form-control" name="boardTitle"
                    placeholder="Board Title" aria-label="Board Title"/>
           </div>
 
           <div class="content-area">
-                <textarea class="form-control" placeholder="Board Content"
-                          rows="20" cols="70"></textarea>
+                <textarea class="form-control" name="boardContent"
+                          placeholder="Board Content" rows="20" cols="70"></textarea>
             <div class="byte-counter">(12/2000)bytes</div>
           </div>
 

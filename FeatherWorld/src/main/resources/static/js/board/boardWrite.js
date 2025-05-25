@@ -1,6 +1,5 @@
 // 이미지 업로드 관련 변수
 let uploadedImages = []; // 업로드된 이미지들을 저장할 배열
-const MAX_IMAGES = 5; // 최대 이미지 개수
 
 // DOM 로드 완료 후 실행
 document.addEventListener('DOMContentLoaded', function() {
@@ -30,6 +29,7 @@ function initializeImageUpload() {
     removeBtn.innerHTML = '×';
     removeBtn.type = 'button';
     removeBtn.addEventListener('click', function(e) {
+      // 상위 요소에 이벤트 전달 막음
       e.stopPropagation();
       removeImage(index);
     });
@@ -143,7 +143,7 @@ function initializeByteCounter() {
 function updateByteCounter(textarea, counter) {
   const text = textarea.value;
   const byteLength = new Blob([text]).size;
-  const maxBytes = 2000;
+  const maxBytes = 4000;
 
   counter.textContent = `(${byteLength}/${maxBytes})bytes`;
 
@@ -162,37 +162,46 @@ function handleFormSubmit() {
   const form = document.querySelector('.board-form');
 
   if (form) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
+    // 폼 데이터 수집
+    const formData = new FormData();
+    const title = document.querySelector('input[name="boardTitle"]').value;
+    const content = document.querySelector('textarea[name="boardContent"]').value;
 
-      // 폼 데이터 수집
-      const formData = new FormData();
-      const title = document.querySelector('input[placeholder="Board Title"]').value;
-      const content = document.querySelector('textarea[placeholder="Board Content"]').value;
+    // 기본 데이터 추가
+    formData.append('boardTitle', title);
+    formData.append('boardContent', content);
+    formData.append('boardCode', currentBoardCode);
 
-      // 기본 데이터 추가
-      formData.append('title', title);
-      formData.append('content', content);
-      formData.append('boardCode', currentBoardCode);
-
-      // 이미지 파일들 추가
-      uploadedImages.forEach((imageData, index) => {
-        if (imageData && imageData.file) {
-          formData.append(`image_${index}`, imageData.file);
-        }
-      });
-
-      // 실제 서버 전송 로직은 여기에 구현
-      console.log('폼 제출 데이터:', {
-        title: title,
-        content: content,
-        boardCode: currentBoardCode,
-        imageCount: uploadedImages.filter(img => img).length
-      });
-
-      // 임시: 제출 성공 메시지
-      alert('게시글이 성공적으로 작성되었습니다!');
+    // 이미지 파일들 추가
+    uploadedImages.forEach((imageData, index) => {
+      if (imageData && imageData.file) {
+        formData.append(`image_${index}`, imageData.file);
+      }
     });
+    
+    // 서버로 전송될 formData 내부 요소들
+    console.log('폼 제출 데이터:', {
+      title: title,
+      content: content,
+      boardCode: currentBoardCode,
+      imageCount: uploadedImages.filter(img => img).length
+    });
+
+    // fetch 요청으로 받게 될 게시글 작성 성공 여부
+    // 성공시(DB에 삽입된 boardNo - 게시글 번호 반환)
+    // 실패시(0 반환)
+    const boardNo = 0;
+    
+    // 게시글 작성 실패시 다시 게시글 작성으로 이동
+    if(boardNo === 0) {
+      location.reload(); // 현재 작성 페이지를 새로고침
+      return;
+    }
+    // 게시글 작성 성공시 게시글 상세 조회로 이동
+    alert('게시글이 성공적으로 작성되었습니다!');
+    // 상대 경로로 작성
+    // == memberNo/board/boardCode/insert -> memberNo/board/boardCode/boardNo
+    // location.href = "boardNo"
   }
 }
 
@@ -223,6 +232,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
     });
+  }
+});
+
+// 확인 버튼 이벤트
+document.addEventListener('DOMContentLoaded', () => {
+  const confirmBtn = document.querySelector('.btn-confirm');
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', handleFormSubmit);
   }
 });
 

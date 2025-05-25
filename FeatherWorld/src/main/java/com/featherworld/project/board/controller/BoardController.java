@@ -148,10 +148,30 @@ public class BoardController {
     public String boardWrite(@PathVariable("memberNo") int memberNo, @PathVariable("boardCode") int boardCode,
                              @RequestParam(value = "cp", required = false) Integer cp) {
 
-
         if (cp == null) cp = 1;
 
         return "board/boardWrite";
+    }
+
+    /** 게시글 작성 요청을 받아서 실제 DB에 삽입해주는 메서드
+     * @author Jiho
+     * @param memberNo
+     * @param boardCode
+     * 추가될 매개변수 - 커맨드 객체 Board(boardTitle, boardContent, boardCode)
+     *               - MultipartFile로 이뤄진 imageList(각자 인덱스와 file 형식)
+     * @return boardNo(작성 완료된 게시글 번호 / 실패 시 0)
+     */
+    @ResponseBody
+    @PostMapping("{memberNo:[0-9]+}/board/{boardCode:[0-9]+}/insert")
+    public String boardInsert(@PathVariable("memberNo") int memberNo,
+                              @PathVariable("boardCode") int boardCode) {
+
+        // Todo - fetch 요청으로 받을 정보 boardTitle, boardContent, images(0~4) List<MultipartFile> imageList
+
+
+
+        // 성공 여부를 boardNo로 return 받아서 boardWrite.js -> 이동할 상세 페이지 지정
+        return "";
     }
 
     /**
