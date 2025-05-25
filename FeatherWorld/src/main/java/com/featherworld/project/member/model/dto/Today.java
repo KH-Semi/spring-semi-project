@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TODAY {
+public class Today{
 	
 	// 투데이 DTO
 	

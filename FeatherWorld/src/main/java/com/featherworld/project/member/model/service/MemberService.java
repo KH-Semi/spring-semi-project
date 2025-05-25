@@ -109,4 +109,10 @@ public interface MemberService {
 	 */
 	int updateMember(Member inputMember);
 
+	/** 메인페이지의 투데이 베스트를 조회할 서비스
+	 * @return
+	 * @author 영민
+	 */
+	List<Member> getTodayBestMembers();
+
 }
