@@ -4,27 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FeatherWorld - MiniHome</title>
-    
-    <!-- 공통 CSS -->
- 
+
+    <!-- 공통 CSS 및 Pretendard 등 -->
     <th:block th:replace="~{common/common}"></th:block>
+
     <!-- 미니홈피 전용 CSS -->
     <link rel="stylesheet" href="/css/miniHome/miniHome.css" />
 </head>
 <body>
-    <!-- Header Fragment -->
+
+    <!-- Header -->
     <div th:replace="~{common/header}"></div>
 
+    <!-- 전체 콘텐츠 영역 -->
     <div class="content-container">
-        <!-- Left sidebar - Profile -->
+        
+        <!-- 왼쪽 사이드바 -->
         <div class="left-sidebar">
             <div th:replace="~{common/leftsidebar}"></div>
         </div>
 
-        <!-- Middle Content Area -->
+        <!-- 중앙 콘텐츠 영역 -->
         <div class="content-area">
             <div class="boardContainer">
-                <!-- Board Summary Links -->
+                
+                <!-- 게시글 요약 링크 -->
                 <div class="boardSummary">
                     <div class="summary-links">
                         <a href="#">Board Total</a>
@@ -32,36 +36,58 @@
                     </div>
                 </div>
 
-                <!-- Recent Board Header -->
-                <div class="recentBoard">Recent Board</div>
-
-                <!-- 최근 게시글 이미지들 -->
+                <!-- 최근 게시글 -->
                 <div class="small-image-row">
-                    <div class="no-recent-posts">
+
+                    <!-- 게시글이 없을 때 -->
+                    <div th:if="${#lists.isEmpty(recentBoards)}" class="no-recent-posts">
                         <p>최근 게시글이 없습니다</p>
+                    </div>
+
+                    <!-- 게시글이 있을 때 -->
+                    <div th:if="${not #lists.isEmpty(recentBoards)}" class="recent-posts">
+                        <div class="post-box" th:each="board : ${recentBoards}">
+                            <a th:href="@{/board/{boardNo}(boardNo=${board.boardNo})}">
+                                <img th:src="@{'/resources/upload/board/' + ${board.thumbnailImg}}" 
+                                     alt="썸네일" class="thumbnail" />
+                                <div class="post-title" th:text="${board.title}">제목</div>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Friend Comment List -->
+                <!-- 일촌평 리스트 -->
                 <div class="comment-header">
                     <div class="title">Friend Comment List</div>
                 </div>
 
-                <div class="miniHome-no-comments">
+                <!-- 일촌평이 없을 때 -->
+                <div th:if="${#lists.isEmpty(ilchonComments)}" class="miniHome-no-comments">
                     <p>아직 일촌평이 없습니다.</p>
+                </div>
+
+                <!-- 일촌평이 있을 때 -->
+                <div th:if="${not #lists.isEmpty(ilchonComments)}" class="ilchon-comment-list">
+                    <ul>
+                        <li th:each="comment : ${ilchonComments}">
+                            <div class="ilchon-comment-box">
+                                <span class="comment" th:text="${comment.ilchonCommentContent}">일촌평 내용</span>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Right sidebar -->
-       
+        <!-- 오른쪽 사이드바 -->
+        <div class="right-sidebar">
             <div th:replace="~{common/navsidebar}"></div>
-        
+        </div>
+
     </div>
 
     <!-- Footer -->
     <div th:replace="~{common/footer}"></div>
-
 
 </body>
 </html>

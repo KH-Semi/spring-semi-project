@@ -2,26 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.featherworld.project.miniHome.model.mapper.MiniHomeMapper">
 
-	<!-- 파일 정보를 DB에 삽입 -->
-	<insert id="insertUploadFile">
-		INSERT INTO "UPLOAD_FILE"
-		VALUES(SEQ_FILE_NO.NEXTVAL, #{filePath},
-		#{fileOriginalName}, #{fileRename}, DEFAILT,
-		#{memberNo})
-	</insert>
-	
-	<select id="findmember" resultType="Member">
-		SELECT MEMBER_NO , MEMBER_NAME, MEMBER_EMAIL, MEMBER_IMG
-		,MEMBER_INTRO,HOME_TITLE,VISITOR_TOTAL
-		FROM MEMBER 
-		WHERE MEMBER_NO = #{memberNo}
-		AND MEMBER_DEL_FL = 'N'
-	</select>
-	
-	<select id="findilchon" resultType="_int">
-		SELECT COUNT(*)
-		FROM ILCHON
-		WHERE TO_MEMBER_NO = #{toMemberNo}
-		AND FROM_MEMBER_NO = #{fromMemberNo}
-	</select>	
+	  <select id="findMember" parameterType="int" resultType="com.featherworld.project.member.model.dto.Member">
+    SELECT * FROM member WHERE member_no = #{memberNo}
+  </select>
+
+  <select id="findIlchon" parameterType="com.featherworld.project.friend.model.dto.Ilchon" resultType="int">
+    SELECT COUNT(*) 
+    FROM ilchon
+    WHERE from_member_no = #{friend.fromMemberNo} AND to_member_no = #{friend.toMemberNo}
+  </select>
+
+ <select id="selectRecentBoards" parameterType="int" resultType="com.featherworld.project.miniHome.model.dto.MiniHomeRecentBoard">
+    SELECT board_no AS boardNo,
+           board_title AS boardTitle,
+           board_date AS boardDate,
+           -- 필요한 컬럼들 추가
+    FROM board_table -- 실제 테이블명으로 바꾸세요
+    WHERE member_no = #{memberNo}
+    ORDER BY board_date DESC
+    LIMIT 5  -- 최근 5개 게시글 예시 (Oracle이라면 ROWNUM 등으로 수정)
+</select>
+
+
+<!-- 일촌평 리스트 -->
+<select id="selectIlchonComments" parameterType="int" resultType="com.featherworld.project.friend.model.dto.IlchonComment">
+    SELECT ic.to_member_no AS toMemberNo,
+           ic.from_member_no AS fromMemberNo,
+           ic.ilchon_comment_content AS ilchonCommentContent,
+           m.member_name AS fromMemberName,
+           p.img_rename AS fromMemberImg
+      FROM ilchon_comment ic
+      JOIN member m ON ic.from_member_no = m.member_no
+      LEFT JOIN profile p ON m.member_no = p.member_no
+     WHERE ic.to_member_no = #{memberNo}
+     ORDER BY ic.ilchon_comment_content DESC
+</select>
+  
 </mapper>

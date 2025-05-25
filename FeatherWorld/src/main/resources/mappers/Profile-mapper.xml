@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.featherworld.project.miniHome.model.mapper.ProfileMapper">
 
+<mapper namespace="com.featherworld.project.profile.model.mapper.ProfileMapper">
 
-<!-- bio 업로드 mapper -->
-<update id="updateBio">
-  UPDATE PROFILE
-  SET BIO = #{bio}
-  WHERE MEMBER_ID = #{memberId}
-</update>
+    <select id="selectProfile" parameterType="int" resultType="Profile">
+        SELECT * FROM PROFILE WHERE MEMBER_NO = #{memberNo}
+    </select>
 
-	
+    <insert id="insertProfile" parameterType="Profile">
+        INSERT INTO PROFILE (MEMBER_NO, PROFILE_IMG, BIO)
+        VALUES (#{memberNo}, #{profileImg}, #{bio})
+    </insert>
+
+    <update id="updateProfile" parameterType="Profile">
+        UPDATE PROFILE
+        SET PROFILE_IMG = #{profileImg},
+            BIO = #{bio}
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
+
 </mapper>
