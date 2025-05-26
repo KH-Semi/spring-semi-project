@@ -6,6 +6,7 @@
     <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
 
     <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" href="/css/board/boardType.css" />
     <link rel="stylesheet" href="/css/guestBook/guestBook.css" />
     <!-- <link rel="stylesheet" href="/css/common/main.css" /> -->
   </head>
@@ -16,7 +17,9 @@
 
       <div class="content-container">
         <!-- 좌측 석준이가 만든 프로필 들어올 공간 Include -->
-        <th:block th:replace="~{board/boardTypeSidebar}"></th:block>
+        <div class="left-sidebar">
+          <div th:replace="~{common/leftsidebar}"></div>
+        </div>
 
         <!-- 중앙 방명록 목록 -->
         <div class="main-content">

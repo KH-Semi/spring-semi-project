@@ -13,7 +13,9 @@
 
       <div class="content-container">
         <!-- 기존 스타일 제거하고 프로필 카드만 포함 -->
-        <div class="left-sidebar"></div>
+          <div class="left-sidebar">
+                <div th:replace="~{common/leftsidebar}"></div>
+            </div>
 
         <div class="main-content">
           <!-- 비밀번호 인증 화면 (처음에 보임) -->
@@ -118,5 +120,6 @@
       const memberNo = /*[[${memberNo}]]*/ 0;
     </script>
     <script src="/js/member/updateMember.js"></script>
+    <script src="/js/miniHome/miniHome.js"></script>
   </body>
 </html>

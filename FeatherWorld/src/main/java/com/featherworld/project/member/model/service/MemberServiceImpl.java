@@ -278,7 +278,12 @@ public class MemberServiceImpl implements MemberService {
 	    }
 	}
 	
-	
+	// 메인페이지에서 투데이베스트 회원 6명 구하기
+	@Override
+	public List<Member> getTodayBestMembers() {
+		
+		return mapper.getTodayBestMembers();
+	}
 	
 	
 	

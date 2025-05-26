@@ -27,7 +27,12 @@
             method="POST"
             enctype="multipart/form-data"
           >
-            <input type="file" name="uploadFile" />
+            <input
+              type="file"
+              id="image"
+              name="uploadFile"
+              style="display: none"
+            />
           </form>
 
           <a
@@ -63,7 +68,10 @@
 
     <!-- Footer -->
     <th:block th:replace="~{common/footer}"></th:block>
-
-    <script src="/js/profile/profileupdate.js"></script>
   </body>
+  <script>
+    const memberNo = /*[[${memberNo}]]*/ 0;
+  </script>
+
+  <script src="/js/profile/profileupdate.js"></script>
 </html>

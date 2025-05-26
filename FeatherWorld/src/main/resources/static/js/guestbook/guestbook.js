@@ -4,8 +4,6 @@ const selectGuestBookList = () => {
   const ownerNo = document.querySelector("#ownerNo")?.value || 1;
   // 방명록 주인 번호(ownerNo) 가져옴. 없으면 기본값 1
 
-  const loginMemberNo = document.querySelector("#loginMemberNo")?.value || null;
-
   // 서버에 방명록 리스트 요청 (비동기 fetch)
   fetch(`/${ownerNo}/guestbook/list?cp=${cp}`) // (05.23 배령 수정)
     .then((resp) => resp.json()) // 응답을 JSON으로 변환
@@ -23,6 +21,7 @@ const selectGuestBookList = () => {
       // 05.23 배령 수정
       // 방명록이 있을 경우, 각각의 방명록 데이터를 순회하며 DOM 요소 생성
       guestBookList.forEach((item) => {
+
         // 🔒 비밀글인데, 홈피 주인도 아니고 작성자도 아니면 랜더링 x
         if (
           item.secret == 1 &&
@@ -31,6 +30,7 @@ const selectGuestBookList = () => {
         ) {
           return;
         }
+
         const itemDiv = document.createElement("div");
         itemDiv.className = "guestbook-item"; // 전체 방명록 한 개의 최상위 div
 
@@ -42,7 +42,6 @@ const selectGuestBookList = () => {
 
         const contentDiv = document.createElement("div");
         contentDiv.className = "guestbook-content"; // 방명록 내용 표시 영역
-
         contentDiv.textContent = item.guestBookContent; // 내용 삽입
 
         mainDiv.appendChild(contentDiv); // main 안에 내용 삽입
@@ -67,6 +66,35 @@ const selectGuestBookList = () => {
         itemDiv.appendChild(infoDiv);
 
         // 최종적으로 guestbook-list 영역에 추가
+        container.appendChild(itemDiv);
+
+        // 로그인한 사용자 정보 가져오기
+        const loginMemberNo = document.querySelector("#loginMemberNo")?.value;
+
+        // 작성자 번호와 로그인한 사용자가 같을 경우에만 버튼 표시
+        // 이거 근데 기존 edit, delete 버튼이랑 다르게 나오네;;;
+        if (loginMemberNo && parseInt(loginMemberNo) === item.visitorNo) {
+          const actionDiv = document.createElement("div");
+          actionDiv.className = "guestbook-actions";
+
+          const editBtn = document.createElement("button");
+          editBtn.textContent = "Edit";
+          editBtn.addEventListener("click", () =>
+            showUpdateGuestBook(item.guestBookNo, editBtn)
+          );
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "Delete";
+          deleteBtn.addEventListener("click", () =>
+            deleteGuestBook(item.guestBookNo)
+          );
+
+          actionDiv.appendChild(editBtn);
+          actionDiv.appendChild(deleteBtn);
+          infoDiv.appendChild(actionDiv);
+        }
+
+        itemDiv.appendChild(infoDiv);
         container.appendChild(itemDiv);
       });
     })
@@ -127,20 +155,26 @@ document.addEventListener("DOMContentLoaded", () => {
 const deleteGuestBook = (guestBookNo) => {
   //취소 선택 시
   if (!confirm("삭제 하시겠습니까?")) return;
+  const ownerNo = document.querySelector("#ownerNo")?.value || 1;
 
   fetch(`/${ownerNo}/guestbook`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ guestBookNo: guestBookNo }),
   })
-    .then((resp) => resp.text())
+    .then((resp) => resp.json()) // json()으로 받아 result.success를 명확히 확인해야 함
     .then((result) => {
-      if (result > 0) {
+      console.log("삭제 응답:", result); // 응답 형식 확인
+      // 05.23 수정 배령
+      if (result.success === true || result.success === "true") {
         alert("삭제 되었습니다");
         selectGuestBookList();
       } else {
         alert("삭제 실패");
       }
+    })
+    .catch((err) => {
+      console.error("삭제 오류: ", err);
     });
 };
 

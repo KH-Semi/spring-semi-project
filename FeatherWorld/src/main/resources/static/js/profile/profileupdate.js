@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
   confirmBtn.addEventListener("click", (e) => {
     e.preventDefault();
 
-    // 예시: 자기소개가 없고 이미지도 없으면 alert
     const bioText = bioInput.value.trim();
     const hasImage = imageInput.files.length > 0;
 
@@ -43,15 +42,25 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 필요한 경우 추가 검증 가능
-
-    // 폼 제출 (서버에 업로드)
     uploadForm.submit();
   });
 
-  // Back 버튼 클릭 시 이전 페이지로 이동
+  // Back 버튼 클릭 시 프로필 페이지로 이동 (memberNo 사용)
   backBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    history.back();
+    location.href = `/${memberNo}/profile`;
   });
+});
+
+backBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  history.back(); // 이전 페이지로 이동
+});
+
+form.addEventListener("submit", (e) => {
+  // 간단 검증 예시
+  if (!bioInput.value.trim() && imageInput.files.length === 0) {
+    e.preventDefault();
+    alert("자기소개나 이미지를 입력해주세요.");
+  }
 });

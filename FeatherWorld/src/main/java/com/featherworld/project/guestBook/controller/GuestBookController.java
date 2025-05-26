@@ -193,6 +193,12 @@ public class GuestBookController {
 			@SessionAttribute(value = "loginMember", required = false) Member loginMember,
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 			Model model) {
+		
+
+	    // 좌측 프로필 용
+	    if (loginMember != null) {
+	        model.addAttribute("member", loginMember);
+	    }		
 
 		// 방명록 목록과 페이징 정보 조회
 		Map<String, Object> result = service.selectGuestBookList(memberNo, cp);
@@ -395,12 +401,13 @@ public class GuestBookController {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
 			}
 
-			Integer guestBookNo = requestBody.get("guestBookNo");
-			if (guestBookNo == null) {
-				result.put("success", false);
-				result.put("message", "방명록 번호가 필요합니다.");
-				return ResponseEntity.badRequest().body(result);
-			}
+			int guestBookNo = requestBody.get("guestBookNo");
+			
+//			if (guestBookNo == null) {
+//				result.put("success", false);
+//				result.put("message", "방명록 번호가 필요합니다.");
+//				return ResponseEntity.badRequest().body(result);
+//			}
 
 			// 삭제 실행
 			int deleteResult = service.guestBookDelete(guestBookNo);

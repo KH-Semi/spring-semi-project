@@ -20,7 +20,6 @@ public class Member {
    private String memberImg;
    private String memberIntro;
    private String homeTitle;
-   private int visitorTotal;
    private String enrollDate;
    private String memberDelFl;
    private String kakaoAccessToken;

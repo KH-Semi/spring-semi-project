@@ -101,5 +101,6 @@ public interface GuestBookMapper {
 	 */
 	int guestBookUpdate(GuestBook guestBook);
 
-	
+	GuestBook selectOne(Integer guestBookNo);
+
 }
