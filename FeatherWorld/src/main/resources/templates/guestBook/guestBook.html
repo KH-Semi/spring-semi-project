@@ -73,8 +73,13 @@
             </div>
           </div>
 
+          <div class="whitespace"></div>
+
           <!-- 페이징 영역 -->
-          <div id="guestbook-pagination" class="pagination"></div>
+          <div id="guestbook-pagination" class="guestbook-pagination">
+            <!-- JS가 동적으로 게시글 목록 생성 -->
+            <!-- JS가 동적으로 페이징 버튼 생성 -->
+          </div>
 
           <!-- 방명록 작성 부분 -->
           <div class="guestBook-write-area">
@@ -120,7 +125,7 @@
       <!-- 푸터 Include -->
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
-    
+
     <script src="/js/guestBook/guestBook.js"></script>
   </body>
 </html>

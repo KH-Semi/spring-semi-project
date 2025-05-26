@@ -35,7 +35,7 @@
 
 
 <!-- 방명록 총 개수 조회 -->
-<select id="getGuestBookCount" parameterType="int" resultType="int">
+<select id="getGuestBookCount" parameterType="_int" resultType="_int">
     SELECT COUNT(*)
     FROM GUEST_BOOK
     WHERE OWNER_NO = #{memberNo}
@@ -74,7 +74,6 @@
 <!-- 방명록 삭제 -->
 <delete id="guestBookDelete" parameterType="int">
     DELETE GUEST_BOOK 
-  
     WHERE GUEST_BOOK_NO = #{guestBookNo}
 </delete>
 
