@@ -1,7 +1,7 @@
 // 좌측 게시판 목록 선택
 const confirmBtn = document.querySelector(".btn-confirm");
 const submitNickname = document.querySelector(".form-control");
-
+/*
 confirmBtn.addEventListener("click", () => {
   const memberNo = document.body.dataset.memberNo;
   fetch("/insert/newFriend", {
@@ -24,4 +24,4 @@ confirmBtn.addEventListener("click", () => {
         console.log("수정 실패!");
       }
     });
-});
+});*/

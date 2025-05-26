@@ -116,7 +116,7 @@
         MEMBER_ADDRESS,
         MEMBER_IMG, 
         MEMBER_INTRO,
-        HOME_TITLE, 
+        HOME_TITLE,
         KAKAO_ACCESS_TOKEN
         FROM MEMBER
         WHERE MEMBER_EMAIL = #{memberEmail}

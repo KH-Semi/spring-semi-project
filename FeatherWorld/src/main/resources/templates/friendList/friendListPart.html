@@ -40,9 +40,10 @@
   <ul id="friend-list">
     <th:block th:each="ilchon : ${ilchons}">
       <li
-        class="friend-item"
-        th:attr="data-member-no=${ilchon.toMemberNo == session.loginMember?.memberNo?ilchon.fromMemberNo:ilchon.toMemberNo}"
+        class="friend-item fade-slide"
+        th:attr="data-member-no=${ilchon.toMemberNo == memberNo?ilchon.fromMemberNo:ilchon.toMemberNo}"
       >
+        <!-- session이랑 비교하도록 되어있음. -->
         <div class="left-align">
           <img
             th:if="${ilchon.memberImg}"
@@ -79,7 +80,7 @@
             class="hidden"
             rows="1"
           ></textarea>
-          <span
+          <button
             name="unfollow-button"
             class="rounded-unfollow-span right-align color-red hidden"
             width="30px"
@@ -117,11 +118,10 @@
     <li><a th:href="@{/friendList(cp=${pagination.nextPage})}">&gt;</a></li>
 
     <!-- >> -->
-    <li><a th:href="@{/friendList(cp=${pagination.maxPage})}">&gt;&gt;</a></li>
+    <li>
+      <a th:href="@{/friendList(cp=${pagination.maxPage})}">&gt;&gt;</a>
+    </li>
   </ul>
-  <script th:inline="javascript">
-    let memberNo = /*[[${memberNo}]]*/ [];
-  </script>
 </div>
 
 <!--***********author : ahn     **********
