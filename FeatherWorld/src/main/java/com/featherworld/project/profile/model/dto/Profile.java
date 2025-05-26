@@ -6,7 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Profile {
-    private int memberNo;
-    private String profileImg;
-    private String bio;
+	private int memberNo;
+	private String imgPath;
+	private String imgOriginalName;
+	private String imgRename;
+	private String profileContent;
+
 }

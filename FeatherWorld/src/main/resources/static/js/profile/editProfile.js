@@ -130,7 +130,7 @@ if (backBtn) {
 // 프로필 업데이트 페이지 이동 버튼 클릭 이벤트
 if (profileUpdateBtn) {
   profileUpdateBtn.addEventListener("click", () => {
-    window.location.href = "/profile/profileupdate";
+    window.location.href = `/${memberNo}/profileupdate`; // ✅ memberNo 포함
   });
 }
 

@@ -1,474 +1,129 @@
+/* ====================== */
+/* 전체 레이아웃          */
+/* ====================== */
 .content-container {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  gap: 10px;
+  min-height: 600px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* 기본적인 각 영역 너비 설정 */
-.left-sidebar {
-  width: 20%;
-}
-
-.content-area {
-  width: 60%;
-}
-
-.right-sidebar {
-  width: 20%;
-}
-
-/* 좌측 사이드바 넓이 조정 및 스타일 */
-.left-sidebar {
-  width: 200px; /* 최소 너비 고정 */
+/* ====================== */
+/* 왼쪽 프로필 영역       */
+/* ====================== */
+#leftProfileContainer {
+  flex: 0 0 400px;
   border-right: 1px solid #e0e0e0;
   padding: 20px;
   background-color: #fff;
-}
-
-/* left  */
-
-/* 프로필 컨테이너 스타일 개선 */
-#leftProfileContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15px 10px;
-  background-color: white;
   text-align: center;
-  width: 100%;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 15px;
 }
 
-/* 방문자 통계 스타일 개선 */
-#profileStatsSection {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 15px;
+/* ====================== */
+/* 가운데 본문 영역 (기존 유지) */
+/* ====================== */
+.middle-sidebar {
+  flex: 1 1 auto;
+  padding: 20px;
+  background-color: #fdfdfd;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 100%;
-  padding: 8px;
-  background: #f8f9fa;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
 }
 
-#profileStatsSection #todayCount,
-#profileStatsSection #totalCount {
-  color: #9f2120;
-  font-weight: bold;
+/* ====================== */
+/* 오른쪽 사이드바 영역   */
+/* ====================== */
+.right-sidebar {
+  flex: 0 0 250px;
+  padding: 20px;
+  background-color: #fff;
+  border-left: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* 필요시 flex-grow: 0, flex-shrink: 0 지정 */
 }
 
-/* 프로필 이미지 스타일 개선 */
-#profileImageContainer {
-  position: relative;
-  margin-bottom: 15px;
-}
-
-#profileMainImage {
-  width: 100px;
-  height: 100px;
+/* 프로필 이미지 */
+.middle-sidebar img {
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #f0f0f0;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 3px solid #912d2d;
 }
 
-#profileMainImage:hover {
-  border-color: #9f2120;
-  transform: scale(1.05);
-}
-
-#profileImageEditIcon {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  background-color: #9f2120;
-  color: white;
-  padding: 3px 6px;
-  border-radius: 10px;
-  font-size: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#profileImageEditIcon:hover {
-  background-color: #c62828;
-  transform: scale(1.05);
-}
-
-/* 사용자 정보 스타일 개선 */
-#profileInfoSection {
-  margin-bottom: 15px;
-  width: 100%;
-}
-
-#profileUsernameDisplay {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-#profileEmailDisplay {
-  font-size: 12px;
-  color: #888;
-  margin-bottom: 12px;
-}
-
-/* 팔로우 통계 스타일 개선 */
-#profileFollowStats {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 12px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-}
-
-#profileFollowerCount,
-#profileFollowingCount {
-  text-align: center;
-}
-
-#profileFollowerNumber,
-#profileFollowingNumber {
-  display: block;
-  font-size: 16px;
-  font-weight: bold;
-  color: #9f2120;
-  margin-bottom: 3px;
-}
-
-#profileFollowerLabel,
-#profileFollowingLabel {
-  font-size: 10px;
-  color: #888;
-  text-transform: uppercase;
-}
-
-/* 버튼 영역 스타일 개선 */
-#profileActionButtons {
-  width: 100%;
-  margin-bottom: 12px;
-}
-
-#profileOwnerButtons {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-}
-
-#profileEditBtn,
-#profileLogoutBtn {
-  flex: 1;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 15px;
-  font-size: 11px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#profileEditBtn {
-  background-color: #9f2120;
-  color: white;
-}
-
-#profileEditBtn:hover {
-  background-color: #c62828;
-  transform: translateY(-1px);
-}
-
-#profileLogoutBtn {
-  background-color: #6c757d;
-  color: white;
-}
-
-#profileLogoutBtn:hover {
-  background-color: #5a6268;
-  transform: translateY(-1px);
-}
-
-/* Bio 섹션 스타일 개선 */
-#profileBioContainer {
-  width: 100%;
-  margin-bottom: 12px;
-}
-
-#profileBioTitle {
-  font-size: 12px;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-}
-
-#profileBioContent {
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  padding: 12px;
-  text-align: center;
-  min-height: 50px;
-  border: 1px solid #e0e0e0;
-}
-
-#profileBioDisplay {
-  font-size: 12px;
-  color: #666;
-  line-height: 1.4;
-  font-style: italic;
-}
-
-/* Surfing 버튼 스타일 개선 */
-#profileSurfingSection {
-  width: 100%;
-}
-
-#profileSurfingBtn {
-  width: 100%;
-  padding: 10px 12px;
-  background-color: #9f2120;
-  color: white;
-  border: none;
-  border-radius: 18px;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-}
-
-#profileSurfingBtn:hover {
-  background-color: #c62828;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(159, 33, 32, 0.3);
-}
-
-/* 중앙 콘텐츠 영역 */
-.content-area {
-  flex: 1; /* 남은 공간 모두 차지 */
-  padding: 20px;
-  background-color: #fff;
-  min-height: 600px;
-}
-
-/* 우측 사이드바 고정 너비와 배경 */
-.right-sidebar {
-  width: 180px; /* 고정 너비 */
-  padding: 20px;
-  border-left: 1px solid #e0e0e0;
-  background-color: #fff;
-}
-
-.post {
-  padding: 15px;
-  background-color: #fff9f9;
-  border-radius: 10px;
-  box-shadow: 0 3px 8px rgba(145, 45, 45, 0.15);
-  max-width: 500px;
-  margin: 0 auto 30px auto; /* 가운데 정렬 + 아래 마진 */
-}
-
-#previewContainer {
-  margin-bottom: 15px;
-  text-align: center;
-}
-
-#previewContainer img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 12px;
-  border: 2px solid #912d2d;
-  box-shadow: 0 2px 6px rgba(145, 45, 45, 0.25);
-}
-
-/* .content-container flex layout 유지 */
-.content-container {
-  display: flex;
-  flex-direction: row;
-  gap: 10px; /* 영역 간 간격 */
-  background-color: transparent; /* 배경이 두 번째 이미지처럼 흰색  */
-  min-height: 600px;
-}
-
-/* 우측 네비게이션 메뉴 스타일 */
-.nav-sidebar {
-  display: flex;
-  flex-direction: column;
-}
-
-.nav-sidebar > a {
-  padding: 10px 12px;
-  margin-bottom: 8px;
-  border-radius: 5px;
-  color: black;
-  font-weight: 600;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-}
-
-.nav-sidebar > a:hover {
-  background-color: #9f2120;
-  color: white;
-}
-
-.nav-sidebar .nav-item > span {
-  width: 24px;
-  margin-right: 8px;
-  text-align: center;
-}
-
-/* middle-sidebar 내부 요소 */
-
-.header {
-  margin-bottom: 20px;
-}
-
-.post {
-  margin-bottom: 30px;
-}
-
-.post-image {
-  width: 100%;
-  height: 300px;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-
-.post-image img {
-  width: 100%;
-  height: 200%;
-  object-fit: cover;
-}
-
-.file-input {
-  font-size: 18px;
-  padding: 12px 20px;
-  width: 100%;
-  max-width: 700px;
-  height: 200px;
-  border: 2px solid #ccc;
-  border-radius: 1px;
-  cursor: pointer;
-}
-
-#bio-input {
-  width: 100%;
-  max-width: 700px;
-  height: 150px;
-  border: 2px solid #ccc;
-  background-color: #fafafa;
-  border-radius: 1px;
-  padding: 12px 20px;
-  font-size: 18px;
-  box-sizing: border-box;
-  resize: none;
-}
-
+/* 자기소개 섹션 */
 .bio-section {
-  margin-top: 20px;
+  width: 100%;
 }
 
-.Comment-home {
+.bio-section textarea {
   width: 100%;
-  height: 120px;
-  resize: none;
-  font-family: "Pretendard", sans-serif;
+  padding: 15px;
   font-size: 16px;
   line-height: 1.6;
-  background-color: #f8f4f0;
-  border: none;
-  color: #fcf5f5;
-  padding: 15px;
-  border-radius: 12px;
-  box-sizing: border-box;
-  outline: none;
-}
-
-/* 자기소개 관련 스타일 */
-.bio-section {
-  width: 400px;
-  margin: 0 auto;
-  padding: 12px 16px;
-  border: none; /* 테두리 제거 */
-  border-radius: 12px;
-  background-color: #f8f8f8;
-  box-shadow: none; /* 그림자 제거 (네모 느낌 줄이기) */
-  font-family: "Pretendard", sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  text-align: left;
-  resize: vertical; /* 필요시 사용자가 높이 조절 가능 */
-  height: auto;
-  min-height: 80px;
-  overflow-y: auto;
-  line-height: 1.5;
-}
-
-/* 버튼 */
-.post-actions {
-  text-align: right;
-  gap: 10px;
-  height: 50px;
-}
-
-.post-button {
-  padding: 6px 12px;
-  border: 2px solid #ccc;
-  border-radius: 20px;
-  color: white;
-  font-size: 12px;
-  background-color: #912d2d;
-  cursor: pointer;
-}
-
-/* 우측 사이드바 내부 메뉴 */
-.right-sidebar {
-  min-height: 500px;
-}
-
-.nav-item > a {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  margin-bottom: 5px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  background-color: #fff;
+  background-color: #fafafa;
   color: #333;
-  font-size: 14px;
+}
+
+/* 하단 버튼 영역 */
+.post-actions {
+  display: flex;
+  gap: 10px; /* 간격을 15px에서 10px로 약간 조절 */
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  margin-top: 20px;
+  max-width: 700px; /* 최대 너비 제한 */
+  margin-left: auto; /* 가운데 정렬 보조 */
+  margin-right: auto;
+}
+
+/* 버튼 스타일 */
+.post-button {
+  min-width: 140px;
+  height: 40px;
+  padding: 0 16px;
+  background-color: #912d2d;
+  color: #fff;
+  font-weight: 600;
+  font-family: "Pretendard", sans-serif;
+  border: none;
+  border-radius: 20px; /* 더 둥근 모서리 */
   cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
   text-decoration: none;
 }
 
-.nav-item > a:hover {
-  color: #912d2d;
-  border-color: #912d2d;
-  background-color: #f9f1f1;
+.post-button:hover {
+  background-color: #7a2525;
 }
 
-.nav-item > a.active-home,
-.nav-item > a.active-playlist {
-  background-color: #912d2d;
-  color: white;
-  border: 1px solid #912d2d;
-  font-weight: bold;
-}
+/* 반응형 레이아웃 */
+@media screen and (max-width: 1024px) {
+  .content-container {
+    flex-direction: column;
+    align-items: center;
+  }
 
-.nav-item > a i {
-  margin-right: 10px;
-  font-size: 18px;
-  width: 20px;
-  text-align: center;
+  .left-sidebar {
+    width: 100%;
+    order: 2;
+  }
+
+  .middle-sidebar {
+    width: 100%;
+    order: 1;
+  }
 }
