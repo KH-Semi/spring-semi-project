@@ -4,9 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FeatherWorld - MiniHome</title>
+
     
     <!-- 공통 CSS -->
     <th:block th:replace="~{common/common}"></th:block>
+
     <!-- 미니홈피 전용 CSS -->
     <link rel="stylesheet" href="/css/miniHome/miniHome.css" />
 </head>
@@ -32,24 +34,46 @@
                         </div>
                     </div>
 
-                    <!-- Recent Board Header -->
-                    <div class="recentBoard">Recent Board</div>
 
-                    <!-- 최근 게시글 이미지들 -->
-                    <div class="small-image-row">
-                        <div class="no-recent-posts">
-                            <p>최근 게시글이 없습니다</p>
+                <!-- 최근 게시글 -->
+                <div class="small-image-row">
+
+                    <!-- 게시글이 없을 때 -->
+                    <div th:if="${#lists.isEmpty(recentBoards)}" class="no-recent-posts">
+                        <p>최근 게시글이 없습니다</p>
+                    </div>
+
+                    <!-- 게시글이 있을 때 -->
+                    <div th:if="${not #lists.isEmpty(recentBoards)}" class="recent-posts">
+                        <div class="post-box" th:each="board : ${recentBoards}">
+                            <a th:href="@{/board/{boardNo}(boardNo=${board.boardNo})}">
+                                <img th:src="@{'/resources/upload/board/' + ${board.thumbnailImg}}" 
+                                     alt="썸네일" class="thumbnail" />
+                                <div class="post-title" th:text="${board.title}">제목</div>
+                            </a>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Friend Comment List -->
-                    <div class="comment-header">
-                        <div class="title">Friend Comment List</div>
-                    </div>
+                <!-- 일촌평 리스트 -->
+                <div class="comment-header">
+                    <div class="title">Friend Comment List</div>
+                </div>
 
-                    <div class="miniHome-no-comments">
-                        <p>아직 일촌평이 없습니다.</p>
-                    </div>
+                <!-- 일촌평이 없을 때 -->
+                <div th:if="${#lists.isEmpty(ilchonComments)}" class="miniHome-no-comments">
+                    <p>아직 일촌평이 없습니다.</p>
+                </div>
+
+                <!-- 일촌평이 있을 때 -->
+                <div th:if="${not #lists.isEmpty(ilchonComments)}" class="ilchon-comment-list">
+                    <ul>
+                        <li th:each="comment : ${ilchonComments}">
+                            <div class="ilchon-comment-box">
+                                <span class="comment" th:text="${comment.ilchonCommentContent}">일촌평 내용</span>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
@@ -59,11 +83,13 @@
             
         </div>
 
+
         <!-- Footer -->
         <div th:replace="~{common/footer}"></div>
     </div>
 
 
     <script src="/js/miniHome/miniHome.js"></script>
+
 </body>
 </html>

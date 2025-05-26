@@ -61,20 +61,14 @@
 
         <!-- 버튼 -->
         <div class="post-actions">
-          <button
-            id="profileUpdateBtn"
+          <a
+            th:href="@{/{memberNo}/profileupdate(memberNo=${memberNo})}"
             class="post-button"
-            onclick="location.href='/profile/update'"
           >
             Profile Update
-          </button>
-          <button
-            id="deleteAccountBtn"
-            class="post-button"
-            onclick="location.href='/account/delete'"
-          >
-            Delete Account
-          </button>
+          </a>
+
+          <a th:href="@{/account/delete}" class="post-button">Delete Account</a>
         </div>
       </div>
 
