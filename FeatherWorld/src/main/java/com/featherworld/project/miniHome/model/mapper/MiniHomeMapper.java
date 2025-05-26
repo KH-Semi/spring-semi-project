@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.featherworld.project.board.model.dto.Board;
 import com.featherworld.project.friend.model.dto.Ilchon;
 import com.featherworld.project.friend.model.dto.IlchonComment;
 import com.featherworld.project.member.model.dto.Member;
@@ -15,14 +16,10 @@ public interface MiniHomeMapper {
     
 	Member findmember(int memberNo);
 
-    int findilchon(com.featherworld.project.friend.model.dto.Ilchon friend);
+    int findilchon(Ilchon friend);
 
-	
-    List<MiniHomeRecentBoard> selectRecentBoards(int memberNo);
-
-
-    List<IlchonComment> selectIlchonComments(int memberNo);
-
+    List<IlchonComment> getIlchonComments(int memberNo);
+// ---------------------------------------  체크 ..
 	int todayAdd(Today today);
 	int todayCount(Today today);
 
@@ -43,6 +40,12 @@ public interface MiniHomeMapper {
 	int findPendingIlchon(Ilchon theirRequest);
 
 	int findAcceptedIlchon(Ilchon myRequest);
+	
+	List<Board> getRecentBoards(int memberNo);
+	
+	int getTotalBoardCount(int memberNo);
+
+	int getTotalGuestBookCount(int memberNo);
 
 
 }

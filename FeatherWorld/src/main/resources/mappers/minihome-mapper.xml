@@ -12,31 +12,22 @@
 		WHERE FROM_MEMBER_NO = #{fromMemberNo} AND TO_MEMBER_NO = #{toMemberNo}
 	</select>
 
-	<!-- 최근 게시글 조회 (Oracle 서브쿼리 방식) -->
-	<select id="selectRecentBoards" parameterType="_int" resultType="MiniHomeRecentBoard">
-		SELECT * FROM (
-			SELECT BOARD_NO AS boardNo,
-				   BOARD_TITLE AS boardTitle,
-				   BOARD_WRITE_DATE AS boardDate
-			FROM BOARD 
-			WHERE MEMBER_NO = #{memberNo}
-			ORDER BY BOARD_WRITE_DATE DESC
-		) WHERE ROWNUM <![CDATA[<=]]> 5
-	</select>
-
-	<!-- 일촌평 리스트 -->
-	<select id="selectIlchonComments" parameterType="_int" resultType="IlchonComment">
-		SELECT IC.TO_MEMBER_NO AS toMemberNo,
-			   IC.FROM_MEMBER_NO AS fromMemberNo,
-			   IC.ILCHON_COMMENT_CONTENT AS ilchonCommentContent,
-			   M.MEMBER_NAME AS fromMemberName,
-			   P.IMG_RENAME AS fromMemberImg
-		FROM ILCHON_COMMENT IC
-		JOIN MEMBER M ON IC.FROM_MEMBER_NO = M.MEMBER_NO
-		LEFT JOIN PROFILE P ON M.MEMBER_NO = P.MEMBER_NO
-		WHERE IC.TO_MEMBER_NO = #{memberNo}
-		ORDER BY IC.ILCHON_COMMENT_CONTENT DESC
-	</select>
+	
+ 		<!-- 일촌평 -->
+		<select id="getIlchonComments" parameterType="int" resultType="IlchonComment">
+  		  SELECT 
+    	  IC.TO_MEMBER_NO AS toMemberNo,
+      	  IC.FROM_MEMBER_NO AS fromMemberNo,
+          IC.ILCHON_COMMENT_CONTENT AS ilchonCommentContent,
+          M.MEMBER_NAME AS fromMemberName,
+          M.MEMBER_IMG AS fromMemberImg  -- MEMBER 테이블의 MEMBER_IMG 사용
+    	    FROM ILCHON_COMMENT IC
+    		JOIN MEMBER M ON IC.FROM_MEMBER_NO = M.MEMBER_NO
+    		JOIN ILCHON I ON (IC.FROM_MEMBER_NO = I.FROM_MEMBER_NO AND IC.TO_MEMBER_NO = I.TO_MEMBER_NO)
+		    WHERE IC.TO_MEMBER_NO = #{memberNo}
+      		AND I.IS_ILCHON = 'Y'
+    		ORDER BY IC.FROM_MEMBER_NO
+		</select>
 
 	<select id="findmember" parameterType="_int" resultType="Member">
 		SELECT MEMBER_NO, MEMBER_NAME, MEMBER_EMAIL, MEMBER_IMG,
@@ -125,12 +116,12 @@
 	</insert>
 
 	<!-- 대기중인 일촌 신청 조회 (IS_ILCHON='N'인 것만) -->
-	<select id="findPendingIlchon" parameterType="Ilchon" resultType="_int">
-		SELECT COUNT(*)
-		FROM ILCHON 
-		WHERE FROM_MEMBER_NO = #{fromMemberNo} 
-		  AND TO_MEMBER_NO = #{toMemberNo}
-		  AND IS_ILCHON = 'N'
+	<select id="findPendingIlchon" parameterType="Ilchon" resultType="int">
+    SELECT COUNT(*)
+    FROM ILCHON
+    WHERE FROM_MEMBER_NO = #{fromMemberNo}
+      AND TO_MEMBER_NO = #{toMemberNo}
+      AND IS_ILCHON = 'N'
 	</select>
 	
 	<!-- 수락된 일촌 관계만 조회 (IS_ILCHON='Y') -->
@@ -141,5 +132,34 @@
 		  AND TO_MEMBER_NO = #{toMemberNo}
 		  AND IS_ILCHON = 'Y'
 	</select>
+	 
+	 <!--  최근 게시글 목록 조회 -->
+		<select id="getRecentBoards" parameterType="int" resultType="Board">
+        SELECT 
+        BOARD_NO as boardNo,
+        BOARD_TITLE as boardTitle,
+        BOARD_CODE as boardCode,
+        'test.jpg' as thumbnail
+   		 FROM BOARD
+  		  WHERE MEMBER_NO = #{memberNo}
+    		    AND BOARD_DEL_FL = 'N'
+  		    	AND ROWNUM &lt;= 6
+  			    ORDER BY BOARD_NO DESC
+			</select>
+		
+		   <!-- 총 게시글 수 조회 -->
+  		<select id="getTotalBoardCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOARD
+        WHERE MEMBER_NO = #{memberNo}
+          AND BOARD_DEL_FL = 'N'
+  		</select>
+  		
+  		   <!-- 총 방명록 수 조회 -->
+    	<select id="getTotalGuestBookCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM GUEST_BOOK
+        WHERE OWNER_NO = #{memberNo}
+    	</select>
 
 </mapper>

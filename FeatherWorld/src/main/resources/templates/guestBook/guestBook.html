@@ -120,7 +120,11 @@
       <!-- 푸터 Include -->
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
-    
+    <script th:inline="javascript">
+      const memberNo = /*[[${memberNo}]]*/ 0;
+    </script>
     <script src="/js/guestBook/guestBook.js"></script>
+
+    <script src="/js/miniHome/miniHome.js"></script>
   </body>
 </html>

@@ -63,7 +63,7 @@
         <i
           class="fas fa-bell notification-bell"
           th:if="${session.loginMember != null and member != null and session.loginMember.memberNo == member.memberNo and hasPendingFollowers}"
-          title="새로운 일촌 신청이 있습니다"
+          title="새로운 일촌 신청이 있습니다" 
           onclick="showPendingFollowers()"
         ></i>
       </div>
@@ -80,7 +80,7 @@
       <!-- 본인 프로필인 경우 -->
       <div
         id="profileOwnerButtons"
-        th:if="${session.loginMember != null and member != null and session.loginMember.memberNo == member.memberNo and hasPendingFollowers != null and hasPendingFollowers}"
+        th:if="${session.loginMember != null and member != null and session.loginMember.memberNo == member.memberNo}"
       >
         <button id="profileEditBtn" onclick="editProfile()">
           Edit Profile
