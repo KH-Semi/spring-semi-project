@@ -102,5 +102,11 @@ public interface MemberMapper {
 	 */
 	int updateMember(Member inputMember);
 
+	/** 메인페이지 투데이 베스트 조회
+	 * @return
+	 * @author 영민
+	 */
+	List<Member> getTodayBestMembers();
+
 
 }

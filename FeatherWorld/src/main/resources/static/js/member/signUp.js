@@ -46,28 +46,28 @@ document.addEventListener("DOMContentLoaded", function () {
     if (userId.value.trim() === "") {
       userIdMessage.textContent = "이메일을 입력해주세요.";
       userIdMessage.className = "validation-message invalid";
-      return false;
-    } else if (!emailRegex.test(userId.value)) {
+      return Promise.resolve(false); // Promise로 감싸서 반환
+    }
+    if (!emailRegex.test(userId.value)) {
       userIdMessage.textContent = "유효한 이메일 형식이 아닙니다.";
       userIdMessage.className = "validation-message invalid";
-      return false;
-    } else {
-      // 이메일 중복확인 (비동기요청)
-      fetch("/member/checkEmail?memberEmail=" + userId.value)
-        .then((resp) => resp.text())
-        .then((count) => {
-          if (count == 1) {
-            // 중복
-            userIdMessage.innerText = "이미 사용중인 이메일 입니다";
-            userIdMessage.className = "validation-message invalid";
-            return false;
-          } else {
-            userIdMessage.textContent = "입력값 정상";
-            userIdMessage.className = "validation-message valid";
-            return true;
-          }
-        });
+      return Promise.resolve(false); // Promise로 감싸서 반환
     }
+
+    // fetch는 이미 Promise를 반환하므로 그대로 return
+    return fetch("/member/checkEmail?memberEmail=" + userId.value)
+      .then((resp) => resp.text())
+      .then((count) => {
+        if (count == 1) {
+          userIdMessage.innerText = "이미 사용중인 이메일 입니다";
+          userIdMessage.className = "validation-message invalid";
+          return false;
+        } else {
+          userIdMessage.textContent = "입력값 정상";
+          userIdMessage.className = "validation-message valid";
+          return true;
+        }
+      });
   }
 
   function validateAuthKey() {

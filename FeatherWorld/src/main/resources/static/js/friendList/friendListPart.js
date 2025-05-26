@@ -1,12 +1,15 @@
 //현재 로그인한 유저 정보(지금은 테스트중)
-let members = /*[[${members}]]*/ [];
+let memberN = /*[[${members}]]*/ [];
 
-document
-  .getElementById("send-friend-request-button")
-  .addEventListener("click", () => {
-    window.location.href = `/${memberNo}/newFriend/input`; //
+const sendFriendRequestButton = document.getElementById(
+  "send-friend-request-button"
+);
+
+if (sendFriendRequestButton) {
+  sendFriendRequestButton.addEventListener("click", () => {
+    window.location.href = `/${memberNo}/newFriend/input`;
   });
-
+}
 //buttons
 const editBtn = document.getElementById("edit-button"); // edit
 const applyCancelBtnDiv = document.getElementById("apply-cancel-button-div"); //apply-cancel btn 을 담는 div
@@ -51,10 +54,11 @@ sendFriendReqBtn.addEventListener("click", () => {
       }
     });
 });*/
-
-friendSpans.forEach(function (friend) {
-  console.log(friend);
-});
+if (friendSpans) {
+  friendSpans.forEach(function (friend) {
+    console.log(friend);
+  });
+}
 
 if (editBtn) {
   editBtn.addEventListener("click", (e) => {
@@ -147,6 +151,54 @@ friendSpans.forEach(function (friend) {
             console.log("수정 실패!");
             xIcon(friend);
           }
+        });
+    });
+
+  friend // unfollow 버튼 누른후 이벤트 핸들러 설정(accept 버튼 누른후 fetch문을 그대로 복사해서 필요한 부분만 바꾼 코드!!)
+    .querySelector("[name=unfollow-button]")
+    .addEventListener("click", (e) => {
+      // 1. fetch
+      const newNickName = e.target.value;
+      console.log(e.target.value); // DEBUG용이므로 지우셔도 됩니다
+      fetch("/delete", {
+        method: "POST", // ← POST로 바꿔야 body 사용 가능
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          memberNo: parseInt(friend.dataset.memberNo),
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data); // DEBUG용이므로 지우셔도 됩니다
+          if (data.status == 1) {
+            console.log("삭제 성공!");
+            /*e.target.value = data.Ilchon.toNickname;
+            if (friend) {
+              friend.querySelector("[name=fromNickname]").textContent =
+                data.Ilchon.toNickname;
+            } //refresh*/
+
+            checkIcon(friend);
+            friend.remove();
+          } else if (data.status == 0) {
+            console.log("삭제 실패! 0");
+            /* e.target.value = data.Ilchon.fromNickname;
+            if (friend) {
+              friend.querySelector("[name=fromNickname]").textContent =
+                data.Ilchon.fromNickname;
+            } //refresh*/
+            checkIcon(friend);
+          } else {
+            console.log("삭제 실패! -1");
+            xIcon(friend);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
         });
     });
 });
