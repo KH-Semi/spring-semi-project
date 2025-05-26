@@ -16,7 +16,9 @@
 
       <div class="content-container">
         <!-- 좌측 석준이가 만든 프로필 들어올 공간 Include -->
-        <th:block th:replace="~{board/boardTypeSidebar}"></th:block>
+        <div class="left-sidebar">
+          <div th:replace="~{common/leftsidebar}"></div>
+        </div>
 
         <!-- 중앙 방명록 목록 -->
         <div class="main-content">
@@ -35,7 +37,9 @@
                 </div>
               </div>
               <div class="guestbook-info">
-                <span th:text="${loginMember.memberName}">작성자</span>
+                <span th:text="*{visitor != null ? visitor.memberName : '익명'}"
+                  >작성자</span
+                >
 
                 <!-- <span th:text="*{visitorName}">작성자</span> -->
                 <!-- guestBook 작성자 필드명에 맞춰 수정 -->

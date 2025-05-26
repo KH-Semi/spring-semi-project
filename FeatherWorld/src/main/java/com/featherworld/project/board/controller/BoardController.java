@@ -251,7 +251,6 @@ public class BoardController {
                     c = new Cookie("readBoardNo", "[" + boardNo + "]");
                     result = service.updateReadCount(boardNo);
 
-
                 } else {
                     // readBoardNo"가 쿠키에 있을 때
                     // "readBoardNo" : [2][30][400]
@@ -332,16 +331,15 @@ public class BoardController {
         return path;
 
     }
+  
+      
+   /** 게시글 좋아요 체크/해제
+    * @author 허배령
+    */
+   @ResponseBody
+   @PostMapping("board/like") // /board/like (POST) 이걸로 머지 제발!ㅋㅋ
+   public int boardLike(@RequestBody Map<String, Integer> map) {
+      return service.boardLike(map);
+   }
 
-
-    /**
-     * 게시글 좋아요 체크/해제
-     *
-     * @author 허배령
-     */
-    @ResponseBody
-    @PostMapping("like") // /board/like (POST)
-    public int boardLike(@RequestBody Map<String, Integer> map) {
-        return service.boardLike(map);
-    }
 }

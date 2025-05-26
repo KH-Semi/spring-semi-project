@@ -98,4 +98,6 @@ public interface GuestBookMapper {
 	 * @return 수정된 행 수
 	 */
 	int guestBookUpdate(GuestBook guestBook);
+
+	GuestBook selectOne(Integer guestBookNo);
 }
