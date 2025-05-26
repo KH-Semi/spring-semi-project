@@ -43,7 +43,8 @@
               </div>
 
               <div class="guestbook-info">
-                <span th:text="*{visitor != null ? visitor.memberName : '익명'}"
+                <span
+                  th:text="${item.visitor != null ? item.visitor.memberName : '익명'}"
                   >작성자</span
                 >
                 <div
@@ -56,19 +57,21 @@
 
               <!-- 작성자 본인에게만 수정/삭제 버튼 노출 -->
               <div
-                th:if="${loginMember?.memberNo == item.visitor?.memberNo}"
+                th:if="${loginMember != null 
+                and item.visitor != null 
+                and loginMember.memberNo.equals(item.visitor.memberNo)}"
                 class="guestbook-actions"
               >
-                <a
-                  href="#"
+                <button
                   th:onclick="|showUpdateGuestBook(${item.guestBookNo}, this); return false;|"
-                  >✏️ 수정</a
                 >
-                <a
-                  href="#"
+                  ✏️ 수정
+                </button>
+                <button
                   th:onclick="|deleteGuestBook(${item.guestBookNo}); return false;|"
-                  >❌ 삭제</a
                 >
+                  ❌ 삭제
+                </button>
               </div>
             </div>
           </div>
@@ -90,7 +93,7 @@
               <i id="lockIcon" class="fa-solid fa-lock-open"></i>
               <i
                 id="toggleSecret"
-                class="fa-solid fa-toggle-on"
+                class="fa-solid fa-toggle-off"
                 style="cursor: pointer"
               ></i
               ><br />
@@ -120,7 +123,7 @@
       <!-- 푸터 Include -->
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
-    
+
     <script src="/js/guestBook/guestBook.js"></script>
   </body>
 </html>
