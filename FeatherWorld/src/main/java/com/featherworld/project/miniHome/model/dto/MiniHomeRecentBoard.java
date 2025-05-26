@@ -1,5 +1,6 @@
 package com.featherworld.project.miniHome.model.dto;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MiniHomeRecentBoard {
     private int boardNo;
-    private String title;
-    private String thumbnailImg;  // 이미지 경로 + 이름 조합
+    private String boardTitle;      // title → boardTitle로 변경
+    private String boardWriteDate; // 날짜 필드 추가
+    private String thumbnailImg;    // 기존 필드 유지
 }

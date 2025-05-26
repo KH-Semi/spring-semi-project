@@ -2,7 +2,6 @@
   <!-- Today/Total 통계 -->
   <div id="profileStatsSection">
     <span
-
       >Today <span id="todayCount" th:text="${todayCount ?: 0}">0</span> / Total
       <span id="totalCount" th:text="${totalCount ?: 0}">0</span></span
     >
@@ -81,7 +80,7 @@
       <!-- 본인 프로필인 경우 -->
       <div
         id="profileOwnerButtons"
-        th:if="${session.loginMember != null and member != null and session.loginMember.memberNo == member.memberNo}"
+        th:if="${session.loginMember != null and member != null and session.loginMember.memberNo == member.memberNo and hasPendingFollowers != null and hasPendingFollowers}"
       >
         <button id="profileEditBtn" onclick="editProfile()">
           Edit Profile
@@ -161,4 +160,3 @@
     <button id="profileSurfingBtn" onclick="goSurfing()">Surfing</button>
   </div>
 </div>
-

@@ -18,7 +18,6 @@ import com.featherworld.project.profile.model.dto.Profile;
 import com.featherworld.project.profile.model.service.ProfileService;
 
 @Controller
-@RequestMapping("/{memberNo:[0-9]+}")
 public class ProfileController {
 
     @Autowired

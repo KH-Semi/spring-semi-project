@@ -42,17 +42,6 @@ public class MiniHomeServiceImpl implements MiniHomeService {
         return 0;
     }
 
-    // 미니홈 주인 정보 조회
-    @Override
-    public Member findmember(int memberNo) {
-        return mapper.findmember(memberNo);
-    }
-
-    // 일촌 여부 확인
-    @Override
-    public int findilchon(Ilchon friend) {
-        return mapper.findilchon(friend);
-    }
 
     // 최근 게시글 조회
     @Override
