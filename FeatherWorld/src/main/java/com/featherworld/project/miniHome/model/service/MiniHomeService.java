@@ -27,18 +27,6 @@ public interface MiniHomeService {
 
     String fileUpload(MultipartFile uploadFile) throws Exception;
 
-    /** 미니홈주인 찾아서 Member타입 반환
-     * @param memberNo
-     * @return
-     * @author 영민
-     */
-    Member findmember(int memberNo);
-
-    /** 일촌인지 아닌지확인
-     * @param friend
-     * @return
-     */
-    int findilchon(Ilchon friend);
 
     /** 일촌평 리스트 가져오기 */
     List<IlchonComment> getIlchonComments(int memberNo);
