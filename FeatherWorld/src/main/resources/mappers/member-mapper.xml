@@ -28,8 +28,8 @@
         #{memberTel},
         #{memberAddress},
         NULL,
-        DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, NULL
-          )
+        DEFAULT, DEFAULT, DEFAULT, DEFAULT, NULL
+        )
       </insert>
 	
 	<!-- 회원가입을 하고나서 바로 boardType 하나 추가함 -->
@@ -137,14 +137,14 @@
             NULL,
             NULL,
             NULL,
-            DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, #{kakaoAccessToken}
+            DEFAULT, DEFAULT, DEFAULT, DEFAULT, #{kakaoAccessToken}
         )
     </insert>
     
     
-     <!--  선택적으로 회원정보 수정 가능함 -->
-	<update id="updateMember">
-    UPDATE MEMBER
+   		  <!--  선택적으로 회원정보 수정 가능함 -->
+		<update id="updateMember">
+    	UPDATE MEMBER
     	<set>
         <if test="memberTel != null and memberTel != ''">
             MEMBER_TEL = #{memberTel},
@@ -156,8 +156,24 @@
             MEMBER_NAME = #{memberName},
         </if>
     	</set>
-    WHERE MEMBER_NO = #{memberNo}
-	</update>
+   		 WHERE MEMBER_NO = #{memberNo}
+		</update>
+
+	<select id="getTodayBestMembers" resultType="Member">
+  	<![CDATA[
+	SELECT * FROM (
+   		    SELECT 
+    	    m.MEMBER_NAME as memberName,
+        	m.MEMBER_IMG as memberImg
+    		FROM MEMBER m, TODAY t
+    			WHERE m.MEMBER_NO = t.HOME_NO
+    			AND TRUNC(t.VISIT_DATE) = TRUNC(SYSDATE)
+    			GROUP BY m.MEMBER_NO, m.MEMBER_NAME, m.MEMBER_IMG
+    			ORDER BY COUNT(*) DESC
+	)
+	WHERE ROWNUM <= 6
+	]]>
+	</select>
 
 
 </mapper>

@@ -46,10 +46,14 @@ public class BoardTypeController {
     @PostMapping("{memberNo:[0-9]+}/board/insert")
     public int createBoardType(@PathVariable("memberNo") int memberNo,
                                @RequestBody BoardType boardType,
-                               @SessionAttribute("loginMember") Member loginMember,
+                               @SessionAttribute(value="loginMember", required = false) Member loginMember,
                                RedirectAttributes ra) {
 
-        if(loginMember.getMemberNo() != memberNo) {
+        if(loginMember == null) {
+            ra.addFlashAttribute("message", "로그인 후 이용해주세요.");
+            return 0;
+
+        } else if(loginMember.getMemberNo() != memberNo) {
             ra.addFlashAttribute("message", "본인의 게시판만 수정할 수 있습니다!");
             return 0;
         }
@@ -70,13 +74,21 @@ public class BoardTypeController {
     @PutMapping("{memberNo:[0-9]+}/board/update")
     public int updateBoardType(@PathVariable("memberNo") int memberNo,
                                @RequestBody BoardType boardType,
-                               @SessionAttribute("loginMember") Member loginMember,
+                               @SessionAttribute(value="loginMember", required = false) Member loginMember,
                                RedirectAttributes ra) {
 
-        if(loginMember.getMemberNo() != memberNo) {
+        if(loginMember == null) {
+            ra.addFlashAttribute("message", "로그인 후 이용해주세요.");
+            return 0;
+
+        } else if(loginMember.getMemberNo() != memberNo) {
             ra.addFlashAttribute("message", "본인의 게시판만 수정할 수 있습니다!");
             return 0;
         }
+
+        // 현재 회원번호 정보를 세팅
+        boardType.setMemberNo(memberNo);
+
         return boardTypeService.updateBoardType(boardType);
     }
 
@@ -90,10 +102,14 @@ public class BoardTypeController {
     @DeleteMapping("{memberNo:[0-9]+}/board/delete")
     public int deleteBoardType(@PathVariable("memberNo") int memberNo,
                                @RequestBody BoardType boardType,
-                               @SessionAttribute("loginMember") Member loginMember,
+                               @SessionAttribute(value="loginMember", required = false) Member loginMember,
                                RedirectAttributes ra) {
 
-        if(loginMember.getMemberNo() != memberNo) {
+        if(loginMember == null) {
+            ra.addFlashAttribute("message", "로그인 후 이용해주세요.");
+            return 0;
+
+        } else if(loginMember.getMemberNo() != memberNo) {
             ra.addFlashAttribute("message", "본인의 게시판만 수정할 수 있습니다!");
             return 0;
         }

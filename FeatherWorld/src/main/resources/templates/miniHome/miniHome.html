@@ -5,36 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FeatherWorld - MiniHome</title>
 
-    <!-- 공통 CSS 및 Pretendard 등 -->
+    
+    <!-- 공통 CSS -->
     <th:block th:replace="~{common/common}"></th:block>
 
     <!-- 미니홈피 전용 CSS -->
     <link rel="stylesheet" href="/css/miniHome/miniHome.css" />
 </head>
 <body>
+    <div class="container">
+        <!-- Header Fragment -->
+        <div th:replace="~{common/header}"></div>
 
-    <!-- Header -->
-    <div th:replace="~{common/header}"></div>
+        <div class="content-container">
+            <!-- Left sidebar - Profile -->
+            <div class="left-sidebar">
+                <div th:replace="~{common/leftsidebar}"></div>
+            </div>
 
-    <!-- 전체 콘텐츠 영역 -->
-    <div class="content-container">
-        
-        <!-- 왼쪽 사이드바 -->
-        <div class="left-sidebar">
-            <div th:replace="~{common/leftsidebar}"></div>
-        </div>
-
-        <!-- 중앙 콘텐츠 영역 -->
-        <div class="content-area">
-            <div class="boardContainer">
-                
-                <!-- 게시글 요약 링크 -->
-                <div class="boardSummary">
-                    <div class="summary-links">
-                        <a href="#">Board Total</a>
-                        <a href="#">Guest Book Total</a>
+            <!-- Middle Content Area -->
+            <div class="main-content">
+                <div class="boardContainer">
+                    <!-- Board Summary Links -->
+                    <div class="boardSummary">
+                        <div class="summary-links">
+                            <a th:href="@{/{member}/board(member=${memberNo})}">Board Total</a>
+                            <a th:href="@{/{member}/guestbook(member=${memberNo})}">Guest Book Total</a>
+                        </div>
                     </div>
-                </div>
+
 
                 <!-- 최근 게시글 -->
                 <div class="small-image-row">
@@ -77,17 +76,20 @@
                     </ul>
                 </div>
             </div>
+
+            <!-- Right sidebar -->
+           
+                <div th:replace="~{common/navsidebar}"></div>
+            
         </div>
 
-        <!-- 오른쪽 사이드바 -->
-        <div class="right-sidebar">
-            <div th:replace="~{common/navsidebar}"></div>
-        </div>
 
+        <!-- Footer -->
+        <div th:replace="~{common/footer}"></div>
     </div>
 
-    <!-- Footer -->
-    <div th:replace="~{common/footer}"></div>
+
+    <script src="/js/miniHome/miniHome.js"></script>
 
 </body>
 </html>
