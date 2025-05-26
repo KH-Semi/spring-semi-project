@@ -308,7 +308,7 @@ public class BoardController {
     * @author 허배령
     */
    @ResponseBody
-   @PostMapping("like") // /board/like (POST)
+   @PostMapping("board/like") // /board/like (POST) 이걸로 머지 제발!ㅋㅋ
    public int boardLike(@RequestBody Map<String, Integer> map) {
       return service.boardLike(map);
    }

@@ -1,32 +1,95 @@
-//방명록 목록 조회(ajax)
+// 방명록 목록을 서버에서 조회해서 화면에 렌더링하는 함수
 const selectGuestBookList = () => {
-  const cp = 1; // or 현재 페이지 번호
-  const ownerNo = document.querySelector("#ownerNo")?.value || 1; // 기본값 1번 주인
+  const cp = 1; // 현재 페이지(cp). 현재는 고정값 1. (나중에 페이징 처리용으로 수정 가능)
+  const ownerNo = document.querySelector("#ownerNo")?.value || 1;
+  // 방명록 주인 번호(ownerNo) 가져옴. 없으면 기본값 1
 
-  fetch(`/${ownerNo}/guestbook?cp=${cp}`)
-    .then((resp) => resp.json())
-    .then((guestBookList) => {
-      console.log(guestBookList);
+  // 서버에 방명록 리스트 요청 (비동기 fetch)
+  fetch(`/${ownerNo}/guestbook/list?cp=${cp}`) // (05.23 배령 수정)
+    .then((resp) => resp.json()) // 응답을 JSON으로 변환
+    .then((response) => {
+      const guestBookList = response.guestBookList; // 방명록 목록 배열
+      const container = document.querySelector("#guestbook-list"); // 방명록이 들어갈 컨테이너 (05.23 배령 수정)
+      container.innerHTML = ""; // 기존 목록 초기화 (덮어쓰기)
 
-      // 화면에 출력하려면 아래처럼 추가
-      const container = document.querySelector("#guestbook-list");
-      container.innerHTML = "";
-
-      //방명록이 없는 경우
-      if (guestBookList.length === 0) {
+      // 방명록이 없으면 안내 문구 출력 후 종료
+      if (!Array.isArray(guestBookList) || guestBookList.length === 0) {
         container.innerHTML = "<p>등록된 방명록이 없습니다.</p>";
         return;
       }
 
-      //방명록이 있는 경우
+      // 05.23 배령 수정
+      // 방명록이 있을 경우, 각각의 방명록 데이터를 순회하며 DOM 요소 생성
       guestBookList.forEach((item) => {
-        const div = document.createElement("div");
-        div.textContent = item.guestBookContent;
-        container.appendChild(div);
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "guestbook-item"; // 전체 방명록 한 개의 최상위 div
+
+        const wrapDiv = document.createElement("div");
+        wrapDiv.className = "guestbook-wrap"; // 내부 컨텐츠를 감싸는 wrapper
+
+        const mainDiv = document.createElement("div");
+        mainDiv.className = "guestbook-main"; // 실제 내용 부분을 감싸는 div
+
+        const contentDiv = document.createElement("div");
+        contentDiv.className = "guestbook-content"; // 방명록 내용 표시 영역
+        contentDiv.textContent = item.guestBookContent; // 내용 삽입
+
+        mainDiv.appendChild(contentDiv); // main 안에 내용 삽입
+        wrapDiv.appendChild(mainDiv); // wrap 안에 main 삽입
+        itemDiv.appendChild(wrapDiv); // item 안에 wrap 삽입
+
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "guestbook-info"; // 작성자 및 날짜 정보 영역
+
+        const writerSpan = document.createElement("span");
+        writerSpan.textContent = item.visitor?.memberName || "익명"; // 작성자 이름 (없으면 '익명')
+
+        const dateDiv = document.createElement("div");
+        dateDiv.className = "guestbook-date"; // 작성일 표시 영역
+        dateDiv.textContent = item.guestBookWriteDate; // 작성일 삽입
+
+        // 작성자, 작성일을 info 영역에 추가
+        infoDiv.appendChild(writerSpan);
+        infoDiv.appendChild(dateDiv);
+
+        // 전체 item div에 info 추가
+        itemDiv.appendChild(infoDiv);
+
+        // 최종적으로 guestbook-list 영역에 추가
+        container.appendChild(itemDiv);
+
+        // 로그인한 사용자 정보 가져오기
+        const loginMemberNo = document.querySelector("#loginMemberNo")?.value;
+
+        // 작성자 번호와 로그인한 사용자가 같을 경우에만 버튼 표시
+        // 이거 근데 기존 edit, delete 버튼이랑 다르게 나오네;;;
+        if (loginMemberNo && parseInt(loginMemberNo) === item.visitorNo) {
+          const actionDiv = document.createElement("div");
+          actionDiv.className = "guestbook-actions";
+
+          const editBtn = document.createElement("button");
+          editBtn.textContent = "Edit";
+          editBtn.addEventListener("click", () =>
+            showUpdateGuestBook(item.guestBookNo, editBtn)
+          );
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "Delete";
+          deleteBtn.addEventListener("click", () =>
+            deleteGuestBook(item.guestBookNo)
+          );
+
+          actionDiv.appendChild(editBtn);
+          actionDiv.appendChild(deleteBtn);
+          infoDiv.appendChild(actionDiv);
+        }
+
+        itemDiv.appendChild(infoDiv);
+        container.appendChild(itemDiv);
       });
     })
     .catch((err) => {
-      console.error("방명록 조회 실패:", err);
+      console.error("방명록 목록 조회 실패:", err); // 요청 실패 시 콘솔 출력
     });
 };
 // 방명록 등록 (ajax)
@@ -81,20 +144,26 @@ document.addEventListener("DOMContentLoaded", () => {
 const deleteGuestBook = (guestBookNo) => {
   //취소 선택 시
   if (!confirm("삭제 하시겠습니까?")) return;
+  const ownerNo = document.querySelector("#ownerNo")?.value || 1;
 
   fetch(`/${ownerNo}/guestbook`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ guestBookNo: guestBookNo }),
   })
-    .then((resp) => resp.text())
+    .then((resp) => resp.json()) // json()으로 받아 result.success를 명확히 확인해야 함
     .then((result) => {
-      if (result > 0) {
+      console.log("삭제 응답:", result); // 응답 형식 확인
+      // 05.23 수정 배령
+      if (result.success === true || result.success === "true") {
         alert("삭제 되었습니다");
         selectGuestBookList();
       } else {
         alert("삭제 실패");
       }
+    })
+    .catch((err) => {
+      console.error("삭제 오류: ", err);
     });
 };
 
