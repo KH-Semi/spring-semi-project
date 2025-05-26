@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.featherworld.project.common.dto.Pagination;
 import com.featherworld.project.guestBook.model.dto.GuestBook;
 import com.featherworld.project.guestBook.service.GuestBookService;
 import com.featherworld.project.member.model.dto.Member;
@@ -178,7 +179,7 @@ public class GuestBookController {
 //	    return service.guestBookDelete(map);
 //	}
 
-	
+//	
 	/**
 	 * 방명록 페이지 이동 (초기 로딩)
 	 * @param memberNo 홈피 주인 번호
@@ -233,6 +234,56 @@ public class GuestBookController {
 		}
 	}
 
+//	
+//	@GetMapping("{memberNo:[0-9]+}/guestbook")
+//	public String guestBookPage(@PathVariable("memberNo") int memberNo,
+//	        @SessionAttribute(value = "loginMember", required = false) Member loginMember,
+//	        @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+//	        Model model) {
+//
+//	    int loginMemberNo = (loginMember != null) ? loginMember.getMemberNo() : -1;
+//	    boolean isOwner = loginMemberNo == memberNo;
+//
+//	    List<GuestBook> guestBookList = service.selectGuestBookList(memberNo, isOwner);
+//
+//	    model.addAttribute("guestBookList", guestBookList);
+//	    model.addAttribute("loginMember", loginMember);
+//	    model.addAttribute("ownerNo", memberNo);
+//
+//	    return "guestBook/guestBook"; // templates/guestBook/guestBook.html
+//	}
+//
+//	
+//	
+//	
+//	
+//	@GetMapping("{memberNo:[0-9]+}/guestbook/list")
+//	@ResponseBody
+//	public Map<String, Object> selectGuestBookList(
+//	        @PathVariable("memberNo") int memberNo,
+//	        @RequestParam(value = "cp", defaultValue = "1") int cp,
+//	        @SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+//
+//	    int loginMemberNo = (loginMember != null) ? loginMember.getMemberNo() : -1;
+//	    boolean isOwner = loginMemberNo == memberNo;
+//
+//	    List<GuestBook> guestBookList = service.selectGuestBookList(memberNo, isOwner);
+//
+//	    Map<String, Object> map = new HashMap<>();
+//	    map.put("guestBookList", guestBookList);
+//
+//	    return map;
+//	}
+//
+//	
+//	
+//	
+//	
+	
+	
+	
+	
+	
 	/**
 	 * 방명록 작성 (비동기)
 	 * @param loginMember 로그인한 회원
@@ -377,4 +428,5 @@ public class GuestBookController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
 		}
 	}
+
 }

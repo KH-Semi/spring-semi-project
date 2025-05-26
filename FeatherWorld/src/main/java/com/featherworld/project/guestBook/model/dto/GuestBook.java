@@ -20,12 +20,6 @@ public class GuestBook {
 	private int ownerNo;
 	private int visitorNo;
 	private Member visitor;
+	private int secret;// 0 = 공개글, 1 = 비밀글
 	
-	public Member getVisitor() {
-	    return visitor;
-	}
-
-	public void setVisitor(Member visitor) {
-	    this.visitor = visitor;
-	}
 }

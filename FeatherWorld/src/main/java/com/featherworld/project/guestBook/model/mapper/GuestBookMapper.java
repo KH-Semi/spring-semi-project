@@ -69,7 +69,9 @@ public interface GuestBookMapper {
 	 * @param rowBounds 페이징 정보
 	 * @return 방명록 목록
 	 */
-	List<GuestBook> selectGuestBookList(@Param("memberNo") int memberNo, RowBounds rowBounds);
+	List<GuestBook> selectGuestBookList(
+		    @Param("memberNo") int memberNo,
+		    RowBounds rowBounds);
 	
 	/**
 	 * 방명록 총 개수 조회
@@ -100,4 +102,5 @@ public interface GuestBookMapper {
 	int guestBookUpdate(GuestBook guestBook);
 
 	GuestBook selectOne(Integer guestBookNo);
+
 }

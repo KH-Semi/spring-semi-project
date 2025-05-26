@@ -21,6 +21,16 @@ const selectGuestBookList = () => {
       // 05.23 배령 수정
       // 방명록이 있을 경우, 각각의 방명록 데이터를 순회하며 DOM 요소 생성
       guestBookList.forEach((item) => {
+
+        // 🔒 비밀글인데, 홈피 주인도 아니고 작성자도 아니면 랜더링 x
+        if (
+          item.secret == 1 &&
+          loginMemberNo != item.visitor?.memberNo &&
+          loginMemberNo != ownerNo
+        ) {
+          return;
+        }
+
         const itemDiv = document.createElement("div");
         itemDiv.className = "guestbook-item"; // 전체 방명록 한 개의 최상위 div
 
@@ -117,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = {
       guestBookContent: guestBookContent.value,
       visitorNo: loginMemberNo,
+      secret: document.querySelector("#secretCheck").checked ? 1 : 0,
     };
 
     fetch(`/${ownerNo}/guestbook`, {
@@ -257,3 +268,90 @@ const updateGuestBook = (guestBookNo, btn) => {
     })
     .catch((err) => console.error("수정 중 오류:", err));
 };
+
+// 페이지 네이션
+/** 페이징 목록/글쓰기 버튼 포함 div 생성 메서드
+ * @author Jiho
+ * @param pagination Pagination 객체
+ * @return 페이징 목록/글쓰기 버튼 포함 div
+ */
+const createBoardFooter = (pagination) => {
+  /** 각각의 페이징 목록을 생성하고, 페이지 변경 click 이벤트 부여
+   * @author Jiho
+   * @param {number} page 페이지 번호(cp)
+   * @param {String} text innerText 내용
+   * @param {string} className 클래스명
+   * @returns {HTMLSpanElement} span 태그
+   */
+  const createPageSpan = (page, text, className = "") => {
+    const span = document.createElement("span");
+    span.innerText = text;
+    span.dataset.page = String(page);
+    if (className) span.classList.add(className);
+
+    // 페이지 클릭 이벤트 추가
+    span.addEventListener("click", async () => {
+      // 변경된 cp값 적용/history 저장
+      recodeCp(page);
+      // 해당 페이지에 맞게 게시글/페이징 목록 갱신
+      renderBoardList(boardCode, page).catch(console.error);
+    });
+
+    return span;
+  };
+
+  const containerDiv = document.createElement("div");
+
+  if (pagination) {
+    // 임시 페이징 목록 div
+    const updatedPagination = document.createElement("div");
+    updatedPagination.classList.add("pagination");
+
+    // << 첫 페이지
+    updatedPagination.append(createPageSpan(1, "<<"));
+
+    // < 이전 페이지
+    updatedPagination.append(
+      createPageSpan(pagination.prevPage, "<", "page-nav")
+    );
+
+    // 페이지 번호 목록
+    for (let i = pagination.startPage; i <= pagination.endPage; i++) {
+      const span = createPageSpan(i, i);
+      if (i === pagination.currentPage) {
+        span.classList.add("current");
+      }
+      updatedPagination.append(span);
+    }
+
+    // > 다음 페이지
+    updatedPagination.append(
+      createPageSpan(pagination.nextPage, ">", "page-nav")
+    );
+
+    // >> 마지막 페이지
+    updatedPagination.append(createPageSpan(pagination.maxPage, ">>"));
+
+    containerDiv.append(updatedPagination);
+  }
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  const lockIcon = document.querySelector("#lockIcon");
+  const toggleBtn = document.querySelector("#toggleSecret");
+  const secretCheck = document.querySelector("#secretCheck");
+
+  toggleBtn.addEventListener("click", () => {
+    secretCheck.checked = !secretCheck.checked;
+
+    // 🔒 좌물쇠 아이콘 전환
+    lockIcon.classList.remove("fa-lock", "fa-lock-open");
+    lockIcon.classList.add(secretCheck.checked ? "fa-lock" : "fa-lock-open");
+
+    // 🔄 토글 아이콘 방향 전환 (ON = 오른쪽 = 비밀글 O)
+    toggleBtn.classList.remove("fa-toggle-on", "fa-toggle-off");
+    toggleBtn.classList.add(
+      secretCheck.checked ? "fa-toggle-on" : "fa-toggle-off"
+    );
+  });
+});

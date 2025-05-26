@@ -8,6 +8,7 @@
     <th:block th:replace="~{common/common}"></th:block>
     <link rel="stylesheet" href="/css/board/boardType.css" />
     <link rel="stylesheet" href="/css/guestBook/guestBook.css" />
+    <!-- <link rel="stylesheet" href="/css/common/main.css" /> -->
   </head>
   <body>
     <div class="container">
@@ -22,73 +23,58 @@
 
         <!-- 중앙 방명록 목록 -->
         <div class="main-content">
+          <!-- 방명록 목록 (JS로 동적 렌더링) -->
           <div class="guestbook-list" id="guestbook-list">
-            <!-- DB에서 가져온 방명록 목록 순회 -->
+            <!-- 서버에서 전달된 guestBookList가 있을 경우 -->
             <div
+              th:if="${guestBookList != null}"
+              th:each="item : ${guestBookList}"
               class="guestbook-item"
-              th:each="guestBook : ${guestBookList} "
-              th:object="${guestBook}"
             >
               <div class="guestbook-wrap">
                 <div class="guestbook-main">
-                  <div class="guestbook-content" th:text="*{guestBookContent}">
-                    방명록 내용
-                  </div>
+                  <!-- 비밀글 처리 -->
+                  <div
+                    class="guestbook-content"
+                    th:text="${item.secret == 1 and loginMember?.memberNo != item.visitor?.memberNo and loginMember?.memberNo != ownerNo 
+                        ? '🔒 비밀글입니다.' : item.guestBookContent}"
+                  ></div>
                 </div>
               </div>
+
               <div class="guestbook-info">
                 <span th:text="*{visitor != null ? visitor.memberName : '익명'}"
                   >작성자</span
                 >
-
-                <!-- <span th:text="*{visitorName}">작성자</span> -->
-                <!-- guestBook 작성자 필드명에 맞춰 수정 -->
-                <div class="guestbook-date" th:text="*{guestBookWriteDate}">
-                  게시일
+                <div
+                  class="guestbook-date"
+                  th:text="${item.guestBookWriteDate}"
+                >
+                  작성일
                 </div>
+              </div>
 
-                <!-- 로그인한 회원이 방명록 작성자일 때만 버튼 출력 -->
-                <div class="guestbook-actions">
-                  <th:block
-                    th:if="${loginMember != null} and ${loginMember.memberNo} == *{visitorNo}"
-                  >
-                    <button
-                      th:onclick="|showUpdateGuestBook(*{guestBookNo}, this)|"
-                    >
-                      Edit
-                    </button>
-                    <button th:onclick="|deleteGuestBook(*{guestBookNo})|">
-                      Delete
-                    </button>
-                  </th:block>
-                </div>
+              <!-- 작성자 본인에게만 수정/삭제 버튼 노출 -->
+              <div
+                th:if="${loginMember?.memberNo == item.visitor?.memberNo}"
+                class="guestbook-actions"
+              >
+                <a
+                  href="#"
+                  th:onclick="|showUpdateGuestBook(${item.guestBookNo}, this); return false;|"
+                  >✏️ 수정</a
+                >
+                <a
+                  href="#"
+                  th:onclick="|deleteGuestBook(${item.guestBookNo}); return false;|"
+                  >❌ 삭제</a
+                >
               </div>
             </div>
           </div>
 
-          <!-- 페이징 처리 -->
-          <div
-            class="pagination"
-            th:if="${pagination != null}"
-            th:object="${pagination}"
-          >
-            <a th:href="@{/guestbook(cp=1)}">&lt;&lt;</a>
-            <a th:href="@{/guestbook(cp=*{prevPage})}" class="page-nav">&lt;</a>
-
-            <th:block
-              th:if="*{startPage <= endPage}"
-              th:each="i : *{#numbers.sequence(startPage, endPage)}"
-            >
-              <a
-                th:href="@{/guestbook(cp=${i})}"
-                th:text="${i}"
-                th:class="${i} == *{currentPage} ? 'current' : ''"
-              ></a>
-            </th:block>
-
-            <a th:href="@{/guestbook(cp=*{nextPage})}" class="page-nav">&gt;</a>
-            <a th:href="@{/guestbook(cp=*{maxPage})}">&gt;&gt;</a>
-          </div>
+          <!-- 페이징 영역 -->
+          <div id="guestbook-pagination" class="pagination"></div>
 
           <!-- 방명록 작성 부분 -->
           <div class="guestBook-write-area">
@@ -98,23 +84,33 @@
               th:value="${loginMember?.memberNo}"
             />
             <input type="hidden" id="ownerNo" th:value="${ownerNo}" />
+
             <!-- 아이콘 -->
             <div class="icon-bar">
-              <i class="fa-solid fa-lock-open"></i>
-              <i class="fa-solid fa-toggle-on"></i>
-              <br />
+              <i id="lockIcon" class="fa-solid fa-lock-open"></i>
+              <i
+                id="toggleSecret"
+                class="fa-solid fa-toggle-on"
+                style="cursor: pointer"
+              ></i
+              ><br />
             </div>
+
+            <label style="display: none">
+              <input type="checkbox" id="secretCheck" />
+              비밀글
+            </label>
             <textarea
               class="guestBook-textbox"
               id="guestBookContent"
               placeholder="방명록을 작성해보세요 :)"
               required
             ></textarea>
-            <!-- 글쓰기 버튼 -->
 
             <button id="addGuestBook">Write✏️</button>
           </div>
         </div>
+
         <!-- /.main-content -->
 
         <!-- 우측 네비게이션 바 Include -->
