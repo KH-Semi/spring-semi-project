@@ -47,5 +47,14 @@ public interface MiniHomeMapper {
 
 	int getTotalGuestBookCount(int memberNo);
 
+	// ----
+	int insertIlchonComment(IlchonComment ilchonComment);
+
+	int deleteIlchonComment(IlchonComment ilchonComment);
+
+	int checkExistingIlchonComment(IlchonComment checkComment);
+
+	int updateIlchonComment(IlchonComment ilchonComment);
+
 
 }

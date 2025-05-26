@@ -117,11 +117,13 @@
                       <!-- 작성자 정보 -->
                       <div class="comment-author">
                         <img
-                          th:src="${comment.fromMemberImg != null ? '/resources/upload/member/' + comment.fromMemberImg : '/images/default-profile.jpg'}"
+                          th:src="${comment.fromMemberImg == null ? 
+                         '/images/user.png' : 
+                         '/resources/upload/member/' + comment.fromMemberImg}"
                           alt="프로필"
                           class="author-profile-img"
-                          onerror="this.src='/images/default-profile.jpg'"
                         />
+
                         <span
                           class="author-name"
                           th:text="${comment.fromMemberName}"
@@ -199,9 +201,10 @@
 
     <script src="/js/miniHome/miniHome.js"></script>
 
+    <script src="/js/miniHome/leftSidebar.js"></script>
+
     <script>
-      // Thymeleaf에서 memberNo 가져오기
-      const memberNo = /*[[${memberNo}]]*/ 0;
+      const memberNo = /*[[${memberNo}]]*/ "회원번호";
     </script>
   </body>
 </html>

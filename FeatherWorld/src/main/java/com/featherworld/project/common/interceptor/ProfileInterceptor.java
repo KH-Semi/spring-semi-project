@@ -36,7 +36,12 @@ public class ProfileInterceptor implements HandlerInterceptor {
                           Object handler, 
                           ModelAndView modelAndView) throws Exception {
         
+    	// JSON 응답 (AJAX 요청) 또는 modelAndView 없는 경우 바로 리턴
         if (modelAndView == null || modelAndView.getViewName() == null) {
+            return;
+        }
+        // 비동기 처리 (POST/PUT/DELETE 등)은 인터셉터 로직 제외
+        if (!"GET".equalsIgnoreCase(request.getMethod())) {
             return;
         }
         

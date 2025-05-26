@@ -122,5 +122,29 @@ public interface MiniHomeService {
 	 */
 	int getTotalGuestBookCount(int memberNo);
 
+	/** 일촌평작성 
+	 * @param ilchonComment
+	 * @return
+	 */
+	int insertIlchonComment(IlchonComment ilchonComment);
+
+	/** 일촌평 삭제
+	 * @param ilchonComment
+	 * @return
+	 */
+	int deleteIlchonComment(IlchonComment ilchonComment);
+
+	/** 일촌평 조회~
+	 * @param checkComment
+	 * @return
+	 */
+	int checkExistingIlchonComment(IlchonComment checkComment);
+
+	/** 기존에 일촌평이있으면 확인해서 수정을 시켜버리잣
+	 * @param ilchonComment
+	 * @return
+	 */
+	int updateIlchonComment(IlchonComment ilchonComment);
+
 	
 }

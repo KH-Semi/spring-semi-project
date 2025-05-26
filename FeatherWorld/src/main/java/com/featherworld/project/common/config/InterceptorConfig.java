@@ -44,16 +44,18 @@
 	            		"/favicon.ico",
 	            		"/api/**",
 	            		"/error",
-            		"/member/**",
+            		   "/member/**",
 	            		"/email/**",
 	            		"/login",
 	            		"/register",
 	            		"/**/images/**",  // ← 추가
 	            		"/**/*.jpg",      // ← 추가  
 	            		"/**/*.png",      // ← 추가
-	          		"/**/*.gif",      // ← 추가
+	          		    "/**/*.gif",      // ← 추가
 	            		"/**/*.css",      // ← 추가
-	            		"/**/*.js"        // ← 추가/	            		            
+	            		"/**/*.js" ,
+	            		"/**/ilchon-comment",
+	            		"/"// ← 추가/	            		            
             		);
 	        
 	           

@@ -161,5 +161,43 @@
         FROM GUEST_BOOK
         WHERE OWNER_NO = #{memberNo}
     	</select>
+		
+		 <!-- 일촌평 등ㄹ럭-->
+		<insert id="insertIlchonComment" parameterType="IlchonComment">
+   		INSERT INTO ILCHON_COMMENT (
+        FROM_MEMBER_NO, 
+        TO_MEMBER_NO, 
+        ILCHON_COMMENT_CONTENT
+   		 ) VALUES (
+        #{fromMemberNo}, 
+        #{toMemberNo}, 
+        #{ilchonCommentContent}
+  		  )
+		</insert>
+	
+		<!-- 일촌평 삭제 -->
+		<delete id="deleteIlchonComment" parameterType="IlchonComment">
+    	DELETE FROM ILCHON_COMMENT 
+    	WHERE FROM_MEMBER_NO = #{fromMemberNo} 
+        AND TO_MEMBER_NO = #{toMemberNo}
+		</delete>
+		
+		<!-- 기존 일촌평 존재 여부 확인 -->
+		<select id="checkExistingIlchonComment" parameterType="IlchonComment" resultType="int">
+  		  SELECT COUNT(*) 
+   		  FROM ILCHON_COMMENT 
+  		  WHERE FROM_MEMBER_NO = #{fromMemberNo} 
+    	  AND TO_MEMBER_NO = #{toMemberNo}
+		</select>
+
+		<!-- 일촌평 수정 -->
+	<update id="updateIlchonComment" parameterType="IlchonComment">
+    UPDATE ILCHON_COMMENT 
+    SET ILCHON_COMMENT_CONTENT = #{ilchonCommentContent}
+    WHERE FROM_MEMBER_NO = #{fromMemberNo} 
+      AND TO_MEMBER_NO = #{toMemberNo}
+	</update>
+
+
 
 </mapper>

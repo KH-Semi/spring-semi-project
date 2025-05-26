@@ -147,5 +147,31 @@ public class MiniHomeServiceImpl implements MiniHomeService {
 		
 		return mapper.getRecentBoards(memberNo);
 	}
+	
+	@Override
+	public int insertIlchonComment(IlchonComment ilchonComment) {
+		
+		return mapper.insertIlchonComment(ilchonComment);
+	}
+	
+	
+	@Override
+	public int deleteIlchonComment(IlchonComment ilchonComment) {
+		
+		return mapper.deleteIlchonComment(ilchonComment);
+	}
+	
+	@Override
+	public int checkExistingIlchonComment(IlchonComment checkComment) {
+		
+		return mapper.checkExistingIlchonComment(checkComment);
+	}
+	
+	@Override
+	public int updateIlchonComment(IlchonComment ilchonComment) {
+	
+		return mapper.updateIlchonComment(ilchonComment);
+	}
+	
 }
 
