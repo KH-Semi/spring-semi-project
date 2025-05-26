@@ -44,6 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const boardDetailBackBtn = document.querySelector(".back-button");
 
   boardDetailBackBtn.addEventListener("click", () => {
-    location.href = `/${memberNo}/board/${boardCode}`;
+      window.history.back();
   });
 });

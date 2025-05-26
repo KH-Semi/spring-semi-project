@@ -30,6 +30,7 @@ textarea {
   align-content: center;
   align-items: center;
   align-self: center;
+  border: 1px solid #ccc;
   border-radius: 20px;
   background-color: #ddd;
   padding: 10px;
@@ -40,7 +41,7 @@ textarea {
 
 .rounded-unfollow-span {
   display: inline-block; /* 또는 block */
-
+  border: 1px solid #ccc;
   align-content: center;
   align-items: center;
   align-self: center;

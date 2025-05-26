@@ -49,6 +49,27 @@ bioInput.addEventListener("input", () => {
   }
 });
 
+document.getElementById("saveBioBtn").addEventListener("click", () => {
+  const bio = document.getElementById("bioInput").value.trim();
+  if (!bio) return alert("Bio를 입력하세요.");
+
+  fetch("/profile/updateBio", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ bio }),
+  })
+    .then((response) => {
+      if (response.ok) return response.text();
+      else throw new Error("서버 오류");
+    })
+    .then((result) => {
+      alert("Bio가 저장되었습니다.");
+    })
+    .catch((err) => alert(err.message));
+});
+
 // 확인 버튼 클릭 이벤트 (통합 버전)
 if (confirmEditBtn) {
   confirmEditBtn.addEventListener("click", async () => {
@@ -81,14 +102,14 @@ if (confirmEditBtn) {
     formData.append("bio", bioText);
 
     try {
-      const response = await fetch("/profile/update", {
+      const response = await fetch(`/${memberNo}/profileupdate`, {
         method: "POST",
         body: formData,
       });
 
       if (response.ok) {
         alert("프로필이 성공적으로 업데이트되었습니다.");
-        window.location.href = "/profile";
+        window.location.href = `/${memberNo}/profile`;
       } else {
         alert("프로필 업데이트에 실패했습니다.");
       }
@@ -109,7 +130,7 @@ if (backBtn) {
 // 프로필 업데이트 페이지 이동 버튼 클릭 이벤트
 if (profileUpdateBtn) {
   profileUpdateBtn.addEventListener("click", () => {
-    window.location.href = "/profile/edit";
+    window.location.href = "/profile/profileupdate";
   });
 }
 

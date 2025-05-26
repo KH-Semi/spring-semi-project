@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>FeatherWorld</title>
+    <!-- 공용 css/js 추가 -->
+    <th:block th:replace="~{common/common}"></th:block>
+    <!-- miniHome 전용 CSS -->
+    <link href="/css/friendList/friendList.css" rel="stylesheet" />
+
+    <link href="/css/common/main.css" rel="stylesheet" />
+    <!-- for pagination -->
+  </head>
+  <body>
+    <!-- Header Fragment -->
+    <header th:replace="~{common/header.html}"></header>
+    <div class="container">
+      <!-- Left Panel - Profile Information -->
+      <div class="left-panel">
+        <header class="logo">
+          <p>Today / Total</p>
+        </header>
+
+        <div class="profile-info">
+          <div class="profile-image">
+            <img
+              alt="프로필 이미지"
+              src="/FeatherWorld/src/main/resources/static/images/user.png"
+            />
+          </div>
+          <div class="profile-name">반응형</div>
+          <div class="profile-handle">@re</div>
+          <div class="profile-stats">
+            <div class="stat">
+              <div class="stat-number">128</div>
+              <div class="stat-label">Follower</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">97</div>
+              <div class="stat-label">Following</div>
+            </div>
+          </div>
+          <div class="profile-action">
+            <button class="action-button Edit-button">Edit Profile</button>
+            <button class="action-button Logout-button">Logout</button>
+          </div>
+        </div>
+
+        <!-- 여기 추가 -->
+        <div class="profile-action">
+          <button class="action-button Board-button">Bio</button>
+        </div>
+
+        <div class="profile-action">
+          <button class="action-button surfing-button">surfing</button>
+        </div>
+      </div>
+
+      <!-- Middle Panel - Posts -->
+      <div class="middle-panel">
+        <th:block
+          name="inc-friend-list"
+          th:replace="~{friendList/incomingFriendListPart}"
+        ></th:block
+        ><!--replace 조각에 memberNo변수를 넘겨야함.-->
+      </div>
+
+      <th:block th:replace="~{common/navSidebar}"></th:block>
+    </div>
+
+    <!-- 푸터 추가 -->
+    <footer th:replace="~{common/footer.html}"></footer>
+  </body>
+</html>

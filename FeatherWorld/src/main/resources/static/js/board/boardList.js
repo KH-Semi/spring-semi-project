@@ -105,23 +105,26 @@ const createBoardFooter = (pagination) => {
     containerDiv.append(updatedPagination);
   }
 
-  // 글쓰기 버튼 추가
-  const writeDiv = createDiv("write-button");
-  const writeSpan = document.createElement("span");
-  writeSpan.innerText = "Write";
-  writeDiv.append(writeSpan);
+  // 본인 게시판일 경우만
+  if(loginMemberNo === memberNo) {
+    // 글쓰기 버튼 추가
+    const writeDiv = createDiv("write-button");
+    const writeSpan = document.createElement("span");
+    writeSpan.innerText = "Write";
+    writeDiv.append(writeSpan);
 
-  // 쓰기 버튼 클릭시 동기식 페이지 전환
-  writeSpan.addEventListener("click", () => {
-    if (boardCode === 0) {
-      alert("존재하지 않는 게시판입니다.");
-      return;
-    }
+    // 쓰기 버튼 클릭시 동기식 페이지 전환
+    writeSpan.addEventListener("click", () => {
+      if (boardCode === 0) {
+        alert("존재하지 않는 게시판입니다.");
+        return;
+      }
 
-    location.href = `/${memberNo}/board/${boardCode}/write`;
-  });
+      location.href = `/${memberNo}/board/${boardCode}/write`;
+    });
 
-  containerDiv.append(writeDiv);
+    containerDiv.append(writeDiv);
+  }
 
   return containerDiv;
 };
@@ -213,7 +216,14 @@ const renderBoardList = async (boardType, page) => {
     boardItem.append(boardWrap, boardInfo);
 
     boardItem.addEventListener("click", () => {
-      location.href = `/${memberNo}/board/${boardCode}/${board.boardNo}`;
+      const cp = searchCp();
+
+      // cp 값에 따라 요청 변경
+      let queryString;
+      if (cp == null) queryString = "";
+      else queryString = `?cp=${cp}`;
+
+      location.href = `/${memberNo}/board/${boardCode}/${board.boardNo}${queryString}`;
     });
 
     // 게시글 목록 div에 게시글 하나 넣기
@@ -268,11 +278,8 @@ const renderBoardTypeList = async () => {
 
   boardTypeSidebar.append(div);
 
-  boardTypeList.forEach((boardType) => {
-    if (
-      boardType.authority == 0 ||
-      (boardType.authority == 1 && loginMemberNo === memberNo)
-    ) {
+  boardTypeList.forEach(boardType => {
+    if (boardType.authority === 0 || (boardType.authority === 1 && loginMemberNo === memberNo)) {
       const boardTypeItem = document.createElement("div");
       boardTypeItem.classList.add("board-type-item");
       boardTypeItem.dataset.boardCode = boardType.boardCode;
@@ -281,25 +288,32 @@ const renderBoardTypeList = async () => {
       boardTypeTitle.classList.add("board-type-title");
       boardTypeTitle.innerText = boardType.boardName;
 
-      const iconSpan = document.createElement("span");
+      // 기본 게시판에는 수정 허용 안됨!
+      if(boardType.boardCode !== defaultBoardCode) {
+        const iconSpan = document.createElement("span");
+        iconSpan.classList.add("icon-wrap");
 
-      const editIcon = document.createElement("span");
-      editIcon.classList.add("edit-icon");
-      const pencilIcon = document.createElement("span");
-      editIcon.classList.add("fa-solid", "fa-pencil");
+        const editIcon = document.createElement("span");
+        editIcon.classList.add("edit-icon");
+        const pencilIcon = document.createElement("span");
+        editIcon.classList.add("fa-solid", "fa-pencil");
 
-      editIcon.append(pencilIcon);
+        editIcon.append(pencilIcon);
 
-      const deleteIcon = document.createElement("span");
-      deleteIcon.classList.add("delete-icon");
-      const trashIcon = document.createElement("span");
-      trashIcon.classList.add("fa-solid", "fa-trash");
+        const deleteIcon = document.createElement("span");
+        deleteIcon.classList.add("delete-icon");
+        const trashIcon = document.createElement("span");
+        trashIcon.classList.add("fa-solid", "fa-trash");
 
-      deleteIcon.append(trashIcon);
+        deleteIcon.append(trashIcon);
 
-      iconSpan.append(editIcon, deleteIcon);
+        iconSpan.append(editIcon, deleteIcon);
 
-      boardTypeItem.append(boardTypeTitle, iconSpan);
+        boardTypeItem.append(boardTypeTitle, iconSpan);
+
+      } else {
+        boardTypeItem.append(boardTypeTitle);
+      }
 
       boardTypeSidebar.append(boardTypeItem);
     }
@@ -308,6 +322,18 @@ const renderBoardTypeList = async () => {
   document.querySelector(".board-type-sidebar").replaceWith(boardTypeSidebar);
 };
 
+const loadBoardTypeList = () => {
+  renderBoardTypeList().catch(console.error);
+
+  if(loginMemberNo === memberNo) {
+    leftSidebar.append(createAddFolder());
+  }
+}
+
+/** 폴더 추가 버튼 생성
+ * @author Jiho
+ * @returns {HTMLDivElement}
+ */
 const createAddFolder = () => {
   const div = createDiv("add-folder", "Add Folder");
   const span = document.createElement("span");
@@ -318,140 +344,73 @@ const createAddFolder = () => {
   return div;
 };
 
+/** 게시판 추가/수정 시 나타나는 폼 요소 생성
+ * @author Jiho
+ * @returns {HTMLDivElement}
+ */
+const createFolderForm = () => {
+  const folderForm = createDiv("add-folder-form");
+
+  const folderTitleInput = document.createElement("input");
+  folderTitleInput.classList.add("add-folder-input");
+  folderTitleInput.name = "boardName";
+  folderTitleInput.placeholder = "Input Folder Title";
+
+  const folderFormFooter = createDiv("folder-form-footer");
+
+  // 푸터 좌측 권한 설정 부분
+  const leftTempDiv = document.createElement("div");
+
+  const lockSpan = document.createElement("span");
+  lockSpan.classList.add("fa-solid", "fa-lock-open");
+
+  const toggleAuthority = createDiv("toggle-authority");
+  const toggleDiv = document.createElement("div");
+  toggleAuthority.append(toggleDiv);
+
+  leftTempDiv.append(lockSpan, toggleAuthority);
+
+  // 푸터 우측 취소, 확정 부분
+  const rightTempDiv = document.createElement("div");
+
+  const cancel = document.createElement("span");
+  cancel.classList.add("cancel-add-folder");
+  cancel.innerText = "Cancel";
+
+  const confirm = document.createElement("span");
+  confirm.classList.add("confirm-add-folder");
+  confirm.innerText = "Confirm";
+
+  rightTempDiv.append(cancel, confirm);
+
+  const authority = document.createElement("input");
+  authority.type = "hidden";
+  authority.name = "authority";
+  authority.value = "0";
+  authority.required = true;
+
+  toggleAuthority.addEventListener("click", () => {
+    toggleDiv.style.left = toggleDiv.style.left === "" ? "15px" : "";
+
+    if (lockSpan.classList.contains("fa-lock-open")) {
+      lockSpan.classList.replace("fa-lock-open", "fa-lock");
+    } else {
+      lockSpan.classList.replace("fa-lock", "fa-lock-open");
+    }
+
+    authority.value = authority.value === "0" ? "1" : "0";
+  });
+
+  folderFormFooter.append(leftTempDiv, rightTempDiv);
+
+  folderForm.append(folderTitleInput, folderFormFooter, authority);
+
+  return folderForm;
+}
+
 if (leftSidebar) {
+
   leftSidebar.addEventListener("click", async (e) => {
-    // 좌측 게시판 목록 선택
-    if (e.target.classList.contains("board-type-item")) {
-      // 현재 게시판 종류 번호 갱신
-      boardCode = e.target.dataset.boardCode;
-
-      // boardCode 반영해 url 갱신
-      history.pushState({}, '', boardCode);
-
-      // 게시글 목록 갱신
-      renderBoardList(boardCode, null).catch(console.error);
-
-      return;
-    }
-
-    // 폴더 추가 버튼 선택
-    const addFolder = e.target.closest(".add-folder");
-    if(addFolder) {
-      const addFolderForm = createDiv("add-folder-form");
-
-      const folderTitleInput = document.createElement("input");
-      folderTitleInput.classList.add("add-folder-input");
-      folderTitleInput.name = "boardName";
-      folderTitleInput.placeholder = "Input Folder Title";
-
-      const folderFormFooter = createDiv("folder-form-footer");
-
-      // 푸터 좌측 권한 설정 부분
-      const leftTempDiv = document.createElement("div");
-
-      const lockSpan = document.createElement("span");
-      lockSpan.classList.add("fa-solid", "fa-lock-open");
-
-      const toggleAuthority = createDiv("toggle-authority");
-      const toggleDiv = document.createElement("div");
-      toggleAuthority.append(toggleDiv);
-
-      leftTempDiv.append(lockSpan, toggleAuthority);
-
-      // 푸터 우측 취소, 확정 부분
-      const rightTempDiv = document.createElement("div");
-
-      const cancel = document.createElement("span");
-      cancel.classList.add("cancel-add-folder");
-      cancel.innerText = "Cancel";
-
-      const confirm = document.createElement("span");
-      confirm.classList.add("confirm-add-folder");
-      confirm.innerText = "Confirm";
-
-      rightTempDiv.append(cancel, confirm);
-
-      const authority = document.createElement("input");
-      authority.type = "hidden";
-      authority.name = "authority";
-      authority.value = "0";
-      authority.required = true;
-
-      toggleAuthority.addEventListener("click", () => {
-        toggleDiv.style.left = toggleDiv.style.left === "" ? "15px" : "";
-
-        if (lockSpan.classList.contains("fa-lock-open")) {
-          lockSpan.classList.replace("fa-lock-open", "fa-lock");
-        } else {
-          lockSpan.classList.replace("fa-lock", "fa-lock-open");
-        }
-
-        authority.value = authority.value === "0" ? "1" : "0";
-      });
-
-      folderFormFooter.append(leftTempDiv, rightTempDiv);
-
-      addFolderForm.append(folderTitleInput);
-      addFolderForm.append(folderFormFooter);
-      addFolderForm.append(authority);
-
-      leftSidebar.append(addFolderForm);
-
-      folderTitleInput.focus();
-      addFolder.remove();
-
-      return;
-    }
-
-    // 폴더 추가 취소 버튼
-    const cancelAddFolder = e.target.closest(".cancel-add-folder");
-    if(cancelAddFolder) {
-      document.querySelector(".add-folder-form").remove();
-      leftSidebar.append(createAddFolder());
-
-      return;
-    }
-    
-    // 폴더 추가 확정 버튼
-    const confirmAddFolder = e.target.closest(".confirm-add-folder");
-    if(confirmAddFolder) {
-      const boardName = document.querySelector("input[name='boardName']").value;
-      if (boardName.trim().length === 0) {
-        alert("게시판 이름을 작성해주세요.");
-        document.querySelector(".add-folder-input").focus();
-        return;
-      }
-
-      const authority = document.querySelector("input[name='authority']").value;
-
-      const folderForm = {
-        boardName: boardName,
-        authority: authority,
-      };
-
-      // 입력한 값들을 모두 ajax로 비동기 요청
-      const resp = await fetch(`/${memberNo}/board/insert`, {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(folderForm),
-      });
-      const result = await resp.text();
-
-      if(result == 0) {
-        alert("게시판 추가 실패");
-        return;
-      }
-
-      alert("새로운 게시판이 생성되었습니다.");
-
-      // 현재 세션 갱신 후 화면에 게시판 목록 렌더링
-      renderBoardTypeList().catch(console.error);
-
-      document.querySelector(".add-folder-form")?.remove();
-      leftSidebar.append(createAddFolder());
-
-      return;
-    }
 
     // edit 버튼
     const editBtn = e.target.closest(".edit-button");
@@ -460,7 +419,7 @@ if (leftSidebar) {
       editMode = !editMode;
 
       const iconSpan = document.querySelectorAll(
-        ".board-type-item > span:last-child"
+          ".board-type-item > .icon-wrap"
       );
 
       if(editMode) {
@@ -480,28 +439,68 @@ if (leftSidebar) {
     const editIcon = e.target.closest(".edit-icon");
     if(editMode && editIcon) {
 
-      // input으로 수정값 받아오기 필요
-      const boardName = "수정 이름";
-      const authority = 1;
+      // 선택한 게시판
+      const parentBoardItem = editIcon.closest(".board-type-item");
+      // 선택한 게시판 종류 번호
+      const editBoardCode = parentBoardItem.dataset.boardCode;
+      // 기존 게시판명
+      const title = parentBoardItem.firstElementChild.innerText;
 
-      const folderForm = {
-        boardName: boardName,
-        authority: authority
-      };
+      const editFn = async input => {
+        if (input.value.trim() === "") {
+          alert("게시판 이름을 입력하세요.");
+          return;
+        }
 
+        const folderObj = {
+          boardCode: editBoardCode,
+          boardName: input.value
+        };
 
-      // 수정 모드 초기화
-      editMode = !editMode;
+        const resp = await fetch(`/${memberNo}/board/update`, {
+          method: "put",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(folderObj)
+        });
+        const result = await resp.text();
+
+        if (result == 0)
+          alert("게시판 수정 실패");
+
+        renderBoardTypeList().catch(console.error);
+
+        // 수정 모드 초기화
+        editMode = false;
+      }
+
+      const input = document.createElement("input");
+      input.name = "boardName";
+      input.value = title;
+
+      editIcon.addEventListener("click", () => editFn(input));
+
+      parentBoardItem.firstElementChild.replaceWith(input);
+      input.focus();
+
+      return;
     }
 
     // 쓰레기통 아이콘 클릭시
     const deleteIcon = e.target.closest(".delete-icon");
     if(editMode && deleteIcon) {
 
+      const deleteBoardCode = deleteIcon.parentElement.parentElement.dataset.boardCode;
+
+      // 삭제되는 게시판이 기본 게시판인 경우
+      if(deleteBoardCode == defaultBoardCode) {
+        alert("기본 게시판은 삭제할 수 없습니다.");
+        return;
+      }
+
       const resp = await fetch(`/${memberNo}/board/delete`, {
         method: "delete",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ boardCode: boardCode })
+        body: JSON.stringify({ boardCode: deleteBoardCode })
       });
       const result = await resp.text();
 
@@ -515,9 +514,86 @@ if (leftSidebar) {
       renderBoardTypeList().catch(console.error);
 
       // 수정 모드 초기화
-      editMode = !editMode;
-      // boardCode & 게시글 초기화 필요
+      editMode = false;
 
+      return;
+    }
+
+    // 좌측 게시판 목록 선택
+    const boardTypeItem = e.target.closest(".board-type-item");
+    if (boardTypeItem) {
+      // 현재 게시판 종류 번호 갱신
+      boardCode = boardTypeItem.dataset.boardCode;
+
+      // boardCode 반영해 url 갱신
+      history.pushState({}, '', boardCode);
+
+      // 게시글 목록 갱신
+      renderBoardList(boardCode, null).catch(console.error);
+
+      return;
+    }
+
+    // 폴더 추가 버튼 선택
+    const addFolder = e.target.closest(".add-folder");
+    if(addFolder) {
+      const addFolderForm = createFolderForm();
+
+      leftSidebar.append(addFolderForm);
+
+      addFolderForm.querySelector(".add-folder-input").focus();
+      addFolder.remove();
+
+      return;
+    }
+
+    // 폴더 추가 취소 버튼
+    const cancelAddFolder = e.target.closest(".cancel-add-folder");
+    if(cancelAddFolder) {
+      document.querySelector(".add-folder-form")?.remove();
+      leftSidebar.append(createAddFolder());
+
+      return;
+    }
+    
+    // 폴더 추가 확정 버튼
+    const confirmAddFolder = e.target.closest(".confirm-add-folder");
+    if(confirmAddFolder) {
+      const boardName = document.querySelector("input[name='boardName']").value;
+      if (boardName.trim().length === 0) {
+        alert("게시판 이름을 작성해주세요.");
+        document.querySelector(".add-folder-input").focus();
+        return;
+      }
+
+      const authority = document.querySelector("input[name='authority']").value;
+
+      const folderObj = {
+        boardName: boardName,
+        authority: authority
+      };
+
+      // 입력한 값들을 모두 ajax로 비동기 요청
+      const resp = await fetch(`/${memberNo}/board/insert`, {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(folderObj),
+      });
+      const result = await resp.text();
+
+      if(result == 0) {
+        alert("게시판 추가 실패");
+        return;
+      }
+
+      alert("새로운 게시판이 생성되었습니다.");
+
+      // 현재 세션 갱신 후 화면에 게시판 목록 렌더링
+      renderBoardTypeList().catch(console.error);
+      editMode = false;
+
+      document.querySelector(".add-folder-form")?.remove();
+      leftSidebar.append(createAddFolder());
     }
   });
 }
@@ -530,5 +606,5 @@ window.addEventListener("popstate", () => {
   loadBoardList(boardCode);
 });
 
-loadBoardList(boardCode);
-renderBoardTypeList().catch(console.error);
+loadBoardList(defaultBoardCode);
+loadBoardTypeList();
