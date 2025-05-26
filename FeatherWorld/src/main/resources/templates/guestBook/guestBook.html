@@ -33,6 +33,18 @@
             >
               <div class="guestbook-wrap">
                 <div class="guestbook-main">
+                  <p class="guestbook-writer">
+                    <!-- 프로필 이미지 없을 경우 -->
+                    <img
+                      th:if="${#strings.isEmpty(item.visitor?.memberImg)}"
+                      th:src="@{/images/default-user.png}"
+                    />
+                    <!-- 프로필 이미지 있을 경우 -->
+                    <img
+                      th:if="${!#strings.isEmpty(item.visitor?.memberImg)}"
+                      th:src="${item.visitor.memberImg}"
+                    />
+                  </p>
                   <!-- 비밀글 처리 -->
                   <div
                     class="guestbook-content"
@@ -123,6 +135,11 @@
       <!-- 푸터 Include -->
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
+
+    <script th:inline="javascript">
+      // message.properties에서 얻어온 기본이미지
+      const userDefaultImage = /*[[#{user.default.image}]]*/ "기본이미지";
+    </script>
 
     <script src="/js/guestBook/guestBook.js"></script>
   </body>

@@ -13,6 +13,7 @@
     
    <association property="visitor" javaType="Member">
     <result property="memberName" column="VISITOR_NAME"/>
+    <result property="memberImg" column="MEMBER_IMG"/>
 </association>
 </resultMap>
 
@@ -31,6 +32,7 @@
 	        GB.OWNER_NO,
 	        GB.VISITOR_NO,
 	        GB.SECRET,
+			M.MEMBER_IMG,
 	        M.MEMBER_NAME AS VISITOR_NAME
     FROM GUEST_BOOK GB
     JOIN MEMBER M ON GB.VISITOR_NO = M.MEMBER_NO

@@ -45,6 +45,21 @@ const selectGuestBookList = () => {
         const mainDiv = document.createElement("div");
         mainDiv.className = "guestbook-main"; // 실제 내용 부분을 감싸는 div
 
+        // 프로필 이미지
+        const profileImg = document.createElement("img");
+        profileImg.className = "guestbook-writer-img";
+
+        if (
+          item.visitor?.memberImg == null ||
+          item.visitor.memberImg.trim() === ""
+        ) {
+          profileImg.src = userDefaultImage;
+        } else {
+          profileImg.src = item.visitor.memberImg;
+        }
+
+        mainDiv.prepend(profileImg);
+
         // 아이콘 생성 (비밀글일 경우)
         if (item.secret == 1) {
           const lockIcon = document.createElement("i");
