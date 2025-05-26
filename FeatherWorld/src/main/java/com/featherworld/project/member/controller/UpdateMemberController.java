@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.featherworld.project.member.model.dto.Today;
 import com.featherworld.project.member.model.dto.Member;
 import com.featherworld.project.member.model.service.MemberService;
+import com.featherworld.project.miniHome.model.service.MiniHomeService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -25,7 +26,9 @@ public class UpdateMemberController {
 
     @Autowired
     private MemberService service;
-
+    
+    @Autowired
+    private MiniHomeService miniHomeService;
     // GET: 비밀번호 인증 페이지 표시
     @GetMapping("/{memberNo}/updateMember")
     public String updateMemberAuth(@PathVariable("memberNo") int memberNo,
@@ -44,7 +47,7 @@ public class UpdateMemberController {
             ra.addFlashAttribute("message", "카카오로그인은 정보수정이 불가능합니다.");
             return "redirect:/";
         }
-
+        addSidebarData(memberNo, loginMember, model);
         // 3. 정상 진입
         model.addAttribute("memberNo", memberNo);
         return "member/updateMember";
@@ -113,4 +116,48 @@ public class UpdateMemberController {
         	
         return "redirect:/"; // 메인페이지로
     }
+    
+    
+	/** 왼쪽 프로필의 대한 값들의 타임리프값들을 유지시킬 장치
+	 * 그냥 필요한곳에다가는 냅다 박아넣어서 써야될것같음
+	 * @param memberNo
+		 * @param loginMember
+		 * @param model
+		*/
+		private void addSidebarData(int memberNo, Member loginMember, Model model) {
+ 
+  		// 본인기준이긴함 
+       // 회원 정보 조회
+       Member member = miniHomeService.findmember(memberNo);
+       
+       // 방문자 수 조회
+       Today todayQuery = new Today();
+       todayQuery.setHomeNo(memberNo);
+       int todayCount = miniHomeService.todayCount(todayQuery);
+       int totalCount = miniHomeService.totalCount(memberNo);
+       
+       // 팔로워/팔로잉 수 조회
+       int followerCount = miniHomeService.getFollowerCount(memberNo);
+       int followingCount = miniHomeService.getFollowingCount(memberNo);
+       
+       // 미수락 팔로워 신청 수 조회 (본인인 경우만)
+       boolean hasPendingFollowers = false;
+       if (loginMember != null && loginMember.getMemberNo() == memberNo) {
+           int pendingFollowerCount = miniHomeService.getPendingFollowerCount(memberNo);
+           hasPendingFollowers = (pendingFollowerCount > 0);
+       }
+       
+       // 모델에 데이터 추가
+       model.addAttribute("member", member);
+       model.addAttribute("todayCount", todayCount);
+       model.addAttribute("totalCount", totalCount);
+       model.addAttribute("followerCount", followerCount);
+       model.addAttribute("followingCount", followingCount);
+       model.addAttribute("hasPendingFollowers", hasPendingFollowers);
+       model.addAttribute("isIlchon", false); // 본인 페이지이므로 false
+ 
+       }
+
+    
+    
 }
