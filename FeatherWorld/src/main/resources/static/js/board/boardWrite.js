@@ -1,25 +1,50 @@
 // 이미지 업로드 관련 변수
-let uploadedImages = []; // 업로드된 이미지들을 저장할 배열
+let imageList = []; // 업로드된 이미지들을 저장할 배열
+
+// 이미지 업로드 리스트 최대 갯수
+const MAX_LENGTH = 5;
 
 // DOM 로드 완료 후 실행
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   initializeImageUpload();
   initializeBackButton();
   initializeByteCounter();
 });
 
 // 이미지 업로드 초기화
-function initializeImageUpload() {
+const initializeImageUpload = () => {
   const imageSlots = document.querySelectorAll('.image-slot');
   const hiddenFileInput = document.getElementById('imageUpload');
 
-  // 각 이미지 슬롯에 클릭 이벤트 추가
   imageSlots.forEach((slot, index) => {
-    slot.addEventListener('click', function() {
+    // 각 이미지 슬롯에 클릭 이벤트 추가
+    slot.addEventListener('click', () => {
       if (!slot.classList.contains('has-image')) {
         // 빈 슬롯 클릭 시 파일 선택 창 열기
         hiddenFileInput.dataset.slotIndex = index;
         hiddenFileInput.click();
+      }
+    });
+    // 각 이미지 슬롯에 드래그 앤 드롭 이벤트 추가
+    slot.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      slot.classList.add('drag-over');
+    });
+
+    slot.addEventListener('dragleave', () => {
+      slot.classList.remove('drag-over');
+    });
+
+    slot.addEventListener('drop', (e) => {
+      e.preventDefault();
+      slot.classList.remove('drag-over');
+
+      const file = e.dataTransfer.files[0];
+
+      if (file && file.type.startsWith('image/')) {
+        addImageToSlot(file, index);
+      } else {
+        alert("이미지 파일만 업로드할 수 있습니다.");
       }
     });
 
@@ -28,7 +53,7 @@ function initializeImageUpload() {
     removeBtn.className = 'remove-btn';
     removeBtn.innerHTML = '×';
     removeBtn.type = 'button';
-    removeBtn.addEventListener('click', function(e) {
+    removeBtn.addEventListener('click', e => {
       // 상위 요소에 이벤트 전달 막음
       e.stopPropagation();
       removeImage(index);
@@ -37,26 +62,26 @@ function initializeImageUpload() {
   });
 
   // 파일 선택 시 이벤트 처리
-  hiddenFileInput.addEventListener('change', function(e) {
+  hiddenFileInput.addEventListener('change', e => {
     const file = e.target.files[0];
-    const slotIndex = parseInt(this.dataset.slotIndex);
+    const slotIndex = parseInt(e.target.dataset.slotIndex);
 
     if (file && file.type.startsWith('image/')) {
       addImageToSlot(file, slotIndex);
     }
 
     // input 초기화
-    this.value = '';
-    delete this.dataset.slotIndex;
+    e.target.value = '';
+    delete e.target.dataset.slotIndex;
   });
 }
 
 // 이미지를 슬롯에 추가
-function addImageToSlot(file, slotIndex) {
+const addImageToSlot = (file, slotIndex) => {
   const slot = document.querySelectorAll('.image-slot')[slotIndex];
   const reader = new FileReader();
 
-  reader.onload = function(e) {
+  reader.onload = e => {
     // 기존 placeholder 제거
     const placeholder = slot.querySelector('.placeholder');
     if (placeholder) {
@@ -73,7 +98,7 @@ function addImageToSlot(file, slotIndex) {
     slot.classList.add('has-image');
 
     // 업로드된 이미지 배열에 저장
-    uploadedImages[slotIndex] = {
+    imageList[slotIndex] = {
       file: file,
       dataUrl: e.target.result
     };
@@ -85,7 +110,7 @@ function addImageToSlot(file, slotIndex) {
 }
 
 // 이미지 제거
-function removeImage(slotIndex) {
+const removeImage = slotIndex => {
   const slot = document.querySelectorAll('.image-slot')[slotIndex];
 
   // 이미지 엘리먼트 제거
@@ -106,17 +131,19 @@ function removeImage(slotIndex) {
   }
 
   // 업로드된 이미지 배열에서 제거
-  delete uploadedImages[slotIndex];
+  delete imageList[slotIndex];
 
   console.log(`슬롯 ${slotIndex + 1}의 이미지가 제거되었습니다.`);
 }
 
 // 뒤로가기 버튼 초기화
-function initializeBackButton() {
+const initializeBackButton = () => {
   const backButton = document.querySelector('.back-button span');
   if (backButton) {
-    backButton.addEventListener('click', function() {
+    backButton.addEventListener('click', () => {
       if (confirm('작성 중인 내용이 사라집니다. 정말 뒤로 가시겠습니까?')) {
+        // 쓰기 성공했을 때는 history.back이 아니라, 게시글 목록 1페이지 업데이트
+        // 쓰기 성공하지 못했을 때는 history.back
         window.history.back();
       }
     });
@@ -124,7 +151,7 @@ function initializeBackButton() {
 }
 
 // 바이트 카운터 초기화
-function initializeByteCounter() {
+const initializeByteCounter = () => {
   const textarea = document.querySelector('.content-area textarea');
   const byteCounter = document.querySelector('.byte-counter');
 
@@ -133,14 +160,14 @@ function initializeByteCounter() {
     updateByteCounter(textarea, byteCounter);
 
     // 입력 시마다 바이트 카운터 업데이트
-    textarea.addEventListener('input', function() {
+    textarea.addEventListener('input', () => {
       updateByteCounter(textarea, byteCounter);
     });
   }
 }
 
 // 바이트 카운터 업데이트
-function updateByteCounter(textarea, counter) {
+const updateByteCounter = (textarea, counter) => {
   const text = textarea.value;
   const byteLength = new Blob([text]).size;
   const maxBytes = 4000;
@@ -158,7 +185,7 @@ function updateByteCounter(textarea, counter) {
 }
 
 // 폼 제출 시 이미지 데이터 처리
-function handleFormSubmit() {
+const handleFormSubmit = () => {
   const form = document.querySelector('.board-form');
 
   if (form) {
@@ -167,46 +194,63 @@ function handleFormSubmit() {
     const title = document.querySelector('input[name="boardTitle"]').value;
     const content = document.querySelector('textarea[name="boardContent"]').value;
 
+    if(title.trim().length === 0 || content.trim().length === 0) {
+      alert("제목과 내용을 모두 작성해주세요.");
+      return;
+    }
+    
     // 기본 데이터 추가
     formData.append('boardTitle', title);
     formData.append('boardContent', content);
     formData.append('boardCode', currentBoardCode);
 
-    // 이미지 파일들 추가
-    uploadedImages.forEach((imageData, index) => {
+    // 이미지 파일들 추가 (비어있는 경우는 null로 - index를 활용하기 위해)
+    for (let i = 0; i < MAX_LENGTH; i++) {
+      const imageData = imageList[i];
       if (imageData && imageData.file) {
-        formData.append(`image_${index}`, imageData.file);
+        formData.append('images', imageData.file);
+      } else {
+        formData.append('images', new File([""], "empty.jpg", { type: "image/jpg" }));
       }
-    });
+    }
     
     // 서버로 전송될 formData 내부 요소들
     console.log('폼 제출 데이터:', {
       title: title,
       content: content,
       boardCode: currentBoardCode,
-      imageCount: uploadedImages.filter(img => img).length
+      imageList: imageList
     });
 
-    // fetch 요청으로 받게 될 게시글 작성 성공 여부
-    // 성공시(DB에 삽입된 boardNo - 게시글 번호 반환)
-    // 실패시(0 반환)
-    const boardNo = 0;
-    
-    // 게시글 작성 실패시 다시 게시글 작성으로 이동
-    if(boardNo === 0) {
-      location.reload(); // 현재 작성 페이지를 새로고침
-      return;
-    }
-    // 게시글 작성 성공시 게시글 상세 조회로 이동
-    alert('게시글이 성공적으로 작성되었습니다!');
-    // 상대 경로로 작성
-    // == memberNo/board/boardCode/insert -> memberNo/board/boardCode/boardNo
-    // location.href = "boardNo"
+    fetch(`/${memberNo}/board/${currentBoardCode}/insert`, {
+      method: 'POST',
+      body: formData
+    })
+    .then(resp => resp.text())
+    .then(boardNo => {
+      // fetch 요청으로 받게 될 게시글 작성 성공 여부
+      // 성공시(DB에 삽입된 boardNo - 게시글 번호 반환)
+      // 실패시(0 반환)
+
+      // 게시글 작성 실패시 다시 게시글 작성으로 이동
+      if(boardNo == 0) {
+        alert("게시글 작성 실패");
+        location.reload(); // 현재 작성 페이지를 새로고침
+        return;
+      }
+
+      // 게시글 작성 성공시 게시글 상세 조회로 이동
+      alert('게시글이 성공적으로 작성되었습니다!');
+      // 상대 경로로 작성
+      // == memberNo/board/boardCode/insert -> memberNo/board/boardCode/boardNo
+      location.href = boardNo;
+    });
+
   }
 }
 
 // 취소 버튼 이벤트
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   const cancelBtn = document.querySelector('.btn-cancel');
   if (cancelBtn) {
     cancelBtn.addEventListener('click', function() {
@@ -222,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // 업로드된 이미지 배열 초기화
-        uploadedImages = [];
+        imageList = [];
 
         // 바이트 카운터 초기화
         const byteCounter = document.querySelector('.byte-counter');
@@ -239,16 +283,28 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', () => {
   const confirmBtn = document.querySelector('.btn-confirm');
   if (confirmBtn) {
-    confirmBtn.addEventListener('click', handleFormSubmit);
+    confirmBtn.addEventListener('click', () => {
+
+      if(loginMemberNo === 0) {
+        alert("로그인 후 이용해주세요.");
+        return;
+
+      } else if(loginMemberNo !== memberNo) {
+        alert("본인 게시판만 작성 가능합니다.");
+        return;
+      }
+
+      handleFormSubmit()
+    });
   }
 });
 
 // 유틸리티 함수: 업로드된 이미지 정보 가져오기
-function getUploadedImages() {
-  return uploadedImages.filter(img => img);
+const getImageList = () => {
+  return imageList.filter(img => img);
 }
 
 // 유틸리티 함수: 특정 슬롯의 이미지 가져오기
-function getImageFromSlot(slotIndex) {
-  return uploadedImages[slotIndex] || null;
+const getImageFromSlot = slotIndex => {
+  return imageList[slotIndex] || null;
 }

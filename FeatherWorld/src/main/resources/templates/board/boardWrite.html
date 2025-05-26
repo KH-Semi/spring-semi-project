@@ -61,7 +61,7 @@
 
           <div class="button-group">
             <button type="button" class="btn-cancel">Cancel</button>
-            <button type="submit" class="btn-confirm">✓ Confirm</button>
+            <button type="button" class="btn-confirm">✓ Confirm</button>
           </div>
         </form>
       </div>
@@ -81,6 +81,8 @@
 <!-- JS 에서 쓰기 버튼 클릭 이벤트에 활용할 현재 게시판 종류 번호 선언 -->
 <script th:inline="javascript">
   const currentBoardCode = /*[[${boardCode}]]*/ 0;
+  const loginMemberNo = /*[[${session.loginMember.memberNo}]]*/ 0;
+  const memberNo = /*[[${memberNo}]]*/ 0;
 </script>
 <script src="/js/board/boardWrite.js"></script>
 </body>

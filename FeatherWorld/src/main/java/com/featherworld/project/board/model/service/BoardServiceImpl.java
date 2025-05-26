@@ -1,11 +1,17 @@
 package com.featherworld.project.board.model.service;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.featherworld.project.common.utill.Utility;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +21,22 @@ import com.featherworld.project.board.model.dto.BoardType;
 import com.featherworld.project.board.model.dto.Comment;
 import com.featherworld.project.board.model.mapper.BoardMapper;
 import com.featherworld.project.common.dto.Pagination;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
+@PropertySource("classpath:/config.properties")
+@Slf4j
 public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	BoardMapper mapper;
+
+	@Value("${my.board.web-path}")
+	private String webPath;
+
+	@Value("${my.board.folder-path}")
+	private String folderPath;
 
 	// 현재 선택된 게시판의 삭제되지 않은 게시글 목록 조회/해당 pagination 객체 반환
 	@Override
@@ -59,6 +74,65 @@ public class BoardServiceImpl implements BoardService {
 		
 		// pagination, boardList 들어있는 map 반환
 		return map;
+	}
+
+	// 게시글 삽입 - 삽입된 게시글 번호 반환 메서드
+	@Override
+	public int boardInsert(Board board, List<MultipartFile> imageList) throws Exception {
+
+		// 게시글 insert
+		// 삽입된 게시글 번호 반환
+		int result = mapper.boardInsert(board);
+
+		// 게시글 삽입 실패
+		if(result == 0) return 0;
+
+		// board-mapper.xml - <selectKey>로 만들어진 boardNo
+		int boardNo = board.getBoardNo();
+
+		// 업로드 이미지 정보 List
+		List<BoardImg> uploadList = new ArrayList<>();
+
+		for(int i = 0; i < imageList.size(); i++) {
+			// 이미지가 입력되어 있는 경우만
+			if(!imageList.get(i).isEmpty()) {
+
+				// 원본명/변경명
+				String originalName = imageList.get(i).getOriginalFilename();
+				String rename = Utility.fileRename(originalName);
+				
+				BoardImg img = BoardImg.builder()
+						.imgOriginalName(originalName)
+						.imgRename(rename)
+						.imgPath(webPath)
+						.boardNo(boardNo)
+						.imgOrder(i)
+						.uploadFile(imageList.get(i))
+						.build();
+
+				// 실제 업로드할 리스트에 저장
+				uploadList.add(img);
+			}
+		}
+		
+		// 업로드 할 이미지가 하나도 없는 경우
+		if(uploadList.isEmpty()) return boardNo;
+
+		result = mapper.insertUploadList(uploadList);
+
+		// 다중 INSERT 성공 확인
+		if(result == uploadList.size()) {
+
+			// 서버에 파일 저장
+			for(BoardImg img : uploadList) {
+				img.getUploadFile().transferTo(new File(folderPath + img.getImgRename()));
+			}
+
+		} else {
+			throw new RuntimeException();
+		}
+
+		return boardNo;
 	}
 
 	/** 게시글 좋아요 체크/해제

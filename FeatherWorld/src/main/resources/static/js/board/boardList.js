@@ -606,5 +606,7 @@ window.addEventListener("popstate", () => {
   loadBoardList(boardCode);
 });
 
-loadBoardList(defaultBoardCode);
-loadBoardTypeList();
+document.addEventListener("DOMContentLoaded", () => {
+  loadBoardList(currentBoardCode);
+  loadBoardTypeList();
+});
