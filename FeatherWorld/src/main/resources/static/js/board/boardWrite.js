@@ -142,8 +142,6 @@ const initializeBackButton = () => {
   if (backButton) {
     backButton.addEventListener('click', () => {
       if (confirm('작성 중인 내용이 사라집니다. 정말 뒤로 가시겠습니까?')) {
-        // 쓰기 성공했을 때는 history.back이 아니라, 게시글 목록 1페이지 업데이트
-        // 쓰기 성공하지 못했을 때는 history.back
         window.history.back();
       }
     });
@@ -243,7 +241,7 @@ const handleFormSubmit = () => {
       alert('게시글이 성공적으로 작성되었습니다!');
       // 상대 경로로 작성
       // == memberNo/board/boardCode/insert -> memberNo/board/boardCode/boardNo
-      location.href = boardNo;
+      location.replace(boardNo);
     });
 
   }

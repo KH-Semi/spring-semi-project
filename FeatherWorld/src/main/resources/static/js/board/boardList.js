@@ -320,6 +320,8 @@ const renderBoardTypeList = async () => {
   });
 
   document.querySelector(".board-type-sidebar").replaceWith(boardTypeSidebar);
+
+  updateEditIcons();
 };
 
 const loadBoardTypeList = () => {
@@ -408,6 +410,14 @@ const createFolderForm = () => {
   return folderForm;
 }
 
+// 게시판 수정, 삭제 아이콘 가시성 업데이트
+const updateEditIcons = () => {
+  const iconSpan = document.querySelectorAll(".board-type-item > .icon-wrap");
+  iconSpan.forEach(icon => {
+    icon.style.display = editMode ? "inline-block" : "none";
+  });
+}
+
 if (leftSidebar) {
 
   leftSidebar.addEventListener("click", async (e) => {
@@ -422,16 +432,7 @@ if (leftSidebar) {
           ".board-type-item > .icon-wrap"
       );
 
-      if(editMode) {
-        iconSpan.forEach(icon => {
-          icon.style.display = "inline-block";
-        });
-      } else {
-        iconSpan.forEach((icon) => {
-          icon.style.display = "none";
-        });
-      }
-
+      updateEditIcons();
       return;
     }
 
@@ -464,13 +465,9 @@ if (leftSidebar) {
         });
         const result = await resp.text();
 
-        if (result == 0)
-          alert("게시판 수정 실패");
+        if (result == 0) alert("게시판 수정 실패");
 
         renderBoardTypeList().catch(console.error);
-
-        // 수정 모드 초기화
-        editMode = false;
       }
 
       const input = document.createElement("input");
@@ -513,9 +510,7 @@ if (leftSidebar) {
 
       renderBoardTypeList().catch(console.error);
 
-      // 수정 모드 초기화
-      editMode = false;
-
+      updateEditIcons();
       return;
     }
 
