@@ -68,20 +68,8 @@
 
           <!-- 버튼 -->
           <div class="post-actions">
-            <button
-              id="backToProfileBtn"
-              class="back-button"
-              type="button"
-              onclick="history.back()"
-            >
-              Back
-            </button>
-            <form
-              th:action="@{/{memberNo}/profile(memberNo=${memberNo})}"
-              method="get"
-            >
-              <button type="submit" class="confirm-button">Confirm</button>
-            </form>
+            <button id="backToProfileBtn" class="back-button" type="button" onclick="history.back()">Back</button>
+            <button type="submit" class="confirm-button">Confirm</button>
           </div>
         </form>
       </div>
@@ -92,5 +80,12 @@
 
     <!-- Footer -->
     <th:block th:replace="~{common/footer}"></th:block>
+
+    <!-- JS -->
+     <script>
+      const memberNo = /*[[${memberNo}]]*/ 0;
+    </script>
+    <script src="/js/profile/profileupdate.js"></script>
+    <script src="/js/miniHome/sidebar.js"></script>
   </body>
 </html>

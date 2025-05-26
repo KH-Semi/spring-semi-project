@@ -1,7 +1,7 @@
 // 요소 선택
-const imageInput = document.getElementById("image");
+const imageInput = document.getElementById("uploadFile");
 const bioInput = document.getElementById("bio-input");
-const previewImage = document.getElementById("previewImage");
+const previewImage = document.getElementById("preview");
 const bioDisplay = document.getElementById("bio-display");
 const bioButton = document.querySelector(".left-sidebar .Board-button");
 
@@ -9,68 +9,80 @@ const confirmEditBtn = document.getElementById("confirmEditBtn");
 const backBtn = document.getElementById("backToProfileBtn");
 const profileUpdateBtn = document.getElementById("profileUpdateBtn");
 const deleteAccountBtn = document.getElementById("deleteAccountBtn");
+const saveBioBtn = document.getElementById("saveBioBtn");
+
+// 서버에서 전달된 memberNo (필수!)
+let memberNo;
+try {
+  memberNo = window.memberNo; // 전역에서 선언된 memberNo
+  if (!memberNo) throw new Error();
+} catch {
+  console.error("⚠️ memberNo가 정의되지 않았습니다. Thymeleaf에서 전달 필요!");
+}
 
 let uploadedImageData = null;
 
 // 이미지 미리보기 처리
-imageInput.addEventListener("change", () => {
-  const file = imageInput.files[0];
-  if (!file) {
+if (imageInput) {
+  imageInput.addEventListener("change", () => {
+    const file = imageInput.files[0];
+    if (!file) {
+      previewImage.style.display = "none";
+      uploadedImageData = null;
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      previewImage.src = e.target.result;
+      previewImage.style.display = "block";
+      uploadedImageData = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// 이미지 클릭 시 다시 업로드 가능하도록
+if (previewImage) {
+  previewImage.addEventListener("click", () => {
     previewImage.style.display = "none";
-    imageInput.style.display = "block";
+    imageInput.value = "";
     uploadedImageData = null;
-    return;
-  }
+  });
+}
 
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    previewImage.src = e.target.result;
-    previewImage.style.display = "block";
-    imageInput.style.display = "none";
-    uploadedImageData = e.target.result;
-  };
-  reader.readAsDataURL(file);
-});
+// Bio 실시간 반영
+if (bioInput && bioDisplay) {
+  bioInput.addEventListener("input", () => {
+    const text = bioInput.value.trim();
+    bioDisplay.textContent = text;
+    if (bioButton) {
+      bioButton.textContent = text.length > 0 ? text : "Bio";
+    }
+  });
+}
 
-// 미리보기 이미지 클릭 시 파일 선택창으로 돌아가기
-previewImage.addEventListener("click", () => {
-  previewImage.style.display = "none";
-  imageInput.value = "";
-  imageInput.style.display = "block";
-  uploadedImageData = null;
-});
+// Bio 저장 버튼 클릭 시 (단독 Bio 저장용)
+if (saveBioBtn) {
+  saveBioBtn.addEventListener("click", () => {
+    const bio = bioInput.value.trim();
+    if (!bio) return alert("Bio를 입력하세요.");
 
-// Bio 입력 실시간 반영
-bioInput.addEventListener("input", () => {
-  const text = bioInput.value.trim();
-  bioDisplay.textContent = text;
-  if (bioButton) {
-    bioButton.textContent = text.length > 0 ? text : "Bio";
-  }
-});
-
-document.getElementById("saveBioBtn").addEventListener("click", () => {
-  const bio = document.getElementById("bioInput").value.trim();
-  if (!bio) return alert("Bio를 입력하세요.");
-
-  fetch("/profile/updateBio", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ bio }),
-  })
-    .then((response) => {
-      if (response.ok) return response.text();
-      else throw new Error("서버 오류");
+    fetch("/profile/updateBio", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ bio }),
     })
-    .then((result) => {
-      alert("Bio가 저장되었습니다.");
-    })
-    .catch((err) => alert(err.message));
-});
+      .then((res) => {
+        if (!res.ok) throw new Error("서버 오류");
+        return res.text();
+      })
+      .then(() => alert("Bio가 저장되었습니다."))
+      .catch((err) => alert(err.message));
+  });
+}
 
-// 확인 버튼 클릭 이벤트 (통합 버전)
+// 프로필 저장 (확인 버튼)
 if (confirmEditBtn) {
   confirmEditBtn.addEventListener("click", async () => {
     const bioText = bioInput.value.trim();
@@ -80,24 +92,9 @@ if (confirmEditBtn) {
       return;
     }
 
-    // UI에 실시간 반영
-    bioDisplay.textContent = bioText;
-    if (bioButton) {
-      bioButton.textContent = bioText.length > 0 ? bioText : "Bio";
-    }
-
-    if (uploadedImageData) {
-      previewImage.style.display = "block";
-      imageInput.style.display = "none";
-    } else {
-      previewImage.style.display = "none";
-      imageInput.style.display = "block";
-    }
-
-    // 폼 데이터 구성
     const formData = new FormData();
     if (imageInput.files[0]) {
-      formData.append("image", imageInput.files[0]);
+      formData.append("uploadFile", imageInput.files[0]);
     }
     formData.append("bio", bioText);
 
@@ -120,21 +117,21 @@ if (confirmEditBtn) {
   });
 }
 
-// 뒤로 가기 버튼 클릭 이벤트
+// 뒤로가기
 if (backBtn) {
   backBtn.addEventListener("click", () => {
-    window.location.href = "/profile";
+    window.location.href = `/${memberNo}/profile`;
   });
 }
 
-// 프로필 업데이트 페이지 이동 버튼 클릭 이벤트
+// 수정 페이지 이동
 if (profileUpdateBtn) {
   profileUpdateBtn.addEventListener("click", () => {
-    window.location.href = `/${memberNo}/profileupdate`; // ✅ memberNo 포함
+    window.location.href = `/${memberNo}/profileupdate`;
   });
 }
 
-// 계정 삭제 페이지 이동 버튼 클릭 이벤트
+// 계정 삭제 페이지 이동
 if (deleteAccountBtn) {
   deleteAccountBtn.addEventListener("click", () => {
     window.location.href = "/account/delete";
