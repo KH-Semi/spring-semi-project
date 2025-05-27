@@ -195,8 +195,6 @@ public class GuestBookController {
 			Model model) {
 		
 
-	    // 좌측 프로필 용
-	
 		// 방명록 목록과 페이징 정보 조회
 		Map<String, Object> result = service.selectGuestBookList(memberNo, cp);
 		
@@ -214,23 +212,41 @@ public class GuestBookController {
 	 * @param cp 현재 페이지
 	 * @return 방명록 목록과 페이징 정보
 	 */
+//	@GetMapping("{memberNo:[0-9]+}/guestbook/list")
+//	@ResponseBody
+//	public ResponseEntity<Map<String, Object>> getGuestBookList(
+//			@PathVariable("memberNo") int memberNo,
+//			@RequestParam(value = "cp", defaultValue = "1") int cp) {
+//
+//		try {
+//			Map<String, Object> result = service.selectGuestBookList(memberNo, cp);
+//			return ResponseEntity.ok(result);
+//		} catch (Exception e) {
+//			Map<String, Object> errorMap = new HashMap<>();
+//			errorMap.put("success", false);
+//			errorMap.put("message", "방명록 목록 조회 중 오류가 발생했습니다.");
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMap);
+//		}
+//	}
+
+	//responseEntity 아닌버전 을 한번 추가해봄
 	@GetMapping("{memberNo:[0-9]+}/guestbook/list")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> getGuestBookList(
-			@PathVariable("memberNo") int memberNo,
-			@RequestParam(value = "cp", defaultValue = "1") int cp) {
+	public Map<String, Object> getGuestBookList(
+	        @PathVariable("memberNo") int memberNo,
+	        @RequestParam(value = "cp", defaultValue = "1") int cp) {
 
-		try {
-			Map<String, Object> result = service.selectGuestBookList(memberNo, cp);
-			return ResponseEntity.ok(result);
-		} catch (Exception e) {
-			Map<String, Object> errorMap = new HashMap<>();
-			errorMap.put("success", false);
-			errorMap.put("message", "방명록 목록 조회 중 오류가 발생했습니다.");
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMap);
-		}
+		
+	    return service.selectGuestBookList(memberNo, cp);
 	}
 
+
+	
+	
+	
+	
+	
+	
 //	
 //	@GetMapping("{memberNo:[0-9]+}/guestbook")
 //	public String guestBookPage(@PathVariable("memberNo") int memberNo,
@@ -338,41 +354,21 @@ public class GuestBookController {
 	 */
 	@PutMapping("{memberNo:[0-9]+}/guestbook")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> updateGuestBook(
-			@SessionAttribute(value = "loginMember", required = false) Member loginMember,
-			@RequestBody GuestBook guestBook,
-			@PathVariable("memberNo") int memberNo) {
+	public int updateGuestBook(
+	    @SessionAttribute(value = "loginMember", required = false) Member loginMember,
+	    @RequestBody GuestBook guestBook,
+	    @PathVariable("memberNo") int memberNo) {
 
-		Map<String, Object> result = new HashMap<>();
+	    // 로그인 안 했을 경우 0 반환
+	    if (loginMember == null) return 0;
 
-		try {
-			// 로그인 체크
-			if (loginMember == null) {
-				result.put("success", false);
-				result.put("message", "로그인이 필요합니다.");
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
-			}
+	    // 작성자 번호 설정 (검증용)
+	    guestBook.setVisitorNo(loginMember.getMemberNo());
 
-			// 작성자 번호 설정
-			guestBook.setVisitorNo(loginMember.getMemberNo());
-			int updateResult = service.guestBookUpdate(guestBook);
-
-			if (updateResult > 0) {
-				result.put("success", true);
-				result.put("message", "방명록이 수정되었습니다.");
-			} else {
-				result.put("success", false);
-				result.put("message", "방명록 수정에 실패했습니다.");
-			}
-
-			return ResponseEntity.ok(result);
-
-		} catch (Exception e) {
-			result.put("success", false);
-			result.put("message", "방명록 수정 중 오류가 발생했습니다.");
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
-		}
+	    // 서비스로 업데이트 요청
+	    return service.guestBookUpdate(guestBook); // 성공 시 1, 실패 시 0
 	}
+
 
 	/**
 	 * 방명록 삭제 (비동기)

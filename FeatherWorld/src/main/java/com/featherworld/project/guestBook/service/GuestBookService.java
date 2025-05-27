@@ -61,7 +61,7 @@ public interface GuestBookService {
 	 * @return 작성 결과 (성공 시 1, 실패 시 0)
 	 * @throws Exception
 	 */
-	int guestBookInsert(GuestBook guestBook) throws Exception;
+	int guestBookInsert(GuestBook guestBook);
 	
 	/**
 	 * 방명록 수정
@@ -69,7 +69,7 @@ public interface GuestBookService {
 	 * @return 수정 결과 (성공 시 1, 실패 시 0)
 	 * @throws Exception
 	 */
-	int guestBookUpdate(GuestBook guestBook) throws Exception;
+	int guestBookUpdate(GuestBook guestBook);
 	
 	/**
 	 * 방명록 삭제
