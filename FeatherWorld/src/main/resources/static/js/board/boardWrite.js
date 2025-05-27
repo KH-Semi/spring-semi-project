@@ -233,7 +233,6 @@ const handleFormSubmit = () => {
       // 게시글 작성 실패시 다시 게시글 작성으로 이동
       if(boardNo == 0) {
         alert("게시글 작성 실패");
-        location.reload(); // 현재 작성 페이지를 새로고침
         return;
       }
       // 게시글 작성 성공시 게시글 상세 조회로 이동

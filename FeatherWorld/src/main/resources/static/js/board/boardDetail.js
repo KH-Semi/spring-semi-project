@@ -51,8 +51,44 @@ document.addEventListener("DOMContentLoaded", () => {
 // 수정 버튼 처리
 document.addEventListener("DOMContentLoaded", () => {
   const boardDetailEditBtn = document.querySelector("#updateBtn");
+  if(boardDetailEditBtn) {
+      boardDetailEditBtn.addEventListener("click", () => {
+        location.href = `/${memberNo}/board/${boardCode}/${boardNo}/update`;
+      })
+  }
+})
 
-  boardDetailEditBtn.addEventListener("click", () => {
-    location.href = `/${memberNo}/board/${boardCode}/${boardNo}/update`;
-  })
+// 삭제 버튼 처리
+document.addEventListener("DOMContentLoaded", () => {
+  const boardDeleteBtn = document.querySelector("#deleteBtn");
+  if(boardDeleteBtn) {
+    boardDeleteBtn.addEventListener("click", async () => {
+
+      // 현재 게시글 번호(boardNo)로 게시글 삭제 요청
+      const resp = await fetch("/board/delete", {
+        method: "delete",
+        headers: { "Content-Type": "application/json" },
+        body: boardNo
+      });
+      const result = await resp.text();
+
+      // 게시글 삭제 실패시
+      if(result == 0) {
+        alert("게시글 삭제 실패");
+        return;
+      }
+
+      // 게시글 삭제 성공시
+      alert("게시글을 성공적으로 삭제했습니다!");
+
+      // URL 에서 cp 파라미터 추출
+      const urlParams = new URLSearchParams(location.search);
+      const cp = parseInt(urlParams.get("cp")) || null;
+
+      // cp 값에 따라 요청 변경
+      const queryString = cp ? `?cp=${cp}` : "";
+
+      location.href = `/${memberNo}/board/${boardCode}${queryString}`;
+    })
+  }
 })
