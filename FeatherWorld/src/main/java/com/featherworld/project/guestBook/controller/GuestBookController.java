@@ -195,8 +195,6 @@ public class GuestBookController {
 			Model model) {
 		
 
-	
-
 		// 방명록 목록과 페이징 정보 조회
 		Map<String, Object> result = service.selectGuestBookList(memberNo, cp);
 		

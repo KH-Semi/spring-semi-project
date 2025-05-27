@@ -1,409 +1,161 @@
+/* ====================== */
+/* 전체 레이아웃          */
+/* ====================== */
 .content-container {
   display: flex;
   gap: 10px;
   min-height: 600px;
-  background-color: transparent;
-  /* 부모가 가로 공간 꽉 채우도록 */
   width: 100%;
   box-sizing: border-box;
 }
 
-/* 왼쪽 사이드바: 고정 200px */
+/* ====================== */
+/* 왼쪽 프로필 영역       */
+/* ====================== */
 #leftProfileContainer {
   flex: 0 0 400px;
   border-right: 1px solid #e0e0e0;
   padding: 20px;
   background-color: #fff;
-  box-sizing: border-box;
-}
-
-/* 프로필 컨테이너 스타일 개선 */
-#leftProfileContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15px 10px;
-  background-color: white;
   text-align: center;
-  width: 100%;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 15px;
 }
 
-/* 방문자 통계 스타일 개선 */
-#profileStatsSection {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 15px;
-  text-align: center;
-  width: 100%;
-  padding: 8px;
-  background: #f8f9fa;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
-}
-
-#profileStatsSection #todayCount,
-#profileStatsSection #totalCount {
-  color: #9f2120;
-  font-weight: bold;
-}
-
-/* 프로필 이미지 스타일 개선 */
-#profileImageContainer {
-  position: relative;
-  margin-bottom: 15px;
-}
-
-#profileMainImage {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #f0f0f0;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-#profileMainImage:hover {
-  border-color: #9f2120;
-  transform: scale(1.05);
-}
-
-#profileImageEditIcon {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  background-color: #9f2120;
-  color: white;
-  padding: 3px 6px;
-  border-radius: 10px;
-  font-size: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#profileImageEditIcon:hover {
-  background-color: #c62828;
-  transform: scale(1.05);
-}
-
-/* 사용자 정보 스타일 개선 */
-#profileInfoSection {
-  margin-bottom: 15px;
-  width: 100%;
-}
-
-#profileUsernameDisplay {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-#profileEmailDisplay {
-  font-size: 12px;
-  color: #888;
-  margin-bottom: 12px;
-}
-
-/* 팔로우 통계 스타일 개선 */
-#profileFollowStats {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 12px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-}
-
-#profileFollowerCount,
-#profileFollowingCount {
-  text-align: center;
-}
-
-#profileFollowerNumber,
-#profileFollowingNumber {
-  display: block;
-  font-size: 16px;
-  font-weight: bold;
-  color: #9f2120;
-  margin-bottom: 3px;
-}
-
-#profileFollowerLabel,
-#profileFollowingLabel {
-  font-size: 10px;
-  color: #888;
-  text-transform: uppercase;
-}
-
-/* 버튼 영역 스타일 개선 */
-#profileActionButtons {
-  width: 100%;
-  margin-bottom: 12px;
-}
-
-#profileOwnerButtons {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-}
-
-#profileEditBtn,
-#profileLogoutBtn {
-  flex: 1;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 15px;
-  font-size: 11px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#profileEditBtn {
-  background-color: #9f2120;
-  color: white;
-}
-
-#profileEditBtn:hover {
-  background-color: #c62828;
-  transform: translateY(-1px);
-}
-
-#profileLogoutBtn {
-  background-color: #6c757d;
-  color: white;
-}
-
-#profileLogoutBtn:hover {
-  background-color: #5a6268;
-  transform: translateY(-1px);
-}
-
-/* Bio 섹션 스타일 개선 */
-#profileBioContainer {
-  width: 100%;
-  margin-bottom: 12px;
-}
-
-#profileBioTitle {
-  font-size: 12px;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-}
-
-#profileBioContent {
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  padding: 12px;
-  text-align: center;
-  min-height: 50px;
-  border: 1px solid #e0e0e0;
-}
-
-#profileBioDisplay {
-  font-size: 12px;
-  color: #666;
-  line-height: 1.4;
-  font-style: italic;
-}
-
-/* Surfing 버튼 스타일 개선 */
-#profileSurfingSection {
-  width: 100%;
-}
-
-#profileSurfingBtn {
-  width: 100%;
-  padding: 10px 12px;
-  background-color: #9f2120;
-  color: white;
-  border: none;
-  border-radius: 18px;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-}
-
-#profileSurfingBtn:hover {
-  background-color: #c62828;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(159, 33, 32, 0.3);
-}
-
-/* 중간 사이드바: 남은 공간 모두 차지 */
+/* ====================== */
+/* 가운데 본문 영역 (기존 유지) */
+/* ====================== */
 .middle-sidebar {
-  flex: 1 1 auto; /* 필요하면 줄어들고 커짐 */
+  flex: 1 1 auto;
   padding: 20px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
   background-color: #fdfdfd;
+  border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
   text-align: center;
-  box-sizing: border-box;
 }
 
-/* 오른쪽 사이드바: 고정 180px */
+/* ====================== */
+/* 오른쪽 사이드바 영역   */
+/* ====================== */
 .right-sidebar {
-  flex: 0 0 180px;
-  border-left: 1px solid #e0e0e0;
+  flex: 0 0 250px;
   padding: 20px;
   background-color: #fff;
-  box-sizing: border-box;
-}
-
-/* ========== Post ========== */
-/* post, bio-section 너비 조절 (선택 사항) */
-.post,
-.bio-section {
-  width: 100%;
-  max-width: 700px; /* 최대 너비 설정 */
-  margin: 0 auto; /* 좌우 자동 마진으로 중앙 정렬 */
-}
-.post {
-  margin-bottom: 30px;
-}
-
-.post-image {
-  width: 100%;
-  height: 300px;
+  border-left: 1px solid #e0e0e0;
   border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* 필요시 flex-grow: 0, flex-shrink: 0 지정 */
 }
 
-.post-image img {
-  width: 100%;
-  height: 200%;
-  object-fit: cover;
-}
-
+/* ====================== */
+/* 업로드 + 자기소개 랩퍼 */
+/* ====================== */
 .upload-bio-container {
-  max-width: 700px; /* 최대 너비 맞춤 */
-  width: 100%; /* 부모 컨테이너에 맞춤 */
-  margin: 0 auto; /* 가운데 정렬 */
-  border-radius: 1px;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 8px;
   padding: 12px 20px;
   box-sizing: border-box;
 }
 
+/* ====================== */
+/* 이미지 업로드 박스     */
+/* ====================== */
 .image-upload-box {
   width: 100%;
-  height: 150px; /* 자기소개와 같은 높이 */
-  border: 2px solid #ccc;
-  border-radius: 1px;
+  height: 150px;
+  border: 2px dashed #912d2d;
   background-color: #fafafa;
+  border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   font-size: 18px;
   font-family: inherit;
-  color: #666;
+  color: #912d2d;
   box-sizing: border-box;
   overflow: hidden;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
 }
 
-.image-upload-box img {
+.image-upload-box:hover {
+  background-color: #f0e6e6;
+}
+
+.image-upload-box img,
+#preview {
   max-width: 100%;
-  max-height: 150px;
+  max-height: 180px;
   border-radius: 8px;
   margin-top: 10px;
+  display: none;
+  object-fit: contain;
 }
 
-.bio-textarea {
-  width: 100%;
-  max-width: 700px;
-  height: 150px;
-  border: 2px solid #ccc;
-  background-color: #fafafa;
-  border-radius: 1px;
-  padding: 12px 20px;
-  font-size: 18px;
-  font-family: inherit;
-  box-sizing: border-box;
-  resize: none;
-  margin-top: 20px;
-}
-
-/* ========== Bio Section ========== */
+/* ====================== */
+/* 자기소개 텍스트 영역   */
+/* ====================== */
 .bio-section {
   margin-top: 20px;
+  width: 100%;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .bio-textarea {
   width: 100%;
   max-width: 700px;
   height: 150px;
-  border: 2px solid #ccc;
+  border: 2px solid #912d2d;
   background-color: #fafafa;
-  border-radius: 1px;
+  border-radius: 8px;
   padding: 12px 20px;
   font-size: 18px;
   font-family: inherit;
   box-sizing: border-box;
-  resize: none;
+  resize: vertical;
+  color: #333;
+  transition: border-color 0.3s ease;
 }
 
+.bio-textarea:focus {
+  border-color: #6b1f1f;
+  outline: none;
+  background-color: #fff;
+}
+
+/* ====================== */
+/* 자기소개 미리보기      */
+/* ====================== */
 .bio-display {
   margin-top: 10px;
   font-size: 14px;
   color: #333;
+  min-height: 40px;
 }
 
-/* ========== Button ========== */
+/* ====================== */
+/* 버튼 영역              */
+/* ====================== */
 .post-actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
   margin-top: 20px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.profile-button {
-  min-width: 120px;
-  height: 35px;
-  border: 2px solid #ccc;
-  border-radius: 20px;
-  color: white;
-  font-size: 16px;
-  background-color: #912d2d;
-  cursor: pointer;
-  padding: 0 16px;
-  box-sizing: border-box;
-}
-
-.post-button {
-  min-width: 140px;
-  height: 40px;
-  padding: 0 16px;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: "Pretendard", sans-serif;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-/* back/confirm Button */
-.post-actions {
-  display: flex;
-  justify-content: flex-end; /* 오른쪽 정렬 */
-  gap: 10px; /* 버튼 사이 간격 */
-  margin-top: 20px;
-}
-
+/* 공통 버튼 스타일 */
+.post-button,
 .back-button,
 .confirm-button {
   min-width: 140px;
@@ -418,11 +170,34 @@
   transition: background-color 0.2s ease, color 0.2s ease;
   background-color: #912d2d;
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Hover 효과 */
+.post-button:hover,
 .back-button:hover,
 .confirm-button:hover {
-  background-color: #7a2525; /* 좀 더 어두운 색으로 변경 */
+  background-color: #7a2525;
   color: white;
+}
+
+/* Confirm 버튼 전용 스타일 */
+.confirm-button {
+  min-width: 140px;
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: "Pretendard", sans-serif;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: #912d2d;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }

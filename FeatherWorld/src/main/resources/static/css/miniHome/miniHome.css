@@ -1,29 +1,52 @@
-/* ===== main.css 기존 내용 유지하고 아래 내용 추가 ===== */
+/* ===== MiniHome 페이지 전용 CSS ===== */
 
-
-/* MiniHome 전용 컨테이너 설정 */
+/* MiniHome 페이지 body 스타일 - main.css 덮어쓰기 */
 body.minihome-page {
   background-color: #f0f0f0 !important;
   padding: 20px 0 !important;
 }
 
+/* MiniHome 페이지의 컨테이너 조정 - 하나의 흰색 박스로 */
 body.minihome-page .container {
-  max-width: 900px !important;
-  margin: 20px auto !important;
+  max-width: 1200px !important;
+  background-color: white !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
 }
 
-/* MiniHome 왼쪽 사이드바 조정 */
+/* MiniHome 페이지의 콘텐츠 컨테이너 - 내부에서만 구분 */
+body.minihome-page .content-container {
+  gap: 0px !important;
+  padding: 0px !important;
+  align-items: flex-start;
+  display: flex !important;
+}
+
+/* MiniHome 페이지의 좌측 사이드바 - 기본 스타일 유지하되 배경 제거 */
 body.minihome-page .left-sidebar {
-  min-width: 220px !important;
-  padding: 15px !important;
+  background-color: white !important;
+  border-radius: 0px !important;
+  box-shadow: none !important;
+  border-right: 1px solid #e0e0e0 !important;
+  min-width: 250px;
+  max-width: 250px;
+  flex: 0 0 250px;
+  padding: 20px !important;
 }
 
-/* MiniHome 우측 사이드바 조정 */
-body.minihome-page .right-sidebar {
-  min-width: 180px !important;
-  padding: 15px !important;
+/* MiniHome 페이지의 메인 콘텐츠 - 기본 스타일 유지 */
+body.minihome-page .main-content {
+  background-color: white !important;
+  border-radius: 0px !important;
+  box-shadow: none !important;
+  flex: 1;
+  min-height: 500px;
+  padding: 20px !important;
+  border-right: 1px solid #e0e0e0 !important;
 }
 
+/* ===== MiniHome 메인 콘텐츠 영역 스타일 ===== */
 
 /* 보드 컨테이너 */
 .boardContainer {
@@ -37,7 +60,7 @@ body.minihome-page .right-sidebar {
   margin-bottom: 25px;
 }
 
-.summary-links a {
+.summary-links span {
   margin: 0 12px;
   color: #666;
   text-decoration: none;
@@ -46,18 +69,11 @@ body.minihome-page .right-sidebar {
   border-radius: 20px;
   font-size: 13px;
   font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.summary-links a:hover {
-  border-color: #9f2120;
-  color: #9f2120;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(159, 33, 32, 0.2);
+  display: inline-block;
 }
 
 /* Recent Board 헤더 */
-.recentBoard {
+.recent-board-header {
   background: linear-gradient(135deg, #9f2120, #c62828);
   color: white;
   border-radius: 12px;
@@ -75,13 +91,42 @@ body.minihome-page .right-sidebar {
 .small-image-row {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 25px 0;
-  gap: 12px;
+  min-height: 120px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px dashed #e0e0e0;
+  padding: 20px;
 }
 
-.recent-board-img {
-  width: 70px;
-  height: 70px;
+/* 게시글이 있을 때 */
+.recent-posts {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.post-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+.post-box a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border-radius: 10px;
   border: 2px solid #e0e0e0;
@@ -90,22 +135,36 @@ body.minihome-page .right-sidebar {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.recent-board-img:hover {
+.thumbnail:hover {
   transform: scale(1.08);
   border-color: #9f2120;
   box-shadow: 0 4px 15px rgba(159, 33, 32, 0.3);
 }
 
+.post-title {
+  font-size: 12px;
+  margin-top: 8px;
+  text-align: center;
+  color: #666;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
 /* 게시글 없음 */
 .no-recent-posts {
   text-align: center;
-  padding: 50px 30px;
-  background: #f8f9fa;
-  border-radius: 12px;
   color: #999;
   font-style: italic;
   font-size: 14px;
-  border: 2px dashed #e0e0e0;
+  width: 100%;
+}
+
+.no-recent-posts p {
+  margin: 0;
+  color: #999;
 }
 
 /* 댓글 헤더 */
@@ -113,7 +172,7 @@ body.minihome-page .right-sidebar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 35px 0 20px;
+  margin: 40px 0 20px;
   padding-bottom: 12px;
   border-bottom: 2px solid #e0e0e0;
 }
@@ -129,7 +188,7 @@ body.minihome-page .right-sidebar {
 /* 댓글 없음 */
 .miniHome-no-comments {
   text-align: center;
-  padding: 50px 30px;
+  padding: 40px 30px;
   background: #f8f9fa;
   border-radius: 12px;
   color: #999;
@@ -138,24 +197,51 @@ body.minihome-page .right-sidebar {
   border: 2px dashed #e0e0e0;
 }
 
-/* 댓글 래퍼 */
-.miniHome-comment-wrapper {
-  margin-bottom: 12px;
-  padding: 15px;
-  background: white;
-  border: 2px solid #f0f0f0;
-  border-radius: 10px;
-  font-size: 13px;
-  transition: all 0.3s ease;
+.miniHome-no-comments p {
+  margin: 0;
+  color: #999;
 }
 
-.miniHome-comment-wrapper:hover {
+/* 일촌평 관련 스타일 */
+.ilchon-comment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ilchon-comment-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ilchon-comment-list li {
+  margin-bottom: 15px;
+}
+
+.ilchon-comment-box {
+  padding: 18px;
+  background: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.ilchon-comment-box:hover {
   border-color: #9f2120;
   box-shadow: 0 4px 15px rgba(159, 33, 32, 0.1);
   transform: translateY(-2px);
 }
 
-/* 반응형 MiniHome */
+.ilchon-comment-box .comment {
+  color: #555;
+  line-height: 1.5;
+  display: block;
+}
+
+/* ===== 반응형 MiniHome ===== */
 @media (max-width: 992px) {
   body.minihome-page {
     padding: 10px 0 !important;
@@ -165,15 +251,250 @@ body.minihome-page .right-sidebar {
     max-width: 95% !important;
     margin: 10px auto !important;
   }
-  
+
+  body.minihome-page .content-container {
+    flex-direction: column !important;
+    padding: 10px;
+    gap: 10px;
+  }
+
   body.minihome-page .left-sidebar,
   body.minihome-page .right-sidebar {
     min-width: 100% !important;
+    max-width: none !important;
+    flex: none !important;
     padding: 15px !important;
   }
-  
-  .main-content {
+
+  body.minihome-page .main-content {
     padding: 20px !important;
+  }
+
+  .summary-links span {
+    margin: 5px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .thumbnail {
+    width: 70px;
+    height: 70px;
+  }
+
+  .post-title {
+    max-width: 70px;
+    font-size: 11px;
+  }
+
+  .small-image-row {
+    min-height: 100px;
+    padding: 15px;
   }
 }
 
+/* 일촌평 작성 버튼 */
+.comment-write-btn {
+  display: flex;
+  align-items: center;
+}
+
+.btn-write-comment {
+  background: linear-gradient(135deg, #9f2120, #c62828);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-write-comment:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(159, 33, 32, 0.3);
+}
+
+/* 댓글 삭제 버튼 */
+.comment-actions {
+  margin-top: 8px;
+  text-align: right;
+}
+
+.btn-delete-comment {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.btn-delete-comment:hover {
+  background-color: #f5f5f5;
+  color: #d32f2f;
+}
+
+/* 모달 스타일 */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.close {
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+}
+
+.close:hover {
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-body textarea {
+  width: 100%;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  resize: none;
+  outline: none;
+}
+
+.modal-body textarea:focus {
+  border-color: #9f2120;
+}
+
+.char-count {
+  text-align: right;
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.btn-cancel,
+.btn-submit {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-cancel {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.btn-submit {
+  background-color: #9f2120;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #e0e0e0;
+}
+
+.btn-submit:hover {
+  background-color: #8a1c1b;
+}
+/* 작성자 정보 스타일 */
+.comment-author {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.author-profile-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 2px solid #e0e0e0;
+  object-fit: cover;
+}
+
+.author-name {
+  font-weight: 600;
+  color: #000000;
+  font-size: 14px;
+}
+
+/* Write 버튼 스타일 */
+.comment-write-btn {
+  display: flex;
+  align-items: center;
+}
+
+.btn-write-comment {
+  background: linear-gradient(135deg, #9f2120, #c62828);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-write-comment:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(159, 33, 32, 0.3);
+}
+
+/* 일촌평 목록 영역 스타일 */
+.ilchon-comments-section {
+  margin-top: 20px;
+}

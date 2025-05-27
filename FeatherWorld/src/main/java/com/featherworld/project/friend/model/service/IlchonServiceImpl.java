@@ -63,7 +63,11 @@ public class IlchonServiceImpl implements IlchonService {
 		
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-
+		
+		
+		
+		
+		
 		// Mapper 메서드 호출 시 원래 전달할 수 있는 매개변수 1개
 		// -> 2개를 전달할 수 있는 경우가 있음
 		// rowBounds를 이용할때!
@@ -169,6 +173,9 @@ public class IlchonServiceImpl implements IlchonService {
 		
 		
 	}
+	
+	
+	
 	@Override
 	public int updateIlchonRow(int loginMemberNo, int targetMemberNo, String nickname) {
 		// TODO Auto-generated method stub
@@ -229,7 +236,15 @@ public class IlchonServiceImpl implements IlchonService {
 	}
 
 	
-	
+	public int isIncomingIlchonExists(int loginMemberNo,int targetMemberNo) {
+		
+		Ilchon ilchon = mapper.selectOne(loginMemberNo, targetMemberNo);
+		Ilchon ilchonAppend = mapper.selectOneYN(loginMemberNo, targetMemberNo);
+		if (ilchon != null && ilchonAppend != null) return 2; //이미 둘이 일촌관계일경우
+		else if(ilchonAppend != null) return 1; // 이미 일촌관계 신청을 보냈지만 아직 다른쪽에서 수락하지 않은 경우
+		else return 0; // 일촌관계도, 아직 일촌신청도 보내지 않은경우
+		
+	}
 
 	
 }

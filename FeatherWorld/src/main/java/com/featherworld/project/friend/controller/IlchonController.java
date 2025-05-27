@@ -1,5 +1,6 @@
 package com.featherworld.project.friend.controller;
 
+import com.featherworld.project.board.controller.BoardController;
 import com.featherworld.project.friend.model.dto.Ilchon;
 import com.featherworld.project.friend.model.service.IlchonService;
 import com.featherworld.project.member.model.dto.Member;
@@ -16,9 +17,16 @@ import java.util.Map;
 @Controller
 //@RestController // @Controller + @ResponseBody
 public class IlchonController {
+
+    private final BoardController boardController;
 	
 	@Autowired
 	private IlchonService service;
+
+
+    IlchonController(BoardController boardController) {
+        this.boardController = boardController;
+    }
 
 
 	@GetMapping("{memberNo:[0-9]+}/friendList")
@@ -39,11 +47,13 @@ public class IlchonController {
 		//map에서 ilchons 따로 변수로 뺴낼것
 		
 		//friendList page에 전달한 현재 홈피 주인의 member DTO
-
+		int ilchonStatus = service.isIncomingIlchonExists(loginMemberNo,memberNo);/****************************250526 확인못한 일촌신청 있는지 확인하는 매커니즘 추가***************************/
 		model.addAttribute("ilchons", map.get("ilchons"));
 		model.addAttribute("memberNo", memberNo);
 
 	    model.addAttribute("pagination", map.get("pagination"));
+	    model.addAttribute("ilchonStatus", ilchonStatus);
+	    System.out.println("ilchonStatus : " + ilchonStatus);
 		return "friendList/friendList";
 		
 	}
@@ -89,7 +99,7 @@ public class IlchonController {
 		model.addAttribute("ilchons", map.get("ilchons"));
 		model.addAttribute("ilchonsIncomingCount", map.size()); // 일촌신청(incoming) count 개수
 		model.addAttribute("memberNo", memberNo);
-
+		
 	    model.addAttribute("pagination", map.get("pagination"));
 		return "friendList/incomingFriendList";
 		
@@ -144,7 +154,8 @@ public class IlchonController {
 	public Map<String, Object> updateIsIlchon(@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@RequestBody Map<String, String> payload /*클라이언트쪽에서 건너오는 요청*/
 			, Model model) {
-		String memberNoStr = 	payload.get("memberNo");
+		
+		String memberNoStr = payload.get("memberNo");
 
 		int memberNo =  Integer.parseInt(memberNoStr); // 1. loginMember의 일촌의 memberId 값
 

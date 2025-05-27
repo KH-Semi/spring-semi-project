@@ -17,59 +17,58 @@
       <!-- Left sidebar - Profile Information -->
       <div th:replace="~{common/leftsidebar}"></div>
 
-      <!-- Middle Content -->
       <div class="middle-sidebar">
-        <!-- 사진 업로드 -->
-        <div
-          class="upload-bio-container"
-          onclick="document.getElementById('image').click()"
+        <form
+          th:action="@{/{memberNo}/profileupdate(memberNo=${memberNo})}"
+          method="post"
+          enctype="multipart/form-data"
         >
-          <input
-            type="file"
-            id="image"
-            name="image"
-            accept="image/*"
-            class="file-input"
-            onchange="previewImage(event)"
-            style="display: none"
-          />
-          <div class="image-upload-box">
-            <p>여기를 클릭해서 사진을 업로드하세요</p>
-            <img
-              id="preview"
-              src=""
-              alt="이미지 미리보기"
-              style="
-                display: none;
-                max-width: 100%;
-                max-height: 180px;
-                border-radius: 8px;
-                margin-top: 10px;
-              "
-            />
-          </div>
-        </div>
-
-        <!-- 자기소개 텍스트 영역 -->
-        <div class="bio-section">
-          <textarea
-            id="bio-input"
-            class="bio-textarea"
-            placeholder="자기소개를 입력하세요..."
-          ></textarea>
-        </div>
-
-        <!-- 버튼 -->
-        <div class="post-actions">
-          <a
-            th:href="@{/{memberNo}/profileupdate(memberNo=${memberNo})}"
-            class="post-button"
+          <!-- 사진 업로드 -->
+          <div
+            class="upload-bio-container"
+            onclick="document.getElementById('uploadFile').click()"
+            style="cursor: pointer"
           >
-            Profile Update
-          </a>
+            <input
+              type="file"
+              id="uploadFile"
+              name="uploadFile"
+              accept="image/*"
+              class="file-input"
+              onchange="previewImage(event)"
+              style="display: none"
+            />
+            <div class="image-upload-box">
+              <p>여기를 클릭해서 사진을 업로드하세요</p>
+              <img
+                id="preview"
+                th:src="${profile.imgPath != null} ? ${profile.imgPath} : ''"
+                alt="이미지 미리보기"
+                th:classappend="${profile.imgPath != null} ? 'show' : 'hide'"
+              />
+            </div>
 
-          <a th:href="@{/account/delete}" class="post-button">Delete Account</a>
-        </div>
+          </div>
+
+          <!-- 자기소개 텍스트 영역 -->
+          <div class="bio-section">
+            <textarea
+              id="bio-input"
+              name="bio"
+              class="bio-textarea"
+              placeholder="자기소개를 입력하세요..."
+              th:text="${profile.profileContent}"
+            ></textarea>
+          </div>
+
+          <!-- 버튼 -->
+          <div class="post-actions">
+            <button type="submit" class="post-button">Profile Update</button>
+            <a th:href="@{/account/delete}" class="post-button"
+              >Delete Account</a
+            >
+          </div>
+        </form>
       </div>
 
       <!-- Right Sidebar -->
@@ -78,7 +77,8 @@
 
     <!-- 푸터 추가 -->
     <th:block th:replace="~{common/footer}"></th:block>
-
-    <script src="js/profile/editprofile.js"></script>
+     <!-- JS -->
+    <script src="/js/profile/editprofile.js"></script>
+    <script src="/js/miniHome/sidebar.js"></script>
   </body>
 </html>

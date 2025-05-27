@@ -164,7 +164,8 @@
 	SELECT * FROM (
    		    SELECT 
     	    m.MEMBER_NAME as memberName,
-        	m.MEMBER_IMG as memberImg
+        	m.MEMBER_IMG as memberImg ,
+        	m.MEMBER_NO as memberNO
     		FROM MEMBER m, TODAY t
     			WHERE m.MEMBER_NO = t.HOME_NO
     			AND TRUNC(t.VISIT_DATE) = TRUNC(SYSDATE)

@@ -125,7 +125,7 @@
   overflow: hidden;
 }
 
-.image-slot:hover {
+.image-slot:hover, .image-slot.drag-over {
   border-color: #9f2120;
   background-color: #fafafa;
 }

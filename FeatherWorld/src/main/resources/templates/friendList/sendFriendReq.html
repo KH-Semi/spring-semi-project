@@ -9,9 +9,26 @@
     <th:block th:replace="~{common/common}"></th:block>
     <link rel="stylesheet" href="/css/board/boardList.css" />
     <link rel="stylesheet" href="/css/board/boardWrite.css" />
+    <style>
+      * {
+        margin: 10px;
+      }
+
+      div,
+      p,
+      section {
+        margin-left: auto;
+        margin-right: auto;
+        width: fit-content;
+      }
+
+      button {
+        justify-items: center;
+        align-items: center;
+      }
+    </style>
   </head>
   <body th:attr="member-no=${memberNo}">
-    <h1>이 HTML은 Thymeleaf로 렌더링된 페이지입니다.</h1>
     <div class="container">
       <!-- 헤더 Include -->
       <th:block th:replace="~{common/header}"></th:block>
@@ -22,26 +39,21 @@
         <!-- 중앙 게시글 상세 -->
         <div class="main-content">
           <div class="board-write">
-            <div class="back-button">
-              <button class="btn-back">
-                <span class="fa-solid fa-left-long"></span>
-              </button>
-            </div>
-            <button class="btn-cancel">Cancel</button>
+            <button onclick="history.back()" class="back-button">
+              <span class="fa-solid fa-left-long"></span>
+            </button>
 
             <div class="board-form">
-              <div class="input-group mb-4">
+              <form action="/insert/newFriend" method="post">
                 <input
                   type="text"
                   class="form-control"
                   placeholder="새로 정할 일촌명을 입력하세요"
-                  aria-label="Board Title"
+                  name="nickname"
                 />
                 <div class="byte-counter">(12/2000)bytes</div>
-              </div>
-
-              <div class="button-group">
-                <button class="btn-confirm">
+                <input type="hidden" name="memberNo" th:value="${memberNo}" />
+                <button type="submit" class="btn-confirm">
                   <svg
                     width="16"
                     height="16"
@@ -56,14 +68,7 @@
                   </svg>
                   SEND
                 </button>
-                <p th:text="${memberNo}"></p>
-
-                <form action="/insert/newFriend" method="post">
-                  <input type="text" name="nickname" />
-                  <input type="hidden" name="memberNo" th:value="${memberNo}" />
-                  <button type="submit">보내기</button>
-                </form>
-              </div>
+              </form>
             </div>
           </div>
         </div>

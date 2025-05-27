@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.featherworld.project.board.model.dto.Board;
 import com.featherworld.project.board.model.dto.BoardType;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface BoardService {
 
@@ -38,5 +39,11 @@ public interface BoardService {
 	int updateReadCount(int boardNo);
 
 
-
+	/** 게시글 삽입
+	 * @author Jiho
+	 * @param board 게시글 제목/내용, 회원 번호, 게시판 종류 번호
+	 * @param imageList 이미지 값
+	 * @return boardNo 삽입된 게시글 번호
+	 */
+	int boardInsert(Board board, List<MultipartFile> imageList) throws Exception;
 }

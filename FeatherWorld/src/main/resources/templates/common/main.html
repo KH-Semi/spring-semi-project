@@ -48,12 +48,16 @@
                       class="member-card"
                       th:classappend="${iterStat.index == 0} ? 'highlight' : ''"
                     >
-                      <div class="member-avatar">
-                        <img
-                          th:src="${member.memberImg} ?: #{user.default.image}"
-                          alt="Member Avatar"
-                        />
-                      </div>
+                      <a
+                        th:href="@{/{memberNo}/minihome(memberNo=${member.memberNo})}"
+                      >
+                        <div class="member-avatar">
+                          <img
+                            th:src="${member.memberImg} ?: #{user.default.image}"
+                            alt="Member Avatar"
+                          />
+                        </div>
+                      </a>
                       <p
                         class="member-name"
                         th:text="${iterStat.index == 0 ? '🔥 ' + member.memberName : member.memberName}"
@@ -69,12 +73,16 @@
                     th:if="${iterStat.index >= 3 && iterStat.index < 6}"
                   >
                     <div class="member-card">
-                      <div class="member-avatar">
-                        <img
-                          th:src="${member.memberImg} ?: #{user.default.image}"
-                          alt="Member Avatar"
-                        />
-                      </div>
+                      <a
+                        th:href="@{/{memberNo}/minihome(memberNo=${member.memberNo})}"
+                      >
+                        <div class="member-avatar">
+                          <img
+                            th:src="${member.memberImg} ?: #{user.default.image}"
+                            alt="Member Avatar"
+                          />
+                        </div>
+                      </a>
                       <p class="member-name" th:text="${member.memberName}"></p>
                     </div>
                   </th:block>
