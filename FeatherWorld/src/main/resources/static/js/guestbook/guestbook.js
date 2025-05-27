@@ -1,8 +1,25 @@
-// 방명록 목록을 서버에서 조회해서 화면에 렌더링하는 함수
-const selectGuestBookList = () => {
-  // 로그인한 사용자 정보 가져오기
-  const loginMemberNo = document.querySelector("#loginMemberNo")?.value || null;
+// 현재 페이지(cp)값을 기록함
+const recodeCp = (page) => {
+  const url = new URL(location);
+  url.searchParams.set("cp", String(page));
+  history.pushState({}, "", url);
+};
 
+// 현재 url의 cp값을 검색
+const searchCp = () => {
+  const urlParams = new URLSearchParams(location.search);
+  return parseInt(urlParams.get("cp")) || 1;
+};
+
+let currentPage = searchCp();
+
+// 방명록 목록을 서버에서 조회해서 화면에 렌더링하는 함수
+const selectGuestBookList = (cp = 1) => {
+  currentPage = cp; // 현재 페이지(cp). 현재는 고정값 1. (나중에 페이징 처리용으로 수정 가능)
+  
+  // 로그인한 사용자 정보 가져오기 (최상단으로 이동)
+  const loginMemberNo = document.querySelector("#loginMemberNo")?.value || null;
+  
   // 방명록 주인 번호(ownerNo) 가져옴. 없으면 기본값 1
   const ownerNo = document.querySelector("#ownerNo")?.value || 1;
 
@@ -13,6 +30,8 @@ const selectGuestBookList = () => {
     .then((resp) => resp.json()) // 응답을 JSON으로 변환
     .then((response) => {
       const guestBookList = response.guestBookList; // 방명록 목록 배열
+      const pagination = response.pagination;
+
       const container = document.querySelector("#guestbook-list"); // 방명록이 들어갈 컨테이너 (05.23 배령 수정)
       container.innerHTML = ""; // 기존 목록 초기화 (덮어쓰기)
 
@@ -119,14 +138,21 @@ const selectGuestBookList = () => {
           infoDiv.appendChild(actionDiv);
         }
 
+        // 전체 item div에 info 추가
         itemDiv.appendChild(infoDiv);
+
+        // 최종적으로 guestbook-list 영역에 추가 (중복 제거)
         container.appendChild(itemDiv);
       });
+
+      // 페이지네이션 렌더링
+      if (pagination) renderPagination(pagination);
     })
     .catch((err) => {
       console.error("방명록 목록 조회 실패:", err); // 요청 실패 시 콘솔 출력
     });
 };
+
 // 방명록 등록 (ajax)
 document.addEventListener("DOMContentLoaded", () => {
   selectGuestBookList();
@@ -174,26 +200,24 @@ document.addEventListener("DOMContentLoaded", () => {
       visitorNo: loginMemberNo,
       secret: document.querySelector("#secretCheck").checked ? 1 : 0,
     };
-
-    fetch(`/${ownerNo}/guestbook`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then((resp) => resp.json())
-      .then((result) => {
-        console.log(result);
-
-        if (result < 0) {
-          alert("방명록 등록 실패");
-        } else {
-          alert("방명록이 등록되었습니다.");
-          selectGuestBookList(); // 방명록 목록을 다시 조회해서 화면에 출력
-          guestBookContent.value = ""; // textarea에 작성한 방명록 내용 지우기
-        }
+      fetch(`/${ownerNo}/guestbook`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       })
-      .catch((err) => console.log("에러 발생:", err));
-  });
+        .then((resp) => resp.json())
+        .then((result) => {
+          if (result < 0) {
+            alert("방명록 등록 실패");
+          } else {
+            alert("방명록이 등록되었습니다.");
+            selectGuestBookList(); // 방명록 목록을 다시 조회해서 화면에 출력
+            guestBookContent.value = ""; // textarea에 작성한 방명록 내용 지우기
+          }
+        })
+        .catch((err) => console.log("에러 발생:", err));
+    });
+  }
 });
 
 //방명록 삭제 ( ajax)
@@ -244,7 +268,8 @@ const showUpdateGuestBook = (guestBookNo, btn) => {
     }
   }
 
-  const guestBookRow = btn.closest("li");
+  // div 구조에 맞게 수정 (li -> div)
+  const guestBookRow = btn.closest(".guestbook-item");
   beforeGuestBookRow = guestBookRow.cloneNode(true);
   const beforeContent =
     guestBookRow.querySelector(".guestbook-content").innerText;
@@ -261,11 +286,13 @@ const showUpdateGuestBook = (guestBookNo, btn) => {
 
   const updateBtn = document.createElement("button");
   updateBtn.innerText = "수정";
-  updateBtn.setAttribute("onclick", `updateGuestBook(${guestBookNo}, this)`);
+  updateBtn.addEventListener("click", () =>
+    updateGuestBook(guestBookNo, updateBtn)
+  );
 
   const cancelBtn = document.createElement("button");
   cancelBtn.innerText = "취소";
-  cancelBtn.setAttribute("onclick", "cancelGuestBookUpdate(this)");
+  cancelBtn.addEventListener("click", () => cancelGuestBookUpdate(cancelBtn));
 
   btnArea.append(updateBtn, cancelBtn);
   guestBookRow.append(btnArea);
@@ -273,9 +300,10 @@ const showUpdateGuestBook = (guestBookNo, btn) => {
 
 const cancelGuestBookUpdate = (btn) => {
   if (confirm("수정을 취소하시겠습니까?")) {
-    const guestBookRow = btn.closest("li");
+    const guestBookRow = btn.closest(".guestbook-item");
     guestBookRow.after(beforeGuestBookRow);
     guestBookRow.remove();
+    selectGuestBookList(searchCp());
   }
 };
 
@@ -306,23 +334,21 @@ const updateGuestBook = (guestBookNo, btn) => {
     .then((result) => {
       if (parseInt(result) > 0) {
         alert("수정되었습니다.");
-        selectGuestBookList();
       } else {
         alert("수정 실패");
       }
-    })
-    .catch((err) => console.error("수정 중 오류:", err));
+      selectGuestBookList(searchCp()); // 현재 페이지 다시 조회
+    });
 };
 
-// 페이지 네이션
-/** 페이징 목록/글쓰기 버튼 포함 div 생성 메서드
- * @author Jiho
- * @param pagination Pagination 객체
- * @return 페이징 목록/글쓰기 버튼 포함 div
- */
-const createBoardFooter = (pagination) => {
+// 페이지네이션 렌더링 함수
+const renderPagination = (pagination) => {
+  const paginationContainer = document.querySelector("#guestbook-pagination");
+  if (!paginationContainer) return;
+
+  paginationContainer.innerHTML = "";
+
   /** 각각의 페이징 목록을 생성하고, 페이지 변경 click 이벤트 부여
-   * @author Jiho
    * @param {number} page 페이지 번호(cp)
    * @param {String} text innerText 내용
    * @param {string} className 클래스명
@@ -334,50 +360,70 @@ const createBoardFooter = (pagination) => {
     span.dataset.page = String(page);
     if (className) span.classList.add(className);
 
-    // 페이지 클릭 이벤트 추가
-    span.addEventListener("click", async () => {
-      // 변경된 cp값 적용/history 저장
+    // 페이지 클릭 이벤트 추가 (올바른 페이지 번호 사용)
+    span.addEventListener("click", () => {
       recodeCp(page);
-      // 해당 페이지에 맞게 게시글/페이징 목록 갱신
-      renderBoardList(boardCode, page).catch(console.error);
+      selectGuestBookList(page); // 클릭한 페이지로 이동
     });
 
     return span;
   };
 
-  const containerDiv = document.createElement("div");
+  const paginationDiv = document.createElement("div");
+  paginationDiv.classList.add("pagination");
 
-  if (pagination) {
-    // 임시 페이징 목록 div
-    const updatedPagination = document.createElement("div");
-    updatedPagination.classList.add("pagination");
+  // << 첫 페이지
+  paginationDiv.append(createPageSpan(1, "<<"));
 
-    // << 첫 페이지
-    updatedPagination.append(createPageSpan(1, "<<"));
+  // < 이전 페이지
+  paginationDiv.append(createPageSpan(pagination.prevPage, "<", "page-nav"));
 
-    // < 이전 페이지
-    updatedPagination.append(
-      createPageSpan(pagination.prevPage, "<", "page-nav")
-    );
-
-    // 페이지 번호 목록
-    for (let i = pagination.startPage; i <= pagination.endPage; i++) {
-      const span = createPageSpan(i, i);
-      if (i === pagination.currentPage) {
-        span.classList.add("current");
-      }
-      updatedPagination.append(span);
+  // 페이지 번호 목록
+  for (let i = pagination.startPage; i <= pagination.endPage; i++) {
+    const span = createPageSpan(i, i);
+    if (i === pagination.currentPage) {
+      span.classList.add("current");
     }
-
-    // > 다음 페이지
-    updatedPagination.append(
-      createPageSpan(pagination.nextPage, ">", "page-nav")
-    );
-
-    // >> 마지막 페이지
-    updatedPagination.append(createPageSpan(pagination.maxPage, ">>"));
-
-    containerDiv.append(updatedPagination);
+    paginationDiv.append(span);
   }
+
+  // > 다음 페이지
+  paginationDiv.append(createPageSpan(pagination.nextPage, ">", "page-nav"));
+
+  // >> 마지막 페이지
+  paginationDiv.append(createPageSpan(pagination.maxPage, ">>"));
+
+  paginationContainer.append(paginationDiv);
 };
-selectGuestBookList();
+
+// 사용하지 않는 createBoardFooter 함수 제거
+
+// 비밀글 토글 기능
+document.addEventListener("DOMContentLoaded", () => {
+  const lockIcon = document.querySelector("#lockIcon");
+  const toggleBtn = document.querySelector("#toggleSecret");
+  const secretCheck = document.querySelector("#secretCheck");
+
+  if (toggleBtn && secretCheck && lockIcon) {
+    toggleBtn.addEventListener("click", () => {
+      secretCheck.checked = !secretCheck.checked;
+
+      // 🔒 좌물쇠 아이콘 전환
+      lockIcon.classList.remove("fa-lock", "fa-lock-open");
+      lockIcon.classList.add(secretCheck.checked ? "fa-lock" : "fa-lock-open");
+
+      // 🔄 토글 아이콘 방향 전환 (ON = 오른쪽 = 비밀글 O)
+      toggleBtn.classList.remove("fa-toggle-on", "fa-toggle-off");
+      toggleBtn.classList.add(
+        secretCheck.checked ? "fa-toggle-on" : "fa-toggle-off"
+      );
+    });
+  }
+});
+
+// 브라우저에서 뒤로가기 버튼을 눌렀을 경우(뒤로 가기)
+window.addEventListener("popstate", () => {
+  selectGuestBookList(searchCp());
+});
+
+selectGuestBookList(searchCp());

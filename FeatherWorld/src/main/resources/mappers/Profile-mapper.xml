@@ -7,16 +7,19 @@
         SELECT * FROM PROFILE WHERE MEMBER_NO = #{memberNo}
     </select>
 
-    <insert id="insertProfile" parameterType="Profile">
-        INSERT INTO PROFILE (MEMBER_NO, PROFILE_IMG, BIO)
-        VALUES (#{memberNo}, #{profileImg}, #{bio})
-    </insert>
+   <insert id="insertProfile" parameterType="Profile">
+    INSERT INTO PROFILE (MEMBER_NO, IMG_PATH, IMG_ORIGINAL_NAME, IMG_RENAME, PROFILE_CONTENT)
+    VALUES (#{memberNo}, #{imgPath}, #{imgOriginalName}, #{imgRename}, #{profileContent})
+</insert>
 
-    <update id="updateProfile" parameterType="Profile">
-        UPDATE PROFILE
-        SET PROFILE_IMG = #{profileImg},
-            BIO = #{bio}
-        WHERE MEMBER_NO = #{memberNo}
-    </update>
+<update id="updateProfile" parameterType="Profile">
+    UPDATE PROFILE
+    SET IMG_PATH = #{imgPath},
+        IMG_ORIGINAL_NAME = #{imgOriginalName},
+        IMG_RENAME = #{imgRename},
+        PROFILE_CONTENT = #{profileContent}
+    WHERE MEMBER_NO = #{memberNo}
+</update>
+
 
 </mapper>

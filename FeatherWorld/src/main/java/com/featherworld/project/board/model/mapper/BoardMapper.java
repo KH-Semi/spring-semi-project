@@ -23,6 +23,11 @@ public interface BoardMapper {
 
 	int getListCount(int currentBoardCode);
 
+	int boardInsert(Board board);
+
+	int insertUploadList(List<BoardImg> uploadList);
+
+
 	// BoardTypeService
 	List<Board> selectBoardList(int currentBoardCode, RowBounds rowBounds);
 
@@ -31,7 +36,7 @@ public interface BoardMapper {
 	int deleteBoardType(BoardType boardType);
 
 	int updateBoardType(BoardType boardType);
-
+	
 	/** 게시글 좋아요 해제
 	 * @author 허배령
 	 * @param map

@@ -13,9 +13,11 @@ import com.featherworld.project.common.dto.Pagination;
 import com.featherworld.project.guestBook.model.dto.GuestBook;
 import com.featherworld.project.guestBook.model.mapper.GuestBookMapper;
 import com.featherworld.project.member.model.dto.Member;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional(rollbackFor=Exception.class)
+@Slf4j
 public class GuestBookServiceImpl implements GuestBookService{
 
 	@Autowired
@@ -62,12 +64,12 @@ public class GuestBookServiceImpl implements GuestBookService{
 	}
 
 	@Override
-	public int guestBookInsert(GuestBook guestBook) throws Exception {
+	public int guestBookInsert(GuestBook guestBook) {
 		return mapper.guestBookInsert(guestBook);
 	}
 
 	@Override
-	public int guestBookUpdate(GuestBook guestBook) throws Exception {
+	public int guestBookUpdate(GuestBook guestBook) {
 		return mapper.guestBookUpdate(guestBook);
 	}
 

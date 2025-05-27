@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.featherworld.project.board.model.dto.Board;
 import com.featherworld.project.friend.model.dto.Ilchon;
 import com.featherworld.project.friend.model.dto.IlchonComment;
 import com.featherworld.project.member.model.dto.Member;
@@ -32,7 +33,8 @@ public interface MiniHomeService {
     List<IlchonComment> getIlchonComments(int memberNo);
 
     /** 최근 게시글 리스트 가져오기 */
-    List<MiniHomeRecentBoard> getRecentBoards(int memberNo);
+    List<Board> getRecentBoards(int memberNo);
+    
 
 
 	/** 미니홈주인 찾아서 Member타입 반환
@@ -107,6 +109,42 @@ public interface MiniHomeService {
 	 * @return
 	 */
 	int findAcceptedIlchon(Ilchon myRequest);
+
+	/** 게시판 총개수
+	 * @param memberNo
+	 * @return
+	 */
+	int getTotalBoardCount(int memberNo);
+
+	/** 방명록 총갯수
+	 * @param memberNo
+	 * @return
+	 */
+	int getTotalGuestBookCount(int memberNo);
+
+	/** 일촌평작성 
+	 * @param ilchonComment
+	 * @return
+	 */
+	int insertIlchonComment(IlchonComment ilchonComment);
+
+	/** 일촌평 삭제
+	 * @param ilchonComment
+	 * @return
+	 */
+	int deleteIlchonComment(IlchonComment ilchonComment);
+
+	/** 일촌평 조회~
+	 * @param checkComment
+	 * @return
+	 */
+	int checkExistingIlchonComment(IlchonComment checkComment);
+
+	/** 기존에 일촌평이있으면 확인해서 수정을 시켜버리잣
+	 * @param ilchonComment
+	 * @return
+	 */
+	int updateIlchonComment(IlchonComment ilchonComment);
 
 	
 }
