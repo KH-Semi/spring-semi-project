@@ -152,3 +152,14 @@
   background-color: #7a2525;
   color: white;
 }
+
+.right-sidebar a.active-menu {
+  background-color: #912d2d;
+  color: white;
+  border-radius: 4px;
+  display: block;
+}
+
+.right-sidebar a.active-menu .nav-item {
+  color: white;
+}
