@@ -125,11 +125,7 @@ public class MiniHomeServiceImpl implements MiniHomeService {
         return mapper.getTotalGuestBookCount(memberNo);
     }
 
-	@Override
-	public int findilchon(Ilchon friend) {
-	
-		return mapper.findilchon(friend);
-	}
+
 
 	
 

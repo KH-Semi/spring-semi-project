@@ -73,16 +73,15 @@ function submitComment() {
     });
 }
 
-// 일촌평 삭제
-function deleteComment(commentFromMemberNo, commentToMemberNo) {
+// 수정된 일촌평 삭제 함수
+function deleteComment(actualAuthorNo) {
   if (!confirm("일촌평을 삭제하시겠습니까?")) {
     return;
   }
 
-  console.log("삭제 요청 데이터:", {
-    fromMemberNo: commentFromMemberNo,
-    toMemberNo: commentToMemberNo,
-    currentPageMemberNo: memberNo,
+  console.log("삭제 요청:", {
+    authorNo: actualAuthorNo,
+    pageOwnerNo: memberNo,
   });
 
   fetch(`/${memberNo}/ilchoncomment`, {
@@ -91,8 +90,7 @@ function deleteComment(commentFromMemberNo, commentToMemberNo) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      fromMemberNo: commentFromMemberNo,
-      toMemberNo: commentToMemberNo,
+      authorNo: actualAuthorNo, // 실제 작성자 번호만 전달
     }),
   })
     .then((response) => response.json())

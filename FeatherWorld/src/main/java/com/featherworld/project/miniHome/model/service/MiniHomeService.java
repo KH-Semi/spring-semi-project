@@ -35,7 +35,7 @@ public interface MiniHomeService {
 	 * @param friend
 	 * @return
 	 */
-	int findilchon(Ilchon friend);
+	int findIlchon(Ilchon friend);
 
 	/** 방문홈피(memberNo) 의 로그인회원이있다면 투데이 insert
 	 * @param today
@@ -121,7 +121,7 @@ public interface MiniHomeService {
 
 	int updateIlchonToComment(Ilchon reverseRelation);
 
-	int findIlchon(Ilchon friend);
+	
 
 	
 

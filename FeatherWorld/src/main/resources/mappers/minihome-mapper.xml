@@ -2,101 +2,124 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.featherworld.project.miniHome.model.mapper.MiniHomeMapper">
 		
-	<!-- 일촌관계확인 (양방향) -->
-	<select id="findIlchon" parameterType="Ilchon" resultType="_int">
-		SELECT COUNT(*) 
-		FROM ILCHON 
-		WHERE IS_ILCHON = 'Y'
-		AND (
-			(FROM_MEMBER_NO = #{fromMemberNo} AND TO_MEMBER_NO = #{toMemberNo})
-			OR 
-			(FROM_MEMBER_NO = #{toMemberNo} AND TO_MEMBER_NO = #{fromMemberNo})
-		)
-	</select>
+<!-- 일촌관계확인 (양방향) -->
+    <select id="findIlchon" parameterType="Ilchon" resultType="_int">
+        SELECT COUNT(*) 
+        FROM ILCHON 
+        WHERE IS_ILCHON = 'Y'
+        AND (
+            (FROM_MEMBER_NO = #{fromMemberNo} AND TO_MEMBER_NO = #{toMemberNo})
+            OR 
+            (FROM_MEMBER_NO = #{toMemberNo} AND TO_MEMBER_NO = #{fromMemberNo})
+        )
+    </select>
 
 	<!-- ==================== 일촌평 관련 ==================== -->
 	
-	<!-- 일촌평이 포함된 일촌 관계 조회 (TO_COMMENT 기준) -->
-	<select id="getIlchonComments" parameterType="int" resultType="Ilchon">
-	SELECT 
-		i.FROM_MEMBER_NO as fromMemberNo,
-		i.TO_MEMBER_NO as toMemberNo,
-		i.TO_NICKNAME as toNickname,
-		i.IS_ILCHON,
-		CASE 
-			WHEN i.FROM_COMMENT IS NOT NULL THEN i.FROM_COMMENT
-			ELSE i.TO_COMMENT
-		END as fromComment,
-		i.TO_COMMENT as toComment,
-		-- 실제 작성자 정보 (FROM_COMMENT면 FROM_MEMBER, TO_COMMENT면 TO_MEMBER)
-		CASE 
-			WHEN i.FROM_COMMENT IS NOT NULL THEN from_member.MEMBER_NAME
-			WHEN i.TO_COMMENT IS NOT NULL THEN to_member.MEMBER_NAME
-		END as fromNickname,
-		-- 실제 작성자 번호 추가
-		CASE 
-			WHEN i.FROM_COMMENT IS NOT NULL THEN i.FROM_MEMBER_NO
-			WHEN i.TO_COMMENT IS NOT NULL THEN i.TO_MEMBER_NO
-		END as actualAuthorNo,
-		-- 실제 작성자 프로필 이미지
-		CASE 
-			WHEN i.FROM_COMMENT IS NOT NULL THEN 
-				CASE WHEN from_profile.IMG_PATH IS NOT NULL AND from_profile.IMG_RENAME IS NOT NULL 
-					 THEN from_profile.IMG_PATH || from_profile.IMG_RENAME ELSE NULL END
-			WHEN i.TO_COMMENT IS NOT NULL THEN 
-				CASE WHEN to_profile.IMG_PATH IS NOT NULL AND to_profile.IMG_RENAME IS NOT NULL 
-					 THEN to_profile.IMG_PATH || to_profile.IMG_RENAME ELSE NULL END
-		END as fromMemberImg
-	FROM ILCHON i
-	-- FROM_MEMBER 정보 조인
-	LEFT JOIN MEMBER from_member ON i.FROM_MEMBER_NO = from_member.MEMBER_NO
-	LEFT JOIN PROFILE from_profile ON i.FROM_MEMBER_NO = from_profile.MEMBER_NO
-	-- TO_MEMBER 정보 조인  
-	LEFT JOIN MEMBER to_member ON i.TO_MEMBER_NO = to_member.MEMBER_NO
-	LEFT JOIN PROFILE to_profile ON i.TO_MEMBER_NO = to_profile.MEMBER_NO
-	WHERE i.IS_ILCHON = 'Y'
-	AND (
-		(i.TO_MEMBER_NO = #{memberNo} AND i.FROM_COMMENT IS NOT NULL AND TRIM(i.FROM_COMMENT) != '') OR
-		(i.FROM_MEMBER_NO = #{memberNo} AND i.TO_COMMENT IS NOT NULL AND TRIM(i.TO_COMMENT) != '')
-	)
-
+<!-- 일촌평 조회: 해당 페이지에 작성된 모든 일촌평 - DTO 필드명에 맞게 수정 -->
+<select id="getIlchonComments" parameterType="int" resultType="Ilchon">
+    SELECT 
+        -- 실제 일촌평 작성자 번호
+        CASE 
+            -- 케이스 1: 다른 사람이 페이지 주인에게 쓴 일촌평 (FROM → TO)
+            WHEN i.TO_MEMBER_NO = #{memberNo} AND i.FROM_COMMENT IS NOT NULL AND TRIM(i.FROM_COMMENT) != '' 
+            THEN i.FROM_MEMBER_NO
+            -- 케이스 2: 페이지 주인이 다른 사람과의 관계에서 자기 페이지에 쓴 일촌평 (FROM ← TO)
+            WHEN i.FROM_MEMBER_NO = #{memberNo} AND i.TO_COMMENT IS NOT NULL AND TRIM(i.TO_COMMENT) != '' 
+            THEN i.TO_MEMBER_NO
+        END as actualAuthorNo,
+        
+        -- 페이지 주인 (일촌평을 받는 대상)
+        #{memberNo} as toMemberNo,
+        
+        -- 작성자 이름 → memberName으로 변경
+        CASE 
+            WHEN i.TO_MEMBER_NO = #{memberNo} AND i.FROM_COMMENT IS NOT NULL AND TRIM(i.FROM_COMMENT) != '' 
+            THEN from_member.MEMBER_NAME
+            WHEN i.FROM_MEMBER_NO = #{memberNo} AND i.TO_COMMENT IS NOT NULL AND TRIM(i.TO_COMMENT) != '' 
+            THEN to_member.MEMBER_NAME
+        END as memberName,
+        
+        -- 작성자 닉네임 (기존 필드 유지)
+        CASE 
+            WHEN i.TO_MEMBER_NO = #{memberNo} AND i.FROM_COMMENT IS NOT NULL AND TRIM(i.FROM_COMMENT) != '' 
+            THEN i.FROM_NICKNAME
+            WHEN i.FROM_MEMBER_NO = #{memberNo} AND i.TO_COMMENT IS NOT NULL AND TRIM(i.TO_COMMENT) != '' 
+            THEN i.TO_NICKNAME
+        END as fromNickname,
+        
+        -- 일촌평 내용 → fromComment로 통합
+        CASE 
+            WHEN i.TO_MEMBER_NO = #{memberNo} AND i.FROM_COMMENT IS NOT NULL AND TRIM(i.FROM_COMMENT) != '' 
+            THEN i.FROM_COMMENT
+            WHEN i.FROM_MEMBER_NO = #{memberNo} AND i.TO_COMMENT IS NOT NULL AND TRIM(i.TO_COMMENT) != '' 
+            THEN i.TO_COMMENT
+        END as fromComment,
+        
+        -- 작성자 프로필 이미지 → fromMemberImg로 변경
+        CASE 
+            WHEN i.TO_MEMBER_NO = #{memberNo} AND i.FROM_COMMENT IS NOT NULL AND TRIM(i.FROM_COMMENT) != '' 
+            THEN CASE WHEN from_profile.IMG_PATH IS NOT NULL AND from_profile.IMG_RENAME IS NOT NULL 
+                      THEN from_profile.IMG_PATH || from_profile.IMG_RENAME ELSE NULL END
+            WHEN i.FROM_MEMBER_NO = #{memberNo} AND i.TO_COMMENT IS NOT NULL AND TRIM(i.TO_COMMENT) != '' 
+            THEN CASE WHEN to_profile.IMG_PATH IS NOT NULL AND to_profile.IMG_RENAME IS NOT NULL 
+                      THEN to_profile.IMG_PATH || to_profile.IMG_RENAME ELSE NULL END
+        END as fromMemberImg
+        
+    FROM ILCHON i
+    LEFT JOIN MEMBER from_member ON i.FROM_MEMBER_NO = from_member.MEMBER_NO
+    LEFT JOIN PROFILE from_profile ON i.FROM_MEMBER_NO = from_profile.MEMBER_NO
+    LEFT JOIN MEMBER to_member ON i.TO_MEMBER_NO = to_member.MEMBER_NO
+    LEFT JOIN PROFILE to_profile ON i.TO_MEMBER_NO = to_profile.MEMBER_NO
+    WHERE i.IS_ILCHON = 'Y'
+    AND (
+        -- 케이스 1: 다른 사람이 페이지 주인에게 쓴 일촌평
+        (i.TO_MEMBER_NO = #{memberNo} AND i.FROM_COMMENT IS NOT NULL AND TRIM(i.FROM_COMMENT) != '') 
+        OR
+        -- 케이스 2: 페이지 주인이 자기 페이지에 표시되는 일촌평
+        (i.FROM_MEMBER_NO = #{memberNo} AND i.TO_COMMENT IS NOT NULL AND TRIM(i.TO_COMMENT) != '')
+    )
 </select>
 			
+			
 	<!-- FROM_COMMENT 업데이트 -->
-	<update id="updateIlchonFromComment" parameterType="Ilchon">
-		UPDATE ILCHON 
-		SET FROM_COMMENT = #{fromComment}
-		WHERE FROM_MEMBER_NO = #{fromMemberNo} 
-		  AND TO_MEMBER_NO = #{toMemberNo}
-		  AND IS_ILCHON = 'Y'
-	</update>
+    <update id="updateIlchonFromComment" parameterType="Ilchon">
+        UPDATE ILCHON 
+        SET FROM_COMMENT = #{fromComment}
+        WHERE FROM_MEMBER_NO = #{fromMemberNo} 
+          AND TO_MEMBER_NO = #{toMemberNo}
+          AND IS_ILCHON = 'Y'
+    </update>
 
-	<!-- TO_COMMENT 업데이트 -->
-	<update id="updateIlchonToComment" parameterType="Ilchon">
-		UPDATE ILCHON 
-		SET TO_COMMENT = #{toComment}
-		WHERE FROM_MEMBER_NO = #{fromMemberNo} 
-		  AND TO_MEMBER_NO = #{toMemberNo}
-		  AND IS_ILCHON = 'Y'
-	</update>
+	
+    <!-- TO_COMMENT 업데이트 -->
+    <update id="updateIlchonToComment" parameterType="Ilchon">
+        UPDATE ILCHON 
+        SET TO_COMMENT = #{toComment}
+        WHERE FROM_MEMBER_NO = #{fromMemberNo} 
+          AND TO_MEMBER_NO = #{toMemberNo}
+          AND IS_ILCHON = 'Y'
+    </update>
 
-	<!-- FROM_COMMENT 삭제 (단순화) -->
-	<update id="deleteIlchonFromComment" parameterType="Ilchon">
-		UPDATE ILCHON 
-		SET FROM_COMMENT = NULL
-		WHERE FROM_MEMBER_NO = #{fromMemberNo} 
-		  AND TO_MEMBER_NO = #{toMemberNo}
-		  AND IS_ILCHON = 'Y'
-	</update>
+	  <!-- FROM_COMMENT 삭제 -->
+    <update id="deleteIlchonFromComment" parameterType="Ilchon">
+        UPDATE ILCHON 
+        SET FROM_COMMENT = NULL
+        WHERE FROM_MEMBER_NO = #{fromMemberNo} 
+          AND TO_MEMBER_NO = #{toMemberNo}
+          AND IS_ILCHON = 'Y'
+          AND FROM_COMMENT IS NOT NULL
+    </update>
 
-	<!-- TO_COMMENT 삭제 (단순화) -->
-	<update id="deleteIlchonToComment" parameterType="Ilchon">
-		UPDATE ILCHON 
-		SET TO_COMMENT = NULL
-		WHERE FROM_MEMBER_NO = #{fromMemberNo} 
-		  AND TO_MEMBER_NO = #{toMemberNo}
-		  AND IS_ILCHON = 'Y'
-	</update>
+	 <!-- TO_COMMENT 삭제 -->
+    <update id="deleteIlchonToComment" parameterType="Ilchon">
+        UPDATE ILCHON 
+        SET TO_COMMENT = NULL
+        WHERE FROM_MEMBER_NO = #{fromMemberNo} 
+          AND TO_MEMBER_NO = #{toMemberNo}
+          AND IS_ILCHON = 'Y'
+          AND TO_COMMENT IS NOT NULL
+    </update>
 
 	<!-- ==================== 나머지 기존 메서드들 ==================== -->
 		

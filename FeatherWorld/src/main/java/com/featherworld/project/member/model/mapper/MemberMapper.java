@@ -68,7 +68,7 @@ public interface MemberMapper {
 	 * @return
 	 * @author 영민
 	 */
-	int checkTel(int memberTel);
+	int checkTel(String memberTel);
 
 	/** 카카오토큰의 null 인지 아닌지 확인하는메서드
 	 * @param memberEmail

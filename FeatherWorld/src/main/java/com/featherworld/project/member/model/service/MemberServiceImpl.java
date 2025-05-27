@@ -158,7 +158,7 @@ public class MemberServiceImpl implements MemberService {
 		return mapper.searchMember(memberName);
 	}
 	@Override
-	public int checkTel(int memberTel) {
+	public int checkTel(String memberTel) {
 		
 		return mapper.checkTel(memberTel);
 	}
@@ -284,7 +284,11 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mapper.getTodayBestMembers();
 	}
-	
-	
-	
+
+
+
 	}
+	
+	
+	
+	

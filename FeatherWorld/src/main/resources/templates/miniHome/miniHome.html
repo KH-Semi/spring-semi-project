@@ -113,53 +113,42 @@
                 <p>아직 일촌평이 없습니다.</p>
               </div>
 
-              <!-- 일촌평이 있을 때 -->
+              <!-- 일촌평 목록 - DTO 필드명 사용 -->
               <div
                 th:if="${not #lists.isEmpty(ilchonComments)}"
                 class="ilchon-comment-list"
               >
                 <ul>
-                  <li
-                    th:each="comment : ${ilchonComments}"
-                    th:if="${(comment.fromComment != null and #strings.length(#strings.trim(comment.fromComment)) > 0) or 
-                 (comment.toComment != null and #strings.length(#strings.trim(comment.toComment)) > 0)}"
-                  >
+                  <li th:each="comment : ${ilchonComments}">
                     <div class="ilchon-comment-box">
-                      <!-- 작성자 정보 -->
+                      <!-- 작성자 정보  -->
                       <div class="comment-author">
                         <img
-                          th:src="${comment.fromMemberImg == null ? 
-                     '/images/user.png' : 
-                     comment.fromMemberImg}"
+                          th:src="${comment.fromMemberImg == null ? '/images/user.png' : comment.fromMemberImg}"
                           alt="프로필"
                           class="author-profile-img"
                         />
-
                         <span
                           class="author-name"
-                          th:text="${comment.fromNickname}"
+                          th:text="${comment.memberName != null ? comment.memberName : comment.fromNickname}"
                           >작성자명</span
                         >
                       </div>
 
-                      <!-- 일촌평 내용 - fromComment와 toComment 둘 다 체크 -->
-                      <span
-                        class="comment"
-                        th:text="${comment.fromComment != null and #strings.length(#strings.trim(comment.fromComment)) > 0 ? 
-                          comment.fromComment : comment.toComment}"
+                      <!-- 일촌평 내용 - DTO 필드명 사용 -->
+                      <span class="comment" th:text="${comment.fromComment}"
                         >일촌평 내용</span
                       >
 
-                      <!-- 삭제 버튼 - 본인이 쓴 일촉평이거나 프로필 주인일 때만 표시 -->
+                      <!-- 삭제 버튼 -->
                       <div
-                        th:if="${loginMember != null and (loginMember.memberNo == memberNo or 
-                          (comment.toComment != null and #strings.length(#strings.trim(comment.toComment)) > 0))}"
+                        th:if="${loginMember != null and (loginMember.memberNo == comment.actualAuthorNo or loginMember.memberNo == memberNo)}"
                         class="comment-actions"
                       >
                         <button
                           type="button"
                           class="btn-delete-comment"
-                          th:onclick="|deleteComment(${comment.fromMemberNo}, ${comment.toMemberNo})|"
+                          th:onclick="|deleteComment(${comment.actualAuthorNo})|"
                           title="삭제"
                         >
                           <i class="fas fa-trash"></i>

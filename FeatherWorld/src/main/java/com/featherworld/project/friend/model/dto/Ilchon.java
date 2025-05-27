@@ -20,6 +20,8 @@ public class Ilchon {
 	private String toNickname;
 	private boolean isIlchon;
 	
+	private int actualAuthorNo;  // 실제 작성자 번호
+
 	private String fromComment;
 	private String toComment;
 	private String fromMemberImg; // 작성자에 대한 .. 프로필이미지 ㅠㅠ

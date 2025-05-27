@@ -82,10 +82,11 @@
 	</select>
 	
 	<!-- 전화번호 중복확인 -->
-	<select id="checkTel">
-	SELECT MEMBER_TEL
-	FROM MEMBER
-	WHERE MEMBER_TEL = #{memberTel}
+	<select id="checkTel" resultType="_int">
+    SELECT COUNT(*)
+    FROM MEMBER
+    WHERE MEMBER_TEL = #{memberTel}
+    AND MEMBER_DEL_FL = 'N'
 	</select>
 	
 	<!-- kakaotoken이 null인지 아닌지확인 -->
