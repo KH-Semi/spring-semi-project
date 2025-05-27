@@ -30,7 +30,7 @@ public interface MiniHomeService {
 
 
     /** 일촌평 리스트 가져오기 */
-    List<IlchonComment> getIlchonComments(int memberNo);
+  //  List<IlchonComment> getIlchonComments(int memberNo);
 
     /** 최근 게시글 리스트 가져오기 */
     List<Board> getRecentBoards(int memberNo);

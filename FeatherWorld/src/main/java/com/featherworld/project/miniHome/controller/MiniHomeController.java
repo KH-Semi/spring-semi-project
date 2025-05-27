@@ -38,7 +38,9 @@ public class MiniHomeController {
         
        List<Board> recentBoardList = miniHomeService.getRecentBoards(memberNo);
 
-       List<IlchonComment> ilchonCommets = miniHomeService.getIlchonComments(memberNo);
+      
+       
+      // List<IlchonComment> ilchonCommets = miniHomeService.getIlchonComments(memberNo);
        
        int totalBoardCount = miniHomeService.getTotalBoardCount(memberNo);
        int totalGuestBookCount = miniHomeService.getTotalGuestBookCount(memberNo);
@@ -46,7 +48,7 @@ public class MiniHomeController {
        model.addAttribute("totalBoardCount", totalBoardCount);
        model.addAttribute("totalGuestBookCount", totalGuestBookCount);
        model.addAttribute("recentBoards", recentBoardList);
-       model.addAttribute("ilchonCommets",ilchonCommets);
+     //  model.addAttribute("ilchonCommets",ilchonCommets);
        model.addAttribute("loginMember", loginMember);
       
         
