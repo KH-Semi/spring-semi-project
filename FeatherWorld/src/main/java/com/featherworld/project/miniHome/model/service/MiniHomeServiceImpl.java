@@ -45,10 +45,10 @@ public class MiniHomeServiceImpl implements MiniHomeService {
 
 
     // 일촌평 리스트 조회
-    @Override
-    public List<IlchonComment> getIlchonComments(int memberNo) {
-    	 return mapper.getIlchonComments(memberNo);
-    }
+  //  @Override
+   // public List<IlchonComment> getIlchonComments(int memberNo) {
+    //	 return mapper.getIlchonComments(memberNo);
+   // }
 
 	//홈피주인 의대한 정보 가져오기
 	@Override
