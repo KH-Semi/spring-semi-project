@@ -6,46 +6,9 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.featherworld.project.guestBook.model.dto.GuestBook;
+import com.featherworld.project.member.model.dto.Member;
 
 public interface GuestBookService {
-
-	 
-//	/** 방명록 조회 서비스 
-//	 * @param memberNo
-//	 * @return
-//	 */
-//	List<GuestBook> selectGuestBookList(@Param("memberNo") int memberNo);
-//	
-//	/** 방명록 작성 서비스 
-//	 * @param inputGuestBook
-//	 * @return
-//	 * @throws Exception
-//	 */
-//	int guestBookInsert(GuestBook guestBook) throws Exception;
-//	
-//	/** 방명록 수정 서비스 
-//	 * @param inputGuestBook
-//	 * @return
-//	 * @throws Exception
-//	 */
-//	int guestBookUpdate(GuestBook guestBook) throws Exception;
-//	
-//	/** 방명록 삭제 서비스 
-//	 * @param map
-//	 * @return
-//	 */
-//	int guestBookDelete(Map<String, Integer> map);
-//
-//	/** 비동기로 방명록 조회 서비스
-//	 * @param memberNo
-//	 * @param cp
-//	 * @return
-//	 */
-//	Map<String, Object> selectGuestBookList(int memberNo, int cp);
-//
-//	GuestBook selectOne(int guestBookNo);
-//
-//	int guestBookDelete(int guestBookNo);
 	
 	/**
 	 * 방명록 목록 조회 (페이징 포함)
@@ -53,7 +16,7 @@ public interface GuestBookService {
 	 * @param cp 현재 페이지
 	 * @return 방명록 목록과 페이징 정보
 	 */
-	Map<String, Object> selectGuestBookList(int memberNo, int cp);
+	Map<String, Object> selectGuestBookList(int ownerNo, int cp, Integer loginMamberNo);
 	
 	/**
 	 * 방명록 작성
@@ -77,5 +40,7 @@ public interface GuestBookService {
 	 * @return 삭제 결과 (성공 시 1, 실패 시 0)
 	 */
 	int guestBookDelete(int guestBookNo);
+
+	Map<String, Object> selectGuestBookList(int memberNo, int cp, Member loginMember);
 
 }

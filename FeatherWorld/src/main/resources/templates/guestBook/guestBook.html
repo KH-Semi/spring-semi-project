@@ -33,6 +33,18 @@
             >
               <div class="guestbook-wrap">
                 <div class="guestbook-main">
+                  <p class="guestbook-writer">
+                    <!-- 프로필 이미지 없을 경우 -->
+                    <img
+                      th:if="${#strings.isEmpty(item.visitor?.memberImg)}"
+                      th:src="@{/images/default-user.png}"
+                    />
+                    <!-- 프로필 이미지 있을 경우 -->
+                    <img
+                      th:if="${!#strings.isEmpty(item.visitor?.memberImg)}"
+                      th:src="${item.visitor.memberImg}"
+                    />
+                  </p>
                   <!-- 비밀글 처리 -->
                   <div
                     class="guestbook-content"
@@ -43,7 +55,8 @@
               </div>
 
               <div class="guestbook-info">
-                <span th:text="*{visitor != null ? visitor.memberName : '익명'}"
+                <span
+                  th:text="${item.visitor != null ? item.visitor.memberName : '익명'}"
                   >작성자</span
                 >
                 <div
@@ -56,19 +69,21 @@
 
               <!-- 작성자 본인에게만 수정/삭제 버튼 노출 -->
               <div
-                th:if="${loginMember?.memberNo == item.visitor?.memberNo}"
+                th:if="${loginMember != null 
+                and item.visitor != null 
+                and loginMember.memberNo.equals(item.visitor.memberNo)}"
                 class="guestbook-actions"
               >
-                <a
-                  href="#"
+                <button
                   th:onclick="|showUpdateGuestBook(${item.guestBookNo}, this); return false;|"
-                  >✏️ 수정</a
                 >
-                <a
-                  href="#"
+                  ✏️ 수정
+                </button>
+                <button
                   th:onclick="|deleteGuestBook(${item.guestBookNo}); return false;|"
-                  >❌ 삭제</a
                 >
+                  ❌ 삭제
+                </button>
               </div>
             </div>
           </div>
@@ -95,7 +110,7 @@
               <i id="lockIcon" class="fa-solid fa-lock-open"></i>
               <i
                 id="toggleSecret"
-                class="fa-solid fa-toggle-on"
+                class="fa-solid fa-toggle-off"
                 style="cursor: pointer"
               ></i
               ><br />
@@ -127,6 +142,8 @@
     </div>
 
     <script th:inline="javascript">
+      // message.properties에서 얻어온 기본이미지
+      const userDefaultImage = /*[[#{user.default.image}]]*/ "기본이미지";
       const memberNo = /*[[${memberNo}]]*/ 0;
     </script>
 

@@ -148,3 +148,10 @@
   color: white;
   border-color: #9f2120;
 }
+
+.guestbook-writer-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}

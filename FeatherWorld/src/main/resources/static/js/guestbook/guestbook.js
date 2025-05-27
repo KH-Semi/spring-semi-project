@@ -16,12 +16,14 @@ let currentPage = searchCp();
 // 방명록 목록을 서버에서 조회해서 화면에 렌더링하는 함수
 const selectGuestBookList = (cp = 1) => {
   currentPage = cp; // 현재 페이지(cp). 현재는 고정값 1. (나중에 페이징 처리용으로 수정 가능)
-
-  const ownerNo = document.querySelector("#ownerNo")?.value || 1;
-  // 방명록 주인 번호(ownerNo) 가져옴. 없으면 기본값 1
-
+  
   // 로그인한 사용자 정보 가져오기 (최상단으로 이동)
-  const loginMemberNo = document.querySelector("#loginMemberNo")?.value;
+  const loginMemberNo = document.querySelector("#loginMemberNo")?.value || null;
+  
+  // 방명록 주인 번호(ownerNo) 가져옴. 없으면 기본값 1
+  const ownerNo = document.querySelector("#ownerNo")?.value || 1;
+
+  const cp = 1; // 현재 페이지(cp). 현재는 고정값 1. (나중에 페이징 처리용으로 수정 가능)
 
   // 서버에 방명록 리스트 요청 (비동기 fetch)
   fetch(`/${ownerNo}/guestbook/list?cp=${cp}`) // (05.23 배령 수정)
@@ -39,9 +41,20 @@ const selectGuestBookList = (cp = 1) => {
         return;
       }
 
-      // 05.23 배령 수정
+      // 05.26 배령 수정
       // 방명록이 있을 경우, 각각의 방명록 데이터를 순회하며 DOM 요소 생성
       guestBookList.forEach((item) => {
+        // 🔒 비밀글인데, 홈피 주인도 아니고 작성자도 아니면 랜더링 x
+        const isSecret = item.secret == 1;
+        const isWriter = String(loginMemberNo) === String(item.visitorNo);
+        const isOwner = String(loginMemberNo) === String(ownerNo);
+        const canView = isWriter || isOwner;
+
+        // ✅ 비밀글이고 열람 권한이 없으면 return (렌더링 아예 안 함)
+        if (isSecret && !canView) {
+          return;
+        }
+
         const itemDiv = document.createElement("div");
         itemDiv.className = "guestbook-item"; // 전체 방명록 한 개의 최상위 div
 
@@ -50,6 +63,29 @@ const selectGuestBookList = (cp = 1) => {
 
         const mainDiv = document.createElement("div");
         mainDiv.className = "guestbook-main"; // 실제 내용 부분을 감싸는 div
+
+        // 프로필 이미지
+        const profileImg = document.createElement("img");
+        profileImg.className = "guestbook-writer-img";
+
+        if (
+          item.visitor?.memberImg == null ||
+          item.visitor.memberImg.trim() === ""
+        ) {
+          profileImg.src = userDefaultImage;
+        } else {
+          profileImg.src = item.visitor.memberImg;
+        }
+
+        mainDiv.prepend(profileImg);
+
+        // 아이콘 생성 (비밀글일 경우)
+        if (item.secret == 1) {
+          const lockIcon = document.createElement("i");
+          lockIcon.className = "fa-solid fa-lock"; // FontAwesome 자물쇠 아이콘
+          lockIcon.style.marginRight = "8px"; // 오른쪽 간격 조절
+          mainDiv.appendChild(lockIcon);
+        }
 
         const contentDiv = document.createElement("div");
         contentDiv.className = "guestbook-content"; // 방명록 내용 표시 영역
@@ -73,8 +109,15 @@ const selectGuestBookList = (cp = 1) => {
         infoDiv.appendChild(writerSpan);
         infoDiv.appendChild(dateDiv);
 
+        // 전체 item div에 info 추가
+        itemDiv.appendChild(infoDiv);
+
+        // 최종적으로 guestbook-list 영역에 추가
+        container.appendChild(itemDiv);
+
         // 작성자 번호와 로그인한 사용자가 같을 경우에만 버튼 표시
-        if (loginMemberNo && parseInt(loginMemberNo) === item.visitorNo) {
+        // 이거 근데 기존 edit, delete 버튼이랑 다르게 나오네;;;
+        if (isWriter) {
           const actionDiv = document.createElement("div");
           actionDiv.className = "guestbook-actions";
 
@@ -112,33 +155,51 @@ const selectGuestBookList = (cp = 1) => {
 
 // 방명록 등록 (ajax)
 document.addEventListener("DOMContentLoaded", () => {
+  selectGuestBookList();
   const guestBookContent = document.querySelector("#guestBookContent");
   const addGuestBook = document.querySelector("#addGuestBook");
-  const loginMemberNo = document.querySelector("#loginMemberNo")?.value || null;
 
-  if (addGuestBook) {
-    addGuestBook.addEventListener("click", () => {
-      // 방명록 등록 버튼 클릭 시
-      if (loginMemberNo === null) {
-        alert("로그인 후 작성 가능합니다.");
-        return;
-      }
-      // 댓글 내용이 작성되지 않은 경우(textarea 비우고 눌렀을 때)
-      if (guestBookContent.value.trim().length === 0) {
-        alert("내용 작성 후 등록 버튼 클릭해주세요");
-        guestBookContent.focus();
-        return;
-      }
+  // [비밀글 토글 관련 요소] DOMContentLoaded 안에서 가져오기
+  const lockIcon = document.querySelector("#lockIcon");
+  const toggleBtn = document.querySelector("#toggleSecret");
+  const secretCheck = document.querySelector("#secretCheck");
 
-      const ownerNo = document.querySelector("#ownerNo")?.value || 1; // gpt 추천 문구
+  toggleBtn.addEventListener("click", () => {
+    secretCheck.checked = !secretCheck.checked;
 
-      //ajax를 이용해 방명록 등록 요청
-      const data = {
-        guestBookContent: guestBookContent.value,
-        visitorNo: loginMemberNo,
-        secret: document.querySelector("#secretCheck").checked ? 1 : 0,
-      };
+    // 🔒 좌물쇠 아이콘 전환
+    lockIcon.classList.remove("fa-lock", "fa-lock-open");
+    lockIcon.classList.add(secretCheck.checked ? "fa-lock" : "fa-lock-open");
 
+    // 🔄 토글 아이콘 방향 전환 (ON = 오른쪽 = 비밀글 O)
+    toggleBtn.classList.remove("fa-toggle-on", "fa-toggle-off");
+    toggleBtn.classList.add(
+      secretCheck.checked ? "fa-toggle-on" : "fa-toggle-off"
+    );
+  });
+
+  addGuestBook.addEventListener("click", () => {
+    const loginMemberNo =
+      document.querySelector("#loginMemberNo")?.value || null;
+    const ownerNo = document.querySelector("#ownerNo")?.value || 1;
+    // 방명록 등록 버튼 클릭 시
+    if (loginMemberNo === null) {
+      alert("로그인 후 작성 가능합니다.");
+      return;
+    }
+    // 댓글 내용이 작성되지 않은 경우(textarea 비우고 눌렀을 때)
+    if (guestBookContent.value.trim().length === 0) {
+      alert("내용 작성 후 등록 버튼 클릭해주세요");
+      guestBookContent.focus();
+      return;
+    }
+
+    //ajax를 이용해 방명록 등록 요청
+    const data = {
+      guestBookContent: guestBookContent.value,
+      visitorNo: loginMemberNo,
+      secret: document.querySelector("#secretCheck").checked ? 1 : 0,
+    };
       fetch(`/${ownerNo}/guestbook`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -161,14 +222,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //방명록 삭제 ( ajax)
 const deleteGuestBook = (guestBookNo) => {
+  const ownerNo = document.querySelector("#ownerNo")?.value || 1;
   //취소 선택 시
   if (!confirm("삭제 하시겠습니까?")) return;
-  const ownerNo = document.querySelector("#ownerNo")?.value || 1;
 
   fetch(`/${ownerNo}/guestbook`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ guestBookNo: guestBookNo }),
+    body: JSON.stringify({ guestBookNo }),
   })
     .then((resp) => resp.json()) // json()으로 받아 result.success를 명확히 확인해야 함
     .then((result) => {

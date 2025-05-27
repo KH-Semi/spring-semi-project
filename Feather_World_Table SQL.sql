@@ -663,3 +663,6 @@ SELECT * FROM
 "BOARD_IMG"
 WHERE BOARD_NO = 15
 ORDER BY IMG_ORDER;
+
+SELECT * FROM guest_book
+ORDER BY guest_book_write_date DESC;

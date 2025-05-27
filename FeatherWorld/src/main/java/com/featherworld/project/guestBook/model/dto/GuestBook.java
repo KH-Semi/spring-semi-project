@@ -22,4 +22,7 @@ public class GuestBook {
 	private Member visitor;
 	private int secret;// 0 = 공개글, 1 = 비밀글
 	
+	private String memberName;
+	private String memberImg;
+	
 }
