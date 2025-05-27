@@ -40,14 +40,14 @@
           </div>
 
           <!-- 기존 이미지 표시 영역 -->
-          <div class="existing-images-container" th:if="${board.imageList != null and !board.imageList.isEmpty()}">
+          <div class="existing-images-container" th:if="${board.imageList != null}">
             <h4 class="existing-images-title">기존 이미지</h4>
             <div class="existing-images-grid" th:each="image : ${board.imageList}">
-              <div class="existing-image-item" th:data-image-no="${image.imageNo}">
-                <img th:src="${image.imagePath}" th:alt="${image.imageOriginal}" />
+              <div class="existing-image-item" th:data-image-no="${image.imgNo}">
+                <img th:src="${image.imgPath}" th:alt="${image.imgOriginalName}" />
                 <div class="image-info">
-                  <span class="image-name" th:text="${image.imageOriginal}">image.jpg</span>
-                  <button type="button" class="delete-existing-btn" th:data-image-no="${image.imageNo}">
+                  <span class="image-name" th:text="${image.imgOriginalName}">image.jpg</span>
+                  <button type="button" class="delete-existing-btn" th:data-image-no="${image.imgNo}">
                     <i class="fa-solid fa-trash"></i>
                   </button>
                 </div>
