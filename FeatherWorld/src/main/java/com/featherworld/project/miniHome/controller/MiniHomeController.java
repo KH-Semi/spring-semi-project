@@ -1,21 +1,24 @@
 package com.featherworld.project.miniHome.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.featherworld.project.board.model.dto.Board;
 import com.featherworld.project.friend.model.dto.Ilchon;
+import com.featherworld.project.friend.model.dto.IlchonComment;
 import com.featherworld.project.member.model.dto.Member;
-import com.featherworld.project.member.model.dto.Today;
 import com.featherworld.project.miniHome.model.service.MiniHomeService;
 
 @Controller
@@ -23,176 +26,221 @@ public class MiniHomeController {
 
     @Autowired
     private MiniHomeService miniHomeService;
-    
+
+    /**
+     * 미니홈 메인 페이지
+     * 프로필 데이터와 방문자 처리는 ProfileInterceptor에서 자동 처리됨
+     */
     @GetMapping("{memberNo:[0-9]+}/minihome")
-    public String miniHome(@PathVariable("memberNo") int memberNo,
-                           @SessionAttribute(value = "loginMember", required = false) Member loginMember,
-                           Model model) {
+    public String miniHomePage(@PathVariable("memberNo") int memberNo,
+                              @SessionAttribute(value = "loginMember", required = false) Member loginMember,
+                              Model model) {
         
-        Member member = miniHomeService.findmember(memberNo);
-        
-        // 방문자 처리 (로그인한 회원만)
-        if (loginMember != null && loginMember.getMemberNo() != memberNo) {
-            Today today = new Today(); 
-            today.setHomeNo(memberNo);
-            today.setVisitNo(loginMember.getMemberNo());
-            
-            // 오늘 이 미니홈에 방문했는지 확인
-            int todayConfirm = miniHomeService.todayConfirm(today);
-            
-            if (todayConfirm == 0) {
-                // 오늘 첫 방문이면 방문 기록 추가
-                miniHomeService.todayAdd(today);
-            }
-        }
-        
-        // 총 오늘 방문자 수 조회
-        Today todayQuery = new Today();
-        todayQuery.setHomeNo(memberNo);
-        int todayCount = miniHomeService.todayCount(todayQuery);
-        
-        // 전체 방문자 수 조회 
-        int totalCount = miniHomeService.totalCount(memberNo);
-        
-        // 팔로워 수 조회 (남이 나를 일촌신청한 수)
-        int followerCount = miniHomeService.getFollowerCount(memberNo);
-        
-        // 팔로잉 수 조회 (내가 남에게 일촌신청한 수)
-        int followingCount = miniHomeService.getFollowingCount(memberNo);
-        
-        // 미수락 팔로워 신청 수 조회 (본인인 경우만)
-        boolean hasPendingFollowers = false; // 초기값 설정
+       List<Board> recentBoardList = miniHomeService.getRecentBoards(memberNo);
+
+       List<IlchonComment> ilchonCommets = miniHomeService.getIlchonComments(memberNo);
        
-        if (loginMember != null && loginMember.getMemberNo() == memberNo) {
-            int pendingFollowerCount = miniHomeService.getPendingFollowerCount(memberNo);
-            hasPendingFollowers = (pendingFollowerCount > 0);
-        }
-        
-        // 최근 게시글 - try-catch로 감쌈
-//        try {
-//            List<MiniHomeRecentBoard> recentBoards = miniHomeService.getRecentBoards(memberNo);
-//            model.addAttribute("recentBoards", recentBoards);
-//        } catch (Exception e) {
-//            // DB 오류가 있을 경우 빈 리스트로 설정
-//            model.addAttribute("recentBoards", new ArrayList<MiniHomeRecentBoard>());
-//            System.err.println("최근 게시글 조회 오류: " + e.getMessage());
-//        }
-//
-//        // 일촌평 리스트 - try-catch로 감쌈
-//        try {
-//            List<IlchonComment> ilchonComments = miniHomeService.getIlchonComments(memberNo);
-//            model.addAttribute("ilchonComments", ilchonComments);
-//        } catch (Exception e) {
-//            // DB 오류가 있을 경우 빈 리스트로 설정
-//            model.addAttribute("ilchonComments", new ArrayList<IlchonComment>());
-//            System.err.println("일촌평 조회 오류: " + e.getMessage());
-//        }
-        
-        // 기본 정보들을 model에 추가
-        model.addAttribute("totalCount", totalCount);    // 총방문자
-        model.addAttribute("todayCount", todayCount);    // 투데이
-        model.addAttribute("member", member);            // 홈피주인의 정보
-        model.addAttribute("followerCount", followerCount);   // 팔로워 몇명?
-        model.addAttribute("followingCount", followingCount); // 팔로잉 몇명?
-        model.addAttribute("hasPendingFollowers", hasPendingFollowers); // 미수락된 팔로워
-        model.addAttribute("memberNo", memberNo);        // memberNo 추가
+       int totalBoardCount = miniHomeService.getTotalBoardCount(memberNo);
+       int totalGuestBookCount = miniHomeService.getTotalGuestBookCount(memberNo);
        
-        // 일촌 관계 초기값
-        boolean isIlchon = false;
-        boolean isPendingRequest = false;
+       model.addAttribute("totalBoardCount", totalBoardCount);
+       model.addAttribute("totalGuestBookCount", totalGuestBookCount);
+       model.addAttribute("recentBoards", recentBoardList);
+       model.addAttribute("ilchonCommets",ilchonCommets);
+       model.addAttribute("loginMember", loginMember);
+      
         
-        if (loginMember != null && loginMember.getMemberNo() != memberNo) {
-            // 1. 내가 신청한 상태 확인
-            Ilchon myRequest = new Ilchon();
-            myRequest.setFromMemberNo(loginMember.getMemberNo());
-            myRequest.setToMemberNo(memberNo);
-            
-            int myAcceptedCount = miniHomeService.findAcceptedIlchon(myRequest);  // 수락된 일촌만
-            int myPendingCount = miniHomeService.findPendingIlchon(myRequest);    // 대기중인 신청만
-            
-            // 2. 상대방이 신청한 상태 확인
-            Ilchon theirRequest = new Ilchon();
-            theirRequest.setFromMemberNo(memberNo);
-            theirRequest.setToMemberNo(loginMember.getMemberNo());
-            
-            int theirAcceptedCount = miniHomeService.findAcceptedIlchon(theirRequest);
-            
-            // 3. 상태 결정
-            isIlchon = (myAcceptedCount > 0 || theirAcceptedCount > 0);  // 수락된 일촌이 있으면 일촌
-            isPendingRequest = (myPendingCount > 0);  // 내가 신청한 상태
-        }
-        
-        // 일촌 관계 정보를 항상 model에 추가 (null 방지)
-        model.addAttribute("isIlchon", isIlchon);
-        model.addAttribute("isPendingRequest", isPendingRequest);
-        
-        return "miniHome/miniHome";
+        return "miniHome/miniHome"; // templates/miniHome/miniHome.html
     }
     
-    /**
-     * 일촌신청
-     * @param toMemberNo 신청받을 회원번호
-     * @param loginMember 로그인한 회원정보
-     * @return JSON 응답
+    /** 일촌평 작성 ..
+     * @param memberNo
+     * @param requestData
+     * @param loginMember
+     * @return
      */
-    @PostMapping("/follow")
+    @PostMapping("{memberNo:[0-9]+}/ilchoncomment")
     @ResponseBody
-    public Map<String, Object> sendFollowRequest(@RequestParam("toMemberNo") int toMemberNo,
-                                               @SessionAttribute("loginMember") Member loginMember) {
+    public Map<String, Object> createOrUpdateIlchonComment(
+            @PathVariable("memberNo") int memberNo,
+            @RequestBody Map<String, Object> requestData,
+            @SessionAttribute("loginMember") Member loginMember) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            if (loginMember == null) {
+                response.put("success", false);
+                response.put("message", "로그인해야됌");
+                return response;
+            }
+
+            int toMemberNo = (Integer) requestData.get("toMemberNo");
+            String commentContent = (String) requestData.get("ilchonCommentContent");
+
+            // URL 검증
+            if (memberNo != toMemberNo) {
+                response.put("success", false);
+                response.put("message", "잘못된 요청입니다.");
+                return response;
+            }
+
+            // 넘어온 일촌평의 값이 아무것도 없을때 처리
+            if (commentContent == null || commentContent.trim().isEmpty()) {
+                response.put("success", false);
+                response.put("message", "일촌평 내용을 입력해주세요.");
+                return response;
+            }
+
+            // 30자까지만
+            if (commentContent.length() > 30) {
+                response.put("success", false);
+                response.put("message", "일촌평은 30자 이내로 작성해주세요.");
+                return response;
+            }
+
+            // 권한 확인
+            boolean canWrite = checkWritePermission(loginMember, memberNo);
+
+            if (!canWrite) {
+                response.put("success", false);
+                response.put("message", "일촌평 작성 권한이 없습니다.");
+                return response;
+            }
+
+            // 기존 일촌평 확인
+            IlchonComment checkComment = new IlchonComment();
+            checkComment.setFromMemberNo(loginMember.getMemberNo());
+            checkComment.setToMemberNo(memberNo);
+
+            int existingCount = miniHomeService.checkExistingIlchonComment(checkComment);
+
+            // 일촌평 객체 생성
+            IlchonComment ilchonComment = new IlchonComment();
+            ilchonComment.setFromMemberNo(loginMember.getMemberNo());
+            ilchonComment.setToMemberNo(memberNo);
+            ilchonComment.setIlchonCommentContent(commentContent.trim());
+
+            int result = 0;
+            String message = "";
+
+            if (existingCount > 0) {
+                // 기존 일촌평이 있으면 업데이트
+                result = miniHomeService.updateIlchonComment(ilchonComment);
+                message = result > 0 ? "일촌평이 수정되었습니다." : "일촌평 수정에 실패했습니다.";
+            } else {
+                // 기존 일촌평이 없으면 신규 작성
+                result = miniHomeService.insertIlchonComment(ilchonComment);
+                message = result > 0 ? "일촌평이 작성되었습니다." : "일촌평 작성에 실패했습니다.";
+            }
+
+            if (result > 0) {
+                response.put("success", true);
+                response.put("message", message);
+            } else {
+                response.put("success", false);
+                response.put("message", message);
+            }
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "일촌평 처리 중 오류가 발생했습니다.");
+            System.err.println("일촌평 작성/수정 오류: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+    	
+    /** 
+     * 일촌평 삭제 .. RestApi를 써보자잇 
+     */
+    @DeleteMapping("{memberNo:[0-9]+}/ilchoncomment")
+    @ResponseBody
+    public Map<String, Object> deleteIlchonComment(
+            @PathVariable("memberNo") int memberNo,
+            @RequestBody Map<String, Object> requestData,
+            @SessionAttribute("loginMember") Member loginMember) {
         
         Map<String, Object> response = new HashMap<>();
         
-        // 본인에게 일촌 신청하는 경우 방지
-        if (loginMember.getMemberNo() == toMemberNo) {
-            response.put("success", false);
-            response.put("message", "본인에게는 일촌 신청을 할 수 없습니다.");
+        
+            // 로그인 체크
+            if (loginMember == null) {
+                response.put("success", false);
+                response.put("message", "로그인이 필요합니다.");
+                return response;
+            }
+            
+            // 요청 데이터 추출
+            int fromMemberNo = (Integer)requestData.get("fromMemberNo"); 
+            int toMemberNo = (Integer)requestData.get("toMemberNo");
+            
+            // URL 일관성 검증
+            if (memberNo != toMemberNo) {
+                response.put("success", false);
+                response.put("message", "잘못된 요청입니다.");
+                return response;
+            }
+            
+            // 삭제 권한 확인 (본인이 쓴 댓글이거나 프로필 주인)
+            boolean canDelete = (loginMember.getMemberNo() == fromMemberNo || // 본인이 쓴 댓글
+                               loginMember.getMemberNo() == memberNo);        // 프로필 주인
+            
+            if (!canDelete) {
+                response.put("success", false);
+                response.put("message", "일촌평 삭제 권한이 없습니다.");
+                return response;
+            }
+            
+            // 일촌평 삭제
+            IlchonComment ilchonComment = new IlchonComment();
+            ilchonComment.setFromMemberNo(fromMemberNo);
+            ilchonComment.setToMemberNo(toMemberNo);
+            
+            int result = miniHomeService.deleteIlchonComment(ilchonComment);
+            
+            if (result > 0) {
+                response.put("success", true);
+                response.put("message", "일촌평이 삭제되었습니다.");
+            } else {
+                response.put("success", false);
+                response.put("message", "일촌평 삭제에 실패했습니다.");
+            }
+            
             return response;
-        }
         
-        // 내가 이미 신청했는지 확인
-        Ilchon myRequest = new Ilchon();
-        myRequest.setFromMemberNo(loginMember.getMemberNo()); // 내가
-        myRequest.setToMemberNo(toMemberNo);                // 그사람에게 신청했는지?
         
-        int myRequestCount = miniHomeService.findilchon(myRequest);
-        if (myRequestCount > 0) {
-            response.put("success", false);
-            response.put("message", "이미 일촌 신청을 보냈거나 일촌 관계입니다.");
-            return response;
-        }
-        
-        // 상대방이 나에게 신청했는지 확인
-        Ilchon theirRequest = new Ilchon();
-        theirRequest.setFromMemberNo(toMemberNo);  // 상대방이
-        theirRequest.setToMemberNo(loginMember.getMemberNo()); // 나에게 신청했는지?
-        
-        int theirRequestCount = miniHomeService.findPendingIlchon(theirRequest);
-        if (theirRequestCount > 0) {
-            response.put("success", false);
-            response.put("message", "상대방이 이미 일촌 신청을 보냈습니다. 일촌 신청 목록을 확인해주세요.");
-            return response;
-        }
-        
-        // 위 조건들이 만족하면 일촌 신청 진행         
-        Ilchon followRequest = new Ilchon();
-        followRequest.setFromMemberNo(loginMember.getMemberNo());
-        followRequest.setToMemberNo(toMemberNo);
-        followRequest.setFromNickname(loginMember.getMemberName());
-        
-        Member toMember = miniHomeService.findmember(toMemberNo);
-        followRequest.setToNickname(toMember.getMemberName());
-        
-        // 일촌 신청 저장
-        int result = miniHomeService.sendFollowRequest(followRequest);
-        
-        if (result > 0) {
-            response.put("success", true);
-            response.put("message", toMember.getMemberName() + "님에게 일촌 신청을 보냈습니다!");
-        } else {
-            response.put("success", false);
-            response.put("message", "일촌 신청에 실패했습니다. 다시 시도해주세요.");
-        }
-        
-        return response;
+       
     }
+    
+    /**
+     * 일촌평 작성 권한 확인 - ProfileInterceptor와 동일한 로직
+     */
+    private boolean checkWritePermission(Member loginMember, int memberNo) {
+        // 본인 페이지인 경우
+        if (loginMember.getMemberNo() == memberNo) {
+            return true;
+        }
+        
+        // 일촌 관계 확인 - ProfileInterceptor와 동일한 로직
+        Ilchon myRequest = new Ilchon();
+        myRequest.setFromMemberNo(loginMember.getMemberNo());
+        myRequest.setToMemberNo(memberNo);
+        
+        int myAcceptedCount = miniHomeService.findAcceptedIlchon(myRequest);
+        
+        Ilchon theirRequest = new Ilchon();
+        theirRequest.setFromMemberNo(memberNo);
+        theirRequest.setToMemberNo(loginMember.getMemberNo());
+        
+        int theirAcceptedCount = miniHomeService.findAcceptedIlchon(theirRequest);
+        
+        // 일촌 관계면 작성 가능
+        boolean isIlchon = (myAcceptedCount > 0 || theirAcceptedCount > 0);
+        
+        return isIlchon;
+    }
+    
+  
 }

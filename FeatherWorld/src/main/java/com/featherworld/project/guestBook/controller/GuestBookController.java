@@ -196,10 +196,7 @@ public class GuestBookController {
 		
 
 	    // 좌측 프로필 용
-	    if (loginMember != null) {
-	        model.addAttribute("member", loginMember);
-	    }		
-
+	
 		// 방명록 목록과 페이징 정보 조회
 		Map<String, Object> result = service.selectGuestBookList(memberNo, cp);
 		

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.featherworld.project.board.model.dto.Board;
 import com.featherworld.project.friend.model.dto.Ilchon;
 import com.featherworld.project.friend.model.dto.IlchonComment;
 import com.featherworld.project.member.model.dto.Member;
-import com.featherworld.project.miniHome.model.dto.MiniHomeRecentBoard; // ★ 필수 import
 import com.featherworld.project.member.model.dto.Today;
 import com.featherworld.project.miniHome.model.mapper.MiniHomeMapper;
 
@@ -43,16 +43,11 @@ public class MiniHomeServiceImpl implements MiniHomeService {
     }
 
 
-    // 최근 게시글 조회
-    @Override
-    public List<MiniHomeRecentBoard> getRecentBoards(int memberNo) {
-        return mapper.selectRecentBoards(memberNo);
-    }
 
     // 일촌평 리스트 조회
     @Override
     public List<IlchonComment> getIlchonComments(int memberNo) {
-        return mapper.selectIlchonComments(memberNo);
+    	 return mapper.getIlchonComments(memberNo);
     }
 
 	//홈피주인 의대한 정보 가져오기
@@ -135,7 +130,48 @@ public class MiniHomeServiceImpl implements MiniHomeService {
 		
 		return mapper.findAcceptedIlchon(myRequest);
 	}
+	@Override
+	public int getTotalBoardCount(int memberNo) {
+		
+		return mapper.getTotalBoardCount(memberNo);
+	}
 	
+	@Override
+	public int getTotalGuestBookCount(int memberNo) {
+		
+		return mapper.getTotalGuestBookCount(memberNo);
+	}
+
+	@Override
+	public List<Board> getRecentBoards(int memberNo) {
+		
+		return mapper.getRecentBoards(memberNo);
+	}
+	
+	@Override
+	public int insertIlchonComment(IlchonComment ilchonComment) {
+		
+		return mapper.insertIlchonComment(ilchonComment);
+	}
+	
+	
+	@Override
+	public int deleteIlchonComment(IlchonComment ilchonComment) {
+		
+		return mapper.deleteIlchonComment(ilchonComment);
+	}
+	
+	@Override
+	public int checkExistingIlchonComment(IlchonComment checkComment) {
+		
+		return mapper.checkExistingIlchonComment(checkComment);
+	}
+	
+	@Override
+	public int updateIlchonComment(IlchonComment ilchonComment) {
+	
+		return mapper.updateIlchonComment(ilchonComment);
+	}
 	
 }
 
