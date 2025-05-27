@@ -83,7 +83,7 @@
 
               <!-- Write 버튼 - 일촌평 목록과 별개로 항상 조건 확인 -->
               <div
-                th:if="${session.loginMember != null} and ${session.loginMember.memberNo == memberNo} or ${isIlchon}"
+                th:if="${session.loginMember != null} and ${session.loginMember.memberNo != memberNo} and ${isIlchon}"
                 class="comment-write-btn"
               >
                 <button
@@ -138,7 +138,7 @@
                         >일촌평 내용</span
                       >
 
-                      <!-- 삭제 버튼 - 본인이 쓴 댓글이거나 프로필 주인일 때만 표시 -->
+                      <!-- 삭제 버튼 - 본인이 쓴 일촌평이거나 프로필 주인일 때만 표시 -->
                       <div
                         th:if="${loginMember != null and (loginMember.memberNo == comment.fromMemberNo or loginMember.memberNo == memberNo)}"
                         class="comment-actions"
@@ -199,12 +199,12 @@
       </div>
     </div>
 
+    <script th:inline="javascript">
+      const memberNo = /*[[${memberNo}]]*/ 0;
+    </script>
+
     <script src="/js/miniHome/miniHome.js"></script>
 
     <script src="/js/miniHome/leftSidebar.js"></script>
-
-    <script>
-      const memberNo = /*[[${memberNo}]]*/ "회원번호";
-    </script>
   </body>
 </html>

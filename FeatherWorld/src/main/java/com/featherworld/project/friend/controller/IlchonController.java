@@ -89,7 +89,7 @@ public class IlchonController {
 		model.addAttribute("ilchons", map.get("ilchons"));
 		model.addAttribute("ilchonsIncomingCount", map.size()); // 일촌신청(incoming) count 개수
 		model.addAttribute("memberNo", memberNo);
-
+		
 	    model.addAttribute("pagination", map.get("pagination"));
 		return "friendList/incomingFriendList";
 		
@@ -144,7 +144,8 @@ public class IlchonController {
 	public Map<String, Object> updateIsIlchon(@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@RequestBody Map<String, String> payload /*클라이언트쪽에서 건너오는 요청*/
 			, Model model) {
-		String memberNoStr = 	payload.get("memberNo");
+		
+		String memberNoStr = payload.get("memberNo");
 
 		int memberNo =  Integer.parseInt(memberNoStr); // 1. loginMember의 일촌의 memberId 값
 

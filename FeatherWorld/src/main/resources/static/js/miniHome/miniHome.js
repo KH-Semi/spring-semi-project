@@ -47,8 +47,8 @@ function submitComment() {
   });
 
   // AJAX 요청으로 일촌평 저장
-  fetch(`/${memberNo}/ilchon-comment`, {
-    method: "POST",
+  fetch(`/${memberNo}/ilchoncomment`, {
+    method: "post",
     headers: {
       "Content-Type": "application/json",
     },
@@ -79,7 +79,7 @@ function deleteComment(fromMemberNo) {
     return;
   }
 
-  fetch(`/${memberNo}/ilchon-comment`, {
+  fetch(`/${memberNo}/ilchoncomment`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

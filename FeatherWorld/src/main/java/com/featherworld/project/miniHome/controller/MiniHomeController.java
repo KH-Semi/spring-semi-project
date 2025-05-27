@@ -59,7 +59,7 @@ public class MiniHomeController {
      * @param loginMember
      * @return
      */
-    @PostMapping("/{memberNo:[0-9]+}/ilchon-comment")
+    @PostMapping("{memberNo:[0-9]+}/ilchoncomment")
     @ResponseBody
     public Map<String, Object> createOrUpdateIlchonComment(
             @PathVariable("memberNo") int memberNo,
@@ -155,7 +155,7 @@ public class MiniHomeController {
     /** 
      * 일촌평 삭제 .. RestApi를 써보자잇 
      */
-    @DeleteMapping("/{memberNo}/ilchon-comment")
+    @DeleteMapping("{memberNo:[0-9]+}/ilchoncomment")
     @ResponseBody
     public Map<String, Object> deleteIlchonComment(
             @PathVariable("memberNo") int memberNo,

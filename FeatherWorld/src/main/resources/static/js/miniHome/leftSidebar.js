@@ -51,7 +51,7 @@ function showPendingFollowers() {
   alert(
     "새로운 일촌 신청이 있습니다!\n일촌 신청 목록 페이지로 이동하시겠습니까?"
   );
-  // window.location.href = '/friend/requests'; // 일촌 신청 목록 페이지로 이동
+  window.location.href = `/${memberNo}/friendList/incoming`; // 일촌 신청 목록 페이지로 이동
 }
 
 // 프로필 이미지 수정
