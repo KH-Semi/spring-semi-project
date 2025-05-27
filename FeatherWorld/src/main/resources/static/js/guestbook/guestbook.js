@@ -16,14 +16,14 @@ let currentPage = searchCp();
 // 방명록 목록을 서버에서 조회해서 화면에 렌더링하는 함수
 const selectGuestBookList = (cp = 1) => {
   currentPage = cp; // 현재 페이지(cp). 현재는 고정값 1. (나중에 페이징 처리용으로 수정 가능)
-  
+
   // 로그인한 사용자 정보 가져오기 (최상단으로 이동)
   const loginMemberNo = document.querySelector("#loginMemberNo")?.value || null;
-  
+
   // 방명록 주인 번호(ownerNo) 가져옴. 없으면 기본값 1
   const ownerNo = document.querySelector("#ownerNo")?.value || 1;
 
-  const cp = 1; // 현재 페이지(cp). 현재는 고정값 1. (나중에 페이징 처리용으로 수정 가능)
+  // const cp = 1; // 현재 페이지(cp). 현재는 고정값 1. (나중에 페이징 처리용으로 수정 가능)
 
   // 서버에 방명록 리스트 요청 (비동기 fetch)
   fetch(`/${ownerNo}/guestbook/list?cp=${cp}`) // (05.23 배령 수정)
@@ -200,24 +200,23 @@ document.addEventListener("DOMContentLoaded", () => {
       visitorNo: loginMemberNo,
       secret: document.querySelector("#secretCheck").checked ? 1 : 0,
     };
-      fetch(`/${ownerNo}/guestbook`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+    fetch(`/${ownerNo}/guestbook`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((resp) => resp.json())
+      .then((result) => {
+        if (result < 0) {
+          alert("방명록 등록 실패");
+        } else {
+          alert("방명록이 등록되었습니다.");
+          selectGuestBookList(); // 방명록 목록을 다시 조회해서 화면에 출력
+          guestBookContent.value = ""; // textarea에 작성한 방명록 내용 지우기
+        }
       })
-        .then((resp) => resp.json())
-        .then((result) => {
-          if (result < 0) {
-            alert("방명록 등록 실패");
-          } else {
-            alert("방명록이 등록되었습니다.");
-            selectGuestBookList(); // 방명록 목록을 다시 조회해서 화면에 출력
-            guestBookContent.value = ""; // textarea에 작성한 방명록 내용 지우기
-          }
-        })
-        .catch((err) => console.log("에러 발생:", err));
-    });
-  }
+      .catch((err) => console.log("에러 발생:", err));
+  });
 });
 
 //방명록 삭제 ( ajax)
