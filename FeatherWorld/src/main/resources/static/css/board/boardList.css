@@ -7,15 +7,11 @@
   padding: 20px;
 }
 
-.board-list {
-  max-width: 630px;
-}
-
 /* 게시글 박스 */
 .board-item {
   display: flex;
   justify-content: space-between;
-  height: 90px;
+  height: 120px;
   border: 1px solid #e0e0e0;
   background-color: #f9f9f9;
   border-radius: 5px;
@@ -35,6 +31,12 @@
 .board-wrap {
   display: flex;
   flex-basis: 80%;
+}
+
+.board-thumbnail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .board-thumbnail img {

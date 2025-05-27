@@ -135,11 +135,44 @@ public class BoardController {
     @GetMapping("{memberNo:[0-9]+}/board/{boardCode:[0-9]+}/{boardNo:[0-9]+}/update")
     public String boardUpdate(@PathVariable("memberNo") int memberNo,
                               @PathVariable("boardCode") int boardCode,
-                              @PathVariable("boardNo") int boardNo) {
+                              @PathVariable("boardNo") int boardNo,
+                              @SessionAttribute("loginMember") Member loginMember,
+                              @RequestParam(value = "cp", required = false) Integer cp,
+                              Model model, RedirectAttributes ra) {
 
-        // Model로 기존에 있는 게시글 정보를 넘겨주기?
+        // 기존에 있는 게시글 정보 넘겨주기
+        Map<String, Integer> map = new HashMap<>();
+        map.put("boardCode", boardCode);
+        map.put("boardNo", boardNo);
 
-        return "board/boardUpdate";
+        // 게시글 하나 가져오기
+        Board board = service.selectOne(map);
+
+        String message = null;
+        String path = null;
+
+        if(board == null) {
+            message = "해당 게시글이 존재하지 않습니다";
+            if(cp == null) path = String.format("redirect:/%d/board/%d", memberNo, boardCode);
+            else path = String.format("redirect:/%d/board/%d?cp=%d", memberNo, boardCode, cp);
+
+            ra.addFlashAttribute("message", message);
+
+        } else if(board.getMemberNo() != loginMember.getMemberNo()) {
+            message = "자신이 작성한 글만 수정 가능합니다!";
+
+            // 해당 글 상세조회 리다이렉트 (/board/1/2004)
+            path = String.format("redirect:/board/%d/%d", boardCode, boardNo);
+
+            ra.addFlashAttribute("message", message);
+
+        } else {
+
+            path = "board/boardUpdate"; // templates/board/boardUpdate.html로 forward
+            model.addAttribute("board", board);
+        }
+
+        return path;
     }
 
     /**

@@ -54,21 +54,15 @@
               </div>
 
               <!-- 게시글이 있을 때 -->
-              <div
-                th:if="${not #lists.isEmpty(recentBoards)}"
-                class="recent-posts"
-              >
+              <div th:if="${not #lists.isEmpty(recentBoards)}" class="recent-posts">
                 <div class="post-box" th:each="board : ${recentBoards}">
-                  <a
-                    th:href="@{/{memberNo}/board/{boardCode}/{boardNo}(memberNo=${memberNo}, boardCode=${board.boardCode}, boardNo=${board.boardNo})}"
-                  >
-                    <img
-                      th:src="${board.thumbnail != null} 
-                 ? @{'/resources/upload/board/' + ${board.thumbnail}} 
-                 : @{'/images/default-thumbnail.jpg'}"
-                      alt="썸네일"
-                      class="thumbnail"
-                    />
+                  <a th:href="@{/{memberNo}/board/{boardCode}/{boardNo}(memberNo=${memberNo}, boardCode=${board.boardCode}, boardNo=${board.boardNo})}">
+                    <th:block th:unless="${board.thumbnail == null}">
+                      <img th:src="${board.thumbnail}" alt="썸네일" class="thumbnail"/>
+                    </th:block>
+                    <th:block th:if="${board.thumbnail == null}">
+                      <img src="/images/defaultimage.png" alt="썸네일" class="thumbnail"/>
+                    </th:block>
                     <div class="post-title" th:text="${board.boardTitle}">
                       제목
                     </div>

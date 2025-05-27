@@ -143,7 +143,7 @@
         BOARD_NO as boardNo,
         BOARD_TITLE as boardTitle,
         BOARD_CODE as boardCode,
-        'test.jpg' as thumbnail
+		(SELECT IMG_PATH || IMG_RENAME FROM "BOARD_IMG" WHERE BOARD.BOARD_NO = BOARD_IMG.BOARD_NO AND IMG_ORDER = 0) THUMBNAIL
    		 FROM BOARD
   		  WHERE MEMBER_NO = #{memberNo}
     		    AND BOARD_DEL_FL = 'N'
