@@ -3,21 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FeatherWorld</title>
+    <title>editprofile</title>
     <!-- 공용 css/js 추가 -->
     <th:block th:replace="~{common/common}"></th:block>
-    <!-- myPage 전용 CSS -->
+
+    <!-- edit 전용 CSS -->
     <link rel="stylesheet" href="/css/profile/editprofile.css" />
   </head>
-  <body>
-    <!-- Header Fragment -->
-    <div th:replace="~{common/header}"></div>
+ <body class="editprofile-page">
+    <div class="container">
+      <!-- Header Fragment -->
+      <div th:replace="~{common/header}"></div>
 
-    <div class="content-container">
-      <!-- Left sidebar - Profile Information -->
-      <div th:replace="~{common/leftsidebar}"></div>
+      <div class="content-container">
+        <!-- Left sidebar - Profile -->
+        <div class="left-sidebar">
+          <div th:replace="~{common/leftsidebar}"></div>
+        </div>
 
-      <div class="middle-sidebar">
+       <!-- Middle Content Area -->
+      <div class="middle-content">
         <form
           th:action="@{/{memberNo}/profileupdate(memberNo=${memberNo})}"
           method="post"
@@ -47,7 +52,6 @@
                 th:classappend="${profile.imgPath != null} ? 'show' : 'hide'"
               />
             </div>
-
           </div>
 
           <!-- 자기소개 텍스트 영역 -->
@@ -75,9 +79,9 @@
       <th:block th:replace="~{common/navSidebar}"></th:block>
     </div>
 
-    <!-- 푸터 추가 -->
+      <!-- Footer -->
     <th:block th:replace="~{common/footer}"></th:block>
-     <!-- JS -->
+    <!-- JS -->
     <script src="/js/profile/editprofile.js"></script>
     <script src="/js/miniHome/sidebar.js"></script>
   </body>
