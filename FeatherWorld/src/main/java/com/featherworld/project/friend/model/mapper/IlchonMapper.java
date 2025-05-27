@@ -35,6 +35,12 @@ public interface IlchonMapper {
 	 * @return
 	 */
 	List<Ilchon> selectIncomingPagination(int loginMemberNo, RowBounds rowBounds);
+	/**일촌 내가보낸 일촌신청 *(incoming 내부 sended) 리스트를 select하는 함수(IS_ILCHON = 'N' 한정)
+	 * @param loginMemberNo
+	 * @param rowBounds
+	 * @return
+	 */
+	List<Ilchon> selectSendedPagination(int loginMemberNo, RowBounds rowBounds);
 	/**일촌 리스트 명수를 count하는 함수(IS_ILCHON = 'Y' 한정)
 	 * @param loginMemberNo
 	 * @return
@@ -70,5 +76,6 @@ public interface IlchonMapper {
 	 * @return
 	 */
 	int deleteIlchon(@Param("loginMemberNo")int loginMemberNo,@Param("targetMemberNo")  int targetMemberNo);
+	
 	
 }

@@ -288,6 +288,7 @@ body {
 
 .middle-panel {
   text-align: center; /* 부모 컨테이너에서 중앙 정렬 */
+  padding: 20px;
 }
 
 .post-button {
