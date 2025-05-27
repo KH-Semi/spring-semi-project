@@ -20,13 +20,25 @@
     </ul>
     <button
       id="send-friend-request-button"
-      th:if="${session.loginMember != null and session.loginMember.memberNo != memberNo}"
+      th:if="${session.loginMember != null 
+        and session.loginMember.memberNo != memberNo 
+        and ilchonStatus == 0}"
       class="left-align button-default"
       th:attr="is-ilchon=${ilchonStatus}" 
     ><!-- 이미 일촌관계일때 버튼 비활성화를 위한 th:attr-->
       일촌 요청 보내기
     </button>
-
+    <button id="already-send-friend-request-button"
+      th:if="${session.loginMember != null 
+        and session.loginMember.memberNo != memberNo 
+        and ilchonStatus == 1}"
+      class="left-align button-disabled" disabled>일촌요청 기다리는중...</button>
+    </button>
+    <p id="ilchon-flag" 
+    class="gold" 
+    th:if="${session.loginMember != null 
+      and session.loginMember.memberNo != memberNo 
+      and ilchonStatus == 2}"> 내 일촌</p>
     </div>
     <button
       id="edit-button"

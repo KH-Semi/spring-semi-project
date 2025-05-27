@@ -112,6 +112,14 @@ span {
   padding: 8px 8px;
   border-radius: 10px;
 }
+.button-disabled {
+  background-color: #eee;
+  color: #aaa;
+  border: 1px solid #ccc;
+  align-items: center;
+  padding: 8px 8px;
+  border-radius: 10px;
+}
 
 .check-icon {
   color: green;
