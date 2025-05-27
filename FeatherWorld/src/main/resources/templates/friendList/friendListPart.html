@@ -19,6 +19,16 @@
       내 일촌 목록
     </ul>
     <button
+      id="goto-imcoming-friend-button"
+      th:if="${session.loginMember != null 
+        and session.loginMember.memberNo == memberNo }"
+      class="left-align button-default"
+      th:text="${hasPendingFollowers?'새로운 일촌신청이 있습니다!':'incoming 일촌신청 리스트 확인'}"
+      onclick="showPendingFollowers()"
+      ><!-- 이미 일촌관계일때 버튼 비활성화를 위한 th:attr-->
+      
+    </button>
+    <button
       id="send-friend-request-button"
       th:if="${session.loginMember != null 
         and session.loginMember.memberNo != memberNo 
@@ -48,8 +58,8 @@
       Edit
     </button>
     <div id="apply-cancel-button-div" class="right-align hidden">
-      <button id="apply-button" class="button-default hidden">Apply</button>
-      <button id="cancel-button" class="button-default hidden">Cancel</button>
+      
+      <button id="cancel-button" class="button-default hidden">Back</button><!-- apply버튼과 cancel버튼을 Back에 통합-->
     </div>
   </div>
   <ul id="friend-list">

@@ -54,7 +54,7 @@ public class IlchonController {
 	    model.addAttribute("pagination", map.get("pagination"));
 	    model.addAttribute("ilchonStatus", ilchonStatus);
 	    System.out.println("ilchonStatus : " + ilchonStatus);
-		return "friendList/friendList";
+		return "friendList/friendListCopy";
 		
 	}
 	// 250515 아직 로그인 세션기능이 구현되지 않았으므로 시험할수 있는 controller 내부 함수 구현
@@ -93,13 +93,16 @@ public class IlchonController {
 		
 		Map<String, Object> map = service.selectIncomingIlchonMemberList(loginMemberNo, cp);
 		//map에서 ilchons 따로 변수로 뺴낼것
+		Map<String, Object> mapFrom = service.selectSendedIlchonMemberList(loginMemberNo, cp); // 내가 보낸 일촌신청 목록 조회 서비스
 		
 		//friendList page에 전달한 현재 홈피 주인의 member DTO
 
 		model.addAttribute("ilchons", map.get("ilchons"));
 		model.addAttribute("ilchonsIncomingCount", map.size()); // 일촌신청(incoming) count 개수
 		model.addAttribute("memberNo", memberNo);
-		
+		/***내가 보낸 일촌신청 리스트 model에 추가하는 코드  추가 250527***/
+		model.addAttribute("ilchonsFrom", map.get("ilchons"));
+		model.addAttribute("ilchonsFromIncomingCount", map.size()); // 내가보낸일촌신청(incoming) count 개수
 	    model.addAttribute("pagination", map.get("pagination"));
 		return "friendList/incomingFriendList";
 		

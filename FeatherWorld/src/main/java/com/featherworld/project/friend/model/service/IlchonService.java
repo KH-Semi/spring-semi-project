@@ -20,7 +20,7 @@ public interface IlchonService {
 	 * @return
 	 */
 	Map<String, Object> selectIncomingIlchonMemberList(int loginMemberNo, int cp);
-
+	Map<String, Object> selectSendedIlchonMemberList(int loginMemberNo, int cp);
 	/*Ilchon updateIlchon();*/
 	
 	/** 일촌명 자동 업데이트(요청 session에 따라 TO_NICKNAME, FROM_NICKNAME 자동 구별)
@@ -43,5 +43,6 @@ public interface IlchonService {
 	int deleteIlchon(int loginMemberNo, int memberNo);
 	
 	public int isIncomingIlchonExists(int loginMemberNo,int targetMemberNo);
+	
 	
 }

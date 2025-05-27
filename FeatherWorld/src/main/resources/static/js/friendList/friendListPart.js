@@ -1,6 +1,9 @@
 //현재 로그인한 유저 정보(지금은 테스트중)
 let memberN = /*[[${members}]]*/ [];
-
+// 미수락 팔로워 신청 보기
+function showPendingFollowers() {
+  window.location.href = `/${memberNo}/friendList/incoming`; // 일촌 신청 목록 페이지로 이동
+}
 const sendFriendRequestButton = document.getElementById(
   "send-friend-request-button"
 );
@@ -27,7 +30,7 @@ if (sendFriendRequestButton) {
 //buttons
 const editBtn = document.getElementById("edit-button"); // edit
 const applyCancelBtnDiv = document.getElementById("apply-cancel-button-div"); //apply-cancel btn 을 담는 div
-const applyBtn = document.getElementById("apply-button");
+/*const applyBtn = document.getElementById("apply-button");*/
 const cancelBtn = document.getElementById("cancel-button");
 const sendFriendReqBtn = document.getElementById("send-friend-request-button");
 const friendSpans = document.querySelectorAll(".friend-item");
@@ -78,7 +81,7 @@ if (editBtn) {
   editBtn.addEventListener("click", (e) => {
     console.log("editBtn clicked!");
     applyCancelBtnDiv.classList.remove("hidden");
-    applyBtn.classList.remove("hidden");
+    /*applyBtn.classList.remove("hidden");*/
     cancelBtn.classList.remove("hidden");
     e.target.classList.add("hidden");
 
@@ -104,7 +107,7 @@ if (cancelBtn) {
   cancelBtn.addEventListener("click", (e) => {
     editBtn.classList.remove("hidden");
     applyCancelBtnDiv.classList.add("hidden");
-    applyBtn.classList.add("hidden");
+    /*applyBtn.classList.add("hidden");*/
     e.target.classList.add("hidden");
 
     friendSpans.forEach(function (friend) {

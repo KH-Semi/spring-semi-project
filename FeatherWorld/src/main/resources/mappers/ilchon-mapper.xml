@@ -83,6 +83,27 @@
 	
 	
   </select>
+  <select id="selectSendedPagination" resultType="Ilchon"><!--Roubounds 적용 안됨-->
+	
+	
+	SELECT MEMBER_IMG "memberImg", MEMBER_NAME "memberName", "nickname" "fromNickname",  TO_MEMBER_NO "toMemberNo", FROM_MEMBER_NO "fromMemberNo"
+	FROM(
+		(SELECT MEMBER_IMG, MEMBER_NAME, FROM_NICKNAME "nickname", TO_MEMBER_NO, FROM_MEMBER_NO
+				FROM ILCHON 
+				JOIN MEMBER ON MEMBER.MEMBER_NO = ILCHON.TO_MEMBER_NO
+				WHERE (ILCHON.FROM_MEMBER_NO = #{loginMemberNo} )
+				AND IS_ILCHON='N')  <!-- FROM_MEMBER_NO기준으로 JOIN-->
+		
+		<!--UNION-->
+		<!--(SELECT  MEMBER_IMG, MEMBER_NAME, TO_NICKNAME "nickname", TO_MEMBER_NO, FROM_MEMBER_NO
+				FROM ILCHON 
+				JOIN MEMBER ON MEMBER.MEMBER_NO = ILCHON.FROM_MEMBER_NO
+				WHERE ( ILCHON.TO_MEMBER_NO = #{loginMemberNo} )
+				AND IS_ILCHON='N')--> <!-- TO_MEMBER_NO기준으로 JOIN-->
+	)
+	
+	
+  </select>
   
   <select id ="countIlchons" resultType = "int">
   	

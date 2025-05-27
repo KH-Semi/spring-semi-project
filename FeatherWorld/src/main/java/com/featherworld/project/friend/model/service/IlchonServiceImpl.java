@@ -131,6 +131,51 @@ public class IlchonServiceImpl implements IlchonService {
 				return map;
 	}
 
+	@Override
+	public Map<String, Object> selectSendedIlchonMemberList(int loginMemberNo, int cp) {
+		// TODO Auto-generated method stub
+		
+		
+		int ilchonsCount =  mapper.countIncomingIlchons(loginMemberNo);
+		
+		// pagination 객체 생성 
+
+	    Pagination pagination = new Pagination(cp, ilchonsCount);
+
+		
+		// 지정된 inchon들의 목록 조회
+		/*
+		 * ROWBOUNDS 객체 (MyBatis 제공 객체)
+		 * : 지정된 크기만큼 건너 뛰고(offset)
+		 * 제한된 크기만큼(limit)의 행을 조회하는 객체
+		 * 
+		 * --> 페이징 처리가 굉장히 간단해짐
+		 * 
+		 * */
+		
+		int limit = pagination.getLimit(); // 한 페이지당 default(=10개)
+		
+		int offset = (cp - 1) * limit;
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+
+		// Mapper 메서드 호출 시 원래 전달할 수 있는 매개변수 1개
+		// -> 2개를 전달할 수 있는 경우가 있음
+		// rowBounds를 이용할때!
+		// -> 첫번째 매개변수 -> SQL 에 전달할 파라미터
+		// -> 두번째 매개변수 -> RowBounds 객체 전달
+		List<Ilchon> ilchonsFrom = mapper.selectSendedPagination(loginMemberNo, rowBounds);
+	
+		// 4. 목록 조회 결과 + Pagination 객체를 Map으로 묶음
+		Map<String, Object> map = new HashMap<>();
+				
+		map.put("pagination", pagination);
+		map.put("ilchons", ilchonsFrom);
+		
+				
+		return map;
+	}
 	
 	@Override
 	public int updateIlchonNickname(int loginMemberNo,int memberNo,String nickname) {
@@ -245,6 +290,7 @@ public class IlchonServiceImpl implements IlchonService {
 		else return 0; // 일촌관계도, 아직 일촌신청도 보내지 않은경우
 		
 	}
+	
 
 	
 }
