@@ -10,13 +10,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.featherworld.project.board.model.dto.Board;
@@ -137,41 +132,68 @@ public class BoardController {
         else return service.selectBoardList(boardCode, cp);
     }
 
+    @GetMapping("{memberNo:[0-9]+}/board/{boardCode:[0-9]+}/{boardNo:[0-9]+}/update")
+    public String boardUpdate(@PathVariable("memberNo") int memberNo,
+                              @PathVariable("boardCode") int boardCode,
+                              @PathVariable("boardNo") int boardNo) {
+
+        // Model로 기존에 있는 게시글 정보를 넘겨주기?
+
+        return "board/boardUpdate";
+    }
+
     /**
      * 게시글 쓰기
-     *
+     * @author Jiho
      * @param memberNo  현재 회원 번호
      * @param boardCode 현재 게시판 종류 번호
      * @param cp        현재 페이지 번호
+     * @param loginMember 현재 로그인한 회원
+     * @param ra message 전달
      */
     @GetMapping("{memberNo:[0-9]+}/board/{boardCode:[0-9]+}/write")
     public String boardWrite(@PathVariable("memberNo") int memberNo, @PathVariable("boardCode") int boardCode,
-                             @RequestParam(value = "cp", required = false) Integer cp) {
+                             @RequestParam(value = "cp", required = false) Integer cp,
+                             @SessionAttribute(value = "loginMember", required = false) Member loginMember, RedirectAttributes ra) {
+
+        String redirectPath = String.format("redirect:/%d/board/%d", memberNo, boardCode);
+
+        if(loginMember == null) {
+            ra.addFlashAttribute("message", "로그인 후 이용해주세요.");
+            return redirectPath;
+
+        } else if (loginMember.getMemberNo() != memberNo) {
+            ra.addFlashAttribute("message", "본인 게시판만 작성할 수 있습니다.");
+            return redirectPath;
+        }
 
         if (cp == null) cp = 1;
 
         return "board/boardWrite";
     }
 
-    /** 게시글 작성 요청을 받아서 실제 DB에 삽입해주는 메서드
+    /** 게시글 작성 요청을 받아서 실제 DB에 삽입해주는 메서드 (이미지 포함)
      * @author Jiho
-     * @param memberNo
-     * @param boardCode
-     * 추가될 매개변수 - 커맨드 객체 Board(boardTitle, boardContent, boardCode)
-     *               - MultipartFile로 이뤄진 imageList(각자 인덱스와 file 형식)
+     * @param memberNo 현재 회원 번호
+     * @param boardCode 현재 게시판 종류 번호
+     * @param imageList MultipartFile로 이뤄진 imageList(각자 인덱스와 file 형식)
+     * @param board 커맨드 객체 Board(boardTitle, boardContent, memberNo, boardCode)
      * @return boardNo(작성 완료된 게시글 번호 / 실패 시 0)
+     * @throws Exception
      */
     @ResponseBody
     @PostMapping("{memberNo:[0-9]+}/board/{boardCode:[0-9]+}/insert")
-    public String boardInsert(@PathVariable("memberNo") int memberNo,
-                              @PathVariable("boardCode") int boardCode) {
+    public int boardInsert(@PathVariable("memberNo") int memberNo,
+                           @PathVariable("boardCode") int boardCode,
+                           @RequestParam(value = "images", required = false) List<MultipartFile> imageList,
+                           @ModelAttribute Board board) throws Exception {
 
-        // Todo - fetch 요청으로 받을 정보 boardTitle, boardContent, images(0~4) List<MultipartFile> imageList
-
-
+        // 회원 번호, 게시판 종류 번호 세팅
+        board.setMemberNo(memberNo);
+        board.setBoardCode(boardCode);
 
         // 성공 여부를 boardNo로 return 받아서 boardWrite.js -> 이동할 상세 페이지 지정
-        return "";
+        return service.boardInsert(board, imageList);
     }
 
     /**
