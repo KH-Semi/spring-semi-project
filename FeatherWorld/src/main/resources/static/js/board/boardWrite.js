@@ -236,7 +236,6 @@ const handleFormSubmit = () => {
         location.reload(); // 현재 작성 페이지를 새로고침
         return;
       }
-
       // 게시글 작성 성공시 게시글 상세 조회로 이동
       alert('게시글이 성공적으로 작성되었습니다!');
       // 상대 경로로 작성

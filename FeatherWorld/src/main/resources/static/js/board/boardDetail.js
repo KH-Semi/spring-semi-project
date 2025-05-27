@@ -47,3 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
       window.history.back();
   });
 });
+
+// 수정 버튼 처리
+document.addEventListener("DOMContentLoaded", () => {
+  const boardDetailEditBtn = document.querySelector("#updateBtn");
+
+  boardDetailEditBtn.addEventListener("click", () => {
+    location.href = `/${memberNo}/board/${boardCode}/${boardNo}/update`;
+  })
+})

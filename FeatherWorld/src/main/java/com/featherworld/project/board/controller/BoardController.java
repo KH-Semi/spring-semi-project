@@ -128,11 +128,18 @@ public class BoardController {
     public Map<String, Object> selectBoardList(@PathVariable("boardCode") int boardCode,
                                                @RequestParam(value = "cp", required = false) Integer cp) {
 
-        // 잠겨있는 게시판 접근 제한
-
-        
         if (cp == null) return service.selectBoardList(boardCode, 1);
         else return service.selectBoardList(boardCode, cp);
+    }
+
+    @GetMapping("{memberNo:[0-9]+}/board/{boardCode:[0-9]+}/{boardNo:[0-9]+}/update")
+    public String boardUpdate(@PathVariable("memberNo") int memberNo,
+                              @PathVariable("boardCode") int boardCode,
+                              @PathVariable("boardNo") int boardNo) {
+
+        // Model로 기존에 있는 게시글 정보를 넘겨주기?
+
+        return "board/boardUpdate";
     }
 
     /**
