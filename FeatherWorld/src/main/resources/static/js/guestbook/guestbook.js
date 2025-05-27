@@ -76,6 +76,12 @@ const selectGuestBookList = (cp = 1) => {
         } else {
           profileImg.src = item.visitor.memberImg;
         }
+        // // 추후 수정...
+        // profileImg.style.cursor = "pointer";
+
+        // profileImg.addEventListener("click", () => {
+        //   window.location.href = `/${item.visitor.memberNo}/minihome`;
+        // });
 
         mainDiv.prepend(profileImg);
 
@@ -100,6 +106,13 @@ const selectGuestBookList = (cp = 1) => {
 
         const writerSpan = document.createElement("span");
         writerSpan.textContent = item.visitor?.memberName || "익명"; // 작성자 이름 (없으면 '익명')
+
+        // writerSpan.style.cursor = "pointer";
+
+        // // 작성자 누르면 홈페이지 이동 (추후 수정...)
+        // writerSpan.addEventListener("click", () => {
+        //   location.href = `/${item.visitor.memberNo}/minihome`;
+        // });
 
         const dateDiv = document.createElement("div");
         dateDiv.className = "guestbook-date"; // 작성일 표시 영역
@@ -396,29 +409,6 @@ const renderPagination = (pagination) => {
 };
 
 // 사용하지 않는 createBoardFooter 함수 제거
-
-// 비밀글 토글 기능
-document.addEventListener("DOMContentLoaded", () => {
-  const lockIcon = document.querySelector("#lockIcon");
-  const toggleBtn = document.querySelector("#toggleSecret");
-  const secretCheck = document.querySelector("#secretCheck");
-
-  if (toggleBtn && secretCheck && lockIcon) {
-    toggleBtn.addEventListener("click", () => {
-      secretCheck.checked = !secretCheck.checked;
-
-      // 🔒 좌물쇠 아이콘 전환
-      lockIcon.classList.remove("fa-lock", "fa-lock-open");
-      lockIcon.classList.add(secretCheck.checked ? "fa-lock" : "fa-lock-open");
-
-      // 🔄 토글 아이콘 방향 전환 (ON = 오른쪽 = 비밀글 O)
-      toggleBtn.classList.remove("fa-toggle-on", "fa-toggle-off");
-      toggleBtn.classList.add(
-        secretCheck.checked ? "fa-toggle-on" : "fa-toggle-off"
-      );
-    });
-  }
-});
 
 // 브라우저에서 뒤로가기 버튼을 눌렀을 경우(뒤로 가기)
 window.addEventListener("popstate", () => {
