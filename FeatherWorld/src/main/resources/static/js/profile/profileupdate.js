@@ -1,34 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
   const imageInput = document.getElementById("image");
-  const previewImage = document.getElementById("previewImage");
   const bioInput = document.getElementById("bio-input");
-  const bioDisplay = document.getElementById("bio-display");
-  const confirmBtn = document.getElementById("confirmBtn");
+  const confirmBtn = document.querySelector(".confirm-button");
   const backBtn = document.getElementById("backToProfileBtn");
   const uploadForm = document.getElementById("uploadForm");
 
-  // 이미지 선택 시 미리보기
+  // 업로드된 이미지 미리보기 요소 (존재할 경우에만)
+  const previewImage = document.querySelector(".image-upload-box img");
+
+  // 이미지 선택 시 미리보기 반영
   imageInput.addEventListener("change", () => {
     const file = imageInput.files[0];
-    if (file) {
+    if (file && previewImage) {
       const reader = new FileReader();
       reader.onload = (e) => {
         previewImage.src = e.target.result;
         previewImage.style.display = "block";
       };
       reader.readAsDataURL(file);
-    } else {
-      previewImage.src = "";
-      previewImage.style.display = "none";
     }
   });
 
-  // 자기소개 입력 시 미리보기 반영
-  bioInput.addEventListener("input", () => {
-    bioDisplay.textContent = bioInput.value.trim();
-  });
-
-  // Confirm 버튼 클릭 시 간단 검증 후 제출
+  // Confirm 버튼 클릭 시 검증 및 제출
   confirmBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (!bioInput.value.trim() && imageInput.files.length === 0) {
@@ -44,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     location.href = `/${memberNo}/profile`;
   });
 
-  // 폼 제출 전 검증 (추가로 필요하면)
+  // 폼 제출 시에도 검증
   uploadForm.addEventListener("submit", (e) => {
     if (!bioInput.value.trim() && imageInput.files.length === 0) {
       e.preventDefault();

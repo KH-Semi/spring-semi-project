@@ -1,35 +1,5 @@
-/* ====================== */
-/* 전체 레이아웃          */
-/* ====================== */
-.content-container {
-  display: flex;
-  gap: 10px;
-  min-height: 600px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* ====================== */
-/* 왼쪽 프로필 영역       */
-/* ====================== */
-#leftProfileContainer {
-  flex: 0 0 400px;
-  border-right: 1px solid #e0e0e0;
-  padding: 20px;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 15px;
-}
-
-/* ====================== */
-/* 가운데 본문 영역 (기존 유지) */
-/* ====================== */
-.middle-sidebar {
+/* 가운데 영역 기본 레이아웃 */
+.middle-content {
   flex: 1 1 auto;
   padding: 20px;
   background-color: #fdfdfd;
@@ -38,20 +8,7 @@
   text-align: center;
 }
 
-/* ====================== */
-/* 오른쪽 사이드바 영역   */
-/* ====================== */
-.right-sidebar {
-  flex: 0 0 250px;
-  padding: 20px;
-  background-color: #fff;
-  border-left: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  /* 필요시 flex-grow: 0, flex-shrink: 0 지정 */
-}
-
-/* 프로필 이미지 */
+/* 기존 middle-sidebar 내부 스타일 유지 (아래부터) */
 .middle-sidebar img {
   width: 180px;
   height: 180px;
@@ -60,7 +17,6 @@
   border: 3px solid #912d2d;
 }
 
-/* 자기소개 섹션 */
 .bio-section {
   width: 100%;
 }
@@ -76,18 +32,16 @@
   color: #333;
 }
 
-/* 하단 버튼 영역 */
 .post-actions {
   display: flex;
-  gap: 10px; /* 간격을 15px에서 10px로 약간 조절 */
-  justify-content: flex-end; /* 오른쪽 정렬 */
+  gap: 10px;
+  justify-content: flex-end;
   margin-top: 20px;
-  max-width: 700px; /* 최대 너비 제한 */
-  margin-left: auto; /* 가운데 정렬 보조 */
+  max-width: 700px;
+  margin-left: auto;
   margin-right: auto;
 }
 
-/* 버튼 스타일 */
 .post-button {
   min-width: 140px;
   height: 40px;
@@ -97,7 +51,7 @@
   font-weight: 600;
   font-family: "Pretendard", sans-serif;
   border: none;
-  border-radius: 20px; /* 더 둥근 모서리 */
+  border-radius: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -108,22 +62,4 @@
 
 .post-button:hover {
   background-color: #7a2525;
-}
-
-/* 반응형 레이아웃 */
-@media screen and (max-width: 1024px) {
-  .content-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .left-sidebar {
-    width: 100%;
-    order: 2;
-  }
-
-  .middle-sidebar {
-    width: 100%;
-    order: 1;
-  }
 }

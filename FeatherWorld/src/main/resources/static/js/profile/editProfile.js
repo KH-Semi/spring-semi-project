@@ -106,7 +106,7 @@ if (confirmEditBtn) {
 
       if (response.ok) {
         alert("프로필이 성공적으로 업데이트되었습니다.");
-        window.location.href = `/${memberNo}/profile`;
+        window.location.href = `/${memberNo}/profileupdate`;
       } else {
         alert("프로필 업데이트에 실패했습니다.");
       }

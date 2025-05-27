@@ -1,56 +1,58 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Profile Update</title>
-    <!-- 공용 css/js 추가 -->
+
+    <!-- 공용 CSS/JS -->
     <th:block th:replace="~{common/common}"></th:block>
-    <!-- myPage 전용 CSS -->
-    <link rel="stylesheet" th:href="@{/css/profile/profileupdate.css}" />
+
+    <!-- update 전용 CSS -->
+    <link rel="stylesheet" href="/css/profile/profileupdate.css" />
   </head>
-  <body>
-    <!-- Header Fragment -->
-    <div th:replace="~{common/header}"></div>
+  <body class="profileupdate-page">
+    <div class="container">
+      <!-- Header Fragment -->
+      <div th:replace="~{common/header}"></div>
 
-    <div class="content-container">
-      <!-- Left Sidebar -->
-      <div class="left-sidebar" th:replace="~{common/leftsidebar}"></div>
+      <div class="content-container">
+        <!-- Left sidebar - Profile -->
+        <div class="left-sidebar">
+          <div th:replace="~{common/leftsidebar}"></div>
+        </div>
 
-      <div class="middle-sidebar">
+        
+       <!-- Middle Content Area -->
+      <div class="middle-content">
         <form
-          id="uploadForm"
           th:action="@{/{memberNo}/profileupdate(memberNo=${memberNo})}"
-          method="POST"
+          method="post"
           enctype="multipart/form-data"
         >
           <!-- 사진 업로드 -->
           <div
             class="upload-bio-container"
-            onclick="document.getElementById('image').click()"
+            onclick="document.getElementById('uploadFile').click()"
+            style="cursor: pointer"
           >
             <input
               type="file"
-              id="image"
+              id="uploadFile"
               name="uploadFile"
               accept="image/*"
               class="file-input"
               onchange="previewImage(event)"
               style="display: none"
             />
-            <div
-              class="image-upload-box"
-              th:if="${profile != null and profile.imgPath != null}"
-            >
-              <img
-                th:src="@{${profile.imgPath}}"
-                alt="프로필 이미지"
-                style="max-width: 100%; max-height: 100%"
-              />
-            </div>
-            <div
-              class="image-upload-box"
-              th:if="${profile == null or profile.imgPath == null}"
-            >
+            <div class="image-upload-box">
               <p>여기를 클릭해서 사진을 업로드하세요</p>
+              <img
+                id="preview"
+                th:src="${profile.imgPath != null} ? ${profile.imgPath} : ''"
+                alt="이미지 미리보기"
+                th:classappend="${profile.imgPath != null} ? 'show' : 'hide'"
+              />
             </div>
           </div>
 
@@ -61,30 +63,30 @@
               name="bio"
               class="bio-textarea"
               placeholder="자기소개를 입력하세요..."
-              rows="5"
-              th:text="${profile != null} ? profile.profileContent : ''"
+              th:text="${profile.profileContent}"
             ></textarea>
           </div>
+            <!-- 버튼 영역 -->
+            <div class="post-actions">
+              <button
+                class="back-button"
+                type="button"
+                onclick="history.back()"
+              >
+                Back
+              </button>
+              <button class="confirm-button" type="submit">Confirm</button>
+            </div>
+          </form>
+        </div>
 
-          <!-- 버튼 -->
-          <div class="post-actions">
-            <button id="backToProfileBtn" class="back-button" type="button" onclick="history.back()">Back</button>
-            <button type="submit" class="confirm-button">Confirm</button>
-          </div>
-        </form>
+        <!-- Right Sidebar -->
+        <th:block th:replace="~{common/navSidebar}"></th:block>
       </div>
 
-      <!-- Right Sidebar -->
-      <th:block th:replace="~{common/navSidebar}"></th:block>
-    </div>
-
-    <!-- Footer -->
+      <!-- Footer -->
     <th:block th:replace="~{common/footer}"></th:block>
 
-    <!-- JS -->
-     <script>
-      const memberNo = /*[[${memberNo}]]*/ 0;
-    </script>
     <script src="/js/profile/profileupdate.js"></script>
     <script src="/js/miniHome/sidebar.js"></script>
   </body>

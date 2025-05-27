@@ -1,35 +1,5 @@
-/* ====================== */
-/* 전체 레이아웃          */
-/* ====================== */
-.content-container {
-  display: flex;
-  gap: 10px;
-  min-height: 600px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* ====================== */
-/* 왼쪽 프로필 영역       */
-/* ====================== */
-#leftProfileContainer {
-  flex: 0 0 400px;
-  border-right: 1px solid #e0e0e0;
-  padding: 20px;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 15px;
-}
-
-/* ====================== */
-/* 가운데 본문 영역 (기존 유지) */
-/* ====================== */
-.middle-sidebar {
+/* 가운데 영역 기본 레이아웃 */
+.middle-content {
   flex: 1 1 auto;
   padding: 20px;
   background-color: #fdfdfd;
@@ -37,23 +7,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
-
-/* ====================== */
-/* 오른쪽 사이드바 영역   */
-/* ====================== */
-.right-sidebar {
-  flex: 0 0 250px;
-  padding: 20px;
-  background-color: #fff;
-  border-left: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  /* 필요시 flex-grow: 0, flex-shrink: 0 지정 */
-}
-
-/* ====================== */
 /* 업로드 + 자기소개 랩퍼 */
-/* ====================== */
 .upload-bio-container {
   max-width: 700px;
   width: 100%;
@@ -61,11 +15,10 @@
   border-radius: 8px;
   padding: 12px 20px;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
-/* ====================== */
-/* 이미지 업로드 박스     */
-/* ====================== */
+/* 이미지 업로드 박스 */
 .image-upload-box {
   width: 100%;
   height: 150px;
@@ -81,26 +34,21 @@
   box-sizing: border-box;
   overflow: hidden;
   transition: background-color 0.3s ease;
-  cursor: pointer;
 }
 
 .image-upload-box:hover {
   background-color: #f0e6e6;
 }
 
-.image-upload-box img,
-#preview {
+.image-upload-box img {
   max-width: 100%;
   max-height: 180px;
   border-radius: 8px;
   margin-top: 10px;
-  display: none;
   object-fit: contain;
 }
 
-/* ====================== */
-/* 자기소개 텍스트 영역   */
-/* ====================== */
+/* 자기소개 텍스트 */
 .bio-section {
   margin-top: 20px;
   width: 100%;
@@ -111,7 +59,6 @@
 
 .bio-textarea {
   width: 100%;
-  max-width: 700px;
   height: 150px;
   border: 2px solid #912d2d;
   background-color: #fafafa;
@@ -131,19 +78,7 @@
   background-color: #fff;
 }
 
-/* ====================== */
-/* 자기소개 미리보기      */
-/* ====================== */
-.bio-display {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #333;
-  min-height: 40px;
-}
-
-/* ====================== */
-/* 버튼 영역              */
-/* ====================== */
+/* 버튼 영역 */
 .post-actions {
   display: flex;
   justify-content: flex-end;
@@ -167,37 +102,17 @@
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
   background-color: #912d2d;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Hover 효과 */
 .post-button:hover,
 .back-button:hover,
 .confirm-button:hover {
   background-color: #7a2525;
   color: white;
-}
-
-/* Confirm 버튼 전용 스타일 */
-.confirm-button {
-  min-width: 140px;
-  height: 40px;
-  padding: 0 16px;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: "Pretendard", sans-serif;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  background-color: #912d2d;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
