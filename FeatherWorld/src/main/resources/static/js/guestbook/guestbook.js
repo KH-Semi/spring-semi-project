@@ -16,14 +16,14 @@ let currentPage = searchCp();
 // 방명록 목록을 서버에서 조회해서 화면에 렌더링하는 함수
 const selectGuestBookList = (cp = 1) => {
   currentPage = cp; // 현재 페이지(cp). 현재는 고정값 1. (나중에 페이징 처리용으로 수정 가능)
-  
+
   // 로그인한 사용자 정보 가져오기 (최상단으로 이동)
   const loginMemberNo = document.querySelector("#loginMemberNo")?.value || null;
-  
+
   // 방명록 주인 번호(ownerNo) 가져옴. 없으면 기본값 1
   const ownerNo = document.querySelector("#ownerNo")?.value || 1;
 
-  const cp = 1; // 현재 페이지(cp). 현재는 고정값 1. (나중에 페이징 처리용으로 수정 가능)
+  // const cp = 1; // 현재 페이지(cp). 현재는 고정값 1. (나중에 페이징 처리용으로 수정 가능)
 
   // 서버에 방명록 리스트 요청 (비동기 fetch)
   fetch(`/${ownerNo}/guestbook/list?cp=${cp}`) // (05.23 배령 수정)
@@ -76,6 +76,12 @@ const selectGuestBookList = (cp = 1) => {
         } else {
           profileImg.src = item.visitor.memberImg;
         }
+        // // 추후 수정...
+        // profileImg.style.cursor = "pointer";
+
+        // profileImg.addEventListener("click", () => {
+        //   window.location.href = `/${item.visitor.memberNo}/minihome`;
+        // });
 
         mainDiv.prepend(profileImg);
 
@@ -100,6 +106,13 @@ const selectGuestBookList = (cp = 1) => {
 
         const writerSpan = document.createElement("span");
         writerSpan.textContent = item.visitor?.memberName || "익명"; // 작성자 이름 (없으면 '익명')
+
+        // writerSpan.style.cursor = "pointer";
+
+        // // 작성자 누르면 홈페이지 이동 (추후 수정...)
+        // writerSpan.addEventListener("click", () => {
+        //   location.href = `/${item.visitor.memberNo}/minihome`;
+        // });
 
         const dateDiv = document.createElement("div");
         dateDiv.className = "guestbook-date"; // 작성일 표시 영역
@@ -200,24 +213,23 @@ document.addEventListener("DOMContentLoaded", () => {
       visitorNo: loginMemberNo,
       secret: document.querySelector("#secretCheck").checked ? 1 : 0,
     };
-      fetch(`/${ownerNo}/guestbook`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+    fetch(`/${ownerNo}/guestbook`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((resp) => resp.json())
+      .then((result) => {
+        if (result < 0) {
+          alert("방명록 등록 실패");
+        } else {
+          alert("방명록이 등록되었습니다.");
+          selectGuestBookList(); // 방명록 목록을 다시 조회해서 화면에 출력
+          guestBookContent.value = ""; // textarea에 작성한 방명록 내용 지우기
+        }
       })
-        .then((resp) => resp.json())
-        .then((result) => {
-          if (result < 0) {
-            alert("방명록 등록 실패");
-          } else {
-            alert("방명록이 등록되었습니다.");
-            selectGuestBookList(); // 방명록 목록을 다시 조회해서 화면에 출력
-            guestBookContent.value = ""; // textarea에 작성한 방명록 내용 지우기
-          }
-        })
-        .catch((err) => console.log("에러 발생:", err));
-    });
-  }
+      .catch((err) => console.log("에러 발생:", err));
+  });
 });
 
 //방명록 삭제 ( ajax)
@@ -397,29 +409,6 @@ const renderPagination = (pagination) => {
 };
 
 // 사용하지 않는 createBoardFooter 함수 제거
-
-// 비밀글 토글 기능
-document.addEventListener("DOMContentLoaded", () => {
-  const lockIcon = document.querySelector("#lockIcon");
-  const toggleBtn = document.querySelector("#toggleSecret");
-  const secretCheck = document.querySelector("#secretCheck");
-
-  if (toggleBtn && secretCheck && lockIcon) {
-    toggleBtn.addEventListener("click", () => {
-      secretCheck.checked = !secretCheck.checked;
-
-      // 🔒 좌물쇠 아이콘 전환
-      lockIcon.classList.remove("fa-lock", "fa-lock-open");
-      lockIcon.classList.add(secretCheck.checked ? "fa-lock" : "fa-lock-open");
-
-      // 🔄 토글 아이콘 방향 전환 (ON = 오른쪽 = 비밀글 O)
-      toggleBtn.classList.remove("fa-toggle-on", "fa-toggle-off");
-      toggleBtn.classList.add(
-        secretCheck.checked ? "fa-toggle-on" : "fa-toggle-off"
-      );
-    });
-  }
-});
 
 // 브라우저에서 뒤로가기 버튼을 눌렀을 경우(뒤로 가기)
 window.addEventListener("popstate", () => {

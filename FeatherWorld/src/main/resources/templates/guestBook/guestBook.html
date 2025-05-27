@@ -35,15 +35,19 @@
                 <div class="guestbook-main">
                   <p class="guestbook-writer">
                     <!-- 프로필 이미지 없을 경우 -->
-                    <img
-                      th:if="${#strings.isEmpty(item.visitor?.memberImg)}"
-                      th:src="@{/images/default-user.png}"
-                    />
-                    <!-- 프로필 이미지 있을 경우 -->
-                    <img
-                      th:if="${!#strings.isEmpty(item.visitor?.memberImg)}"
-                      th:src="${item.visitor.memberImg}"
-                    />
+                    <a th:href="@{|/${item.visitor?.memberNo}/minihome|}">
+                      <img
+                        th:if="${#strings.isEmpty(item.visitor?.memberImg)}"
+                        th:src="@{/images/default-user.png}"
+                      />
+
+                      <!-- 프로필 이미지 있을 경우 -->
+
+                      <img
+                        th:if="${!#strings.isEmpty(item.visitor?.memberImg)}"
+                        th:src="${item.visitor.memberImg}"
+                      />
+                    </a>
                   </p>
                   <!-- 비밀글 처리 -->
                   <div
@@ -55,9 +59,10 @@
               </div>
 
               <div class="guestbook-info">
-                <span
-                  th:text="${item.visitor != null ? item.visitor.memberName : '익명'}"
-                  >작성자</span
+                <a
+                  th:href="@{|/${item.visitor?.memberNo}/minihome|}"
+                  th:text="${item.visitor?.memberName}"
+                  >작성자</a
                 >
                 <div
                   class="guestbook-date"
