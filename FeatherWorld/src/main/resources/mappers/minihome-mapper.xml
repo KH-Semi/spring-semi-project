@@ -2,33 +2,112 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.featherworld.project.miniHome.model.mapper.MiniHomeMapper">
 		
-			<!-- 일촌관계확인 -->
-		<select id="findIlchon" parameterType="Ilchon" resultType="_int">
-		  SELECT COUNT(*) 
-   		  FROM ILCHON 
-          WHERE IS_ILCHON = 'Y'
-          AND (
-          (FROM_MEMBER_NO = #{fromMemberNo} AND TO_MEMBER_NO = #{toMemberNo})
-          OR 
-          (FROM_MEMBER_NO = #{toMemberNo} AND TO_MEMBER_NO = #{fromMemberNo})
-      )
-			</select>
+	<!-- 일촌관계확인 (양방향) -->
+	<select id="findIlchon" parameterType="Ilchon" resultType="_int">
+		SELECT COUNT(*) 
+		FROM ILCHON 
+		WHERE IS_ILCHON = 'Y'
+		AND (
+			(FROM_MEMBER_NO = #{fromMemberNo} AND TO_MEMBER_NO = #{toMemberNo})
+			OR 
+			(FROM_MEMBER_NO = #{toMemberNo} AND TO_MEMBER_NO = #{fromMemberNo})
+		)
+	</select>
 
+	<!-- ==================== 일촌평 관련 ==================== -->
 	
- 		<!-- 일촌평 -->
+	<!-- 일촌평이 포함된 일촌 관계 조회 (TO_COMMENT 기준) -->
+	<select id="getIlchonComments" parameterType="int" resultType="Ilchon">
+	SELECT 
+		i.FROM_MEMBER_NO as fromMemberNo,
+		i.TO_MEMBER_NO as toMemberNo,
+		i.TO_NICKNAME as toNickname,
+		i.IS_ILCHON,
+		CASE 
+			WHEN i.FROM_COMMENT IS NOT NULL THEN i.FROM_COMMENT
+			ELSE i.TO_COMMENT
+		END as fromComment,
+		i.TO_COMMENT as toComment,
+		-- 실제 작성자 정보 (FROM_COMMENT면 FROM_MEMBER, TO_COMMENT면 TO_MEMBER)
+		CASE 
+			WHEN i.FROM_COMMENT IS NOT NULL THEN from_member.MEMBER_NAME
+			WHEN i.TO_COMMENT IS NOT NULL THEN to_member.MEMBER_NAME
+		END as fromNickname,
+		-- 실제 작성자 번호 추가
+		CASE 
+			WHEN i.FROM_COMMENT IS NOT NULL THEN i.FROM_MEMBER_NO
+			WHEN i.TO_COMMENT IS NOT NULL THEN i.TO_MEMBER_NO
+		END as actualAuthorNo,
+		-- 실제 작성자 프로필 이미지
+		CASE 
+			WHEN i.FROM_COMMENT IS NOT NULL THEN 
+				CASE WHEN from_profile.IMG_PATH IS NOT NULL AND from_profile.IMG_RENAME IS NOT NULL 
+					 THEN from_profile.IMG_PATH || from_profile.IMG_RENAME ELSE NULL END
+			WHEN i.TO_COMMENT IS NOT NULL THEN 
+				CASE WHEN to_profile.IMG_PATH IS NOT NULL AND to_profile.IMG_RENAME IS NOT NULL 
+					 THEN to_profile.IMG_PATH || to_profile.IMG_RENAME ELSE NULL END
+		END as fromMemberImg
+	FROM ILCHON i
+	-- FROM_MEMBER 정보 조인
+	LEFT JOIN MEMBER from_member ON i.FROM_MEMBER_NO = from_member.MEMBER_NO
+	LEFT JOIN PROFILE from_profile ON i.FROM_MEMBER_NO = from_profile.MEMBER_NO
+	-- TO_MEMBER 정보 조인  
+	LEFT JOIN MEMBER to_member ON i.TO_MEMBER_NO = to_member.MEMBER_NO
+	LEFT JOIN PROFILE to_profile ON i.TO_MEMBER_NO = to_profile.MEMBER_NO
+	WHERE i.IS_ILCHON = 'Y'
+	AND (
+		(i.TO_MEMBER_NO = #{memberNo} AND i.FROM_COMMENT IS NOT NULL AND TRIM(i.FROM_COMMENT) != '') OR
+		(i.FROM_MEMBER_NO = #{memberNo} AND i.TO_COMMENT IS NOT NULL AND TRIM(i.TO_COMMENT) != '')
+	)
+
+</select>
 			
-			
-			
-			
-		<select id="findmember" parameterType="_int" resultType="Member">
+	<!-- FROM_COMMENT 업데이트 -->
+	<update id="updateIlchonFromComment" parameterType="Ilchon">
+		UPDATE ILCHON 
+		SET FROM_COMMENT = #{fromComment}
+		WHERE FROM_MEMBER_NO = #{fromMemberNo} 
+		  AND TO_MEMBER_NO = #{toMemberNo}
+		  AND IS_ILCHON = 'Y'
+	</update>
+
+	<!-- TO_COMMENT 업데이트 -->
+	<update id="updateIlchonToComment" parameterType="Ilchon">
+		UPDATE ILCHON 
+		SET TO_COMMENT = #{toComment}
+		WHERE FROM_MEMBER_NO = #{fromMemberNo} 
+		  AND TO_MEMBER_NO = #{toMemberNo}
+		  AND IS_ILCHON = 'Y'
+	</update>
+
+	<!-- FROM_COMMENT 삭제 (단순화) -->
+	<update id="deleteIlchonFromComment" parameterType="Ilchon">
+		UPDATE ILCHON 
+		SET FROM_COMMENT = NULL
+		WHERE FROM_MEMBER_NO = #{fromMemberNo} 
+		  AND TO_MEMBER_NO = #{toMemberNo}
+		  AND IS_ILCHON = 'Y'
+	</update>
+
+	<!-- TO_COMMENT 삭제 (단순화) -->
+	<update id="deleteIlchonToComment" parameterType="Ilchon">
+		UPDATE ILCHON 
+		SET TO_COMMENT = NULL
+		WHERE FROM_MEMBER_NO = #{fromMemberNo} 
+		  AND TO_MEMBER_NO = #{toMemberNo}
+		  AND IS_ILCHON = 'Y'
+	</update>
+
+	<!-- ==================== 나머지 기존 메서드들 ==================== -->
+		
+	<select id="findmember" parameterType="_int" resultType="Member">
 		SELECT MEMBER_NO, MEMBER_NAME, MEMBER_EMAIL, MEMBER_IMG,
 			   MEMBER_INTRO, HOME_TITLE
 		FROM MEMBER 
 		WHERE MEMBER_NO = #{memberNo}
 		  AND MEMBER_DEL_FL = 'N'
-		</select>
+	</select>
 		
-	
 	<!-- 방문자 기록 추가 -->
 	<insert id="todayAdd" parameterType="Today">
 		INSERT INTO TODAY (HOME_NO, VISIT_NO, VISIT_DATE)
@@ -59,7 +138,7 @@
 		WHERE HOME_NO = #{memberNo}
 	</select>
 	
-	<!-- 팔로워 수 조회 (남이 나를 일촌신청한 수) -->
+	<!-- 팔로워 수 조회 -->
 	<select id="getFollowerCount" parameterType="_int" resultType="_int">
 		SELECT COUNT(*)
 		FROM ILCHON
@@ -67,7 +146,7 @@
 		  AND IS_ILCHON = 'Y'
 	</select>
 
-	<!-- 팔로잉 수 조회 (내가 남에게 일촌신청한 수) -->
+	<!-- 팔로잉 수 조회 -->
 	<select id="getFollowingCount" parameterType="_int" resultType="_int">
 		SELECT COUNT(*)
 		FROM ILCHON
@@ -75,7 +154,7 @@
 		  AND IS_ILCHON = 'Y'
 	</select>
 	
-	<!-- 미수락 팔로워 신청 수 조회 (남이 나에게 일촌신청했는데 아직 승인 안한 것) -->
+	<!-- 미수락 팔로워 신청 수 조회 -->
 	<select id="getPendingFollowerCount" parameterType="_int" resultType="_int">
 		SELECT COUNT(*)
 		FROM ILCHON
@@ -90,108 +169,56 @@
 			TO_MEMBER_NO, 
 			FROM_NICKNAME, 
 			TO_NICKNAME, 
-			IS_ILCHON
+			IS_ILCHON,
+			FROM_COMMENT,
+			TO_COMMENT
 		) VALUES (
 			#{fromMemberNo},
 			#{toMemberNo},
 			#{fromNickname},
 			#{toNickname},
-			'N'
+			'N',
+			NULL,
+			NULL
 		)
 	</insert>
 
-	<!-- 대기중인 일촌 신청 조회 (IS_ILCHON='N'인 것만) -->
+	<!-- 대기중인 일촌 신청 조회 -->
 	<select id="findPendingIlchon" parameterType="Ilchon" resultType="int">
-    SELECT COUNT(*)
-    FROM ILCHON
-    WHERE FROM_MEMBER_NO = #{fromMemberNo}
-      AND TO_MEMBER_NO = #{toMemberNo}
-      AND IS_ILCHON = 'N'
-	</select>
-	
-	<!-- 수락된 일촌 관계만 조회 (IS_ILCHON='Y') -->
-	<select id="findAcceptedIlchon" parameterType="Ilchon" resultType="_int">
 		SELECT COUNT(*)
-		FROM ILCHON 
-		WHERE FROM_MEMBER_NO = #{fromMemberNo} 
+		FROM ILCHON
+		WHERE FROM_MEMBER_NO = #{fromMemberNo}
 		  AND TO_MEMBER_NO = #{toMemberNo}
-		  AND IS_ILCHON = 'Y'
+		  AND IS_ILCHON = 'N'
 	</select>
 	 
-	 <!--  최근 게시글 목록 조회 -->
-		<select id="getRecentBoards" parameterType="int" resultType="Board">
-        SELECT 
-        BOARD_NO as boardNo,
-        BOARD_TITLE as boardTitle,
-        BOARD_CODE as boardCode,
-        (SELECT IMG_PATH || IMG_RENAME FROM "BOARD_IMG" WHERE BOARD.BOARD_NO = BOARD_IMG.BOARD_NO AND IMG_ORDER = 0) THUMBNAIL
-   		 FROM BOARD
-  		  WHERE MEMBER_NO = #{memberNo}
-    		    AND BOARD_DEL_FL = 'N'
-  		    	AND ROWNUM &lt;= 6
-  			    ORDER BY BOARD_NO DESC
-			</select>
+	<!-- 최근 게시글 목록 조회 -->
+	<select id="getRecentBoards" parameterType="int" resultType="Board">
+		SELECT 
+			BOARD_NO as boardNo,
+			BOARD_TITLE as boardTitle,
+			BOARD_CODE as boardCode,
+			(SELECT IMG_PATH || IMG_RENAME FROM "BOARD_IMG" WHERE BOARD.BOARD_NO = BOARD_IMG.BOARD_NO AND IMG_ORDER = 0) THUMBNAIL
+		FROM BOARD
+		WHERE MEMBER_NO = #{memberNo}
+			AND BOARD_DEL_FL = 'N'
+			AND ROWNUM &lt;= 6
+		ORDER BY BOARD_NO DESC
+	</select>
 		
-		   <!-- 총 게시글 수 조회 -->
-  		<select id="getTotalBoardCount" parameterType="int" resultType="int">
-        SELECT COUNT(*)
-        FROM BOARD
-        WHERE MEMBER_NO = #{memberNo}
-          AND BOARD_DEL_FL = 'N'
-  		</select>
+	<!-- 총 게시글 수 조회 -->
+	<select id="getTotalBoardCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE MEMBER_NO = #{memberNo}
+		  AND BOARD_DEL_FL = 'N'
+	</select>
   		
-  		   <!-- 총 방명록 수 조회 -->
-    	<select id="getTotalGuestBookCount" parameterType="int" resultType="int">
-        SELECT COUNT(*)
-        FROM GUEST_BOOK
-        WHERE OWNER_NO = #{memberNo}
-    	</select>
-		
-		
-		  	<!-- 일촌평 작성 -->
-			<insert id="insertIlchonComment" parameterType="IlchonComment">
-   			   INSERT INTO ILCHON_COMMENT (
-     		   FROM_MEMBER_NO,
-     		   TO_MEMBER_NO,
-    		   ILCHON_COMMENT_CONTENT
- 			   )
-    		 SELECT #{fromMemberNo}, #{toMemberNo}, #{ilchonCommentContent}
-   			 FROM DUAL
-  			  WHERE EXISTS (
-       		 SELECT 1 
-      		  FROM ILCHON 
-       		  WHERE IS_ILCHON = 'Y' 
-          	  AND (
-              (FROM_MEMBER_NO = #{fromMemberNo} AND TO_MEMBER_NO = #{toMemberNo})
-              OR 
-              (FROM_MEMBER_NO = #{toMemberNo} AND TO_MEMBER_NO = #{fromMemberNo})
-         		 )
-			    		)
-			</insert>
-	
-		<!-- 일촌평 삭제 -->
-		<delete id="deleteIlchonComment" parameterType="IlchonComment">
-    	DELETE FROM ILCHON_COMMENT 
-    	WHERE FROM_MEMBER_NO = #{fromMemberNo} 
-        AND TO_MEMBER_NO = #{toMemberNo}
-		</delete>
-		
-		<!-- 기존 일촌평 존재 여부 확인 -->
-		<select id="checkExistingIlchonComment" parameterType="IlchonComment" resultType="int">
-  		  SELECT COUNT(*) 
-   		  FROM ILCHON_COMMENT 
-  		  WHERE FROM_MEMBER_NO = #{fromMemberNo} 
-    	  AND TO_MEMBER_NO = #{toMemberNo}
-		</select>
-
-		<!-- 일촌평 수정 -->
-	<update id="updateIlchonComment" parameterType="IlchonComment">
-    UPDATE ILCHON_COMMENT 
-    SET ILCHON_COMMENT_CONTENT = #{ilchonCommentContent}
-    WHERE FROM_MEMBER_NO = #{fromMemberNo} 
-      AND TO_MEMBER_NO = #{toMemberNo}
-	</update>
-
-
+	<!-- 총 방명록 수 조회 -->
+	<select id="getTotalGuestBookCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM GUEST_BOOK
+		WHERE OWNER_NO = #{memberNo}
+	</select>
 
 </mapper>

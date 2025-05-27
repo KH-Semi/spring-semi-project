@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const charCount = document.getElementById("charCount");
 
   if (textarea && charCount) {
-    textarea.addEventListener("input", function () {
-      charCount.textContent = this.value.length;
+    textarea.addEventListener("input", function (e) {
+      charCount.textContent = e.target.value.length;
     });
   }
 });
@@ -74,10 +74,16 @@ function submitComment() {
 }
 
 // 일촌평 삭제
-function deleteComment(fromMemberNo) {
+function deleteComment(commentFromMemberNo, commentToMemberNo) {
   if (!confirm("일촌평을 삭제하시겠습니까?")) {
     return;
   }
+
+  console.log("삭제 요청 데이터:", {
+    fromMemberNo: commentFromMemberNo,
+    toMemberNo: commentToMemberNo,
+    currentPageMemberNo: memberNo,
+  });
 
   fetch(`/${memberNo}/ilchoncomment`, {
     method: "DELETE",
@@ -85,8 +91,8 @@ function deleteComment(fromMemberNo) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      fromMemberNo: fromMemberNo,
-      toMemberNo: memberNo,
+      fromMemberNo: commentFromMemberNo,
+      toMemberNo: commentToMemberNo,
     }),
   })
     .then((response) => response.json())
