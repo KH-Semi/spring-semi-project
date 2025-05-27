@@ -6,6 +6,20 @@ const sendFriendRequestButton = document.getElementById(
 );
 
 if (sendFriendRequestButton) {
+  /*switch (sendFriendRequestButton.dataset.ilchonStatus) {
+    case 0:
+      sendFriendRequestButton.classList.remove("hidden");
+      sendFriendRequestButton.innerText = "일촌 요청 보내기기";
+      break;
+    case 1:
+      sendFriendRequestButton.classList.remove("hidden");
+      sendFriendRequestButton.innerText = "일촌 요청 이미 보냄!";
+      break;
+    default:
+      sendFriendRequestButton.classList.add("hidden");
+      document.querySelector("#ilchon-flag").classList.remove("hidden");
+      break;
+  }*/
   sendFriendRequestButton.addEventListener("click", () => {
     window.location.href = `/${memberNo}/newFriend/input`;
   });

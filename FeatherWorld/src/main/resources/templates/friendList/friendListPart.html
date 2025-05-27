@@ -22,9 +22,12 @@
       id="send-friend-request-button"
       th:if="${session.loginMember != null and session.loginMember.memberNo != memberNo}"
       class="left-align button-default"
-    >
+      th:attr="is-ilchon=${ilchonStatus}" 
+    ><!-- 이미 일촌관계일때 버튼 비활성화를 위한 th:attr-->
       일촌 요청 보내기
     </button>
+
+    </div>
     <button
       id="edit-button"
       th:unless="${session.loginMember == null or session.loginMember.memberNo != memberNo}"

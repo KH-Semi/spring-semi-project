@@ -137,3 +137,24 @@ span {
     transform: scale(0.5);
   }
 }
+
+/* 제거 애니메이션 클래스 */
+.fade-slide {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.fade-slide.removing {
+  transform: translateX(-100%); /* 왼쪽으로 이동 */
+  opacity: 0; /* 투명하게 */
+}
+
+#ilchon-flag {
+  font-size: 7px;
+  align-self: center;
+}
+.gold {
+  color: grey;
+  text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 15px #ffcc00,
+    0 0 20px #ffaa00, 0 0 30px #ff9900;
+  font-family: "Spoqa Han Sans", sans-serif;
+}

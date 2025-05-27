@@ -42,6 +42,6 @@ public interface IlchonService {
 	int insertNewIlchon(int loginMemberNo, int memberNo, String nickname);
 	int deleteIlchon(int loginMemberNo, int memberNo);
 	
-
+	public int isIncomingIlchonExists(int loginMemberNo,int targetMemberNo);
 	
 }
