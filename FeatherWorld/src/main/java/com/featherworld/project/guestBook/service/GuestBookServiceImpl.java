@@ -78,9 +78,21 @@ public class GuestBookServiceImpl implements GuestBookService{
 		return mapper.guestBookDelete(guestBookNo);
 	}
 
+	
+	/**
+	 * 방명록 목록 조회 (로그인 회원 정보를 기반으로)
+	 *
+	 * @param memberNo     방명록 주인 회원 번호
+	 * @param cp           현재 페이지 번호
+	 * @param loginMember  로그인한 회원 객체 (null일 수 있음)
+	 * @return             방명록 목록 데이터(Map 형태)
+	 */
 	@Override
 	public Map<String, Object> selectGuestBookList(int memberNo, int cp, Member loginMember) {
+		// 로그인한 사용자의 회원 번호를 추출 (로그인하지 않은 경우 null)
 	    Integer loginMemberNo = (loginMember != null) ? loginMember.getMemberNo() : null;
+	    
+	    
 	    return selectGuestBookList(memberNo, cp, loginMemberNo);
 	}
 
