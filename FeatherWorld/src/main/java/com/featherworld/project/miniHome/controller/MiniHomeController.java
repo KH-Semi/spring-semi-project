@@ -18,13 +18,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.featherworld.project.board.model.dto.Board;
-import com.featherworld.project.common.utill.Utility;
 import com.featherworld.project.friend.model.dto.Ilchon;
 import com.featherworld.project.member.model.dto.Member;
 import com.featherworld.project.miniHome.model.service.MiniHomeService;
 
 import jakarta.servlet.http.HttpSession;
-import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 public class MiniHomeController {
