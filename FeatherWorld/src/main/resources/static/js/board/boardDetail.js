@@ -65,11 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     boardDeleteBtn.addEventListener("click", async () => {
 
       // 현재 게시글 번호(boardNo)로 게시글 삭제 요청
-      const resp = await fetch("/board/delete", {
-        method: "delete",
-        headers: { "Content-Type": "application/json" },
-        body: boardNo
-      });
+      const resp = await fetch(`/${memberNo}/board/${boardCode}/${boardNo}/delete`, {method: "delete"});
       const result = await resp.text();
 
       // 게시글 삭제 실패시
@@ -81,12 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // 게시글 삭제 성공시
       alert("게시글을 성공적으로 삭제했습니다!");
 
-      // URL 에서 cp 파라미터 추출
-      const urlParams = new URLSearchParams(location.search);
-      const cp = parseInt(urlParams.get("cp")) || null;
-
       // cp 값에 따라 요청 변경
-      const queryString = cp ? `?cp=${cp}` : "";
+      const queryString = location.search;
 
       location.href = `/${memberNo}/board/${boardCode}${queryString}`;
     })

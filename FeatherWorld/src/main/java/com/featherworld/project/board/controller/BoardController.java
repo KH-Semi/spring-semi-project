@@ -43,18 +43,17 @@ public class BoardController {
      * 해당 회원의 게시판 목록 조회해서 세션에 저장
      *
      * @param memberNo 현재 조회 중인 회원 번호
-     * @param session  세션 객체
-     * @param ra       message 전달
      */
     @GetMapping("{memberNo:[0-9]+}/board")
-    public String prevBoardMainPage(@PathVariable("memberNo") int memberNo, HttpSession session,
-                                    RedirectAttributes ra) {
+    public String prevBoardMainPage(@PathVariable("memberNo") int memberNo) {
 
         // 현재 회원의 게시판 종류 번호(boardCode) 목록을 조회해서 가져옴
         List<BoardType> boardTypeList = boardTypeService.selectBoardType(memberNo);
+        // FIXME 이미 BoardTypeInterceptor 통해 Session에 boardTypeList가 담겨 있음
+        // FIXME 더블 체크용으로 두긴 했지만, 불필요하다면 Session에 있는 boardTypeList 꺼내 쓰면 됨
 
-        // session scope에 boardTypeList 저장
-        session.setAttribute("boardTypeList", boardTypeList);
+        // session scope에 boardTypeList 갱신
+        // -> 기존에 갱신했으나, BoardTypeInterceptor 에서 대신 처리!
 
         return String.format("redirect:/%d/board/%d", memberNo, boardTypeList.getFirst().getBoardCode());
     }
@@ -71,14 +70,13 @@ public class BoardController {
      */
     @GetMapping("{memberNo:[0-9]+}/board/{boardCode:[0-9]+}")
     public String boardMainPage(@PathVariable("memberNo") int memberNo, @PathVariable("boardCode") int boardCode,
-                                @RequestParam(value = "cp", required = false) Integer cp, HttpSession session,
+                                @RequestParam(value = "cp", required = false) Integer cp,
                                 Model model, RedirectAttributes ra) {
 
         // 현재 회원의 게시판 종류 번호(boardCode) 목록을 조회해서 가져옴
         List<BoardType> boardTypeList = boardTypeService.selectBoardType(memberNo);
-
-        // session scope에 boardTypeList 저장
-        session.setAttribute("boardTypeList", boardTypeList);
+        // FIXME 이미 BoardTypeInterceptor 통해 Session에 boardTypeList가 담겨 있음
+        // FIXME 더블 체크용으로 두긴 했지만, 불필요하다면 Session에 있는 boardTypeList 꺼내 쓰면 됨
 
         boolean isValid = false;
         // boardCode가 현재 회원이 소유한 게시판 종류 번호인지 확인
@@ -132,13 +130,28 @@ public class BoardController {
         else return service.selectBoardList(boardCode, cp);
     }
 
+    /** 게시글 수정 페이지
+     * @author Jiho
+     * @param memberNo 현재 조회 중인 회원 번호
+     * @param boardCode 해당 게시판 종류 번호
+     * @param boardNo 해당 게시글 종류 번호
+     * @param loginMember 로그인 회원
+     * @param cp 현재 페이지 번호
+     * @param model 기존 게시글 정보 전달 (제목, 내용, 이미지)
+     * @param ra 메시지 전달
+     */
     @GetMapping("{memberNo:[0-9]+}/board/{boardCode:[0-9]+}/{boardNo:[0-9]+}/update")
     public String boardUpdate(@PathVariable("memberNo") int memberNo,
                               @PathVariable("boardCode") int boardCode,
                               @PathVariable("boardNo") int boardNo,
-                              @SessionAttribute("loginMember") Member loginMember,
+                              @SessionAttribute(value = "loginMember", required = false) Member loginMember,
                               @RequestParam(value = "cp", required = false) Integer cp,
                               Model model, RedirectAttributes ra) {
+
+        if(loginMember == null) {
+            ra.addFlashAttribute("message", "로그인 후 이용해주세요.");
+            return "redirect:/";
+        }
 
         // 기존에 있는 게시글 정보 넘겨주기
         Map<String, Integer> map = new HashMap<>();
@@ -227,6 +240,22 @@ public class BoardController {
 
         // 성공 여부를 boardNo로 return 받아서 boardWrite.js -> 이동할 상세 페이지 지정
         return service.boardInsert(board, imageList);
+    }
+
+    @ResponseBody
+    @DeleteMapping("{memberNo:[0-9]+}/board/{boardCode:[0-9]+}/{boardNo:[0-9]+}/delete")
+    public int boardDelete(@PathVariable("memberNo") int memberNo,
+                           @PathVariable("boardCode") int boardCode,
+                           @PathVariable("boardNo") int boardNo) {
+
+        // 회원 번호, 게시판 종류 번호, 게시글 번호 세팅
+        Board board = Board.builder()
+                .memberNo(memberNo)
+                .boardCode(boardCode)
+                .boardNo(boardNo)
+                .build();
+
+        return service.boardDelete(board);
     }
 
     /**

@@ -1,5 +1,6 @@
 	package com.featherworld.project.common.config;
 	
+	import com.featherworld.project.common.interceptor.BoardTypeInterceptor;
 	import com.featherworld.project.common.interceptor.MemberInterceptor;
 	import com.featherworld.project.common.interceptor.ProfileInterceptor;
 	import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,15 @@
 	@Configuration
 	public class InterceptorConfig implements WebMvcConfigurer {
 	    
-	    @Autowired
-	    private ProfileInterceptor profileInterceptor;
+	    @Bean
+	    public ProfileInterceptor profileInterceptor() {
+			return new ProfileInterceptor();
+		}
+
+		@Bean
+		public BoardTypeInterceptor boardTypeInterceptor() {
+			return new BoardTypeInterceptor();
+		}
 	    
 	    @Bean
 	    public MemberInterceptor memberInterceptor() {
@@ -31,10 +39,14 @@
 	            .addPathPatterns("/**")
 	            .excludePathPatterns("/css/**", "/js/**", "/images/**", "/favicon.ico",
 	                                "/member/**", "/email/**","/error");
-	                               
+
+		   registry.addInterceptor(boardTypeInterceptor())
+			   .addPathPatterns("/**/board/**")
+			   .excludePathPatterns("/css/**", "/js/**", "/images/**", "/favicon.ico",
+					   				"/member/**", "/email/**","/error");
 	        
 	        // 2. ProfileInterceptor 등록 - minihome 포함하여 모든 {memberNo} 패턴에 적용
-	        registry.addInterceptor(profileInterceptor)
+	        registry.addInterceptor(profileInterceptor())
 	            .addPathPatterns("/**") // 모든 패턴 매칭
 	            .excludePathPatterns(
 	            		"/css/**",

@@ -135,6 +135,12 @@ public class BoardServiceImpl implements BoardService {
 		return boardNo;
 	}
 
+	// 게시글 삭제 - 삭제 결과 반환
+	@Override
+	public int boardDelete(Board board) {
+		return mapper.boardDelete(board);
+	}
+
 	/** 게시글 좋아요 체크/해제
 	 * @author 허배령
 	 */

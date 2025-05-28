@@ -46,4 +46,10 @@ public interface BoardService {
 	 * @return boardNo 삽입된 게시글 번호
 	 */
 	int boardInsert(Board board, List<MultipartFile> imageList) throws Exception;
+
+	/** 게시글 삭제
+	 * @param board 회원 번호, 게시판 종류 번호, 게시글 번호
+	 * @return result 1(성공), 2(실패)
+	 */
+	int boardDelete(Board board);
 }
