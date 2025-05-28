@@ -666,3 +666,11 @@ ORDER BY IMG_ORDER;
 
 SELECT * FROM guest_book
 ORDER BY guest_book_write_date DESC;
+
+
+SELECT* FROM PROFILE;
+
+COMMIT;
+
+SELECT* FROM MEMBER;
+
