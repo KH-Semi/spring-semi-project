@@ -9,8 +9,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // /uploads/** URL로 요청 시 실제 파일 경로로 매핑
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:///C:/upload/");
+        // 프로필 이미지 저장 디렉토리: C:/uploadFiles/profile/
+        // 웹에서 접근할 경로: /myPage/profile/**
+
+        registry.addResourceHandler("/myPage/profile/**") // 웹에서 접근할 경로
+                .addResourceLocations("file:///C:/uploadFiles/profile/"); // 실제 이미지가 저장된 경로
     }
 }
