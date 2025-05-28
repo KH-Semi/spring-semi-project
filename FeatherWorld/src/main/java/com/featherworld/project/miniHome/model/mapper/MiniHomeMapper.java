@@ -64,5 +64,7 @@ public interface MiniHomeMapper {
 
 	int leftprofileintroUpdate(Member loginMember);
 
+	Integer getRandomActiveMember();
+
 
 }

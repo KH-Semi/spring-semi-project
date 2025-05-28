@@ -237,7 +237,17 @@ AND (
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
 		
-	
+	<!--  랜덤으로 미니홈 다이브 -->
+	<select id="getRandomActiveMember" resultType="Integer">
+    SELECT MEMBER_NO 
+    FROM (
+        SELECT MEMBER_NO 
+        FROM MEMBER 
+        WHERE MEMBER_DEL_FL = 'N'
+        ORDER BY DBMS_RANDOM.VALUE
+    ) 
+    WHERE ROWNUM = 1
+	</select>
 	
 	
 

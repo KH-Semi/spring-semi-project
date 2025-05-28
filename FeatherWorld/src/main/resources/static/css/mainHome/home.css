@@ -254,6 +254,10 @@
   margin-right: 10px;
 }
 
+.kakao-icon:hover {
+  color: #222;
+}
+
 .login-options {
   display: flex;
   justify-content: space-between;
@@ -348,6 +352,7 @@
   border-radius: 20px;
   font-weight: 500;
   transition: background-color 0.3s ease;
+  cursor: pointer;
 }
 
 .logout-btn:hover {
@@ -539,4 +544,58 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+.login-btn {
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #c62828;
+  transform: translateX(5px);
+  box-shadow: 0 2px 8px rgba(159, 33, 32, 0.2);
+}
+
+/* 로그아웃 버튼 hover 효과 */
+.logout-btn {
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #5a6268;
+  transform: translateX(5px);
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2);
+}
+
+/* 카카오 로그인 버튼 hover 효과 */
+.kakao-btn {
+  transition: all 0.3s ease;
+}
+
+.kakao-btn:hover {
+  background-color: #fdd835;
+  transform: translateX(5px);
+  color: #222;
+  box-shadow: 0 2px 8px rgba(254, 229, 0, 0.3);
+}
+
+/* My Home 버튼 hover 효과 */
+.home-btn {
+  transition: all 0.3s ease;
+}
+
+.home-btn:hover {
+  background-color: #c62828;
+  transform: translateX(5px);
+  box-shadow: 0 2px 8px rgba(159, 33, 32, 0.2);
+}
+
+/* 링크 버튼 hover 효과 */
+.option-link {
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.option-link:hover {
+  color: #c62828;
+  transform: translateX(3px);
 }

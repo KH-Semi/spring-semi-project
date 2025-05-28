@@ -122,19 +122,21 @@
                   <li th:each="comment : ${ilchonComments}">
                     <div class="ilchon-comment-box">
                       <!-- 작성자 정보  -->
-                      <div class="comment-author">
-                        <img
-                          th:src="${comment.fromMemberImg == null ? '/images/user.png' : comment.fromMemberImg}"
-                          alt="프로필"
-                          class="author-profile-img"
-                        />
-                        <span
-                          class="author-name"
-                          th:text="${comment.memberName != null ? comment.memberName : comment.fromNickname}"
-                          >작성자명</span
-                        >
-                      </div>
-
+                      <a
+                        th:href="@{/{memberNo}/minihome(memberNo=${comment.actualAuthorNo})}"
+                        ><div class="comment-author">
+                          <img
+                            th:src="${comment.fromMemberImg == null ? '/images/user.png' : comment.fromMemberImg}"
+                            alt="프로필"
+                            class="author-profile-img"
+                          />
+                          <span
+                            class="author-name"
+                            th:text="${comment.memberName != null ? comment.memberName : comment.fromNickname}"
+                            >작성자명</span
+                          >
+                        </div>
+                      </a>
                       <!-- 일촌평 내용 - DTO 필드명 사용 -->
                       <span class="comment" th:text="${comment.fromComment}"
                         >일촌평 내용</span
