@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const boardDetailBackBtn = document.querySelector(".back-button");
 
   boardDetailBackBtn.addEventListener("click", () => {
-      window.history.back();
+    window.history.back();
   });
 });
 
@@ -54,5 +54,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
   boardDetailEditBtn.addEventListener("click", () => {
     location.href = `/${memberNo}/board/${boardCode}/${boardNo}/update`;
-  })
-})
+  });
+});
+
+// 게시글 작성자의 프로필, 이름 누르면 해당 멤버 홈피 이동
+document.addEventListener("DOMContentLoaded", () => {
+  // 현재 게시글 작성자 번호 (미리 선언된 전역 변수)
+  const writerNo = memberNo; // <script th:inline="javascript">에 선언된 변수 사용
+
+  // DOM에서 프로필 이미지와 작성자 span 태그 가져오기 (img 2개 중 어떤 게 보일지 모르므로 둘 다 처리)
+  const memberImg = document.querySelectorAll(".board-writer img");
+  const writerName = document.querySelector(".board-writer span");
+
+  // 클릭 이벤트 함수 정의
+  const goToMiniHome = () => {
+    if (writerNo) {
+      location.href = `/${writerNo}/minihome`;
+    }
+  };
+
+  // 이미지들에 이벤트 바인딩
+  memberImg.forEach((img) => {
+    img.style.cursor = "pointer";
+    img.addEventListener("click", goToMiniHome);
+  });
+
+  // 작성자 이름에도 이벤트 바인딩
+  if (writerName) {
+    writerName.style.cursor = "pointer";
+    writerName.addEventListener("click", goToMiniHome);
+  }
+});
