@@ -53,7 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const boardDetailEditBtn = document.querySelector("#updateBtn");
   if(boardDetailEditBtn) {
       boardDetailEditBtn.addEventListener("click", () => {
-        location.href = `/${memberNo}/board/${boardCode}/${boardNo}/update`;
+        const queryString = location.search;
+        
+        location.href = `/${memberNo}/board/${boardCode}/${boardNo}/update${queryString}`;
       })
   }
 })

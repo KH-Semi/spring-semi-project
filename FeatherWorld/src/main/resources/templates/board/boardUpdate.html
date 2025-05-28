@@ -44,10 +44,12 @@
             <h4 class="existing-images-title">기존 이미지</h4>
             <div class="existing-images-grid">
               <th:block th:each="image : ${board.imageList}">
-                <div class="existing-image-item" th:data-image-no="${image.imgNo}">
+                <div class="existing-image-item"
+                     th:data-image-no="${image.imgNo}"
+                     th:style="|grid-column: ${image.imgOrder + 1}|">
                   <img th:src="|${image.imgPath}/${image.imgRename}|" th:alt="${image.imgOriginalName}" />
                   <div class="image-info">
-                    <span class="image-name" th:text="${image.imgOriginalName}">image.jpg</span>
+                    <span class="image-name" th:text="|${image.imgOrder}. ${image.imgOriginalName}|">image.jpg</span>
                     <button type="button" class="delete-existing-btn" th:data-image-no="${image.imgNo}">
                       <i class="fa-solid fa-trash"></i>
                     </button>
@@ -105,7 +107,6 @@
   const loginMemberNo = /*[[${session.loginMember.memberNo}]]*/ 0;
   const memberNo = /*[[${memberNo}]]*/ 0;
   const boardNo = /*[[${board.boardNo}]]*/ 0;
-  const deletedImageList = []; // 삭제할 기존 이미지 번호들
 </script>
 <script src="/js/board/boardWrite.js"></script>
 <script src="/js/board/boardUpdate.js"></script>

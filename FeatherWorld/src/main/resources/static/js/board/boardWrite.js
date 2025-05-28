@@ -294,13 +294,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-
-// 유틸리티 함수: 업로드된 이미지 정보 가져오기
-const getImageList = () => {
-  return imageList.filter(img => img);
-}
-
-// 유틸리티 함수: 특정 슬롯의 이미지 가져오기
-const getImageFromSlot = slotIndex => {
-  return imageList[slotIndex] || null;
-}

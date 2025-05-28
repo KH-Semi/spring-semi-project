@@ -29,6 +29,7 @@ public interface BoardMapper {
 
 	int boardDelete(Board board);
 
+	int boardUpdate(Board board);
 
 
 	// BoardTypeService
@@ -83,7 +84,6 @@ public interface BoardMapper {
 	int selectReadCount(int boardNo);
 
 	List<BoardImg> selectImageList(Integer integer);
-
 
 
 }

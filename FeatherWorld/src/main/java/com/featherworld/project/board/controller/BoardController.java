@@ -188,6 +188,41 @@ public class BoardController {
         return path;
     }
 
+    /** 게시글 수정
+     * @author Jiho
+     * @param memberNo 현재 조회 중인 회원 번호
+     * @param boardCode 해당 게시판 종류 번호
+     * @param boardNo 해당 게시글 종류 번호
+     * @param board 커맨드 객체 Board(boardTitle, boardContent, memberNo, boardCode)
+     * @param loginMember 로그인 회원
+     * @param deletedImageList 기존에 있던 BOARD_IMG 내의 삭제될 imgNo들
+     * @param imageList 새롭게 추가될 BoardImg 관련 내용들
+     * @param cp 현재 페이지 번호
+     * @return result 1(성공) 0(실패)
+     */
+    @ResponseBody
+    @PutMapping("{memberNo:[0-9]+}/board/{boardCode:[0-9]+}/{boardNo:[0-9]+}/update")
+    public int boardUpdate(@PathVariable("memberNo") int memberNo,
+                              @PathVariable("boardCode") int boardCode,
+                              @PathVariable("boardNo") int boardNo,
+                              @ModelAttribute Board board, @SessionAttribute("loginMember") Member loginMember,
+                              @RequestParam(value = "deletedImageList", required = false) int[] deletedImageList,
+                              @RequestParam(value = "imageList", required = false) List<MultipartFile> imageList,
+                              @RequestParam(value = "cp", required = false) int cp) {
+
+        // 1. 수정된 게시글 내용 불러오기
+        // (커맨드 객체 board - memberNo, boardCode, boardNo)
+        // (deletedImageList - 기존에 있던 BOARD_IMG 내의 삭제될 imgNo들)
+        // (imageList - 새롭게 추가될 BoardImg 관련 내용들)
+        // - 제목, 내용, 기존 이미지에서 삭제된 이미지 리스트, 새로 추가된 이미지 리스트
+        board.setMemberNo(memberNo);
+        board.setBoardCode(boardCode);
+        board.setBoardNo(boardNo);
+
+        // 2. 수정 후 그 결과를 다시 js 단에 보내주면 됨
+        return service.boardUpdate(board, deletedImageList, imageList);
+    }
+
     /**
      * 게시글 쓰기
      * @author Jiho
