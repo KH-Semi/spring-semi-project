@@ -81,7 +81,8 @@ public class IlchonController {
 
 	public String selectIncoming(@SessionAttribute(name = "loginMember", required = true) Member loginMember,
 			@PathVariable("memberNo") int memberNo
-			,@RequestParam(value = "cp", required = false, defaultValue = "1") int cp
+			,@RequestParam(value = "cp", required = false, defaultValue = "1") int cp /*내게 들어온 일촌신청 list요소의 pagination cp항목*/
+			,@RequestParam(value = "cpFrom", required = false, defaultValue = "1") int cpFrom /*내게 들어온 일촌신청 list요소의 pagination cp항목*/
 			,Model model){
 
 		//Session에서 loginMember의 MEMBER_NO를 불러오기.
@@ -93,7 +94,7 @@ public class IlchonController {
 		
 		Map<String, Object> map = service.selectIncomingIlchonMemberList(loginMemberNo, cp);
 		//map에서 ilchons 따로 변수로 뺴낼것
-		Map<String, Object> mapFrom = service.selectSendedIlchonMemberList(loginMemberNo, cp); // 내가 보낸 일촌신청 목록 조회 서비스
+		Map<String, Object> mapFrom = service.selectSendedIlchonMemberList(loginMemberNo, cpFrom); // 내가 보낸 일촌신청 목록 조회 서비스
 		
 		//friendList page에 전달한 현재 홈피 주인의 member DTO
 
@@ -101,10 +102,11 @@ public class IlchonController {
 		model.addAttribute("ilchonsIncomingCount", map.size()); // 일촌신청(incoming) count 개수
 		model.addAttribute("memberNo", memberNo);
 		/***내가 보낸 일촌신청 리스트 model에 추가하는 코드  추가 250527***/
-		model.addAttribute("ilchonsFrom", map.get("ilchons"));
+		model.addAttribute("ilchonsFrom", mapFrom.get("ilchons"));
 		model.addAttribute("ilchonsFromIncomingCount", map.size()); // 내가보낸일촌신청(incoming) count 개수
 	    model.addAttribute("pagination", map.get("pagination"));
-		return "friendList/incomingFriendList";
+	    model.addAttribute("paginationFrom", mapFrom.get("pagination"));
+		return "friendList/incomingFriendListCopy";
 		
 	}
 	

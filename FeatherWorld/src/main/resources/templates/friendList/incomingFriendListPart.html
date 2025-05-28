@@ -1,28 +1,43 @@
 <head>
   <link rel="stylesheet" href="/css/common/main.css" />
   <!-- for pagination -->
-    <!--<link rel="stylesheet" href="/css/friendList/incomingFriendListPart.css" />-->
+  <!--<link rel="stylesheet" href="/css/friendList/incomingFriendListPart.css" />-->
   <link rel="stylesheet" href="/css/friendList/incomingFriendListPart.css" />
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
   />
   <!-- DB 수정완료 되었을시 뜨는 v표시 애니메이션-->
-
-  
+  <style>
+    .back-button {
+      background-color: #b3002d;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 6px 16px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+  </style>
 </head>
 
 <div id="my-incoming-friend-list">
-    <div class="title">
-      <ul
-        class="title-font"
-        th:text="${session.loginMember?.memberNo == memberNo?'내 ': memberNo + '님의 '} + '일촌신청 목록'"
-      >
-        <!-- 250521 나중에 미니홈피 profile 구현 후 서버에서 member정보를 model 등에 구현했을떄 다시 수정할것.-->
-        내 일촌신청 목록
-      </ul>
-    </div>
-    <ul id="friend-list">
+  <button id="back-btn" class="back-button right-align">Back</button>
+  <ul class="title title-font">
+    <!-- 250521 나중에 미니홈피 profile 구현 후 서버에서 member정보를 model 등에 구현했을떄 다시 수정할것.-->
+    MY 보낸/받은 일촌신청 목록
+  </ul>
+  <div class="title">
+    <ul
+      id="incoming-title"
+      class="semi-title-font"
+      th:text="${session.loginMember?.memberNo == memberNo?'내게 들어온 ': memberNo + '님에게 들어온 '} + '일촌신청 목록이에요!'"
+    >
+      <!-- 250521 나중에 미니홈피 profile 구현 후 서버에서 member정보를 model 등에 구현했을떄 다시 수정할것.-->
+      나에게 들어온 일촌신청 목록이에요!
+    </ul>
+  </div>
+  <ul id="friend-list" class="border-inner" style="padding: 20px 0px 20px 0px">
     <th:block th:each="ilchon : ${ilchons}">
       <li
         class="friend-item fade-slide"
@@ -32,7 +47,7 @@
         <div class="left-align">
           <img
             th:if="${ilchon.memberImg}"
-            th:src="@{${ilchon.memberImg}}" 
+            th:src="@{${ilchon.memberImg}}"
             width="20"
           />
           <img
@@ -53,28 +68,42 @@
             >일촌명</span
           >
 
-          <span name="ilchon-button" class="rounded-span right-align font-bold hidden"
+          <span
+            name="ilchon-button"
+            class="rounded-span right-align font-bold hidden"
             >일촌</span
           >
           <i class="fas fa-check-circle check-icon hidden"></i
           ><!--DB 닉네임 업데이트 성공시 나타나는 V표식-->
           <i class="fas fa-times-circle x-icon hidden"></i
           ><!--DB 닉네임 업데이트 실패시 나타나는 V표식-->
-          
-          <button name="accept-button"
-            class=" rounded-span right-align color-red"
-            style="border-radius : 30px"
-            width="50px">Accept</button>
-            <textarea
+          <input
             name="fromNickname-input"
+            rows="1"
+            placeholder="이분을 뭐라고 부르시겠어요?"
+          />
+          <button
+            name="accept-button"
+            class="rounded-span right-align color-red disabled-button"
+            style="border-radius: 30px"
+            width="50px"
+          >
+            Accept
+          </button>
+          <textarea
             class="hidden"
             rows="1"
             placeholder="등록할 일촌명을 입력해주세요!"
           ></textarea>
-          <button name="deny-button"
-            class="  rounded-span right-align color-red"
-            style="border-radius : 30px"
-            width="50px">Deny</button>
+
+          <button
+            name="deny-button"
+            class="rounded-span right-align color-red"
+            style="border-radius: 30px"
+            width="50px"
+          >
+            Deny
+          </button>
           <span
             name="unfollow-button"
             class="rounded-unfollow-span right-align color-red hidden"
@@ -84,32 +113,65 @@
         </div>
       </li>
     </th:block>
-    <th:block th:if="${#lists.isEmpty(ilchons)}">
-      <li>일촌신청이 없습니다.</li>
-    </th:block>
+    <!-- pagination -->
+    <ul class="pagination" th:unless="${#lists.isEmpty(ilchons)}">
+      <!-- << -->
+      <li><a th:href="@{/friendList/incoming(cp=1)}">&lt;&lt;</a></li>
 
+      <!-- < -->
+      <li>
+        <a th:href="@{/friendList/incoming(cp=${pagination.prevPage})}">&lt;</a>
+      </li>
 
-
-    <div class="title">
-      <ul
-        class="title-font"
-        
+      <!-- Page numbers -->
+      <th:block
+        th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
       >
-        <!-- 250521 나중에 미니홈피 profile 구현 후 서버에서 member정보를 model 등에 구현했을떄 다시 수정할것.-->
-        내가 보낸 일촌신청 목록
-      </ul>
+        <li th:if="${i == pagination.currentPage}">
+          <a class="current" th:text="${i}"></a>
+        </li>
+        <li th:if="${i != pagination.currentPage}">
+          <a th:href="@{/friendList(cp=${i})}" th:text="${i}"></a>
+        </li>
+      </th:block>
+
+      <!-- > -->
+      <li><a th:href="@{/friendList(cp=${pagination.nextPage})}">&gt;</a></li>
+
+      <!-- >> -->
+      <li>
+        <a th:href="@{/friendList(cp=${pagination.maxPage})}">&gt;&gt;</a>
+      </li>
+    </ul>
+    <!--end of Pagination-->
+    <div style="justify-items: center" th:if="${#lists.isEmpty(ilchons)}">
+      <p>일촌신청이 없습니다.</p>
     </div>
-    <ul id="friend-sended-list">
+  </ul>
+
+  <!----------------------------------- incoming - sended의 경계 ------------------------------------------->
+  <div class="title">
+    <ul id="sended-title" class="semi-title-font">
+      <!-- 250521 나중에 미니홈피 profile 구현 후 서버에서 member정보를 model 등에 구현했을떄 다시 수정할것.-->
+      내가 보낸 일촌신청 목록이에요!
+    </ul>
+  </div>
+  <ul
+    id="friend-sended-list"
+    class="border-inner"
+    style="padding: 20px 0px 20px 0px"
+  >
     <th:block th:each="ilchon : ${ilchonsFrom}">
       <li
-        class="friend-item fade-slide"
+        class="friend-item-sended fade-slide"
         th:attr="data-member-no=${ilchon.toMemberNo == memberNo?ilchon.fromMemberNo:ilchon.toMemberNo}"
       >
+        <!-- friend-item 절떄 지우면 안됨!!!!-->
         <!-- session이랑 비교하도록 되어있음. -->
         <div class="left-align">
           <img
             th:if="${ilchon.memberImg}"
-            th:src="@{${ilchon.memberImg}}" 
+            th:src="@{${ilchon.memberImg}}"
             width="20"
           />
           <img
@@ -130,42 +192,60 @@
             >일촌명</span
           >
 
-          <span name="ilchon-button" class="rounded-span right-align font-bold hidden"
-            >일촌</span
+          <span
+            name="ilchon-button"
+            style="color: grey"
+            class="rounded-span right-align font-bold"
+            >일촌수락 대기중...</span
+          >
+          <span
+            name="unfollow-button"
+            class="rounded-unfollow-span right-align color-red"
+            width="30px"
+            >Cancel</span
           >
           <i class="fas fa-check-circle check-icon hidden"></i
           ><!--DB 닉네임 업데이트 성공시 나타나는 V표식-->
           <i class="fas fa-times-circle x-icon hidden"></i
           ><!--DB 닉네임 업데이트 실패시 나타나는 V표식-->
-          
-          <button name="accept-button"
-            class=" rounded-span right-align color-red"
-            style="border-radius : 30px"
-            width="50px">Accept</button>
-            <textarea
-            name="fromNickname-input"
-            class="hidden"
-            rows="1"
-            placeholder="등록할 일촌명을 입력해주세요!"
-          ></textarea>
-          <button name="deny-button"
-            class="  rounded-span right-align color-red"
-            style="border-radius : 30px"
-            width="50px">Deny</button>
-          <span
-            name="unfollow-button"
-            class="rounded-unfollow-span right-align color-red hidden"
-            width="30px"
-            >Unfollow</span
-          >
         </div>
       </li>
     </th:block>
-    <th:block th:if="${#lists.isEmpty(ilchons)}">
-      <li>일촌신청이 없습니다.</li>
-    </th:block>
-    <script th:inline="javascript">
-    let memberNo = /*[[${memberNo}]]*/ 0; // 현재 보고있는 미니홈피 주인(=/?/friendList)의 MemberNo
-  </script>
+    <!-- pagination -->
+    <ul class="pagination" th:unless="${#lists.isEmpty(ilchonsFrom)}">
+      <!-- << -->
+      <li><a th:href="@{/friendList/incoming(cp=1)}">&lt;&lt;</a></li>
+
+      <!-- < -->
+      <li>
+        <a th:href="@{/friendList/incoming(cp=${pagination.prevPage})}">&lt;</a>
+      </li>
+
+      <!-- Page numbers -->
+      <th:block
+        th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
+      >
+        <li th:if="${i == pagination.currentPage}">
+          <a class="current" th:text="${i}"></a>
+        </li>
+        <li th:if="${i != pagination.currentPage}">
+          <a th:href="@{/friendList(cp=${i})}" th:text="${i}"></a>
+        </li>
+      </th:block>
+
+      <!-- > -->
+      <li><a th:href="@{/friendList(cp=${pagination.nextPage})}">&gt;</a></li>
+
+      <!-- >> -->
+      <li>
+        <a th:href="@{/friendList(cp=${pagination.maxPage})}">&gt;&gt;</a>
+      </li>
+    </ul>
+    <!--end of Pagination-->
+    <div style="justify-items: center" th:if="${#lists.isEmpty(ilchonsFrom)}">
+      <p>일촌신청이 없습니다.</p>
+    </div>
+  </ul>
+
   <script src="/js/friendList/incomingFriendListPart.js"></script>
 </div>

@@ -10,24 +10,28 @@
 </head>
 
 <div id="my-friend-list">
+  <button
+      id="goto-imcoming-friend-button"
+      th:if="${session.loginMember != null 
+        and session.loginMember.memberNo == memberNo }"
+      class="right-align button-default"
+      th:text="${hasPendingFollowers?'새로운 일촌신청이 있습니다!':'incoming 일촌신청 리스트 확인'}"
+      onclick="showPendingFollowers()"
+      style="margin-top : 20px; margin-right : 10px;"
+      ><!-- 이미 일촌관계일때 버튼 비활성화를 위한 th:attr-->
+      
+    </button>
   <div class="title">
+    
+    
     <ul
       class="title-font"
-      th:text="${session.loginMember?.memberNo == memberNo?'내 ': memberNo + '님의 '} + '일촌 목록'"
+      th:text="${session.loginMember?.memberNo == memberNo?'내 ': member.memberName + '님의 '} + '일촌 목록'"
     >
       <!-- 250521 나중에 미니홈피 profile 구현 후 서버에서 member정보를 model 등에 구현했을떄 다시 수정할것.-->
       내 일촌 목록
     </ul>
-    <button
-      id="goto-imcoming-friend-button"
-      th:if="${session.loginMember != null 
-        and session.loginMember.memberNo == memberNo }"
-      class="left-align button-default"
-      th:text="${hasPendingFollowers?'새로운 일촌신청이 있습니다!':'incoming 일촌신청 리스트 확인'}"
-      onclick="showPendingFollowers()"
-      ><!-- 이미 일촌관계일때 버튼 비활성화를 위한 th:attr-->
-      
-    </button>
+    
     <button
       id="send-friend-request-button"
       th:if="${session.loginMember != null 
@@ -42,24 +46,31 @@
       th:if="${session.loginMember != null 
         and session.loginMember.memberNo != memberNo 
         and ilchonStatus == 1}"
-      class="left-align button-disabled" disabled>일촌요청 기다리는중...</button>
+      class="left-align button-disabled" disabled>일촌요청 완료..</button>
+      <p id="already-send-friend-request-tag"
+      th:if="${session.loginMember != null 
+        and session.loginMember.memberNo != memberNo 
+        and ilchonStatus == 1}"
+      class="right-align" style="color:darkgrey">    ⏳ 이분한테 이미 일촌요청을 보냈어요! <br> 수락하실때까지 잠시만 기다려주세요...</button>
+      </p>
     </button>
     <p id="ilchon-flag" 
     class="gold" 
     th:if="${session.loginMember != null 
       and session.loginMember.memberNo != memberNo 
       and ilchonStatus == 2}"> 내 일촌</p>
-    </div>
+  </div>
+  <div th:unless="${#lists.isEmpty(ilchons)}">
     <button
       id="edit-button"
       th:unless="${session.loginMember == null or session.loginMember.memberNo != memberNo}"
-      class="right-align button-default"
+      class="right-align button-default" style="margin-right:45px"
     >
       Edit
     </button>
     <div id="apply-cancel-button-div" class="right-align hidden">
       
-      <button id="cancel-button" class="button-default hidden">Back</button><!-- apply버튼과 cancel버튼을 Back에 통합-->
+      <button id="cancel-button" class="button-default hidden" style="margin-left:45px">Back</button><!-- apply버튼과 cancel버튼을 Back에 통합-->
     </div>
   </div>
   <ul id="friend-list">
@@ -74,11 +85,13 @@
             th:if="${ilchon.memberImg}"
             th:src="@{${ilchon.memberImg}}"
             width="20"
+            style="border-radius: 8px;"
           />
           <img
             th:unless="${ilchon.memberImg}"
-            th:src="@{/images/default-user.png}"
+            th:src="@{/images/user.png}"
             width="20"
+            style="border-radius: 8px;"
           />
           <span class="font-bold color-gray" th:text="${ilchon.memberName}"
             >별명</span
@@ -114,13 +127,13 @@
         </div>
       </li>
     </th:block>
-    <th:block th:if="${#lists.isEmpty(ilchons)}">
+    <div style="justify-items: center; margin : 10px 0px 40px 0px;" th:if="${#lists.isEmpty(ilchons)}">
       <li>일촌이 없습니다.</li>
-    </th:block>
+    </div>
   </ul>
 
   <!-- pagination -->
-  <ul class="pagination" th:if="${pagination != null}">
+  <ul class="pagination" th:unless="${#lists.isEmpty(ilchons)}">
     <!-- << -->
     <li><a th:href="@{/friendList(cp=1)}">&lt;&lt;</a></li>
 

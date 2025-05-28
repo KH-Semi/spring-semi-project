@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FeatherWorld - MiniHome</title>
 
+    
     <!-- 공통 CSS -->
     <th:block th:replace="~{common/common}"></th:block>
 
@@ -26,12 +27,17 @@
 
         <!-- Middle Content Area -->
         <div class="main-content" style="min-height: 600px">
-          <th:block th:replace="~{friendList/friendListPart}"></th:block>
+          <th:block
+          name="inc-friend-list"
+          th:replace="~{friendList/incomingFriendListPart}"
+        ></th:block>
           <!-- Right sidebar -->
+          
         </div>
-        <div th:replace="~{common/navsidebar}"></div>
+        <th:block th:replace="~{common/navsidebar}"></div>
+        <div th:replace="~{common/footer}"></div>
       </div>
-      <div th:replace="~{common/footer}"></div>
+
       <!-- Footer -->
     </div>
 
@@ -43,9 +49,6 @@
 
     <script src="/js/miniHome/leftSidebar.js"></script>
 
-    <script
-      src="/js/friendList/friendListPart.js"
-      th:inline="javascript"
-    ></script>
+    
   </body>
 </html>
