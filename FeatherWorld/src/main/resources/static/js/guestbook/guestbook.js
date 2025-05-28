@@ -297,13 +297,13 @@ const showUpdateGuestBook = (guestBookNo, btn) => {
   btnArea.classList.add("guestbook-btn-area");
 
   const updateBtn = document.createElement("button");
-  updateBtn.innerText = "수정";
+  updateBtn.innerText = "Edit";
   updateBtn.addEventListener("click", () =>
     updateGuestBook(guestBookNo, updateBtn)
   );
 
   const cancelBtn = document.createElement("button");
-  cancelBtn.innerText = "취소";
+  cancelBtn.innerText = "Cancel";
   cancelBtn.addEventListener("click", () => cancelGuestBookUpdate(cancelBtn));
 
   btnArea.append(updateBtn, cancelBtn);

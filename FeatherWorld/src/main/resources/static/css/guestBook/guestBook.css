@@ -4,17 +4,18 @@
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
-  padding: 20px;
+  padding: 20px 20px 20px 0; /* 위, 오른쪽, 아래, 왼쪽 */
   height: 600px;
 }
 
 .guestbook-list {
   max-width: 630px;
+  margin-left: 20px;
 }
 
 .guestbook-item {
-  width: 100%;
-  max-width: 700px;
+  width: 710px;
+  /* max-width: 700px; */
   display: flex;
   justify-content: space-between;
   height: 110px;
@@ -59,24 +60,6 @@
   font-size: 12px;
 }
 
-/* 입력창 영역 (추가할 것) */
-.guestBook-write-area {
-  width: 100%;
-  max-width: 800px;
-  margin-top: 30px;
-}
-
-.guestBook-write-area textarea {
-  width: 95%;
-  height: 50%; /*높이는 추후 수정*/
-  font-size: 16px;
-  padding: 15px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  resize: vertical;
-  resize: none;
-}
-
 /* 반응형 디자인 */
 @media (max-width: 992px) {
   .guestbook-list {
@@ -91,7 +74,7 @@
   gap: 10px;
   color: #a62c2c;
   font-size: 18px;
-  padding-right: 8px;
+  width: 51px;
 }
 
 /* 글쓰기 버튼 스타일 */
@@ -109,6 +92,9 @@
   border-radius: 5px;
   text-decoration: none;
   font-weight: bold;
+  position: absolute;
+  bottom: 10px;
+  right: 42px;
 }
 
 #addGuestBook:hover {
@@ -120,40 +106,65 @@
   height: 100%;
 }
 
-/* 페이지네이션 */
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.pagination span {
-  display: inline-block;
-  padding: 5px 10px;
-  margin: 0 5px;
-  border: 1px solid #e0e0e0;
-  border-radius: 3px;
-  text-decoration: none;
-  color: #333;
-}
-
-.pagination span:hover {
-  transition-duration: 0.2s;
-  background-color: #9f2120;
-  color: white;
-  border-color: #9f2120;
-  cursor: pointer;
-}
-
-.pagination span.current {
-  background-color: #9f2120;
-  color: white;
-  border-color: #9f2120;
-}
-
 .guestbook-writer-img {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
+}
+.update-textarea {
+  width: 630px;
+  height: 90px;
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: none;
+  margin-right: 15px;
+}
+/* 할일 : css 통일성 */
+
+/* 댓글 입력창 */
+
+/* Write 버튼을 우측 하단에 위치시킴 */
+.write-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 50px;
+  margin-right: 40px;
+}
+
+.guestBook-write-area {
+  position: relative;
+  height: 110px;
+  width: 710px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #fafafa;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+/* 댓글 입력창 + 버튼 */
+.guestBook-write-area textarea {
+  width: 710px;
+  font-size: 16px;
+  padding: 15px;
+  height: 60px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  resize: none;
+}
+.guestBook-write-area button {
+  background-color: #b3002d;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
 }
