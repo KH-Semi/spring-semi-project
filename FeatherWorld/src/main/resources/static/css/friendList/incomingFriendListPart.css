@@ -1,3 +1,8 @@
+.border-inner {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
+
 textarea {
   text-align: right;
   padding: 3px;
@@ -8,12 +13,26 @@ textarea {
   align-items: center;
 
   height: 20px;
-  width: 100%;
+  width: auto;
   border: 1px solid #e0e0e0; /*#e0e0e0*/
   background-color: #f9f9f9; /*#f9f9f9*/
   border-radius: 5px;
   padding: 15px;
-  margin: 5px 5px;
+  margin: 8px 40px 8px 40px;
+  overflow: hidden;
+}
+.friend-item-sended {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 20px;
+  width: auto;
+  border: 1px solid #e0e0e0; /*#e0e0e0*/
+  background-color: #f9f9f9; /*#f9f9f9*/
+  border-radius: 5px;
+  padding: 15px;
+  margin: 8px 40px 8px 40px;
   overflow: hidden;
 }
 
@@ -85,11 +104,19 @@ span {
 .title {
   display: flex;
   align-content: center;
+  margin: 30px 30px 10px 30px;
 }
 .title-font {
   font-weight: bold;
   margin: 10px;
-  font-size: medium;
+  font-size: xx-large;
+  justify-self: center;
+}
+
+.semi-title-font {
+  font-weight: bold;
+  margin: 10px;
+  font-size: large;
   justify-self: flex-start;
 }
 .hidden {
@@ -137,7 +164,7 @@ span {
   }
 }
 
-*[name="accept-button"]:hover {
+.hover-green:hover {
   background-color: #01d312;
   color: rgb(36, 36, 36);
   border: 1px solid #ccc;
@@ -152,7 +179,11 @@ span {
   align-items: center;
   width: auto;
 }
-
+.disabled-button {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 /* 제거 애니메이션 클래스 */
 .fade-slide {
   transition: transform 0.5s ease, opacity 0.5s ease;
@@ -160,5 +191,10 @@ span {
 
 .fade-slide.removing {
   transform: translateX(-100%); /* 왼쪽으로 이동 */
+  opacity: 0; /* 투명하게 */
+}
+
+.fade-slide.deleting {
+  transform: translateX(100%); /* 오른쪽으로 이동 */
   opacity: 0; /* 투명하게 */
 }

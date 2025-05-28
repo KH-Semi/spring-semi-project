@@ -1,6 +1,7 @@
 package com.featherworld.project.profile.model.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.featherworld.project.profile.model.dto.Profile;
 
@@ -10,4 +11,12 @@ public interface ProfileMapper {
     int insertProfile(Profile profile);
     int updateProfile(Profile profile);
     int profileExists(int memberNo); // 사용하지 않으면 삭제해도 무방
+
+    // 🔐 비밀번호 조회
+    String selectEncodedPw(@Param("memberNo") int memberNo);
+
+    // ❌ 회원 탈퇴 처리 (soft delete 또는 hard delete 선택)
+    int deleteMember(@Param("memberNo") int memberNo);
+	String selectPw(int memberNo);
+	int secession(int memberNo);
 }

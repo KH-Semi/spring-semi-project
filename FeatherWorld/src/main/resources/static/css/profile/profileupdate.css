@@ -21,7 +21,7 @@
 /* 이미지 업로드 박스 */
 .image-upload-box {
   width: 100%;
-  height: 150px;
+  height: 50%;
   border: 2px dashed #912d2d;
   background-color: #fafafa;
   border-radius: 8px;
@@ -115,4 +115,36 @@
 .confirm-button:hover {
   background-color: #7a2525;
   color: white;
+}
+
+.upload-bio-container {
+  max-width: 400px; /* 원하는 최대 너비 지정 */
+  margin: 0 auto; /* 가운데 정렬 */
+  cursor: pointer;
+  border: 1px dashed #ccc;
+  padding: 15px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #fafafa;
+  transition: background-color 0.3s;
+}
+
+.upload-bio-container:hover {
+  background-color: #f0f0f0;
+}
+
+.image-upload-box p {
+  margin: 0 0 10px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.image-upload-box img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }

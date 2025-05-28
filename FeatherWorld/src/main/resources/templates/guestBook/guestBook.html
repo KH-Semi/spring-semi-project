@@ -109,17 +109,6 @@
             />
             <input type="hidden" id="ownerNo" th:value="${ownerNo}" />
 
-            <!-- 아이콘 -->
-            <div class="icon-bar">
-              <i id="lockIcon" class="fa-solid fa-lock-open"></i>
-              <i
-                id="toggleSecret"
-                class="fa-solid fa-toggle-off"
-                style="cursor: pointer"
-              ></i
-              ><br />
-            </div>
-
             <label style="display: none">
               <input type="checkbox" id="secretCheck" />
               비밀글
@@ -130,8 +119,18 @@
               placeholder="방명록을 작성해보세요 :)"
               required
             ></textarea>
-
-            <button id="addGuestBook">Write✏️</button>
+            <div class="write-button-wrapper">
+              <!-- 아이콘 -->
+              <div class="icon-bar">
+                <i id="lockIcon" class="fa-solid fa-lock-open"></i>
+                <i
+                  id="toggleSecret"
+                  class="fa-solid fa-toggle-off"
+                  style="cursor: pointer"
+                ></i>
+              </div>
+              <button id="addGuestBook">Write</button>
+            </div>
           </div>
         </div>
 

@@ -1,3 +1,8 @@
+#my-friend-list {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
+
 textarea {
   text-align: right;
   padding: 3px;
@@ -8,12 +13,12 @@ textarea {
   align-items: center;
 
   height: 20px;
-  width: 100%;
+  width: auto;
   border: 1px solid #e0e0e0; /*#e0e0e0*/
   background-color: #f9f9f9; /*#f9f9f9*/
   border-radius: 5px;
   padding: 15px;
-  margin: 5px 5px;
+  margin: 8px 40px 8px 40px;
   overflow: hidden;
 }
 
@@ -83,15 +88,19 @@ span {
 .font-bold {
   font-weight: bold;
 }
+#already-send-friend-request-tag {
+  font-size: 9px;
+}
 .title {
   display: flex;
   align-content: center;
+  justify-content: center;
+  margin: 30px 30px 50px 30px;
 }
 .title-font {
   font-weight: bold;
   margin: 10px;
-  font-size: medium;
-  justify-self: flex-start;
+  font-size: xx-large;
 }
 .hidden {
   display: none !important;
@@ -111,6 +120,11 @@ span {
   align-items: center;
   padding: 8px 8px;
   border-radius: 10px;
+}
+.button-default:hover {
+  transform: translateY(-2px);
+  background-color: #d32f2f;
+  color: #eee;
 }
 .button-disabled {
   background-color: #eee;

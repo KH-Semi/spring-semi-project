@@ -1,5 +1,3 @@
-//현재 로그인한 유저 정보(지금은 테스트중)
-let memberN = /*[[${members}]]*/ [];
 // 미수락 팔로워 신청 보기
 function showPendingFollowers() {
   window.location.href = `/${memberNo}/friendList/incoming`; // 일촌 신청 목록 페이지로 이동

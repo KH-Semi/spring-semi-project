@@ -82,6 +82,7 @@ if (confirmYouTubeBtn) {
 if (deleteYouTubeBtn) {
   // 삭제 버튼 클릭 이벤트
   deleteYouTubeBtn.addEventListener("click", async () => {
+    if (!confirm("삭제 하시겠습니까?")) return;
     const resp = await fetch(`/${memberNo}/playlist/delete`, {
       method: "delete",
     });

@@ -34,6 +34,7 @@ public class GuestBookController {
 
 	/**
 	 * 방명록 페이지 이동 (초기 로딩)
+	 * @author 윤진
 	 * @param memberNo 홈피 주인 번호
 	 * @param loginMember 로그인한 회원 정보
 	 * @param cp 현재 페이지
@@ -58,7 +59,14 @@ public class GuestBookController {
 	}
 
 
-	//responseEntity 아닌버전 을 한번 추가해봄
+	
+	/**
+	 * 방명록 조회 (비동기)
+	 * @param memberNo
+	 * @param cp
+	 * @param loginMember
+	 * @return
+	 */
 	@GetMapping("{memberNo:[0-9]+}/guestbook/list")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> getGuestBookList(
@@ -80,6 +88,7 @@ public class GuestBookController {
 
 	/**
 	 * 방명록 작성 (비동기)
+	 * @author 
 	 * @param loginMember 로그인한 회원
 	 * @param guestBook 방명록 정보
 	 * @param memberNo 홈피 주인 번호
@@ -128,6 +137,7 @@ public class GuestBookController {
 
 	/**
 	 * 방명록 수정 (비동기)
+	 * @author 윤진
 	 * @param loginMember 로그인한 회원
 	 * @param guestBook 수정할 방명록 정보
 	 * @param memberNo 홈피 주인 번호
