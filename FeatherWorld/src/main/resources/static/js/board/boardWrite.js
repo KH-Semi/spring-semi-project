@@ -202,7 +202,7 @@ const handleFormSubmit = () => {
     formData.append('boardContent', content);
     formData.append('boardCode', currentBoardCode);
 
-    // 이미지 파일들 추가 (비어있는 경우는 null로 - index를 활용하기 위해)
+    // 이미지 파일들 추가 (비어있는 경우는 빈 File로 - index를 활용하기 위해)
     for (let i = 0; i < MAX_LENGTH; i++) {
       const imageData = imageList[i];
       if (imageData && imageData.file) {

@@ -197,7 +197,6 @@ public class BoardController {
      * @param loginMember 로그인 회원
      * @param deletedImageList 기존에 있던 BOARD_IMG 내의 삭제될 imgNo들
      * @param imageList 새롭게 추가될 BoardImg 관련 내용들
-     * @param cp 현재 페이지 번호
      * @return result 1(성공) 0(실패)
      */
     @ResponseBody
@@ -206,9 +205,8 @@ public class BoardController {
                               @PathVariable("boardCode") int boardCode,
                               @PathVariable("boardNo") int boardNo,
                               @ModelAttribute Board board, @SessionAttribute("loginMember") Member loginMember,
-                              @RequestParam(value = "deletedImageList", required = false) int[] deletedImageList,
-                              @RequestParam(value = "imageList", required = false) List<MultipartFile> imageList,
-                              @RequestParam(value = "cp", required = false) int cp) {
+                              @RequestParam(value = "deletedImages", required = false) String deletedImageList,
+                              @RequestParam(value = "images", required = false) List<MultipartFile> imageList) throws Exception {
 
         // 1. 수정된 게시글 내용 불러오기
         // (커맨드 객체 board - memberNo, boardCode, boardNo)
@@ -218,6 +216,8 @@ public class BoardController {
         board.setMemberNo(memberNo);
         board.setBoardCode(boardCode);
         board.setBoardNo(boardNo);
+
+        log.debug("deleted images : {}", deletedImageList);
 
         // 2. 수정 후 그 결과를 다시 js 단에 보내주면 됨
         return service.boardUpdate(board, deletedImageList, imageList);

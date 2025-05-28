@@ -59,6 +59,29 @@
 		AND MEMBER_NO = ${memberNo}
 	</update>
 
+	<!-- 게시글 이미지 삭제 -->
+	<update id="deleteImage">
+		DELETE FROM "BOARD_IMG"
+		WHERE BOARD_NO = ${boardNo}
+		AND IMG_NO IN(${deletedImageList})
+	</update>
+
+	<!-- 게시글 이미지 1행 수정 -->
+	<update id="updateImage">
+		UPDATE "BOARD_IMG"
+		SET IMG_ORIGINAL_NAME = #{imgOriginalName},
+				IMG_RENAME = #{imgRename}
+		WHERE BOARD_NO = #{boardNo}
+			AND IMG_ORDER = #{imgOrder}
+	</update>
+
+	<!-- 게시글 이미지 1행 삽입 -->
+	<insert id="insertImage">
+		INSERT INTO "BOARD_IMG"
+		VALUES(NEXT_IMG_NO(), #{imgPath}, #{imgOriginalName},
+					 #{imgRename}, #{imgOrder}, #{boardNo})
+	</insert>
+
 	<!-- 게시글 목록 조회 -->
 	<select id="selectBoardList" resultType="Board">
 		SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT,
