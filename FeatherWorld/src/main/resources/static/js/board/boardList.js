@@ -219,9 +219,7 @@ const renderBoardList = async (boardType, page) => {
       const cp = searchCp();
 
       // cp 값에 따라 요청 변경
-      let queryString;
-      if (cp == null) queryString = "";
-      else queryString = `?cp=${cp}`;
+      const queryString = cp ? `?cp=${cp}` : "";
 
       location.href = `/${memberNo}/board/${boardCode}/${board.boardNo}${queryString}`;
     });

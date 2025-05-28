@@ -1,28 +1,8 @@
-@font-face {
-  font-family: "FeatherFont";
-  src: url("../fonts/feather-font.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "Arial", sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
-  line-height: 1.6;
-}
-
 .container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0px;
+  padding: 0;
 }
 
 /* Header Styles */

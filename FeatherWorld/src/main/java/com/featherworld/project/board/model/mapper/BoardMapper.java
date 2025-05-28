@@ -19,7 +19,7 @@ import org.apache.ibatis.annotations.Param;
 public interface BoardMapper {
 
 	// BoardService
-	List<BoardType> selectBoardType(int memberNo);
+	List<Board> selectBoardList(int currentBoardCode, RowBounds rowBounds);
 
 	int getListCount(int currentBoardCode);
 
@@ -27,9 +27,13 @@ public interface BoardMapper {
 
 	int insertUploadList(List<BoardImg> uploadList);
 
+	int boardDelete(Board board);
+
+	int boardUpdate(Board board);
+
 
 	// BoardTypeService
-	List<Board> selectBoardList(int currentBoardCode, RowBounds rowBounds);
+	List<BoardType> selectBoardType(int memberNo);
 
 	int insertBoardType(BoardType boardType);
 

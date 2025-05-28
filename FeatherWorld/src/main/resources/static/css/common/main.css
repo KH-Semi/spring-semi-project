@@ -1,7 +1,6 @@
 * {
   box-sizing: border-box;
-  font-family: "Pretendard-Regular", sans-serif;
-  font-weight: 400;
+  font-family: "Pretendard-Regular";
   font-style: normal;
   margin: 0;
   padding: 0;
@@ -71,11 +70,6 @@ a {
   min-width: 250px;
   padding: 20px;
   border-right: 1px solid #e0e0e0;
-}
-
-.right-sidebar {
-  min-width: 200px;
-  border-left: 1px solid #e0e0e0;
 }
 
 /* 우측 사이드바 스타일 */
@@ -216,12 +210,6 @@ a {
 }
 
 /* ===== MiniHome 페이지 전용 CSS (간소화 버전) ===== */
-
-/* body에 클래스 추가용 */
-body.minihome-page {
-  background-color: #f0f0f0 !important;
-  padding: 20px 0 !important;
-}
 
 /* 프로필 컨테이너 스타일 */
 #leftProfileContainer {
