@@ -12,89 +12,91 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.featherworld.project.board.model.dto.Board;
+import com.featherworld.project.common.utill.Utility;
 import com.featherworld.project.friend.model.dto.Ilchon;
-import com.featherworld.project.friend.model.dto.IlchonComment;
 import com.featherworld.project.member.model.dto.Member;
 import com.featherworld.project.miniHome.model.service.MiniHomeService;
+
+import jakarta.servlet.http.HttpSession;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 public class MiniHomeController {
 
     @Autowired
     private MiniHomeService miniHomeService;
-
+    
     /**
      * 미니홈 메인 페이지
-     * 프로필 데이터와 방문자 처리는 ProfileInterceptor에서 자동 처리됨
      */
     @GetMapping("{memberNo:[0-9]+}/minihome")
     public String miniHomePage(@PathVariable("memberNo") int memberNo,
                               @SessionAttribute(value = "loginMember", required = false) Member loginMember,
                               Model model) {
         
-       List<Board> recentBoardList = miniHomeService.getRecentBoards(memberNo);
-
-      
-       
-      // List<IlchonComment> ilchonCommets = miniHomeService.getIlchonComments(memberNo);
-       
-       int totalBoardCount = miniHomeService.getTotalBoardCount(memberNo);
-       int totalGuestBookCount = miniHomeService.getTotalGuestBookCount(memberNo);
-       
-       model.addAttribute("totalBoardCount", totalBoardCount);
-       model.addAttribute("totalGuestBookCount", totalGuestBookCount);
-       model.addAttribute("recentBoards", recentBoardList);
-     //  model.addAttribute("ilchonCommets",ilchonCommets);
-       model.addAttribute("loginMember", loginMember);
-      
+        System.out.println("=== 미니홈 페이지 로드 ===");
+        System.out.println("memberNo: " + memberNo);
         
-        return "miniHome/miniHome"; // templates/miniHome/miniHome.html
+        List<Board> recentBoardList = miniHomeService.getRecentBoards(memberNo);
+        System.out.println("최근 게시글 조회 완료: " + recentBoardList.size() + "개");
+        
+        // 일촌평 조회
+        List<Ilchon> ilchonComments = miniHomeService.getIlchonComments(memberNo);
+        System.out.println("일촌평 조회 결과: " + (ilchonComments != null ? ilchonComments.size() : "NULL") + "개");
+        
+        int totalBoardCount = miniHomeService.getTotalBoardCount(memberNo);
+        int totalGuestBookCount = miniHomeService.getTotalGuestBookCount(memberNo);
+        
+        model.addAttribute("totalBoardCount", totalBoardCount);
+        model.addAttribute("totalGuestBookCount", totalGuestBookCount);
+        model.addAttribute("recentBoards", recentBoardList);
+        model.addAttribute("ilchonComments", ilchonComments); 
+        model.addAttribute("loginMember", loginMember);
+        model.addAttribute("memberNo", memberNo);
+        
+        System.out.println("=== 미니홈 페이지 로드 완료 ===");
+        
+        return "miniHome/miniHome";
     }
-    
-    /** 일촌평 작성 ..
-     * @param memberNo
-     * @param requestData
-     * @param loginMember
-     * @return
+
+    /**
+     * 일촌평 작성/수정
      */
     @PostMapping("{memberNo:[0-9]+}/ilchoncomment")
     @ResponseBody
     public Map<String, Object> createOrUpdateIlchonComment(
-            @PathVariable("memberNo") int memberNo,
+            @PathVariable("memberNo") int pageOwnerNo,
             @RequestBody Map<String, Object> requestData,
             @SessionAttribute("loginMember") Member loginMember) {
 
         Map<String, Object> response = new HashMap<>();
 
         try {
+            System.out.println("=== 일촌평 작성 시작 ===");
+            System.out.println("페이지 주인: " + pageOwnerNo);
+            System.out.println("작성자: " + loginMember.getMemberNo() + "(" + loginMember.getMemberName() + ")");
+            
             if (loginMember == null) {
                 response.put("success", false);
-                response.put("message", "로그인해야됌");
+                response.put("message", "로그인이 필요합니다.");
                 return response;
             }
 
-            int toMemberNo = (Integer) requestData.get("toMemberNo");
             String commentContent = (String) requestData.get("ilchonCommentContent");
-
-            // URL 검증
-            if (memberNo != toMemberNo) {
-                response.put("success", false);
-                response.put("message", "잘못된 요청입니다.");
-                return response;
-            }
-
-            // 넘어온 일촌평의 값이 아무것도 없을때 처리
+            
+            // 내용 검증
             if (commentContent == null || commentContent.trim().isEmpty()) {
                 response.put("success", false);
                 response.put("message", "일촌평 내용을 입력해주세요.");
                 return response;
             }
 
-            // 30자까지만
             if (commentContent.length() > 30) {
                 response.put("success", false);
                 response.put("message", "일촌평은 30자 이내로 작성해주세요.");
@@ -102,92 +104,64 @@ public class MiniHomeController {
             }
 
             // 권한 확인
-            boolean canWrite = checkWritePermission(loginMember, memberNo);
-
-            if (!canWrite) {
+            if (!checkWritePermission(loginMember, pageOwnerNo)) {
                 response.put("success", false);
                 response.put("message", "일촌평 작성 권한이 없습니다.");
                 return response;
             }
 
-            // 기존 일촌평 확인
-            IlchonComment checkComment = new IlchonComment();
-            checkComment.setFromMemberNo(loginMember.getMemberNo());
-            checkComment.setToMemberNo(memberNo);
-
-            int existingCount = miniHomeService.checkExistingIlchonComment(checkComment);
-
-            // 일촌평 객체 생성
-            IlchonComment ilchonComment = new IlchonComment();
-            ilchonComment.setFromMemberNo(loginMember.getMemberNo());
-            ilchonComment.setToMemberNo(memberNo);
-            ilchonComment.setIlchonCommentContent(commentContent.trim());
-
-            int result = 0;
-            String message = "";
-
-            if (existingCount > 0) {
-                // 기존 일촌평이 있으면 업데이트
-                result = miniHomeService.updateIlchonComment(ilchonComment);
-                message = result > 0 ? "일촌평이 수정되었습니다." : "일촌평 수정에 실패했습니다.";
-            } else {
-                // 기존 일촌평이 없으면 신규 작성
-                result = miniHomeService.insertIlchonComment(ilchonComment);
-                message = result > 0 ? "일촌평이 작성되었습니다." : "일촌평 작성에 실패했습니다.";
-            }
+            // 일촌평 저장 (양방향 시도)
+            int result = saveIlchonComment(loginMember.getMemberNo(), pageOwnerNo, commentContent.trim());
 
             if (result > 0) {
+                System.out.println("✅ 일촌평 작성 성공");
                 response.put("success", true);
-                response.put("message", message);
+                response.put("message", "일촌평이 작성되었습니다.");
             } else {
+                System.out.println("❌ 일촌평 작성 실패");
                 response.put("success", false);
-                response.put("message", message);
+                response.put("message", "일촌평 작성에 실패했습니다.");
             }
 
         } catch (Exception e) {
+            System.err.println("❌ 일촌평 작성 중 예외: " + e.getMessage());
             response.put("success", false);
             response.put("message", "일촌평 처리 중 오류가 발생했습니다.");
-            System.err.println("일촌평 작성/수정 오류: " + e.getMessage());
             e.printStackTrace();
         }
 
         return response;
     }
-    	
-    /** 
-     * 일촌평 삭제 .. RestApi를 써보자잇 
+    /**
+     * 일촌평 삭제
      */
     @DeleteMapping("{memberNo:[0-9]+}/ilchoncomment")
     @ResponseBody
     public Map<String, Object> deleteIlchonComment(
-            @PathVariable("memberNo") int memberNo,
+            @PathVariable("memberNo") int pageOwnerNo,
             @RequestBody Map<String, Object> requestData,
             @SessionAttribute("loginMember") Member loginMember) {
         
         Map<String, Object> response = new HashMap<>();
         
-        
-            // 로그인 체크
+        try {
+            System.out.println("=== 일촌평 삭제 시작 ===");
+            
             if (loginMember == null) {
                 response.put("success", false);
                 response.put("message", "로그인이 필요합니다.");
                 return response;
             }
             
-            // 요청 데이터 추출
-            int fromMemberNo = (Integer)requestData.get("fromMemberNo"); 
-            int toMemberNo = (Integer)requestData.get("toMemberNo");
+            int authorNo = (Integer)requestData.get("authorNo");  // 실제 작성자 번호
             
-            // URL 일관성 검증
-            if (memberNo != toMemberNo) {
-                response.put("success", false);
-                response.put("message", "잘못된 요청입니다.");
-                return response;
-            }
+            System.out.println("페이지 주인: " + pageOwnerNo);
+            System.out.println("실제 작성자: " + authorNo);
+            System.out.println("삭제 요청자: " + loginMember.getMemberNo());
             
-            // 삭제 권한 확인 (본인이 쓴 댓글이거나 프로필 주인)
-            boolean canDelete = (loginMember.getMemberNo() == fromMemberNo || // 본인이 쓴 댓글
-                               loginMember.getMemberNo() == memberNo);        // 프로필 주인
+            // 삭제 권한 확인 (작성자이거나 페이지 주인)
+            boolean canDelete = (loginMember.getMemberNo() == authorNo || 
+                               loginMember.getMemberNo() == pageOwnerNo);
             
             if (!canDelete) {
                 response.put("success", false);
@@ -195,12 +169,8 @@ public class MiniHomeController {
                 return response;
             }
             
-            // 일촌평 삭제
-            IlchonComment ilchonComment = new IlchonComment();
-            ilchonComment.setFromMemberNo(fromMemberNo);
-            ilchonComment.setToMemberNo(toMemberNo);
-            
-            int result = miniHomeService.deleteIlchonComment(ilchonComment);
+            // 일촌평 삭제 (양방향 시도)
+            int result = deleteIlchonCommentInternal(authorNo, pageOwnerNo);
             
             if (result > 0) {
                 response.put("success", true);
@@ -210,39 +180,167 @@ public class MiniHomeController {
                 response.put("message", "일촌평 삭제에 실패했습니다.");
             }
             
-            return response;
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "일촌평 삭제 중 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
         
-        
-       
+        return response;
     }
-    
     /**
-     * 일촌평 작성 권한 확인 - ProfileInterceptor와 동일한 로직
+     * 일촌평 저장 (양방향 시도)
      */
-    private boolean checkWritePermission(Member loginMember, int memberNo) {
-        // 본인 페이지인 경우
-        if (loginMember.getMemberNo() == memberNo) {
+    private int saveIlchonComment(int authorNo, int pageOwnerNo, String content) {
+        System.out.println("=== 일촌평 저장 시도 ===");
+        
+        // 1차: 작성자→페이지주인 방향으로 FROM_COMMENT에 저장
+        System.out.println("1차 시도: FROM=" + authorNo + ", TO=" + pageOwnerNo + ", FROM_COMMENT");
+        Ilchon relation1 = new Ilchon();
+        relation1.setFromMemberNo(authorNo);
+        relation1.setToMemberNo(pageOwnerNo);
+        relation1.setFromComment(content);
+        
+        int result = miniHomeService.updateIlchonFromComment(relation1);
+        System.out.println("1차 결과: " + result);
+        
+        if (result == 0) {
+            // 2차: 페이지주인→작성자 방향으로 TO_COMMENT에 저장
+            System.out.println("2차 시도: FROM=" + pageOwnerNo + ", TO=" + authorNo + ", TO_COMMENT");
+            Ilchon relation2 = new Ilchon();
+            relation2.setFromMemberNo(pageOwnerNo);
+            relation2.setToMemberNo(authorNo);
+            relation2.setToComment(content);
+            
+            result = miniHomeService.updateIlchonToComment(relation2);
+            System.out.println("2차 결과: " + result);
+        }
+        
+        return result;
+    }
+
+    /**
+     * 일촌평 삭제 (양방향 시도) - 내부 메소드
+     */
+    private int deleteIlchonCommentInternal(int authorNo, int pageOwnerNo) {
+        System.out.println("=== 일촌평 삭제 시도 ===");
+        
+        // 1차: 작성자→페이지주인 방향의 FROM_COMMENT 삭제
+        System.out.println("1차 삭제 시도: FROM=" + authorNo + ", TO=" + pageOwnerNo + ", FROM_COMMENT");
+        Ilchon relation1 = new Ilchon();
+        relation1.setFromMemberNo(authorNo);
+        relation1.setToMemberNo(pageOwnerNo);
+        
+        int result = miniHomeService.deleteIlchonFromComment(relation1);
+        System.out.println("1차 삭제 결과: " + result);
+        
+        if (result == 0) {
+            // 2차: 페이지주인→작성자 방향의 TO_COMMENT 삭제
+            System.out.println("2차 삭제 시도: FROM=" + pageOwnerNo + ", TO=" + authorNo + ", TO_COMMENT");
+            Ilchon relation2 = new Ilchon();
+            relation2.setFromMemberNo(pageOwnerNo);
+            relation2.setToMemberNo(authorNo);
+            
+            result = miniHomeService.deleteIlchonToComment(relation2);
+            System.out.println("2차 삭제 결과: " + result);
+        }
+        
+        return result;
+    }
+   
+    /**
+     * 일촌평 작성 권한 확인
+     */
+    private boolean checkWritePermission(Member loginMember, int pageOwnerNo) {
+        // 본인 페이지는 항상 가능
+        if (loginMember.getMemberNo() == pageOwnerNo) {
             return true;
         }
         
-        // 일촌 관계 확인 - ProfileInterceptor와 동일한 로직
-        Ilchon myRequest = new Ilchon();
-        myRequest.setFromMemberNo(loginMember.getMemberNo());
-        myRequest.setToMemberNo(memberNo);
+        // 일촌 관계 확인
+        Ilchon relationCheck = new Ilchon();
+        relationCheck.setFromMemberNo(loginMember.getMemberNo());
+        relationCheck.setToMemberNo(pageOwnerNo);
         
-        int myAcceptedCount = miniHomeService.findAcceptedIlchon(myRequest);
-        
-        Ilchon theirRequest = new Ilchon();
-        theirRequest.setFromMemberNo(memberNo);
-        theirRequest.setToMemberNo(loginMember.getMemberNo());
-        
-        int theirAcceptedCount = miniHomeService.findAcceptedIlchon(theirRequest);
-        
-        // 일촌 관계면 작성 가능
-        boolean isIlchon = (myAcceptedCount > 0 || theirAcceptedCount > 0);
-        
-        return isIlchon;
+        int acceptedCount = miniHomeService.findIlchon(relationCheck);
+        return acceptedCount > 0;
     }
     
-  
+    /** 왼쪽 프로필업데이트 하는 서비스
+     * @param memberNo
+     * @param memberIntro
+     * @param memberImg
+     * @param loginMember
+     * @return
+     * @throws Exception 
+     */
+    @PostMapping("{memberNo:[0-9]+}/leftProfileUpdate")
+    @ResponseBody
+    public Map<String,Object> updateLeftProfile(@PathVariable("memberNo") int memberNo,
+                              @RequestParam(value = "memberIntro", required = false) String memberIntro,
+                              @RequestParam(value = "memberImg", required = false) MultipartFile memberImg,
+                              @SessionAttribute("loginMember") Member loginMember,
+                              HttpSession session) {
+        
+        System.out.println("=== 프로필 업데이트 요청 ===");
+        System.out.println("memberImg null? " + (memberImg == null));
+        System.out.println("memberImg empty? " + (memberImg != null ? memberImg.isEmpty() : "null"));
+        System.out.println("memberIntro: " + memberIntro);
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            if (memberNo != loginMember.getMemberNo()) {
+                response.put("success", false);
+                response.put("message", "현재 주인이 아닙니다.");
+                return response;
+            }
+            
+            boolean imageUpdated = false;
+            boolean introUpdated = false;
+            
+            if(memberImg != null && !memberImg.isEmpty()) {
+                System.out.println("🖼️ 이미지 업데이트 시작");
+                int imageResult = miniHomeService.leftprofileUpdate(loginMember, memberImg);
+                System.out.println("🖼️ 이미지 업데이트 결과: " + imageResult);
+                
+                if(imageResult > 0) imageUpdated = true;
+            }
+            
+            if(memberIntro != null) {
+                System.out.println("📝 자기소개 업데이트 시작");
+                int introResult = miniHomeService.leftprofileintroUpdate(loginMember, memberIntro);
+                System.out.println("📝 자기소개 업데이트 결과: " + introResult);
+                
+                if (introResult > 0) introUpdated = true;
+            }
+            
+            if (imageUpdated || introUpdated) {
+                session.setAttribute("loginMember", loginMember);
+                response.put("success", true);
+                
+                if (imageUpdated && introUpdated) {
+                    response.put("message", "프로필 이미지와 자기소개가 업데이트되었습니다.");
+                } else if (imageUpdated) {
+                    response.put("message", "프로필 이미지가 업데이트되었습니다.");
+                } else if (introUpdated) {
+                    response.put("message", "자기소개가 업데이트되었습니다.");
+                }
+            } else {
+                response.put("success", false);
+                response.put("message", "업데이트할 내용이 없거나 업데이트에 실패했습니다.");
+            }
+            
+        } catch (Exception e) {
+            System.out.println("❌ Controller에서 예외 발생: " + e.getMessage());
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "프로필 업데이트 중 오류가 발생했습니다: " + e.getMessage());
+        }
+        
+        return response;
+    }
+    	
+    
+    
 }

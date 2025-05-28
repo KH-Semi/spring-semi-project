@@ -6,9 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.featherworld.project.board.model.dto.Board;
 import com.featherworld.project.friend.model.dto.Ilchon;
-import com.featherworld.project.friend.model.dto.IlchonComment;
+
 import com.featherworld.project.member.model.dto.Member;
-import com.featherworld.project.miniHome.model.dto.MiniHomeRecentBoard;
+
 import com.featherworld.project.member.model.dto.Today;
 
 @Mapper
@@ -18,7 +18,7 @@ public interface MiniHomeMapper {
 
     int findilchon(Ilchon friend);
 
-    List<IlchonComment> getIlchonComments(int memberNo);
+    List<Ilchon> getIlchonComments(int memberNo);
 // ---------------------------------------  체크 ..
 	int todayAdd(Today today);
 	int todayCount(Today today);
@@ -48,13 +48,21 @@ public interface MiniHomeMapper {
 	int getTotalGuestBookCount(int memberNo);
 
 	// ----
-	int insertIlchonComment(IlchonComment ilchonComment);
+	
 
-	int deleteIlchonComment(IlchonComment ilchonComment);
+	int deleteIlchonFromComment(Ilchon ilchonRelation);
 
-	int checkExistingIlchonComment(IlchonComment checkComment);
+	int deleteIlchonToComment(Ilchon ilchonRelation);
 
-	int updateIlchonComment(IlchonComment ilchonComment);
+	int updateIlchonFromComment(Ilchon ilchonRelation);
+
+	int updateIlchonToComment(Ilchon reverseRelation);
+
+	int findIlchon(Ilchon friend);
+
+	int leftprofileUpdate(Member member);
+
+	int leftprofileintroUpdate(Member loginMember);
 
 
 }

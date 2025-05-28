@@ -118,7 +118,7 @@ public String login(Member inputMember,RedirectAttributes ra, Model model) {
  */
 @GetMapping("checkTel")
 @ResponseBody
-public int checkTel(@RequestParam("memberTel") int memberTel) {
+public int checkTel(@RequestParam("memberTel") String memberTel) {
 	return service.checkTel(memberTel);
 }
 

@@ -69,7 +69,7 @@ public interface MemberService {
 	 * @return
 	 * @author 영민
 	 */
-	int checkTel(int memberTel);
+	int checkTel(String memberTel);
 
 
 

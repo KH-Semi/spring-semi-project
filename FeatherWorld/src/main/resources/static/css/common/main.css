@@ -276,6 +276,7 @@ a {
   font-size: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: none;
 }
 
 #profileImageEditIcon:hover {
@@ -500,4 +501,23 @@ a {
 #profileFollowerCount {
   text-align: center;
   position: relative;
+}
+body.minihome-page .left-sidebar {
+  min-width: 250px !important;
+  max-width: 250px !important;
+  flex: 0 0 250px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+body.minihome-page .right-sidebar {
+  border-left: none !important; /* 좌측 경계선 제거 */
+  min-width: 200px !important;
+}
+
+body.minihome-page #leftProfileContainer {
+  height: 100% !important;
+  min-height: 500px !important;
+  display: flex !important;
+  flex-direction: column !important;
 }

@@ -99,7 +99,12 @@
     <th:block th:replace="~{common/footer}"></th:block>
 
     <!-- 별도 분리된 JS -->
+       <script th:inline="javascript">
+      const memberNo = /*[[${memberNo}]]*/ 0;
+    </script>
     <script src="/js/profile/profileDelete.js"></script>
-    <script src="/js/miniHome/leftsidebar.js"></script>
+
+    <script src="/js/miniHome/leftSidebar.js"></script>
+
   </body>
 </html>

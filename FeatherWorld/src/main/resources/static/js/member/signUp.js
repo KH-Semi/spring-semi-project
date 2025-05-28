@@ -94,23 +94,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // 전화번호 검증 함수
   function validatePhone() {
     const phoneValue = phone.value;
 
     if (phoneValue.trim() === "") {
       phoneMessage.textContent = "전화번호를 입력해주세요.";
       phoneMessage.className = "validation-message invalid";
-      return false;
+      return Promise.resolve(false); // Promise로 감싸서 반환
     } else if (!phoneRegex.test(phoneValue)) {
       phoneMessage.textContent = "유효한 전화번호 형식이 아닙니다.";
       phoneMessage.className = "validation-message invalid";
-      return false;
+      return Promise.resolve(false); // Promise로 감싸서 반환
     } else {
-      fetch("/member/checkTel?memberTel=" + phoneValue)
+      // fetch 요청을 Promise로 반환
+      return fetch("/member/checkTel?memberTel=" + phoneValue)
         .then((resp) => resp.text())
         .then((result) => {
           if (result >= 1) {
-            phoneMessage.textContent = "이미 사용중인 전화번호가있습니다.";
+            phoneMessage.textContent = "이미 사용중인 전화번호입니다.";
             phoneMessage.className = "validation-message invalid";
             return false;
           } else {
@@ -118,6 +120,12 @@ document.addEventListener("DOMContentLoaded", function () {
             phoneMessage.className = "validation-message valid";
             return true;
           }
+        })
+        .catch((error) => {
+          console.error("전화번호 확인 오류:", error);
+          phoneMessage.textContent = "전화번호 확인 중 오류가 발생했습니다.";
+          phoneMessage.className = "validation-message invalid";
+          return false;
         });
     }
   }
@@ -212,45 +220,50 @@ document.addEventListener("DOMContentLoaded", function () {
   addressDetail.addEventListener("input", validateAddressDetail);
   addressDetail.addEventListener("blur", validateAddressDetail);
 
-  // 버튼 기능 구현
-
   // 인증번호 받기 버튼 누르기
   getAuthKeyBtn.addEventListener("click", function () {
-    if (validateEmail()) {
-      // 타이머 초기화
-      min = initMin;
-      sec = initSec;
-      clearInterval(authTimer);
+    validateEmail()
+      .then((isValid) => {
+        if (isValid) {
+          // 타이머 초기화
+          min = initMin;
+          sec = initSec;
+          clearInterval(authTimer);
 
-      // 이메일 발송 요청
-      fetch("/email/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: userId.value }), // JSON 형식으로 변환하여 전송
+          // 이메일 발송 요청
+          fetch("/email/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: userId.value }),
+          })
+            .then((resp) => resp.text())
+            .then((result) => {
+              if (result == 1) {
+                console.log("인증 번호 발송 성공");
+                alert("인증번호가 발송되었습니다.");
+
+                // 타이머 시작
+                startAuthTimer();
+              } else {
+                console.log("인증 번호 발송 실패");
+                alert("인증번호 발송에 실패했습니다. 다시 시도해주세요.");
+              }
+            })
+            .catch((error) => {
+              console.error("인증번호 발송 오류:", error);
+              alert("서버 오류가 발생했습니다.");
+            });
+
+          authKeyMessage.textContent = initTime;
+          authKeyMessage.className = "validation-message invalid";
+        } else {
+          alert("유효한 이메일을 입력해주세요.");
+        }
       })
-        .then((resp) => resp.text())
-        .then((result) => {
-          if (result == 1) {
-            console.log("인증 번호 발송 성공");
-            alert("인증번호가 발송되었습니다.");
-
-            // 타이머 시작
-            startAuthTimer();
-          } else {
-            console.log("인증 번호 발송 실패");
-            alert("인증번호 발송에 실패했습니다. 다시 시도해주세요.");
-          }
-        })
-        .catch((error) => {
-          console.error("인증번호 발송 오류:", error);
-          alert("서버 오류가 발생했습니다.");
-        });
-
-      authKeyMessage.textContent = initTime;
-      authKeyMessage.className = "validation-message invalid";
-    } else {
-      alert("유효한 이메일을 입력해주세요.");
-    }
+      .catch((error) => {
+        console.error("이메일 검증 오류:", error);
+        alert("이메일 검증 중 오류가 발생했습니다.");
+      });
   });
 
   // 인증번호 확인 버튼 클릭 이벤트
@@ -372,28 +385,34 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("submit", function (e) {
       e.preventDefault();
 
-      // 모든 필드 유효성 검사
-      const isEmailValid = validateEmail();
-      const isAuthKeyValid = authKeyMessage.className.includes("valid");
-      const isNameValid = validateName();
-      const isPhoneValid = validatePhone();
-      const isPasswordValid = validatePassword();
-      const isPasswordCheckValid = validatePasswordCheck();
-      const isAddressDetailValid = validateAddressDetail();
+      // Promise를 반환하는 함수들을 Promise.all로 처리
+      Promise.all([validateEmail(), validatePhone()])
+        .then(([isEmailValid, isPhoneValid]) => {
+          // 동기적으로 검증 가능한 필드들
+          const isAuthKeyValid = authKeyMessage.className.includes("valid");
+          const isNameValid = validateName();
+          const isPasswordValid = validatePassword();
+          const isPasswordCheckValid = validatePasswordCheck();
+          const isAddressDetailValid = validateAddressDetail();
 
-      if (
-        isEmailValid &&
-        isAuthKeyValid &&
-        isNameValid &&
-        isPhoneValid &&
-        isPasswordValid &&
-        isPasswordCheckValid &&
-        isAddressDetailValid
-      ) {
-        alert("회원가입이 완료되었습니다!");
-        this.submit(); // 폼을 실제로 제출
-      } else {
-        alert("모든 필수 항목을 올바르게 입력해주세요.");
-      }
+          if (
+            isEmailValid &&
+            isAuthKeyValid &&
+            isNameValid &&
+            isPhoneValid &&
+            isPasswordValid &&
+            isPasswordCheckValid &&
+            isAddressDetailValid
+          ) {
+            alert("회원가입이 완료되었습니다!");
+            this.submit(); // 폼을 실제로 제출
+          } else {
+            alert("모든 필수 항목을 올바르게 입력해주세요.");
+          }
+        })
+        .catch((error) => {
+          console.error("폼 검증 오류:", error);
+          alert("입력값 검증 중 오류가 발생했습니다.");
+        });
     });
 });

@@ -69,7 +69,7 @@ public class GlobalApiController {
             myRequest.setFromMemberNo(loginMember.getMemberNo());
             myRequest.setToMemberNo(toMemberNo);
             
-            int myRequestCount = miniHomeService.findilchon(myRequest);
+            int myRequestCount = miniHomeService.findIlchon(myRequest);
             if (myRequestCount > 0) {
                 response.put("success", false);
                 response.put("message", "이미 일촌 신청을 보냈거나 일촌 관계입니다.");

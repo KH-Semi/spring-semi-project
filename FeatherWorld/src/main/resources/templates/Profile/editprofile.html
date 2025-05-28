@@ -94,7 +94,12 @@
       <!-- Footer -->
     <th:block th:replace="~{common/footer}"></th:block>
     <!-- JS -->
+     <script th:inline="javascript">
+      const memberNo = /*[[${memberNo}]]*/ 0;
+    </script>
     <script src="/js/profile/editprofile.js"></script>
-    <script src="/js/miniHome/leftsidebar.js"></script>
+
+    <script src="/js/miniHome/leftSidebar.js"></script> 
+
   </body>
 </html>

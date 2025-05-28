@@ -116,7 +116,7 @@ public class ProfileInterceptor implements HandlerInterceptor {
             myRequest.setFromMemberNo(loginMember.getMemberNo());
             myRequest.setToMemberNo(memberNo);
             
-            int myAcceptedCount = miniHomeService.findAcceptedIlchon(myRequest);
+            int myAcceptedCount = miniHomeService.findIlchon(myRequest);
             int myPendingCount = miniHomeService.findPendingIlchon(myRequest);
             
             System.out.println("내가 신청한 수락된 일촌: " + myAcceptedCount);
@@ -126,7 +126,7 @@ public class ProfileInterceptor implements HandlerInterceptor {
             theirRequest.setFromMemberNo(memberNo);
             theirRequest.setToMemberNo(loginMember.getMemberNo());
             
-            int theirAcceptedCount = miniHomeService.findAcceptedIlchon(theirRequest);
+            int theirAcceptedCount = miniHomeService.findIlchon(theirRequest);
             System.out.println("상대방이 신청한 수락된 일촌: " + theirAcceptedCount);
             
             isIlchon = (myAcceptedCount > 0 || theirAcceptedCount > 0);
