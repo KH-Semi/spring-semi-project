@@ -22,53 +22,59 @@
           <div th:replace="~{common/leftsidebar}"></div>
         </div>
 
-        
-       <!-- Middle Content Area -->
-      <div class="middle-content">
-        <form
-          th:action="@{/{memberNo}/profileupdate(memberNo=${memberNo})}"
-          method="post"
-          enctype="multipart/form-data"
-        >
-          <!-- 사진 업로드 -->
-          <div
-            class="upload-bio-container"
-            onclick="document.getElementById('uploadFile').click()"
-            style="cursor: pointer"
+        <!-- Middle Content Area -->
+        <div class="middle-content">
+          <form
+            id="profileForm"
+            th:action="@{/{memberNo}/profileupdate(memberNo=${memberNo})}"
+            method="post"
+            enctype="multipart/form-data"
           >
-            <input
-              type="file"
-              id="uploadFile"
-              name="uploadFile"
-              accept="image/*"
-              class="file-input"
-              onchange="previewImage(event)"
-              style="display: none"
-            />
-            <div class="image-upload-box">
-              <p>여기를 클릭해서 사진을 업로드하세요</p>
-              <img
-                id="preview"
-                th:src="${profile.imgPath != null} ? ${profile.imgPath} : ''"
-                alt="이미지 미리보기"
-                th:classappend="${profile.imgPath != null} ? 'show' : 'hide'"
+            <!-- 사진 업로드 -->
+            <div
+              class="upload-bio-container"
+              onclick="document.getElementById('uploadFile').click()"
+              style="cursor: pointer"
+            >
+              <input
+                type="file"
+                id="uploadFile"
+                name="uploadFile"
+                accept="image/*"
+                class="file-input"
+                style="display: none"
               />
-            </div>
-          </div>
 
-          <!-- 자기소개 텍스트 영역 -->
-          <div class="bio-section">
-            <textarea
-              id="bio-input"
-              name="bio"
-              class="bio-textarea"
-              placeholder="자기소개를 입력하세요..."
-              th:text="${profile.profileContent}"
-            ></textarea>
-          </div>
+              <div class="image-upload-box">
+                <img
+                  th:src="${profile != null} ? @{${profile.imgPath + profile.imgRename}} : @{/images/defaultimage.png}"
+                  id="preview"
+                  alt="이미지 미리보기"
+                  style="
+                    display: block;
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 8px;
+                  "
+                />
+              </div>
+            </div>
+
+            <!-- 자기소개 텍스트 영역 -->
+            <div class="bio-section">
+              <textarea
+                id="bio-input"
+                name="bio"
+                class="bio-textarea"
+                placeholder="자기소개를 입력하세요..."
+                th:text="${profile?.profileContent}"
+              ></textarea>
+            </div>
+
             <!-- 버튼 영역 -->
             <div class="post-actions">
               <button
+                id="submitBtn"
                 class="back-button"
                 type="button"
                 onclick="history.back()"
@@ -85,8 +91,11 @@
       </div>
 
       <!-- Footer -->
-    <th:block th:replace="~{common/footer}"></th:block>
+      <th:block th:replace="~{common/footer}"></th:block>
 
+   <script th:inline="javascript">
+      const memberNo = /*[[${memberNo}]]*/ 0;
+    </script>
     <script src="/js/profile/profileupdate.js"></script>
     <script src="/js/miniHome/leftSidebar.js"></script>
   </body>

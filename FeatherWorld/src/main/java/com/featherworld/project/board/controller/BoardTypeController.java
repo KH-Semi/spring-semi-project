@@ -28,10 +28,13 @@ public class BoardTypeController {
     public List<BoardType> selectBoardType(@PathVariable("memberNo") int memberNo, HttpSession session) {
 
         // 현재 회원의 게시판 목록을 조회해서 가져옴
+        // 이미 Session에 게시판 목록이 존재함!
+        // 하지만 혹시나 현재 회원의 게시판 목록과 일치하지 않을 경우가 있을 것 같아서
+        // 한 번 더 DB에 다녀오는 것으로 남겨둠.
         List<BoardType> boardTypeList = boardTypeService.selectBoardType(memberNo);
 
         // session scope에 boardTypeList 갱신
-        session.setAttribute("boardTypeList", boardTypeList);
+        // -> 기존에 갱신했으나, BoardTypeInterceptor 에서 대신 처리!
 
         return boardTypeList;
     }

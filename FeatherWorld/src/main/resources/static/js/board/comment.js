@@ -37,9 +37,21 @@ const selectCommentList = () => {
             memberImg.src = userDefaultImage; // 기본 이미지
           else memberImg.src = comment.memberImg; // 회원 이미지
 
+          // 이미지 누르면 해당 멤버 홈피로 이동
+          memberImg.style.cursor = "pointer";
+          memberImg.addEventListener("click", () => {
+            window.location.href = `/${comment.memberNo}/minihome`;
+          });
+
           // 작성자
           const name = document.createElement("span");
           name.innerText = comment.memberName;
+
+          // 작성자 누르면 해당 멤버 홈피로 이동
+          name.style.cursor = "pointer";
+          name.addEventListener("click", () => {
+            window.location.href = `/${comment.memberNo}/minihome`;
+          });
 
           // 날짜(작성일)
           const commentDate = document.createElement("span");
@@ -420,54 +432,4 @@ const updateComment = (boardCommentNo, btn) => {
     });
 };
 
-// 답글 버튼 눌러서 보여주기
-// document.addEventListener("DOMContentLoaded", () => {
-//   const commentRows = document.querySelectorAll(".comment-row");
-
-//   // Map으로 자식 댓글을 그룹핑
-//   const childMap = {};
-
-//   commentRows.forEach((row) => {
-//     const parentNo = row.dataset.parentCommentNo;
-
-//     if (parentNo) {
-//       if (!childMap[parentNo]) childMap[parentNo] = [];
-//       childMap[parentNo].push(row);
-//       // 자식 댓글은 기본 숨김
-//       row.style.display = "none";
-//     }
-//   });
-
-//   // 부모 댓글 순회하면서 버튼 삽입
-//   commentRows.forEach((row) => {
-//     const commentNo = row.dataset.commentNo;
-//     const childList = childMap[commentNo];
-
-//     if (childList && childList.length > 0) {
-//       // 버튼 생성
-//       const toggleBtn = document.createElement("button");
-//       toggleBtn.classList.add("toggle-replies");
-//       toggleBtn.innerText = `답글 ${childList.length}개 보기`;
-
-//       // 토글 기능
-//       let isVisible = false;
-//       toggleBtn.addEventListener("click", () => {
-//         isVisible = !isVisible;
-//         childList.forEach((child) => {
-//           child.style.display = isVisible ? "block" : "none";
-//         });
-//         toggleBtn.innerText = isVisible
-//           ? "답글 숨기기"
-//           : `답글 ${childList.length}개 보기`;
-//       });
-
-//       // 버튼 삽입 (버튼 영역 없으면 댓글 아래에 붙임)
-//       const btnArea = row.querySelector(".comment-btn-area");
-//       if (btnArea) {
-//         btnArea.prepend(toggleBtn);
-//       } else {
-//         row.appendChild(toggleBtn);
-//       }
-//     }
-//   });
-// });
+//--------------------------------------------------

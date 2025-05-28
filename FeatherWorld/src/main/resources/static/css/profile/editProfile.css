@@ -44,7 +44,7 @@
 .image-upload-box img,
 #preview {
   max-width: 100%;
-  max-height: 180px;
+  max-height: 50%;
   border-radius: 8px;
   margin-top: 10px;
   display: none;
@@ -150,5 +150,16 @@
 
 .post-button:hover {
   background-color: #7a2525;
+  color: white;
+}
+
+.right-sidebar a.active-menu {
+  background-color: #912d2d;
+  color: white;
+  border-radius: 4px;
+  display: block;
+}
+
+.right-sidebar a.active-menu .nav-item {
   color: white;
 }

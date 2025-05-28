@@ -27,21 +27,27 @@
 
         <!-- Middle Panel -->
         <div class="main-content middle-content">
-          <!-- 프로필 이미지 -->
+          <!-- 프로필 이미지 
           <img
             th:if="${profile != null and profile.imgRename != null}"
             th:src="@{'/resources/profile/' + ${profile.imgRename}}"
             alt="사용자 프로필 이미지"
             style="max-width: 50%; height: auto"
-          />
-
-          <!-- 기본 이미지 (프로필 없음) -->
-          <img
-            th:if="${profile == null or profile.imgRename == null}"
-            th:src="@{/images/defaultimage.png}"
-            alt="기본 프로필 이미지"
-            style="max-width: 50%; height: auto"
-          />
+          />-->
+          <th:block th:if="${profile != null}">
+            <img
+              th:src="@{${profile.imgPath} + ${profile.imgRename}}"
+              alt="사용자 프로필 이미지"
+              style="max-width: 50%; height: auto"
+            />
+          </th:block>
+          <th:block th:unless="${profile != null}">
+            <img
+              th:src="@{/images/defaultimage.png}"
+              alt="사용자 프로필 이미지"
+              style="max-width: 50%; height: auto"
+            />
+          </th:block>
 
           <!-- Bio 섹션 -->
           <div class="bio-section">
@@ -65,7 +71,10 @@
               >Profile Update</a
             >
 
-            <a th:href="@{/account/delete}" class="post-button">
+            <a
+              th:href="@{/{memberNo}/profiledelete(memberNo=${memberNo})}"
+              class="post-button"
+            >
               Delete Account
             </a>
           </div>
@@ -80,7 +89,13 @@
     </div>
 
     <!-- JS -->
+    
+     <script th:inline="javascript">
+      const memberNo = /*[[${memberNo}]]*/ 0;
+    </script>
     <script src="/js/profile/profile.js"></script>
+
     <script src="/js/miniHome/leftSidebar.js"></script>
+
   </body>
 </html>

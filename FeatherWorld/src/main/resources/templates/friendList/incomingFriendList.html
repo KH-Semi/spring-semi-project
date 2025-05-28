@@ -7,10 +7,9 @@
     <!-- 공용 css/js 추가 -->
     <th:block th:replace="~{common/common}"></th:block>
     <!-- miniHome 전용 CSS -->
-    <link href="/css/friendList/friendList.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/friendList/friendList.css" />
+    <link rel="stylesheet" href="/css/friendList/incomingFriendListPart.css" />
 
-    <link href="/css/common/main.css" rel="stylesheet" />
-    <!-- for pagination -->
   </head>
   <body>
     <!-- Header Fragment -->
@@ -26,7 +25,7 @@
           <div class="profile-image">
             <img
               alt="프로필 이미지"
-              src="/FeatherWorld/src/main/resources/static/images/user.png"
+              th:src="#{user.default.image}"
             />
           </div>
           <div class="profile-name">반응형</div>

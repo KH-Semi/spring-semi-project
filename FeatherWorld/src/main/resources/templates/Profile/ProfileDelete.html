@@ -5,26 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FeatherWorld - Delete Account</title>
 
-    <!-- 공용 CSS/JS -->
+  <!-- 공용 CSS/JS 불러오기 -->
     <th:block th:replace="~{common/common}"></th:block>
 
-    <!-- 탈퇴 전용 CSS -->
-    <link rel="stylesheet" href="/css/profile/profileDelete.css" />
+    <!-- 프로필 전용 CSS -->
+    <link rel="stylesheet" href="/css/profile/profiledelete.css" />
   </head>
-  <body>
-    <!-- Header -->
-    <div th:replace="~{common/header}"></div>
+  <body
+    class="profiledelete"
+    th:data-member-no="${memberNo != null ? memberNo : 0}"
+  >
+    <div class="container">
+      <!-- Header Fragment -->
+      <div th:replace="~{common/header}"></div>
 
-    <div class="content-container">
-      <!-- Left Sidebar -->
-      <div th:replace="~{common/leftsidebar}"></div>
+      <div class="content-container">
+        <!-- Left Sidebar -->
+        <div class="left-sidebar">
+          <div th:replace="~{common/leftsidebar}"></div>
+        </div>
+
 
       <div class="middle-sidebar">
         <form
-          action="/secession"
-          method="post"
-          onsubmit="return validateForm()"
-        >
+            th:action="@{/{memberNo}/profiledelete(memberNo=${memberNo})}"
+            method="post"
+            onsubmit="return validateForm()"
+          >
+
           <h1>계정 탈퇴</h1>
 
           <!-- 약관 -->
@@ -73,8 +81,12 @@
 
           <!-- 버튼 -->
           <div class="post-actions">
-            <button type="submit" class="post-button">Delete Account</button>
-            <a href="javascript:history.back()" class="post-button">Return</a>
+            <a href="javascript:history.back()" class="post-button">
+              <i class="fas fa-arrow-left"></i> Return
+            </a>
+            <button type="submit" class="post-button">
+              <i class="fas fa-trash-alt"></i> Delete
+            </button>
           </div>
         </form>
       </div>
@@ -87,7 +99,12 @@
     <th:block th:replace="~{common/footer}"></th:block>
 
     <!-- 별도 분리된 JS -->
+       <script th:inline="javascript">
+      const memberNo = /*[[${memberNo}]]*/ 0;
+    </script>
     <script src="/js/profile/profileDelete.js"></script>
+
     <script src="/js/miniHome/leftSidebar.js"></script>
+
   </body>
 </html>

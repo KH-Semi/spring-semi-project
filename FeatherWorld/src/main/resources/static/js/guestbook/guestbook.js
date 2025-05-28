@@ -76,12 +76,13 @@ const selectGuestBookList = (cp = 1) => {
         } else {
           profileImg.src = item.visitor.memberImg;
         }
-        // // 추후 수정...
-        // profileImg.style.cursor = "pointer";
 
-        // profileImg.addEventListener("click", () => {
-        //   window.location.href = `/${item.visitor.memberNo}/minihome`;
-        // });
+        // 프로필 이미지 누르면 해당 회원 홈피로!
+        profileImg.style.cursor = "pointer";
+
+        profileImg.addEventListener("click", () => {
+          window.location.href = `/${item.visitorNo}/minihome`;
+        });
 
         mainDiv.prepend(profileImg);
 
@@ -104,15 +105,15 @@ const selectGuestBookList = (cp = 1) => {
         const infoDiv = document.createElement("div");
         infoDiv.className = "guestbook-info"; // 작성자 및 날짜 정보 영역
 
-        const writerSpan = document.createElement("span");
+        const writerSpan = document.createElement("a");
         writerSpan.textContent = item.visitor?.memberName || "익명"; // 작성자 이름 (없으면 '익명')
 
-        // writerSpan.style.cursor = "pointer";
+        writerSpan.style.cursor = "pointer";
 
-        // // 작성자 누르면 홈페이지 이동 (추후 수정...)
-        // writerSpan.addEventListener("click", () => {
-        //   location.href = `/${item.visitor.memberNo}/minihome`;
-        // });
+        // 작성자 누르면 홈페이지 이동 (추후 수정...)
+        writerSpan.addEventListener("click", () => {
+          window.location.href = `/${item.visitorNo}/minihome`;
+        });
 
         const dateDiv = document.createElement("div");
         dateDiv.className = "guestbook-date"; // 작성일 표시 영역
@@ -130,23 +131,24 @@ const selectGuestBookList = (cp = 1) => {
 
         // 작성자 번호와 로그인한 사용자가 같을 경우에만 버튼 표시
         // 이거 근데 기존 edit, delete 버튼이랑 다르게 나오네;;;
-        if (isWriter) {
+        if (isWriter || isOwner) {
           const actionDiv = document.createElement("div");
           actionDiv.className = "guestbook-actions";
 
-          const editBtn = document.createElement("button");
-          editBtn.textContent = "Edit";
-          editBtn.addEventListener("click", () =>
-            showUpdateGuestBook(item.guestBookNo, editBtn)
-          );
-
+          if (isWriter) {
+            const editBtn = document.createElement("button");
+            editBtn.textContent = "Edit";
+            editBtn.addEventListener("click", () =>
+              showUpdateGuestBook(item.guestBookNo, editBtn)
+            );
+            actionDiv.appendChild(editBtn);
+          }
           const deleteBtn = document.createElement("button");
           deleteBtn.textContent = "Delete";
           deleteBtn.addEventListener("click", () =>
             deleteGuestBook(item.guestBookNo)
           );
 
-          actionDiv.appendChild(editBtn);
           actionDiv.appendChild(deleteBtn);
           infoDiv.appendChild(actionDiv);
         }
@@ -297,13 +299,13 @@ const showUpdateGuestBook = (guestBookNo, btn) => {
   btnArea.classList.add("guestbook-btn-area");
 
   const updateBtn = document.createElement("button");
-  updateBtn.innerText = "수정";
+  updateBtn.innerText = "Edit";
   updateBtn.addEventListener("click", () =>
     updateGuestBook(guestBookNo, updateBtn)
   );
 
   const cancelBtn = document.createElement("button");
-  cancelBtn.innerText = "취소";
+  cancelBtn.innerText = "Cancel";
   cancelBtn.addEventListener("click", () => cancelGuestBookUpdate(cancelBtn));
 
   btnArea.append(updateBtn, cancelBtn);

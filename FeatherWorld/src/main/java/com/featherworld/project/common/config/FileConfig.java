@@ -40,7 +40,7 @@ public class FileConfig implements WebMvcConfigurer{
 	
 	// ------------------------------------------------------------
 	
-	// 프로필 이미지 관련 경로
+	// 프로필 이미지 관련 경로 (오른쪾 탭에있는 profile 버튼용 이미지)
 	@Value("${my.profile.resource-handler}")
 	private String profileResourceHandler;
 	
@@ -56,6 +56,7 @@ public class FileConfig implements WebMvcConfigurer{
 	@Value("${my.board.resource-location}")
 	private String boardResourceLocation;
 	
+
 	
 	//-------------------------------------------------------------
 	
@@ -66,6 +67,10 @@ public class FileConfig implements WebMvcConfigurer{
 	
 	@Value("${my.leftprofile.resource-location}")
 	private String leftProfileResourceLocation;
+
+	//---------------------------------------
+	//leftProfile 쓸때는 my.leftprfile.resource 이런식으로만들어서추가
+
 	
 	
 	// 요청 주소에 따라

@@ -135,6 +135,30 @@ public class BoardServiceImpl implements BoardService {
 		return boardNo;
 	}
 
+	// 게시글 삭제 - 삭제 결과 반환
+	@Override
+	public int boardDelete(Board board) {
+		return mapper.boardDelete(board);
+	}
+
+	// 게시글 수정 - 수정 결과 반환
+	@Override
+	public int boardUpdate(Board board, int[] deletedImageList, List<MultipartFile> imageList) {
+
+		// 게시글 제목/내용 수정 결과 반환
+		int result = mapper.boardUpdate(board);
+
+		if(result == 0) return 0;
+
+		// 삭제된 이미지에 대한 처리
+		// 해당 게시글(boardNo)에 이미지(imgNo) 포함되어 있음
+		// 그럼 삭제되는 배열이랑 비교해서 업로드할 애만 업로드하고 나머지는 수정/삭제 하면 됨.
+
+
+
+		return 0;
+	}
+
 	/** 게시글 좋아요 체크/해제
 	 * @author 허배령
 	 */
