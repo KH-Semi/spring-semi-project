@@ -7,7 +7,7 @@ body {
   overflow: hidden; /*전체 스크롤 제거*/
 }
 .board-detail {
-  margin: 20px auto;
+  /* margin: 20px auto; */
   padding: 24px;
   background-color: #fff;
   border-radius: 20px;

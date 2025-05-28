@@ -41,6 +41,15 @@ public interface GuestBookService {
 	 */
 	int guestBookDelete(int guestBookNo);
 
+	
+	/**
+	 * 방명록 목록 조회 (로그인 회원 정보를 기반으로)
+	 *
+	 * @param memberNo     방명록 주인 회원 번호
+	 * @param cp           현재 페이지 번호
+	 * @param loginMember  로그인한 회원 객체 (null일 수 있음)
+	 * @return             방명록 목록 데이터(Map 형태)
+	 */
 	Map<String, Object> selectGuestBookList(int memberNo, int cp, Member loginMember);
 
 }

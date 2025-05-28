@@ -48,6 +48,11 @@ public interface GuestBookMapper {
 	 */
 	int guestBookUpdate(GuestBook guestBook);
 
+	
+	/** 방명록 1개 조회
+	 * @param guestBookNo
+	 * @return
+	 */
 	GuestBook selectOne(Integer guestBookNo);
 
 }
