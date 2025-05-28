@@ -60,5 +60,9 @@ public interface MiniHomeMapper {
 
 	int findIlchon(Ilchon friend);
 
+	int leftprofileUpdate(Member member);
+
+	int leftprofileintroUpdate(Member loginMember);
+
 
 }

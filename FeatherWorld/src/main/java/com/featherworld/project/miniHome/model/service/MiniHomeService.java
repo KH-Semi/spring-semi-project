@@ -121,6 +121,21 @@ public interface MiniHomeService {
 
 	int updateIlchonToComment(Ilchon reverseRelation);
 
+	/** 왼쪽 프로필 수정하는 기능
+	 * @param loginMember
+	 * @param memberImg
+	 * @return
+	 * @throws Exception 
+	 */
+	int leftprofileUpdate(Member loginMember, MultipartFile memberImg) throws Exception;
+
+	/** 왼쪽 프로필 자기소개 만 업데이트
+	 * @param loginMember
+	 * @param memberIntro
+	 * @return
+	 */
+	int leftprofileintroUpdate(Member loginMember, String memberIntro);
+
 	
 
 	

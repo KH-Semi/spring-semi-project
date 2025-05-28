@@ -6,44 +6,67 @@ body.minihome-page {
   padding: 20px 0 !important;
 }
 
-/* MiniHome 페이지의 컨테이너 조정 - 하나의 흰색 박스로 */
+/* MiniHome 페이지의 컨테이너 조정 - 플레이리스트처럼 통합된 흰색 박스 */
 body.minihome-page .container {
   max-width: 1200px !important;
   background-color: white !important;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
   border-radius: 10px !important;
   overflow: hidden !important;
+  /* 플레이리스트와 동일하게 경계선 없애기 */
+  border: none !important;
 }
 
 /* MiniHome 페이지의 콘텐츠 컨테이너 - 내부에서만 구분 */
 body.minihome-page .content-container {
   gap: 0px !important;
   padding: 0px !important;
-  align-items: flex-start;
+  align-items: stretch !important; /* flex-start에서 stretch로 변경 */
   display: flex !important;
+  /* 경계선 연결을 위한 설정 */
+  border: none !important;
+  min-height: 600px !important; /* 최소 높이 설정 */
 }
 
-/* MiniHome 페이지의 좌측 사이드바 - 기본 스타일 유지하되 배경 제거 */
+/* MiniHome 페이지의 좌측 사이드바 - 플레이리스트 스타일과 동일하게 */
 body.minihome-page .left-sidebar {
   background-color: white !important;
   border-radius: 0px !important;
   box-shadow: none !important;
+  /* 오른쪽 경계선만 유지 */
+  border: none !important;
   border-right: 1px solid #e0e0e0 !important;
   min-width: 250px;
   max-width: 250px;
   flex: 0 0 250px;
   padding: 20px !important;
+  height: 100% !important;
 }
 
-/* MiniHome 페이지의 메인 콘텐츠 - 기본 스타일 유지 */
+/* MiniHome 페이지의 메인 콘텐츠 - 플레이리스트 스타일과 동일하게 */
 body.minihome-page .main-content {
   background-color: white !important;
   border-radius: 0px !important;
   box-shadow: none !important;
   flex: 1;
-  min-height: 500px;
+  min-height: 600px !important; /* 최소 높이 증가 */
   padding: 20px !important;
+  /* 오른쪽 경계선만 유지 */
+  border: none !important;
   border-right: 1px solid #e0e0e0 !important;
+  /* 높이를 100%로 설정하여 전체 높이 차지 */
+  height: 100% !important;
+}
+
+/* 우측 사이드바도 동일하게 처리 */
+body.minihome-page .right-sidebar {
+  background-color: white !important;
+  border-radius: 0px !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 20px !important;
+  /* 높이를 100%로 설정하여 전체 높이 차지 */
+  height: 100% !important;
 }
 
 /* ===== MiniHome 메인 콘텐츠 영역 스타일 ===== */
@@ -264,10 +287,13 @@ body.minihome-page .main-content {
     max-width: none !important;
     flex: none !important;
     padding: 15px !important;
+    border-right: none !important;
+    border-bottom: 1px solid #e0e0e0 !important;
   }
 
   body.minihome-page .main-content {
     padding: 20px !important;
+    border-right: none !important;
   }
 
   .summary-links span {
@@ -444,6 +470,7 @@ body.minihome-page .main-content {
 .btn-submit:hover {
   background-color: #8a1c1b;
 }
+
 /* 작성자 정보 스타일 */
 .comment-author {
   display: flex;

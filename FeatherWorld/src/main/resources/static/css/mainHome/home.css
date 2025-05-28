@@ -533,3 +533,30 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* 프로필 이미지 호버 효과 - Today's Best와 동일하게 */
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 20px;
+  border: 3px solid #ffa502;
+  cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+  transition: transform 0.3s ease; /* Today's Best와 동일한 애니메이션 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0; /* Today's Best와 동일한 배경색 */
+}
+
+.profile-avatar:hover {
+  transform: translateY(-5px); /* Today's Best와 똑같은 위로 5px 이동 효과 */
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}

@@ -57,7 +57,15 @@ public class FileConfig implements WebMvcConfigurer{
 	private String boardResourceLocation;
 	
 	
+	//-------------------------------------------------------------
 	
+	// left프로필 이미지 관련 경로
+	
+	@Value("${my.leftprofile.resource-handler}")
+	private String leftProfileResourceHandler;
+	
+	@Value("${my.leftprofile.resource-location}")
+	private String leftProfileResourceLocation;
 	
 	
 	// 요청 주소에 따라
@@ -86,6 +94,10 @@ public class FileConfig implements WebMvcConfigurer{
 		registry
 		.addResourceHandler(boardResourceHandler) // /images/board/**
 		.addResourceLocations(boardResourceLocation); // file:///C:/uploadFiles/semi/
+		
+		registry
+		.addResourceHandler(leftProfileResourceHandler)    //왼쪽 프로필 이미지관련
+		.addResourceLocations(leftProfileResourceLocation); // 왼쪽 프로필 이미지 관련
 	}
 	
 	// MultipartResolver 설정

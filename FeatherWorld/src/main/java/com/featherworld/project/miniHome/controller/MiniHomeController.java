@@ -12,13 +12,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.featherworld.project.board.model.dto.Board;
+import com.featherworld.project.common.utill.Utility;
 import com.featherworld.project.friend.model.dto.Ilchon;
 import com.featherworld.project.member.model.dto.Member;
 import com.featherworld.project.miniHome.model.service.MiniHomeService;
+
+import jakarta.servlet.http.HttpSession;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 public class MiniHomeController {
@@ -259,4 +265,82 @@ public class MiniHomeController {
         int acceptedCount = miniHomeService.findIlchon(relationCheck);
         return acceptedCount > 0;
     }
+    
+    /** 왼쪽 프로필업데이트 하는 서비스
+     * @param memberNo
+     * @param memberIntro
+     * @param memberImg
+     * @param loginMember
+     * @return
+     * @throws Exception 
+     */
+    @PostMapping("{memberNo:[0-9]+}/leftProfileUpdate")
+    @ResponseBody
+    public Map<String,Object> updateLeftProfile(@PathVariable("memberNo") int memberNo,
+                              @RequestParam(value = "memberIntro", required = false) String memberIntro,
+                              @RequestParam(value = "memberImg", required = false) MultipartFile memberImg,
+                              @SessionAttribute("loginMember") Member loginMember,
+                              HttpSession session) {
+        
+        System.out.println("=== 프로필 업데이트 요청 ===");
+        System.out.println("memberImg null? " + (memberImg == null));
+        System.out.println("memberImg empty? " + (memberImg != null ? memberImg.isEmpty() : "null"));
+        System.out.println("memberIntro: " + memberIntro);
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            if (memberNo != loginMember.getMemberNo()) {
+                response.put("success", false);
+                response.put("message", "현재 주인이 아닙니다.");
+                return response;
+            }
+            
+            boolean imageUpdated = false;
+            boolean introUpdated = false;
+            
+            if(memberImg != null && !memberImg.isEmpty()) {
+                System.out.println("🖼️ 이미지 업데이트 시작");
+                int imageResult = miniHomeService.leftprofileUpdate(loginMember, memberImg);
+                System.out.println("🖼️ 이미지 업데이트 결과: " + imageResult);
+                
+                if(imageResult > 0) imageUpdated = true;
+            }
+            
+            if(memberIntro != null) {
+                System.out.println("📝 자기소개 업데이트 시작");
+                int introResult = miniHomeService.leftprofileintroUpdate(loginMember, memberIntro);
+                System.out.println("📝 자기소개 업데이트 결과: " + introResult);
+                
+                if (introResult > 0) introUpdated = true;
+            }
+            
+            if (imageUpdated || introUpdated) {
+                session.setAttribute("loginMember", loginMember);
+                response.put("success", true);
+                
+                if (imageUpdated && introUpdated) {
+                    response.put("message", "프로필 이미지와 자기소개가 업데이트되었습니다.");
+                } else if (imageUpdated) {
+                    response.put("message", "프로필 이미지가 업데이트되었습니다.");
+                } else if (introUpdated) {
+                    response.put("message", "자기소개가 업데이트되었습니다.");
+                }
+            } else {
+                response.put("success", false);
+                response.put("message", "업데이트할 내용이 없거나 업데이트에 실패했습니다.");
+            }
+            
+        } catch (Exception e) {
+            System.out.println("❌ Controller에서 예외 발생: " + e.getMessage());
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "프로필 업데이트 중 오류가 발생했습니다: " + e.getMessage());
+        }
+        
+        return response;
+    }
+    	
+    
+    
 }
