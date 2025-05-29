@@ -36,37 +36,21 @@
             alt="사용자 프로필 이미지"
             style="max-width: 50%; height: auto"
           />-->
-              <<<<<<< HEAD
+
               <th:block th:if="${profile != null}">
                 <img
                   th:src="@{${profile.imgPath} + ${profile.imgRename}}"
                   alt="사용자 프로필 이미지"
-                  style="max-width: 50%; height: auto"
+                  style="max-width: 50%"
                 />
               </th:block>
               <th:block th:unless="${profile != null}">
                 <img
                   th:src="@{/images/default/profile.png}"
                   alt="사용자 프로필 이미지"
-                  style="max-width: 50%; height: auto"
+                  style="max-width: 50%"
                 />
               </th:block>
-              =======
-              <th:block th:if="${profile != null}">
-                <img
-                  th:src="@{${profile.imgPath} + ${profile.imgRename}}"
-                  alt="사용자 프로필 이미지"
-                  style="max-width: 100%; height: 50%"
-                />
-              </th:block>
-              <th:block th:unless="${profile != null}">
-                <img
-                  th:src="@{/images/default/profile.png}"
-                  alt="사용자 프로필 이미지"
-                  style="max-width: 100%; height: 50%"
-                />
-              </th:block>
-              >>>>>>> origin/develop
 
               <!-- Bio 섹션 -->
               <div class="bio-section">
