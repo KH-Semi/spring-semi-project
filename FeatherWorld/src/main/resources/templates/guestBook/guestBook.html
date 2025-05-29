@@ -15,7 +15,7 @@
       <th:block th:replace="~{common/header}"></th:block>
 
       <div class="content-container">
-        <!-- 좌측 석준이가 만든 프로필 들어올 공간 Include -->
+        <!-- 좌측  프로필 들어올 공간 Include -->
         <div class="left-sidebar">
           <div th:replace="~{common/leftsidebar}"></div>
         </div>
@@ -79,14 +79,16 @@
                 class="guestbook-actions"
               >
                 <button
+                  id="edit-btn"
                   th:onclick="|showUpdateGuestBook(${item.guestBookNo}, this); return false;|"
                 >
-                  ✏️ 수정
+                  수정
                 </button>
                 <button
+                  id="delete-btn"
                   th:onclick="|deleteGuestBook(${item.guestBookNo}); return false;|"
                 >
-                  ❌ 삭제
+                  삭제
                 </button>
               </div>
             </div>
@@ -120,7 +122,7 @@
               required
             ></textarea>
             <div class="write-button-wrapper">
-              <!-- 아이콘 -->
+              <!-- 비밀글 토글/좌물쇠 아이콘 -->
               <div class="icon-bar">
                 <i id="lockIcon" class="fa-solid fa-lock-open"></i>
                 <i

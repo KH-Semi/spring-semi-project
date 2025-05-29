@@ -174,6 +174,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const guestBookContent = document.querySelector("#guestBookContent");
   const addGuestBook = document.querySelector("#addGuestBook");
 
+  // 최대 150자 입력 제한
+  guestBookContent.addEventListener("input", (e) => {
+    const len = e.target.value.length;
+    console.log("입력 글자 수:", len);
+    if (e.target.value.length > 150) {
+      alert("방명록 내용은 최대 150자까지 작성할 수 있습니다.");
+      e.target.value = e.target.value.slice(0, 150);
+    }
+  });
+
   // [비밀글 토글 관련 요소] DOMContentLoaded 안에서 가져오기
   const lockIcon = document.querySelector("#lockIcon");
   const toggleBtn = document.querySelector("#toggleSecret");

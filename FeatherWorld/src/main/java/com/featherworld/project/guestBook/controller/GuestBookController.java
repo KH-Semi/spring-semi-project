@@ -186,12 +186,6 @@ public class GuestBookController {
 			}
 
 			int guestBookNo = requestBody.get("guestBookNo");
-			
-//			if (guestBookNo == null) {
-//				result.put("success", false);
-//				result.put("message", "방명록 번호가 필요합니다.");
-//				return ResponseEntity.badRequest().body(result);
-//			}
 
 			// 삭제 실행
 			int deleteResult = service.guestBookDelete(guestBookNo);
