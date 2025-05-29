@@ -3,7 +3,6 @@
 /* MiniHome 페이지 body 스타일 - main.css 덮어쓰기 */
 body.minihome-page {
   background-color: #f0f0f0 !important;
-  padding: 20px 0 !important;
   overflow: hidden !important;
 }
 

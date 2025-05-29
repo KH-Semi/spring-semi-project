@@ -118,7 +118,7 @@ public class GlobalApiController {
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "일촌 신청 처리 중 오류가 발생했습니다.");
-            System.err.println("팔로우 요청 오류: " + e.getMessage());
+           
         }
         
         return response;

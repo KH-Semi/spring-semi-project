@@ -67,6 +67,7 @@
   width: 18px;
   height: 18px;
 }
+
 #closeBtn {
   cursor: pointer;
   font-size: 18px;
@@ -75,6 +76,7 @@
   line-height: 1;
   display: none; /* 처음에는 숨겨둠 */
 }
+
 /* 검색 결과 스타일 */
 .search-results {
   position: absolute;
@@ -102,13 +104,34 @@
   padding: 10px 15px;
   border-bottom: 1px solid #eee;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
+
 .search-results li:last-child {
   border-bottom: none;
 }
+
 .search-results li:hover {
   background-color: #f5f5f5;
 }
+
+/* 키보드 네비게이션 - 선택된 항목 스타일 */
+.search-results li.selected {
+  background-color: #e3f2fd;
+  border-left: 3px solid #2196f3;
+}
+
+.search-results li:hover,
+.search-results li.selected {
+  background-color: #f0f8ff;
+}
+
+/* 키보드 선택 시 더 명확한 표시 */
+.search-results li.selected {
+  background-color: #e3f2fd;
+  border-left: 3px solid #2196f3;
+}
+
 /* Today's Best Section */
 .todays-best {
   width: 100%; /* 전체 너비 사용 */
@@ -217,11 +240,13 @@
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .login-btn:hover {
-  background-color: #a33030;
+  background-color: #c62828;
+  
+  box-shadow: 0 2px 8px rgba(159, 33, 32, 0.2);
 }
 
 .social-login {
@@ -241,11 +266,14 @@
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .kakao-btn:hover {
-  background-color: #a33030;
+  background-color: #fdd835;
+  
+  color: #222;
+  box-shadow: 0 2px 8px rgba(254, 229, 0, 0.3);
 }
 
 .kakao-icon {
@@ -268,11 +296,13 @@
   color: #666;
   text-decoration: none;
   font-size: 14px;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  display: inline-block;
 }
 
 .option-link:hover {
-  color: #b33939;
+  color: #c62828;
+  
 }
 
 /* Profile Section */
@@ -296,6 +326,16 @@
   overflow: hidden;
   margin: 0 auto 20px;
   border: 3px solid #ffa502;
+  cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+  transition: transform 0.3s ease; /* Today's Best와 동일한 애니메이션 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0; /* Today's Best와 동일한 배경색 */
+}
+
+.profile-avatar:hover {
+  transform: translateY(-5px); /* Today's Best와 똑같은 위로 5px 이동 효과 */
 }
 
 .profile-img {
@@ -331,11 +371,13 @@
   padding: 10px 20px;
   border-radius: 20px;
   font-weight: 500;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .home-btn:hover {
-  background-color: #a33030;
+  background-color: #c62828;
+  transform: translateY(-5px);
+  box-shadow: 0 2px 8px rgba(159, 33, 32, 0.2);
 }
 
 .home-icon {
@@ -351,12 +393,14 @@
   padding: 10px 20px;
   border-radius: 20px;
   font-weight: 500;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .logout-btn:hover {
-  background-color: #222;
+  background-color: #5a6268;
+  transform: translateY(-5px);
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2);
 }
 
 /* Footer Styles */
@@ -464,6 +508,7 @@
 .profile-section {
   width: 100%;
 }
+
 .member-avatar img,
 .profile-avatar img {
   width: 100%;
@@ -471,11 +516,14 @@
   object-fit: cover;
   object-position: center;
 }
+
+/* 검색 결과 상세 스타일 */
 .search-results .member-result-item {
   padding: 6px 12px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
 }
 
 .search-results .member-result-wrapper {
@@ -519,83 +567,10 @@
   text-overflow: ellipsis;
 }
 
-/* 프로필 이미지 호버 효과 - Today's Best와 동일하게 */
-.profile-avatar {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 0 auto 20px;
-  border: 3px solid #ffa502;
-  cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-  transition: transform 0.3s ease; /* Today's Best와 동일한 애니메이션 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f0f0; /* Today's Best와 동일한 배경색 */
-}
-
-.profile-avatar:hover {
-  transform: translateY(-5px); /* Today's Best와 똑같은 위로 5px 이동 효과 */
-}
-
-.profile-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-.login-btn {
-  transition: all 0.3s ease;
-}
-
-.login-btn:hover {
-  background-color: #c62828;
-  transform: translateX(5px);
-  box-shadow: 0 2px 8px rgba(159, 33, 32, 0.2);
-}
-
-/* 로그아웃 버튼 hover 효과 */
-.logout-btn {
-  transition: all 0.3s ease;
-}
-
-.logout-btn:hover {
-  background-color: #5a6268;
-  transform: translateX(5px);
-  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2);
-}
-
-/* 카카오 로그인 버튼 hover 효과 */
-.kakao-btn {
-  transition: all 0.3s ease;
-}
-
-.kakao-btn:hover {
-  background-color: #fdd835;
-  transform: translateX(5px);
-  color: #222;
-  box-shadow: 0 2px 8px rgba(254, 229, 0, 0.3);
-}
-
-/* My Home 버튼 hover 효과 */
-.home-btn {
-  transition: all 0.3s ease;
-}
-
-.home-btn:hover {
-  background-color: #c62828;
-  transform: translateX(5px);
-  box-shadow: 0 2px 8px rgba(159, 33, 32, 0.2);
-}
-
-/* 링크 버튼 hover 효과 */
-.option-link {
-  transition: all 0.3s ease;
-  display: inline-block;
-}
-
-.option-link:hover {
-  color: #c62828;
-  transform: translateX(3px);
+/* 검색 결과 없음 스타일 */
+.search-results .no-results {
+  padding: 15px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
 }
