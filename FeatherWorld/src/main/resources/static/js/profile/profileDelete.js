@@ -1,6 +1,11 @@
 function validateForm() {
-  const pw = document.getElementById("memberPw").value;
-  const pwCheck = document.getElementById("memberPwCheck").value;
+  const pw = document.getElementById("memberPw").value.trim();
+  const pwCheck = document.getElementById("memberPwCheck").value.trim();
+
+  if (pw.length === 0) {
+    alert("비밀번호를 입력해주세요.");
+    return false;
+  }
 
   if (pw !== pwCheck) {
     alert("비밀번호가 일치하지 않습니다.");

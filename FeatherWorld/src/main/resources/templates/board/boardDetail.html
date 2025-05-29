@@ -43,14 +43,14 @@
           <div class="board-info">
             <p>조회수 : [[*{readCount}]]</p>
 
-            <p>[[*{boardWriteDate}]]</p> <!--작성일-->
+            <p>작성일 : [[*{boardWriteDate}]]</p> <!--작성일-->
 
             <!-- 수정한 게시글인 경우 -->
 
             <!-- 참조하는 객체가 있으면 true, 없으면 false -->
-            <p th:if="*{boardUpdateDate}">
+            <!-- <p th:if="*{boardUpdateDate}">
              마지막 수정일 [[*{boardUpdateDate}]]
-            </p>
+            </p> -->
           </div>
 
         </div>

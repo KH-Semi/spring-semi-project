@@ -1,10 +1,8 @@
-/* ====================== */
-/* 가운데 본문 영역       */
-/* ====================== */
+/* 가운데 본문 영역 */
 .middle-sidebar {
   flex: 1 1 auto;
   padding: 40px;
-  background-color: #fdfdfd;
+  background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   text-align: left;
@@ -18,9 +16,7 @@
   color: #912d2d;
 }
 
-/* ====================== */
-/* 이용약관 박스          */
-/* ====================== */
+/* 이용약관 박스 */
 .terms-container {
   background-color: #fff;
   border: 1px solid #ddd;
@@ -36,12 +32,10 @@
 .terms-content strong {
   display: block;
   margin-top: 10px;
-  color: #912d2d;
+  color: #9f2120;
 }
 
-/* ====================== */
-/* 체크박스               */
-/* ====================== */
+/* 체크박스 */
 .checkbox-container {
   margin: 10px 0 25px;
   font-size: 14px;
@@ -55,9 +49,7 @@
   height: 16px;
 }
 
-/* ====================== */
-/* 비밀번호 입력 구역     */
-/* ====================== */
+/* 비밀번호 입력 구역 */
 .input-group {
   margin-bottom: 20px;
 }
@@ -71,15 +63,13 @@
 .input-group input {
   width: 100%;
   padding: 10px;
-  border-radius: 6px;
+  border-radius: 10px;
   border: 1px solid #ccc;
   box-sizing: border-box;
   font-size: 14px;
 }
 
-/* ====================== */
-/* 버튼 스타일            */
-/* ====================== */
+/* 버튼 스타일 */
 .post-actions {
   display: flex;
   gap: 10px;
@@ -89,23 +79,23 @@
 
 .post-button {
   padding: 10px 20px;
-  background-color: #912d2d;
+  background-color: #9f2120;
   color: #fff;
   border: none;
   border-radius: 20px;
   font-size: 14px;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.2s ease;
+  transition: transform 0.3s ease;
 }
 
 .post-button:hover {
-  background-color: #7a2525;
+  background-color: #9f2120;
+  opacity: 90%;
+  transform: translateY(-5px);
 }
 
-/* ====================== */
 /* 오른쪽 사이드바 영역   */
-/* ====================== */
 .right-sidebar {
   flex: 0 0 250px;
   padding: 20px;

@@ -25,3 +25,7 @@ confirmBtn.addEventListener("click", () => {
       }
     });
 });*/
+
+document.getElementById("back-btn").addEventListener("click", () => {
+  history.back(); // 또는 history.go(-1);
+});
