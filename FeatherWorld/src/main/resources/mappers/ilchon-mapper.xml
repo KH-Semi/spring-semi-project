@@ -120,6 +120,13 @@
 	WHERE IS_ILCHON = 'N'
 	AND (ILCHON.TO_MEMBER_NO = #{loginMemberNo})
   </select>
+  <select id ="countSendedIlchons" resultType = "int">
+  	
+  	SELECT COUNT(*)
+	FROM ILCHON
+	WHERE IS_ILCHON = 'N'
+	AND (ILCHON.FROM_MEMBER_NO = #{loginMemberNo})
+  </select>
   
   <!--
 	들어온 memberNo == TO_MEMBER_NO, loginMember == FROM_MEMBER_NO라면 -> FROM_NICKNAME을 수정

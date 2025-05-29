@@ -1,18 +1,28 @@
 package com.featherworld.project.friend.controller;
 
-import com.featherworld.project.board.controller.BoardController;
-import com.featherworld.project.friend.model.dto.Ilchon;
-import com.featherworld.project.friend.model.service.IlchonService;
-import com.featherworld.project.member.model.dto.Member;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-
-import org.springframework.web.bind.annotation.*;
 
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
+
+import com.featherworld.project.board.controller.BoardController;
+import com.featherworld.project.common.dto.Pagination;
+import com.featherworld.project.friend.model.dto.Ilchon;
+import com.featherworld.project.friend.model.service.IlchonService;
+import com.featherworld.project.member.model.dto.Member;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 //@RestController // @Controller + @ResponseBody
@@ -30,10 +40,11 @@ public class IlchonController {
 
 
 	@GetMapping("{memberNo:[0-9]+}/friendList")
+	
 	public String select(@SessionAttribute(name = "loginMember", required = false) Member loginMember,
 			@PathVariable("memberNo") int memberNo
 			,@RequestParam(value = "cp", required = false, defaultValue = "1") int cp
-			,Model model){
+			,Model model,   HttpServletRequest request){
 
 
 		//Session에서 loginMember의 MEMBER_NO를 불러오기.
@@ -48,18 +59,25 @@ public class IlchonController {
 		
 		//friendList page에 전달한 현재 홈피 주인의 member DTO
 		int ilchonStatus = service.isIncomingIlchonExists(loginMemberNo,memberNo);/****************************250526 확인못한 일촌신청 있는지 확인하는 매커니즘 추가***************************/
+		System.out.println("ilchons: " +  map.get("ilchons"));
+	
 		model.addAttribute("ilchons", map.get("ilchons"));
 		model.addAttribute("memberNo", memberNo);
 
 	    model.addAttribute("pagination", map.get("pagination"));
 	    model.addAttribute("ilchonStatus", ilchonStatus);
 	    System.out.println("ilchonStatus : " + ilchonStatus);
+	    
+	    if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+	        return "friendList/friendListPart";
+	    }
 		return "friendList/friendListCopy";
 		
 	}
+	
 	// 250515 아직 로그인 세션기능이 구현되지 않았으므로 시험할수 있는 controller 내부 함수 구현
 	@GetMapping("{memberNo:[0-9]+}/friendList/test")
-
+	
 	public String selectTest(/* @SessionAttribute Member loginMember*/ @PathVariable(value="memberNo") int memberNo,
 
 			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp
@@ -77,13 +95,15 @@ public class IlchonController {
 		return "friendList/friendList";
 		
 	}
+	
+	
 	@GetMapping("{memberNo:[0-9]+}/friendList/incoming")
-
+	
 	public String selectIncoming(@SessionAttribute(name = "loginMember", required = true) Member loginMember,
 			@PathVariable("memberNo") int memberNo
 			,@RequestParam(value = "cp", required = false, defaultValue = "1") int cp /*내게 들어온 일촌신청 list요소의 pagination cp항목*/
 			,@RequestParam(value = "cpFrom", required = false, defaultValue = "1") int cpFrom /*내게 들어온 일촌신청 list요소의 pagination cp항목*/
-			,Model model){
+			,Model model, HttpServletRequest request){
 
 		//Session에서 loginMember의 MEMBER_NO를 불러오기.
 		
@@ -106,7 +126,16 @@ public class IlchonController {
 		model.addAttribute("ilchonsFromIncomingCount", map.size()); // 내가보낸일촌신청(incoming) count 개수
 	    model.addAttribute("pagination", map.get("pagination"));
 	    model.addAttribute("paginationFrom", mapFrom.get("pagination"));
-		return "friendList/incomingFriendListCopy";
+	    
+	    Pagination pagination = (Pagination) map.get("pagination");
+	    Pagination paginationFrom = (Pagination) mapFrom.get("pagination");
+	    System.out.println("pagination : " +pagination.getStartPage() + ", " + pagination.getEndPage());
+	    System.out.println("pagination : " +paginationFrom.getStartPage() + ", " + paginationFrom.getEndPage());
+		
+	    if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+	        return "friendList/incomingfriendListPart";
+	    }
+	    return "friendList/incomingFriendListCopy";
 		
 	}
 	

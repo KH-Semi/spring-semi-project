@@ -83,42 +83,47 @@ document.getElementById("back-btn").addEventListener("click", () => {
 friendSpans.forEach(function (friend) {
   console.log(friend);
 });
+function resetEditCancelBtn() {
+  if (editBtn) {
+    editBtn.addEventListener("click", (e) => {
+      console.log("editBtn clicked!");
+      applyCancelBtnDiv.classList.remove("hidden");
+      applyBtn.classList.remove("hidden");
+      cancelBtn.classList.remove("hidden");
+      e.target.classList.add("hidden");
 
-if (editBtn) {
-  editBtn.addEventListener("click", (e) => {
-    console.log("editBtn clicked!");
-    applyCancelBtnDiv.classList.remove("hidden");
-    applyBtn.classList.remove("hidden");
-    cancelBtn.classList.remove("hidden");
-    e.target.classList.add("hidden");
-
-    friendSpans.forEach(function (friend) {
-      friend.querySelector("[name=fromNickname]").classList.add("hidden");
-      friend.querySelector("[name=ilchon-button]").classList.add("hidden");
-      friend
-        .querySelector("[name=fromNickname-input]")
-        .classList.remove("hidden");
-      friend.querySelector("[name=fromNickname-input]").innerText =
-        friend.querySelector("[name=fromNickname]").innerText;
-      friend.querySelector("[name=unfollow-button]").classList.remove("hidden");
+      friendSpans.forEach(function (friend) {
+        friend.querySelector("[name=fromNickname]").classList.add("hidden");
+        friend.querySelector("[name=ilchon-button]").classList.add("hidden");
+        friend
+          .querySelector("[name=fromNickname-input]")
+          .classList.remove("hidden");
+        friend.querySelector("[name=fromNickname-input]").innerText =
+          friend.querySelector("[name=fromNickname]").innerText;
+        friend
+          .querySelector("[name=unfollow-button]")
+          .classList.remove("hidden");
+      });
     });
-  });
-}
+  }
 
-if (cancelBtn) {
-  cancelBtn.addEventListener("click", (e) => {
-    editBtn.classList.remove("hidden");
-    applyCancelBtnDiv.classList.add("hidden");
-    applyBtn.classList.add("hidden");
-    e.target.classList.add("hidden");
+  if (cancelBtn) {
+    cancelBtn.addEventListener("click", (e) => {
+      editBtn.classList.remove("hidden");
+      applyCancelBtnDiv.classList.add("hidden");
+      applyBtn.classList.add("hidden");
+      e.target.classList.add("hidden");
 
-    friendSpans.forEach(function (friend) {
-      friend.querySelector("[name=fromNickname]").classList.remove("hidden");
-      friend.querySelector("[name=ilchon-button]").classList.remove("hidden");
-      friend.querySelector("[name=fromNickname-input]").classList.add("hidden");
-      friend.querySelector("[name=unfollow-button]").classList.add("hidden");
+      friendSpans.forEach(function (friend) {
+        friend.querySelector("[name=fromNickname]").classList.remove("hidden");
+        friend.querySelector("[name=ilchon-button]").classList.remove("hidden");
+        friend
+          .querySelector("[name=fromNickname-input]")
+          .classList.add("hidden");
+        friend.querySelector("[name=unfollow-button]").classList.add("hidden");
+      });
     });
-  });
+  }
 }
 
 //각 friendSpans의 <textarea>안 change이벤트 발생시 submit하는 이벤트 핸들러 지정
