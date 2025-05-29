@@ -341,4 +341,14 @@ public class MiniHomeController {
     	
     
     
+    /** 임의의 회원의 미니홈으로 랜덤해서 방문하기
+     * @return
+     */
+    @GetMapping("surfing")
+    @ResponseBody
+    public String getRandomMember() {
+        Integer randomMemberNo = miniHomeService.getRandomActiveMember();
+        return randomMemberNo != null ? randomMemberNo.toString() : "0";
+    }
+    
 }

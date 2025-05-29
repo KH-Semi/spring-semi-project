@@ -152,11 +152,8 @@
     </div>
   </div>
 
-  <!-- Surfing 버튼 (본인만) -->
-  <div
-    id="profileSurfingSection"
-    th:if="${session.loginMember != null and member != null and session.loginMember.memberNo == member.memberNo}"
-  >
+  <!-- Surfing 버튼 그냥 모든사람이다 할수있음 -->
+  <div id="profileSurfingSection">
     <button id="profileSurfingBtn" onclick="goSurfing()">Surfing</button>
   </div>
 </div>

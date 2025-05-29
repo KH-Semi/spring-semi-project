@@ -136,6 +136,11 @@ public interface MiniHomeService {
 	 */
 	int leftprofileintroUpdate(Member loginMember, String memberIntro);
 
+	/** 랜덤 미니홈 으로 surfing~
+	 * @return
+	 */
+	Integer getRandomActiveMember();
+
 	
 
 	
