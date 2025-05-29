@@ -116,8 +116,8 @@
 
 .existing-images-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(5, minmax(100px, 1fr));
+    gap: 15px;
 }
 
 .existing-image-item {
@@ -149,7 +149,7 @@
     transform: translate(-50%, -50%);
     background-color: rgba(220, 53, 69, 0.9);
     color: white;
-    padding: 8px 12px;
+    padding: 4px 8px;
     border-radius: 4px;
     font-size: 10px;
     font-weight: bold;
