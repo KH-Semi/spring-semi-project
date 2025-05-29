@@ -4,6 +4,7 @@
 body.minihome-page {
   background-color: #f0f0f0 !important;
   padding: 20px 0 !important;
+  overflow: hidden !important;
 }
 
 /* MiniHome 페이지의 컨테이너 조정 - 플레이리스트처럼 통합된 흰색 박스 */
@@ -525,4 +526,8 @@ body.minihome-page .right-sidebar {
 /* 일촌평 목록 영역 스타일 */
 .ilchon-comments-section {
   margin-top: 20px;
+  max-height: 140px; /* 최대 높이 설정 */
+  overflow-y: auto; /* 세로 스크롤 활성화 */
+  padding-right: 5px; /* 스크롤바 여백 */
+  border-radius: 8px;
 }
