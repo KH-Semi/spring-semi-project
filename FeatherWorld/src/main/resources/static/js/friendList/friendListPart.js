@@ -26,12 +26,12 @@ if (sendFriendRequestButton) {
   });
 }
 //buttons
-const editBtn = document.getElementById("edit-button"); // edit
-const applyCancelBtnDiv = document.getElementById("apply-cancel-button-div"); //apply-cancel btn 을 담는 div
+let editBtn = document.getElementById("edit-button"); // edit
+let applyCancelBtnDiv = document.getElementById("apply-cancel-button-div"); //apply-cancel btn 을 담는 div
 /*const applyBtn = document.getElementById("apply-button");*/
-const cancelBtn = document.getElementById("cancel-button");
-const sendFriendReqBtn = document.getElementById("send-friend-request-button");
-const friendSpans = document.querySelectorAll(".friend-item");
+let cancelBtn = document.getElementById("cancel-button");
+let sendFriendReqBtn = document.getElementById("send-friend-request-button");
+let friendSpans = document.querySelectorAll(".friend-item");
 /*
 sendFriendReqBtn.addEventListener("click", () => {
   fetch("/insert/new", {
@@ -75,46 +75,93 @@ if (friendSpans) {
   });
 }
 
-if (editBtn) {
-  editBtn.addEventListener("click", (e) => {
-    console.log("editBtn clicked!");
-    applyCancelBtnDiv.classList.remove("hidden");
-    /*applyBtn.classList.remove("hidden");*/
-    cancelBtn.classList.remove("hidden");
-    e.target.classList.add("hidden");
+function resetEditCancelBtn() {
+  // 비동기로 update한 friend-item 과 Edit, Cancel, 일촌신청 버튼 다시 연동.
 
-    friendSpans.forEach(function (friend) {
-      friend.querySelector("[name=fromNickname]").classList.add("hidden");
-      friend.querySelector("[name=ilchon-button]").classList.add("hidden");
-      friend
-        .querySelector("[name=fromNickname-input]")
-        .classList.remove("hidden");
-      friend.querySelector("[name=fromNickname-input]").innerText =
-        friend.querySelector("[name=fromNickname]").innerText;
-      friend.querySelector("[name=unfollow-button]").classList.remove("hidden");
-      /* 첫 요소밖에 뜨지않는 이슈로 잠시 주석처리해둠.
-      //unfollow 요청 서버로 보내기
-      friend.querySelector("[name=unfollow-button]").addEventListener(() => {
-        // unfollow 비동기 요청
-      });*/
+  editBtn = document.getElementById("edit-button"); // edit
+  applyCancelBtnDiv = document.getElementById("apply-cancel-button-div"); //apply-cancel btn 을 담는 div
+  /*const applyBtn = document.getElementById("apply-button");*/
+  cancelBtn = document.getElementById("cancel-button");
+  sendFriendReqBtn = document.getElementById("send-friend-request-button");
+  friendSpans = document.querySelectorAll(".friend-item");
+  if (editBtn) {
+    editBtn.addEventListener("click", (e) => {
+      console.log("editBtn clicked!");
+      applyCancelBtnDiv.classList.remove("hidden");
+      /*applyBtn.classList.remove("hidden");*/
+      cancelBtn.classList.remove("hidden");
+      e.target.classList.add("hidden");
+
+      friendSpans.forEach(function (friend) {
+        friend.querySelector("[name=fromNickname]").classList.add("hidden");
+        friend.querySelector("[name=ilchon-button]").classList.add("hidden");
+        friend
+          .querySelector("[name=fromNickname-input]")
+          .classList.remove("hidden");
+        friend.querySelector("[name=fromNickname-input]").value =
+          friend.querySelector("[name=fromNickname]").innerText;
+        friend
+          .querySelector("[name=unfollow-button]")
+          .classList.remove("hidden");
+        /* 첫 요소밖에 뜨지않는 이슈로 잠시 주석처리해둠.
+        //unfollow 요청 서버로 보내기
+        friend.querySelector("[name=unfollow-button]").addEventListener(() => {
+          // unfollow 비동기 요청
+        });*/
+      });
     });
-  });
+  }
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener("click", (e) => {
+      editBtn.classList.remove("hidden");
+      applyCancelBtnDiv.classList.add("hidden");
+      /*applyBtn.classList.add("hidden");*/
+      e.target.classList.add("hidden");
+
+      friendSpans.forEach(function (friend) {
+        friend.querySelector("[name=fromNickname]").classList.remove("hidden");
+        friend.querySelector("[name=ilchon-button]").classList.remove("hidden");
+        friend
+          .querySelector("[name=fromNickname-input]")
+          .classList.add("hidden");
+        friend.querySelector("[name=unfollow-button]").classList.add("hidden");
+      });
+    });
+  }
 }
+resetEditCancelBtn();
+function updateFriendList(cp) {
+  //for pagination
 
-if (cancelBtn) {
-  cancelBtn.addEventListener("click", (e) => {
-    editBtn.classList.remove("hidden");
-    applyCancelBtnDiv.classList.add("hidden");
-    /*applyBtn.classList.add("hidden");*/
-    e.target.classList.add("hidden");
+  fetch(`/${memberNo}/friendList?cp=${cp}`, {
+    headers: {
+      "X-Requested-With": "XMLHttpRequest",
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("요청 실패: " + res.status);
+      }
+      return res.text();
+    })
+    .then((html) => {
+      console.log("응답 HTML:", html);
+      // 응답받은 HTML을 파싱해서 DOM으로 변환
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
 
-    friendSpans.forEach(function (friend) {
-      friend.querySelector("[name=fromNickname]").classList.remove("hidden");
-      friend.querySelector("[name=ilchon-button]").classList.remove("hidden");
-      friend.querySelector("[name=fromNickname-input]").classList.add("hidden");
-      friend.querySelector("[name=unfollow-button]").classList.add("hidden");
-    });
-  });
+      // 기존 DOM의 요소 교체
+      const currentBlock = document.querySelector(".main-content");
+
+      console.log("파싱된 요소:", doc.body.firstElementChild);
+      console.log("파싱된 요소:", currentBlock);
+      if (currentBlock) {
+        currentBlock.innerHTML = doc.body.firstElementChild.outerHTML;
+        resetEditCancelBtn();
+      }
+    })
+    .catch((err) => console.error("fragment 갱신 실패:", err));
 }
 /*
 if (applyBtn) {
@@ -237,3 +284,24 @@ const xIcon = (friend) => {
     icon.classList.add("hidden");
   }, 1500);
 };
+
+// 프로필 이미지나 이름을 클릭하면 해당 회원의 미니홈피로 이동
+friendSpans.forEach(function (friend) {
+  const memberNo = friend.dataset.memberNo;
+
+  const profileImg = friend.querySelector(".friend-profile");
+  const memberName = friend.querySelector(".friend-name");
+
+  profileImg.style.cursor = "pointer";
+  if (profileImg) {
+    profileImg.addEventListener("click", () => {
+      location.href = `/${memberNo}/minihome`;
+    });
+  }
+  memberName.style.cursor = "pointer";
+  if (memberName) {
+    memberName.addEventListener("click", () => {
+      location.href = `/${memberNo}/minihome`;
+    });
+  }
+});

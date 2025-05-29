@@ -13,12 +13,6 @@ if (profileForm != null) {
   let previousFile = null; // 이전에 선택된 파일 객체를 저장
   const MAX_SIZE = 1024 * 1024 * 5; // 최대 파일 크기 설정 (5MB)
 
-  // const bioInput = document.getElementById("bio-input");
-  // const confirmBtn = document.querySelector(".confirm-button");
-  // const backBtn = document.getElementById("backToProfileBtn");
-  // const uploadForm = document.querySelector("form"); // ID가 없으므로 form 태그 직접 선택
-  // const bioDisplay = document.getElementById("profileBioDisplay"); // leftsidebar bio 영역
-
   // 1. 이미지 미리보기
   if (imageInput && previewImg) {
     imageInput.addEventListener("change", () => {
@@ -72,38 +66,3 @@ if (profileForm != null) {
     });
   }
 }
-
-// 2. Confirm 버튼
-// if (confirmBtn && uploadForm && bioInput && imageInput) {
-//   confirmBtn.addEventListener("click", (e) => {
-//     e.preventDefault();
-//     if (!bioInput.value.trim() && imageInput.files.length === 0) {
-//       alert("자기소개나 이미지를 입력해주세요.");
-//       return;
-//     }
-//     uploadForm.submit();
-//   });
-// }
-
-// // 3. Back 버튼
-// if (backBtn) {
-//   const memberNo = document.getElementById("memberNo")?.value;
-//   backBtn.addEventListener("click", (e) => {
-//     e.preventDefault();
-//     if (memberNo) {
-//       location.href = `/${memberNo}/profile`;
-//     } else {
-//       alert("회원 정보가 없습니다.");
-//     }
-//   });
-// }
-
-// // 4. Form submit 시 체크
-// if (uploadForm && bioInput && imageInput) {
-//   uploadForm.addEventListener("submit", (e) => {
-//     if (!bioInput.value.trim() && imageInput.files.length === 0) {
-//       e.preventDefault();
-//       alert("자기소개나 이미지를 입력해주세요.");
-//     }
-//   });
-// }

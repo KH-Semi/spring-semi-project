@@ -46,11 +46,16 @@ public interface IlchonMapper {
 	 * @return
 	 */
 	int countIlchons(int loginMemberNo);
-	/**일촌신청 *(incoming) 리스트 명수를 count하는 함수(IS_ILCHON = 'N' 한정)
+	/**받은 일촌신청 *(incoming) 리스트 명수를 count하는 함수(IS_ILCHON = 'N' 한정)
 	 * @param loginMemberNo
 	 * @return
 	 */
 	int countIncomingIlchons(int loginMemberNo);
+	/**보낸 일촌신청 *(incoming) 리스트 명수를 count하는 함수(IS_ILCHON = 'N' 한정)
+	 * @param loginMemberNo
+	 * @return
+	 */
+	int countSendedIlchons(int loginMemberNo);
 	//int updateToIlchonNickName(Map<String, Object> paramMap);
 	//int updateFromIlchonNickName(Map<String, Object> paramMap);
 	int updateToIlchonNickName(@Param("loginMemberNo") int loginMemberNo/*session*/,@Param("memberNo") int targetMemberNo,@Param("nickname") String nickname);

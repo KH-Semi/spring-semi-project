@@ -71,19 +71,23 @@ public class ProfileServiceImpl implements ProfileService {
 		return result;
 	}
 
+	/**
+	 *  회원 탈퇴
+	 */
 	@Autowired
 	private PasswordEncoder bcrypt;
 
 	@Override
 	public int secession(String memberPw, int memberNo) {
-	    String originPw = mapper.selectPw(memberNo); // DB에서 암호화된 비밀번호 조회
-	    
+	    String originPw = mapper.selectEncodedPw(memberNo); // XML id와 동일한 메서드명 사용
+
 	    if (!bcrypt.matches(memberPw, originPw)) {
-	        return 0;  // 비밀번호 불일치 시 0 반환
+	        return 0;
 	    }
-	    
-	    return mapper.secession(memberNo); // 비밀번호 일치 시 탈퇴 처리 (DB update/delete)
+
+	    return mapper.deleteMember(memberNo); // XML id와 동일한 메서드명 사용
 	}
+
 
 
 

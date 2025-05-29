@@ -24,16 +24,18 @@
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
 
-	<!-- 🔐 비밀번호 확인 -->
+		<!-- 🔐 비밀번호 확인 -->
 	<select id="selectEncodedPw" resultType="String">
-		SELECT MEMBER_PW FROM MEMBER
-		WHERE MEMBER_NO = #{memberNo}
+	  SELECT MEMBER_PW FROM MEMBER
+	  WHERE MEMBER_NO = #{memberNo}
 	</select>
 
-	<!-- ❌ 회원 탈퇴 처리 (hard delete 예시) -->
+	<!-- ❌ 회원 탈퇴 처리 (soft delete) -->
 	<update id="deleteMember">
-	UPDATE MEMBER SET MEMBER_DEL_FL = 'Y' WHERE MEMBER_NO = #{memberNo}
-</update>
+	  UPDATE MEMBER SET MEMBER_DEL_FL = 'Y' WHERE MEMBER_NO = #{memberNo}
+	</update>
+
+
 
 
 	<!-- 또는 soft delete 예시 -->

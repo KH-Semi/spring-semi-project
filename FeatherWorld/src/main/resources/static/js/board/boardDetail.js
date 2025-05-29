@@ -1,5 +1,6 @@
-// 좋아요 기능
-document.querySelector("#boardLike").addEventListener("click", (e) => {
+// 1. #boardLike가 클릭 되었을 때
+document.querySelector("#boardLike").addEventListener("mouseup", (e) => {
+  // 2. 로그인 상태가 아닌 경우 동작 X
   if (loginMemberNo == null) {
     alert("로그인 후 이용해주세요");
     return;
