@@ -1,3 +1,4 @@
+/* ===== 기본 스타일 ===== */
 * {
   box-sizing: border-box;
   font-family: "Pretendard-Regular";
@@ -5,17 +6,39 @@
   margin: 0;
   padding: 0;
 }
-button {
-  margin: 2px;
-}
+
 body {
   background-color: #f5f5f5;
 }
+/* 새로운 wrapper 클래스만 추가 */
+.center-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start; /* 완전한 가운데가 아닌 약간 위쪽 */
+  justify-content: center;
+  padding-top: 8vh; /* 화면 높이의 8% 정도 위에서 시작 */
+  padding-bottom: 4vh;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #f5f5f5;
+}
+
+.center-content {
+  width: 100%;
+  max-width: 1200px;
+  /* 내부 콘텐츠는 기존 스타일 그대로 유지됨 */
+}
+
 a {
   text-decoration: none;
   color: black;
 }
 
+button {
+  margin: 2px;
+}
+
+/* ===== 컨테이너 스타일 ===== */
 .container {
   max-width: 1200px;
   margin: auto;
@@ -25,7 +48,7 @@ a {
   overflow: hidden;
 }
 
-/* 헤더 스타일 */
+/* ===== 헤더 스타일 ===== */
 .header-container {
   display: flex;
   justify-content: space-between;
@@ -59,26 +82,61 @@ a {
   color: #555;
 }
 
-/* 콘텐츠 컨테이너 스타일 */
+/* 헤더 우측 사용자 정보 영역 */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-name {
+  font-size: 20px;
+  color: #333;
+  font-weight: 600;
+}
+
+.home-icon-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background-color: #9f2120;
+  color: white;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.home-icon-link:hover {
+  background-color: #c62828;
+  color: white;
+  transform: translateX(5px);
+  box-shadow: 0 2px 8px rgba(159, 33, 32, 0.2);
+}
+
+/* ===== 콘텐츠 컨테이너 스타일 ===== */
 .content-container {
   display: flex;
   min-height: 600px;
 }
 
-/* 좌측 사이드바 스타일 */
+/* 좌측 사이드바 */
 .left-sidebar {
   min-width: 250px;
   padding: 20px;
   border-right: 1px solid #e0e0e0;
 }
 
-/* 우측 사이드바 스타일 */
+/* 우측 사이드바 */
 .right-sidebar {
   min-width: 200px;
   padding: 20px;
   border-left: 1px solid #e0e0e0;
 }
 
+/* 네비게이션 사이드바 */
 .nav-sidebar {
   display: flex;
   flex-direction: column;
@@ -115,7 +173,7 @@ a {
   margin-right: 10px;
 }
 
-/* 푸터 */
+/* ===== 푸터 ===== */
 .footer-container {
   text-align: center;
   padding: 15px 0;
@@ -125,13 +183,11 @@ a {
   font-size: 14px;
 }
 
-/* 페이지네이션 */
+/* ===== 페이지네이션 ===== */
 .pagination {
   display: flex;
   justify-content: center;
-  /* margin-top: 20px; */
   margin-top: 10px;
-  /* 윤진 - write버튼 footer 침범 이슈로 주석 */
 }
 
 .pagination span {
@@ -141,23 +197,18 @@ a {
   border: 1px solid #e0e0e0;
   border-radius: 3px;
   color: #333;
-}
-
-.pagination span:hover {
-  transition-duration: 0.2s;
-  background-color: #9f2120;
-  color: white;
-  border-color: #9f2120;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
+.pagination span:hover,
 .pagination span.current {
   background-color: #9f2120;
   color: white;
   border-color: #9f2120;
 }
 
-/* 글쓰기 버튼 */
+/* ===== 글쓰기 버튼 ===== */
 .write-button {
   display: flex;
   justify-content: flex-end;
@@ -179,7 +230,7 @@ a {
   cursor: pointer;
 }
 
-/* 아이콘 */
+/* ===== 아이콘 ===== */
 .icon-edit,
 .icon-delete {
   color: #777;
@@ -192,26 +243,30 @@ a {
   color: #c62828;
 }
 
-/* 반응형 */
-@media (max-width: 992px) {
-  .content-container {
-    flex-direction: column;
-  }
+/* ===== MiniHome 페이지 전용 CSS ===== */
 
-  .left-sidebar,
-  .right-sidebar {
-    border: none;
-  }
-
-  .nav-sidebar {
-    flex-direction: row;
-    justify-content: center;
-  }
+/* MiniHome 페이지 레이아웃 */
+body.minihome-page .left-sidebar {
+  min-width: 250px !important;
+  max-width: 250px !important;
+  flex: 0 0 250px !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-/* ===== MiniHome 페이지 전용 CSS (간소화 버전) ===== */
+body.minihome-page .right-sidebar {
+  border-left: none !important;
+  min-width: 200px !important;
+}
 
-/* 프로필 컨테이너 스타일 */
+body.minihome-page #leftProfileContainer {
+  height: 100% !important;
+  min-height: 500px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 프로필 컨테이너 */
 #leftProfileContainer {
   display: flex;
   flex-direction: column;
@@ -225,7 +280,7 @@ a {
   margin-bottom: 15px;
 }
 
-/* 방문자 통계 스타일 */
+/* 방문자 통계 */
 #profileStatsSection {
   font-size: 12px;
   color: #666;
@@ -244,7 +299,7 @@ a {
   font-weight: bold;
 }
 
-/* 프로필 이미지 스타일 */
+/* 프로필 이미지 */
 #profileImageContainer {
   position: relative;
   margin-bottom: 15px;
@@ -263,6 +318,13 @@ a {
 #profileMainImage:hover {
   border-color: #9f2120;
   transform: scale(1.05);
+}
+
+/* 편집 모드 프로필 이미지 */
+#profileMainImage.edit-mode {
+  border-color: #9f2120 !important;
+  box-shadow: 0 0 0 2px rgba(159, 33, 32, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  cursor: pointer;
 }
 
 #profileImageEditIcon {
@@ -284,7 +346,7 @@ a {
   transform: scale(1.05);
 }
 
-/* 사용자 정보 스타일 */
+/* 사용자 정보 */
 #profileInfoSection {
   margin-bottom: 15px;
   width: 100%;
@@ -303,22 +365,23 @@ a {
   margin-bottom: 12px;
 }
 
-/* 팔로우 통계 스타일 */
+/* 팔로우 통계 */
 #profileFollowStats {
   display: flex;
   justify-content: space-around;
   width: 100%;
   margin-bottom: 15px;
-  padding: 8px; /* 12px에서 8px로 축소 */
+  padding: 8px;
   background: #f8f9fa;
   border-radius: 8px;
   border: 1px solid #e0e0e0;
-  box-sizing: border-box; /* 중요: 패딩 포함한 크기 계산 */
+  box-sizing: border-box;
 }
 
 #profileFollowerCount,
 #profileFollowingCount {
   text-align: center;
+  position: relative;
 }
 
 #profileFollowerNumber,
@@ -337,12 +400,44 @@ a {
   text-transform: uppercase;
 }
 
-/* 버튼 영역 스타일 */
+/* 알림 벨 아이콘 */
+.notification-bell {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-left: 5px;
+  cursor: pointer;
+  animation: ring 2s ease-in-out infinite;
+  position: relative;
+}
+
+.notification-bell:hover {
+  color: #e55656;
+  transform: scale(1.1);
+}
+
+@keyframes ring {
+  0%,
+  90%,
+  100% {
+    transform: rotate(0deg);
+  }
+  10%,
+  30% {
+    transform: rotate(-10deg);
+  }
+  20%,
+  40% {
+    transform: rotate(10deg);
+  }
+}
+
+/* 버튼 영역 */
 #profileActionButtons {
   width: 100%;
   margin-bottom: 12px;
 }
 
+/* 일반 모드 버튼들 */
 #profileOwnerButtons {
   display: flex;
   gap: 8px;
@@ -381,7 +476,114 @@ a {
   transform: translateY(-1px);
 }
 
-/* Bio 섹션 스타일 */
+/* 편집 모드 버튼들 */
+#profileEditModeButtons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+#profileSaveBtn,
+#profileCancelBtn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+#profileSaveBtn {
+  background-color: #28a745;
+  color: white;
+}
+
+#profileSaveBtn:hover {
+  background-color: #218838;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(40, 167, 69, 0.3);
+}
+
+#profileCancelBtn {
+  background-color: #6c757d;
+  color: white;
+}
+
+#profileCancelBtn:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(108, 117, 125, 0.3);
+}
+
+/* 타인 프로필 버튼 */
+#profileOtherButtons {
+  width: 100%;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+#profileFollowBtn {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #9f2120;
+  color: white;
+  text-transform: uppercase;
+}
+
+#profileFollowBtn:hover {
+  background-color: #c62828;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(159, 33, 32, 0.3);
+}
+
+/* 일촌 상태 */
+.ilchon-status,
+.pending-status {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.ilchon-badge,
+.pending-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.ilchon-badge {
+  color: #ffffff;
+  background-color: #c62828;
+}
+
+.pending-badge {
+  background-color: #c62828;
+  color: #212529;
+}
+
+.ilchon-badge i,
+.pending-badge i {
+  font-size: 10px;
+}
+
+/* Bio 섹션 */
 #profileBioContainer {
   width: 100%;
   margin-bottom: 12px;
@@ -412,7 +614,23 @@ a {
   font-style: italic;
 }
 
-/* Surfing 버튼 스타일 */
+/* Bio 편집 모드 */
+#profileBioDisplay[contenteditable="true"] {
+  background-color: #fff9f9 !important;
+  border: 1px dashed #9f2120 !important;
+  padding: 8px !important;
+  border-radius: 4px !important;
+  cursor: text;
+  min-height: 60px;
+  outline: none;
+}
+
+#profileBioDisplay[contenteditable="true"]:focus {
+  border-color: #c62828 !important;
+  box-shadow: 0 0 0 2px rgba(159, 33, 32, 0.2);
+}
+
+/* Surfing 버튼 */
 #profileSurfingSection {
   width: 100%;
 }
@@ -437,120 +655,19 @@ a {
   box-shadow: 0 4px 8px rgba(159, 33, 32, 0.3);
 }
 
-#profileFollowBtn {
-  width: 100%;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 15px;
-  font-size: 11px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background-color: #9f2120;
-  color: white;
-  text-transform: uppercase;
-}
-
-#profileFollowBtn:hover {
-  background-color: #c62828;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(159, 33, 32, 0.3);
-}
-
-/* 타인 프로필 버튼 영역 스타일 */
-#profileOtherButtons {
-  width: 100%;
-  margin-bottom: 12px;
-  display: flex;
-  justify-content: center;
-}
-
-/* 알림 벨 아이콘 스타일 */
-.notification-bell {
-  color: #ff6b6b;
-  font-size: 12px;
-  margin-left: 5px;
-  cursor: pointer;
-  animation: ring 2s ease-in-out infinite;
-  position: relative;
-}
-
-.notification-bell:hover {
-  color: #e55656;
-  transform: scale(1.1);
-}
-
-/* 벨 흔들림 애니메이션 */
-@keyframes ring {
-  0%,
-  90%,
-  100% {
-    transform: rotate(0deg);
+/* ===== 반응형 ===== */
+@media (max-width: 992px) {
+  .content-container {
+    flex-direction: column;
   }
-  10%,
-  30% {
-    transform: rotate(-10deg);
+
+  .left-sidebar,
+  .right-sidebar {
+    border: none;
   }
-  20%,
-  40% {
-    transform: rotate(10deg);
+
+  .nav-sidebar {
+    flex-direction: row;
+    justify-content: center;
   }
-}
-
-/* 팔로워 카운트 영역 조정 */
-#profileFollowerCount {
-  text-align: center;
-  position: relative;
-}
-body.minihome-page .left-sidebar {
-  min-width: 250px !important;
-  max-width: 250px !important;
-  flex: 0 0 250px !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-body.minihome-page .right-sidebar {
-  border-left: none !important; /* 좌측 경계선 제거 */
-  min-width: 200px !important;
-}
-
-body.minihome-page #leftProfileContainer {
-  height: 100% !important;
-  min-height: 500px !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-/* 헤더 우측 사용자 정보 영역 스타일 */
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.user-name {
-  font-size: 20px;
-  color: #333;
-  font-weight: 600;
-}
-
-.home-icon-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 35px;
-  height: 35px;
-  background-color: #9f2120;
-  color: white;
-  border-radius: 50%;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  font-size: 14px;
-}
-
-.home-icon-link:hover {
-  background-color: #c62828;
-  color: white;
-  transform: translateX(5px);
-  box-shadow: 0 2px 8px rgba(159, 33, 32, 0.2);
 }

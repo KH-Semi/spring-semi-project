@@ -6,14 +6,12 @@ document.querySelector("#boardLike").addEventListener("mouseup", (e) => {
     return;
   }
 
-  // 3. 준비된 3개의 변수를 객체로 저장 (JSON 변환 예정)
   const obj = {
     memberNo: loginMemberNo,
     boardNo: boardNo,
     likeCheck: likeCheck,
   };
 
-  // 4. 좋아요 INSERT / DELETE 비동기 요청
   fetch("/board/like", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -26,35 +24,106 @@ document.querySelector("#boardLike").addEventListener("mouseup", (e) => {
         return;
       }
 
-      // 5. likeCheck 값 0 <-> 1 변환
-      // -> 클릭 될 때마다 INSERT / DELETE 동작을 번갈아 가면서 하게 끔.
       likeCheck = likeCheck == 0 ? 1 : 0;
-
-      // 6. 하트를 채웠다 / 비웠다 바꾸기
-      e.target.classList.toggle("fa-regular"); // 빈 하트
-      e.target.classList.toggle("fa-solid"); // 채워진 하트
-
-      // 7. 게시글 좋아요 수 수정
+      e.target.classList.toggle("fa-regular");
+      e.target.classList.toggle("fa-solid");
       e.target.nextElementSibling.innerText = count;
     });
 });
 
-// 뒤로가기 버튼 처리
+// 개선된 뒤로가기 버튼 처리 - 히스토리 체크 방식
 document.addEventListener("DOMContentLoaded", () => {
   const boardDetailBackBtn = document.querySelector(".back-button");
 
-  boardDetailBackBtn.addEventListener("click", () => {
-    window.history.back();
-  });
-});
-
-// 수정 버튼 처리
-document.addEventListener("DOMContentLoaded", () => {
-  const boardDetailEditBtn = document.querySelector("#updateBtn");
-  if (boardDetailEditBtn) {
-    boardDetailEditBtn.addEventListener("click", () => {
+  if (boardDetailBackBtn) {
+    boardDetailBackBtn.addEventListener("click", () => {
+      const referrer = document.referrer;
       const queryString = location.search;
 
+      console.log("이전 페이지:", referrer);
+      console.log("히스토리 길이:", history.length);
+
+      // 1. 수정 페이지에서 온 경우 - 바로 목록이나 미니홈으로 이동
+      if (referrer && referrer.includes("/update")) {
+        console.log("수정 페이지에서 돌아옴");
+
+        // 세션 스토리지에서 수정 전 출발지 확인
+        const beforeUpdatePage = sessionStorage.getItem("beforeUpdatePage");
+
+        if (beforeUpdatePage) {
+          console.log("수정 전 출발지로 이동:", beforeUpdatePage);
+          sessionStorage.removeItem("beforeUpdatePage"); // 사용 후 제거
+          location.href = beforeUpdatePage;
+          return;
+        }
+
+        // 세션 스토리지에 정보가 없으면 히스토리로 판단
+        // 히스토리가 2보다 크면 (현재페이지 + 수정페이지 + 원래페이지) 2단계 뒤로
+        if (history.length > 2) {
+          console.log("히스토리 2단계 뒤로 이동");
+          history.go(-2); // 2단계 뒤로 가기
+          return;
+        }
+      }
+
+      // 2. 미니홈에서 온 경우
+      if (referrer && referrer.includes("/minihome")) {
+        console.log("미니홈에서 돌아옴");
+        const minihomeMatch = referrer.match(/\/(\d+)\/minihome/);
+        if (minihomeMatch) {
+          const targetMemberNo = minihomeMatch[1];
+          location.href = `/${targetMemberNo}/minihome`;
+          return;
+        }
+      }
+
+      // 3. 게시판 목록에서 온 경우
+      if (
+        referrer &&
+        referrer.includes(`/${memberNo}/board/${boardCode}`) &&
+        !referrer.includes("/minihome")
+      ) {
+        console.log("게시판 목록에서 돌아옴");
+        location.href = `/${memberNo}/board/${boardCode}${queryString}`;
+        return;
+      }
+
+      // 4. 기본 동작
+      console.log("기본 동작 - 게시판 목록으로 이동");
+      location.href = `/${memberNo}/board/${boardCode}${queryString}`;
+    });
+  }
+});
+
+// 수정 버튼 처리 - 출발지 정보 저장
+document.addEventListener("DOMContentLoaded", () => {
+  const boardDetailEditBtn = document.querySelector("#updateBtn");
+
+  if (boardDetailEditBtn) {
+    boardDetailEditBtn.addEventListener("click", () => {
+      // 현재 페이지의 출발지 정보를 세션 스토리지에 저장
+      const referrer = document.referrer;
+
+      console.log("수정 버튼 클릭 - 출발지 저장:", referrer);
+
+      if (referrer && referrer.includes("/minihome")) {
+        // 미니홈에서 온 경우
+        const minihomeMatch = referrer.match(/\/(\d+)\/minihome/);
+        if (minihomeMatch) {
+          const targetMemberNo = minihomeMatch[1];
+          const minihomePage = `/${targetMemberNo}/minihome`;
+          sessionStorage.setItem("beforeUpdatePage", minihomePage);
+          console.log("미니홈 출발지 저장:", minihomePage);
+        }
+      } else {
+        // 게시판 목록에서 온 경우
+        const queryString = location.search;
+        const boardListPage = `/${memberNo}/board/${boardCode}${queryString}`;
+        sessionStorage.setItem("beforeUpdatePage", boardListPage);
+        console.log("게시판 목록 출발지 저장:", boardListPage);
+      }
+
+      const queryString = location.search;
       location.href = `/${memberNo}/board/${boardCode}/${boardNo}/update${queryString}`;
     });
   }
@@ -63,62 +132,80 @@ document.addEventListener("DOMContentLoaded", () => {
 // 삭제 버튼 처리
 document.addEventListener("DOMContentLoaded", () => {
   const boardDeleteBtn = document.querySelector("#deleteBtn");
+
   if (boardDeleteBtn) {
     boardDeleteBtn.addEventListener("click", async () => {
-
-      if(!confirm("게시글을 정말 삭제하시겠습니까?")) {
-        return;
-      }
-      
-      // 현재 게시글 번호(boardNo)로 게시글 삭제 요청
-      const resp = await fetch(
-        `/${memberNo}/board/${boardCode}/${boardNo}/delete`,
-        { method: "delete" }
-      );
-      const result = await resp.text();
-
-      // 게시글 삭제 실패시
-      if (result == 0) {
-        alert("게시글 삭제 실패");
+      if (!confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
         return;
       }
 
-      // 게시글 삭제 성공시
-      alert("게시글을 성공적으로 삭제했습니다!");
+      try {
+        const resp = await fetch(
+          `/${memberNo}/board/${boardCode}/${boardNo}/delete`,
+          {
+            method: "DELETE",
+          }
+        );
+        const result = await resp.text();
 
-      // cp 값에 따라 요청 변경
-      const queryString = location.search;
+        if (result == 0) {
+          alert("게시글 삭제 실패");
+          return;
+        }
 
-      location.href = `/${memberNo}/board/${boardCode}${queryString}`;
+        alert("게시글을 성공적으로 삭제했습니다!");
+
+        // 삭제 후 출발지 확인해서 이동
+        const beforeUpdatePage = sessionStorage.getItem("beforeUpdatePage");
+        if (beforeUpdatePage) {
+          console.log("삭제 후 출발지로 이동:", beforeUpdatePage);
+          sessionStorage.removeItem("beforeUpdatePage");
+          location.href = beforeUpdatePage;
+        } else {
+          // 기본적으로 게시판 목록으로 이동
+          const queryString = location.search;
+          location.href = `/${memberNo}/board/${boardCode}${queryString}`;
+        }
+      } catch (error) {
+        console.error("삭제 중 오류 발생:", error);
+        alert("게시글 삭제 중 오류가 발생했습니다.");
+      }
     });
   }
 });
 
 // 게시글 작성자의 프로필, 이름 누르면 해당 멤버 홈피 이동
 document.addEventListener("DOMContentLoaded", () => {
-  // 현재 게시글 작성자 번호 (미리 선언된 전역 변수)
-  const writerNo = memberNo; // <script th:inline="javascript">에 선언된 변수 사용
-
-  // DOM에서 프로필 이미지와 작성자 span 태그 가져오기 (img 2개 중 어떤 게 보일지 모르므로 둘 다 처리)
+  const writerNo = memberNo;
   const memberImg = document.querySelectorAll(".board-writer img");
   const writerName = document.querySelector(".board-writer span");
 
-  // 클릭 이벤트 함수 정의
   const goToMiniHome = () => {
     if (writerNo) {
       location.href = `/${writerNo}/minihome`;
     }
   };
 
-  // 이미지들에 이벤트 바인딩
   memberImg.forEach((img) => {
     img.style.cursor = "pointer";
     img.addEventListener("click", goToMiniHome);
   });
 
-  // 작성자 이름에도 이벤트 바인딩
   if (writerName) {
     writerName.style.cursor = "pointer";
     writerName.addEventListener("click", goToMiniHome);
   }
+});
+
+// 페이지 로드 시 디버깅 정보 출력
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("=== 페이지 로드 정보 ===");
+  console.log("현재 URL:", location.href);
+  console.log("이전 페이지:", document.referrer);
+  console.log(
+    "세션 스토리지 - beforeUpdatePage:",
+    sessionStorage.getItem("beforeUpdatePage")
+  );
+  console.log("히스토리 길이:", history.length);
+  console.log("=====================");
 });

@@ -15,80 +15,101 @@
     class="minihome-page"
     th:data-member-no="${memberNo != null ? memberNo : 0}"
   >
-    <div class="container">
-      <!-- Header Fragment -->
-      <div th:replace="~{common/header}"></div>
+    <div class="center-page">
+      <div class="center-content">
+        <div class="container">
+          <!-- Header Fragment -->
+          <div th:replace="~{common/header}"></div>
 
-      <div class="content-container">
-        <!-- Left Sidebar -->
-        <div class="left-sidebar">
-          <div th:replace="~{common/leftsidebar}"></div>
-        </div>
+          <div class="content-container">
+            <!-- Left Sidebar -->
+            <div class="left-sidebar">
+              <div th:replace="~{common/leftsidebar}"></div>
+            </div>
 
-        <!-- Middle Panel -->
-        <div class="main-content middle-content">
-          <!-- 프로필 이미지 
+            <!-- Middle Panel -->
+            <div class="main-content middle-content">
+              <!-- 프로필 이미지 
           <img
             th:if="${profile != null and profile.imgRename != null}"
             th:src="@{'/resources/profile/' + ${profile.imgRename}}"
             alt="사용자 프로필 이미지"
             style="max-width: 50%; height: auto"
           />-->
-          <th:block th:if="${profile != null}">
-            <img
-              th:src="@{${profile.imgPath} + ${profile.imgRename}}"
-              alt="사용자 프로필 이미지"
-              style="max-width: 100%; height: 50%"
-            />
-          </th:block>
-          <th:block th:unless="${profile != null}">
-            <img
-              th:src="@{/images/default/profile.png}"
-              alt="사용자 프로필 이미지"
-              style="max-width: 100%; height: 50%"
-            />
-          </th:block>
+              <<<<<<< HEAD
+              <th:block th:if="${profile != null}">
+                <img
+                  th:src="@{${profile.imgPath} + ${profile.imgRename}}"
+                  alt="사용자 프로필 이미지"
+                  style="max-width: 50%; height: auto"
+                />
+              </th:block>
+              <th:block th:unless="${profile != null}">
+                <img
+                  th:src="@{/images/default/profile.png}"
+                  alt="사용자 프로필 이미지"
+                  style="max-width: 50%; height: auto"
+                />
+              </th:block>
+              =======
+              <th:block th:if="${profile != null}">
+                <img
+                  th:src="@{${profile.imgPath} + ${profile.imgRename}}"
+                  alt="사용자 프로필 이미지"
+                  style="max-width: 100%; height: 50%"
+                />
+              </th:block>
+              <th:block th:unless="${profile != null}">
+                <img
+                  th:src="@{/images/default/profile.png}"
+                  alt="사용자 프로필 이미지"
+                  style="max-width: 100%; height: 50%"
+                />
+              </th:block>
+              >>>>>>> origin/develop
 
-          <!-- Bio 섹션 -->
-          <div class="bio-section">
-            <textarea
-              readonly
-              class="Comment-home"
-              placeholder="안녕하세요! FeatherWorld에 오신 걸 환영합니다."
-              th:text="${profile != null ? profile.profileContent : ''}"
-              style="resize: none !important; overflow: auto; height: 100px"
-            ></textarea>
+              <!-- Bio 섹션 -->
+              <div class="bio-section">
+                <textarea
+                  readonly
+                  class="Comment-home"
+                  placeholder="안녕하세요! FeatherWorld에 오신 걸 환영합니다."
+                  th:text="${profile != null ? profile.profileContent : ''}"
+                  style="resize: none !important; overflow: auto; height: 100px"
+                ></textarea>
+              </div>
+
+              <!-- 하단 버튼 -->
+              <div
+                class="post-actions"
+                th:if="${session.loginMember != null and session.loginMember.memberNo == memberNo}"
+              >
+                <a
+                  th:href="@{/{memberNo}/profileupdate(memberNo=${memberNo})}"
+                  class="post-button"
+                  >Profile Update</a
+                >
+
+                <a
+                  th:href="@{/{memberNo}/profiledelete(memberNo=${memberNo})}"
+                  class="post-button"
+                >
+                  Delete Account
+                </a>
+              </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div th:replace="~{common/navSidebar}"></div>
           </div>
 
-          <!-- 하단 버튼 -->
-          <div
-            class="post-actions"
-            th:if="${session.loginMember != null and session.loginMember.memberNo == memberNo}"
-          >
-            <a
-              th:href="@{/{memberNo}/profileupdate(memberNo=${memberNo})}"
-              class="post-button"
-              >Profile Update</a
-            >
-
-            <a
-              th:href="@{/{memberNo}/profiledelete(memberNo=${memberNo})}"
-              class="post-button"
-            >
-              Delete Account
-            </a>
-          </div>
+          <!-- Footer -->
+          <div th:replace="~{common/footer}"></div>
         </div>
 
-        <!-- Right Sidebar -->
-        <div th:replace="~{common/navSidebar}"></div>
+        <!-- JS -->
       </div>
-
-      <!-- Footer -->
-      <div th:replace="~{common/footer}"></div>
     </div>
-
-    <!-- JS -->
 
     <script th:inline="javascript">
       const memberNo = /*[[${memberNo}]]*/ 0;

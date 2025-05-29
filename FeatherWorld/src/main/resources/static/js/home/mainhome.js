@@ -6,8 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const kakaoLoginBtn = document.querySelector(".kakao-btn");
   const logoutBtn = document.querySelector(".logout-btn");
   const profileImg = document.querySelector(".profile-avatar img");
-  // Kakao SDK 초기화 확인 및 재시도
 
+  // 키보드 네비게이션 변수
+  let currentSelectedIndex = -1; // 현재 선택된 아이템의 인덱스
+  let isKeyboardNavigation = false;
+
+  // Kakao SDK 초기화 확인 및 재시도
   if (profileImg != null) {
     profileImg.addEventListener("click", () => {
       if (memberNo) {
@@ -15,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
   function ensureKakaoInit() {
     if (typeof Kakao !== "undefined") {
       // 아직 초기화되지 않았다면 초기화 실행
@@ -49,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
+
   // 카카오 로그인 함수
   function kakaoLogin() {
     try {
@@ -143,28 +149,61 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // 검색 결과 표시 함수
+  // 키보드 네비게이션 관련 함수들
+  function resetSelection() {
+    currentSelectedIndex = -1;
+    const resultItems = document.querySelectorAll("#searchResults li");
+    resultItems.forEach((item) => item.classList.remove("selected"));
+  }
+
+  function selectItem(index) {
+    const resultItems = document.querySelectorAll("#searchResults li");
+    if (resultItems.length === 0) return;
+
+    // 기존 선택 해제
+    resultItems.forEach((item) => item.classList.remove("selected"));
+
+    // 새 항목 선택
+    if (index >= 0 && index < resultItems.length) {
+      currentSelectedIndex = index;
+      resultItems[index].classList.add("selected");
+
+      // 선택된 항목이 보이도록 스크롤
+      resultItems[index].scrollIntoView({
+        block: "nearest",
+        behavior: "smooth",
+      });
+    }
+  }
+
+  // 검색 결과 표시 함수 (키보드 네비게이션 지원 추가)
   function displayResults(members) {
     if (!searchResults) return;
 
     searchResults.innerHTML = ""; // 이전 결과 비우기
+    resetSelection(); // 선택 상태 초기화
+    isKeyboardNavigation = false;
 
     if (!members || members.length === 0) {
       const li = document.createElement("li");
       li.textContent = "검색 결과가 없습니다.";
+      li.className = "no-results";
       searchResults.appendChild(li);
     } else {
-      members.forEach((member) => {
+      members.forEach((member, index) => {
         const li = document.createElement("li");
         li.className = "member-result-item";
+
+        // data 속성에 회원번호 저장 (키보드 네비게이션용)
+        li.dataset.memberNo = member.memberNo;
 
         // 결과 항목을 구성하는 HTML 생성
         li.innerHTML = `
           <div class="member-result-wrapper">
             <div class="member-result-avatar">
-              <img src="${member.memberImg || "/images/user.png"}" alt="${
-          member.memberName || "사용자"
-        }">
+              <img src="${
+                member.memberImg || "/images/default/user.png"
+              }" alt="${member.memberName || "사용자"}">
             </div>
             <div class="member-result-info">
               <div class="member-result-name">${
@@ -182,15 +221,32 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
 
+        // 마우스 호버 시 선택 상태 업데이트 (키보드 사용 중이 아닐 때만)
+        li.addEventListener("mouseenter", () => {
+          if (!isKeyboardNavigation) {
+            selectItem(index);
+          }
+        });
+
+        // 마우스가 움직이면 키보드 네비게이션 모드 해제
+        li.addEventListener("mousemove", () => {
+          isKeyboardNavigation = false;
+        });
+
         searchResults.appendChild(li);
       });
+
+      if (members.length > 0) {
+        selectItem(0);
+      }
     }
 
     searchResults.style.display = "block";
   }
 
-  // 검색 입력에 이벤트 리스너 추가 - 즉시 검색 실행
+  // 검색 입력에 이벤트 리스너 추가 - 즉시 검색 실행 및 키보드 네비게이션
   if (searchInput) {
+    // 검색 입력 이벤트
     searchInput.addEventListener("input", function () {
       const searchTerm = this.value.trim();
 
@@ -198,6 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (searchTerm === "") {
         if (searchResults) searchResults.style.display = "none";
         if (closeBtn) closeBtn.style.display = "none";
+        resetSelection();
         return;
       }
 
@@ -221,17 +278,80 @@ document.addEventListener("DOMContentLoaded", function () {
           if (searchResults) {
             searchResults.innerHTML = "<li>검색 중 오류가 발생했습니다.</li>";
             searchResults.style.display = "block";
+            resetSelection();
           }
         });
+    });
+
+    // 키보드 네비게이션 이벤트
+
+    searchInput.addEventListener("keydown", function (e) {
+      const resultItems = document.querySelectorAll(
+        "#searchResults li:not(.no-results)"
+      );
+
+      switch (e.key) {
+        case "ArrowDown":
+        case "ArrowUp":
+          e.preventDefault();
+          isKeyboardNavigation = true; // 키보드 사용 중임을 표시
+
+          if (resultItems.length > 0) {
+            if (e.key === "ArrowDown") {
+              if (currentSelectedIndex === -1) {
+                selectItem(0);
+              } else {
+                const nextIndex =
+                  currentSelectedIndex < resultItems.length - 1
+                    ? currentSelectedIndex + 1
+                    : 0;
+                selectItem(nextIndex);
+              }
+            } else {
+              // ArrowUp
+              if (currentSelectedIndex === -1) {
+                selectItem(resultItems.length - 1);
+              } else {
+                const prevIndex =
+                  currentSelectedIndex <= 0
+                    ? resultItems.length - 1
+                    : currentSelectedIndex - 1;
+                selectItem(prevIndex);
+              }
+            }
+          }
+          break;
+
+        case "Enter":
+          e.preventDefault();
+          if (currentSelectedIndex >= 0 && resultItems.length > 0) {
+            const selectedItem = resultItems[currentSelectedIndex];
+            const memberNo = selectedItem.dataset.memberNo;
+
+            if (memberNo) {
+              window.location.href = `/${memberNo}/minihome`;
+            }
+          }
+          break;
+
+        case "Escape":
+          if (searchResults) searchResults.style.display = "none";
+          if (closeBtn) closeBtn.style.display = "none";
+          resetSelection();
+          isKeyboardNavigation = false;
+          break;
+      }
     });
   }
 
   // 닫기 버튼 클릭 이벤트
   if (closeBtn) {
     closeBtn.addEventListener("click", function () {
-      if (searchInput) searchInput.value = ""; // 입력 내용 지우기
-      if (searchResults) searchResults.style.display = "none"; // 결과 숨기기
-      closeBtn.style.display = "none"; // 닫기 버튼 숨기기
+      if (searchInput) searchInput.value = "";
+      if (searchResults) searchResults.style.display = "none";
+      closeBtn.style.display = "none";
+      resetSelection();
+      isKeyboardNavigation = false;
     });
   }
 
@@ -246,6 +366,8 @@ document.addEventListener("DOMContentLoaded", function () {
       event.target !== closeBtn
     ) {
       searchResults.style.display = "none";
+      resetSelection();
+      isKeyboardNavigation = false;
     }
   });
 });
