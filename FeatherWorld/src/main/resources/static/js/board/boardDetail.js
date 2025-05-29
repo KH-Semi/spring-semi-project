@@ -65,6 +65,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const boardDeleteBtn = document.querySelector("#deleteBtn");
   if (boardDeleteBtn) {
     boardDeleteBtn.addEventListener("click", async () => {
+
+      if(!confirm("게시글을 정말 삭제하시겠습니까?")) {
+        return;
+      }
+      
       // 현재 게시글 번호(boardNo)로 게시글 삭제 요청
       const resp = await fetch(
         `/${memberNo}/board/${boardCode}/${boardNo}/delete`,

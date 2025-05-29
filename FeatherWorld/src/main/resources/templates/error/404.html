@@ -34,28 +34,6 @@
                     <i class="fa-solid fa-house"></i>
                     홈으로 돌아가기
                 </a>
-
-                <!-- 회원 검색 섹션 -->
-                <div class="search-section">
-                    <h3 class="search-title">회원 검색하기</h3>
-                    <div class="search-bar-404">
-                        <input
-                                type="text"
-                                placeholder="회원 이름을 입력해주세요"
-                                class="member-search-404"
-                                id="memberSearchInput"
-                        />
-                        <button class="search-btn-404" id="searchButton">
-                            <img
-                                    src="/images/icons/search.png"
-                                    alt="Search"
-                                    class="search-icon-404"
-                            />
-                        </button>
-                        <span class="close-btn-404" id="closeBtn">&times;</span>
-                        <ul id="searchResults" class="search-results-404"></ul>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -69,6 +47,5 @@
   const memberNo = /*[[${session.loginMember?.memberNo}]]*/ null;
 </script>
 
-<script src="/js/error/error.js"></script>
 </body>
 </html>
