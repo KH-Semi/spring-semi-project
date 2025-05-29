@@ -13,10 +13,10 @@ public interface ProfileMapper {
     int profileExists(int memberNo); // 사용하지 않으면 삭제해도 무방
 
     // 🔐 비밀번호 조회
-    String selectEncodedPw(@Param("memberNo") int memberNo);
+    String selectEncodedPw(int memberNo);
 
     // ❌ 회원 탈퇴 처리 (soft delete 또는 hard delete 선택)
-    int deleteMember(@Param("memberNo") int memberNo);
+    int deleteMember(int memberNo);
 	String selectPw(int memberNo);
 	int secession(int memberNo);
 }
