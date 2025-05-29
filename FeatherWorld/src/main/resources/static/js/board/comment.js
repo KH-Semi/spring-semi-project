@@ -10,7 +10,17 @@ const selectCommentList = () => {
 
       // ul태그(댓글 목록 감싸는 요소)
       const ul = document.querySelector("#commentList");
+      const commentArea = document.querySelector("#commentArea");
+      // const commentListArea = document.querySelector("#commentListArea");
       ul.innerHTML = ""; // 기존 댓글 목록 삭제
+
+      // ✅ 조건 확인: 댓글도 없고 로그인도 안 되어 있으면 숨김
+      if (commentList.length === 0 && loginMemberNo == null) {
+        commentArea.style.display = "none";
+        return;
+      } else {
+        commentArea.style.display = "block"; // 다시 보여주기
+      }
 
       /* ******* 조회된 commentList를 이용해 댓글 출력 ******* */
       for (let comment of commentList) {
@@ -70,6 +80,46 @@ const selectCommentList = () => {
           content.classList.add("comment-content");
           content.innerText = comment.boardCommentContent;
           commentRow.append(content); // 행에 내용 추가
+
+          document.addEventListener("click", (e) => {
+            if (e.target.classList.contains("toggle-btn")) {
+              const content = e.target.previousElementSibling;
+              content.classList.toggle("expanded");
+
+              // 버튼 텍스트 토글
+              e.target.textContent = content.classList.contains("expanded")
+                ? "접기"
+                : "더보기";
+            }
+          });
+
+          // ✅ 더보기 기능 추가
+          const lineLimit = 3;
+          ul.appendChild(commentRow);
+          const computedStyle = window.getComputedStyle(content);
+          const lineHeight = parseFloat(computedStyle.lineHeight);
+          const maxHeight = lineHeight * lineLimit;
+
+          if (content.scrollHeight > maxHeight + 5) {
+            content.style.webkitLineClamp = lineLimit;
+
+            const toggleBtn = document.createElement("button");
+            toggleBtn.classList.add("toggle-btn");
+            toggleBtn.innerText = "...더보기";
+
+            toggleBtn.addEventListener("click", () => {
+              const expanded = content.classList.toggle("expanded");
+              toggleBtn.innerText = expanded ? "접기" : "더보기";
+
+              if (expanded) {
+                content.style.display = "block";
+              } else {
+                content.style.display = "-webkit-box";
+              }
+            });
+
+            commentRow.appendChild(toggleBtn);
+          }
 
           // ----------------------------------------------------
           // 버튼 영역

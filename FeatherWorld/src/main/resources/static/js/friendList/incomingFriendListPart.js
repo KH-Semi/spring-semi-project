@@ -286,3 +286,25 @@ friendSendedSpans?.forEach(function (friend) {
       });
   }
 });
+
+// 미니홈피 이동 기능: 프로필 이미지 or 이름 클릭 시
+[...friendSpans, ...friendSendedSpans].forEach(function (friend) {
+  const memberNo = friend.dataset.memberNo;
+
+  const profileImg = friend.querySelector(".friend-profile");
+  const memberName = friend.querySelector(".friend-name");
+
+  profileImg.style.cursor = "pointer";
+  if (profileImg) {
+    profileImg.addEventListener("click", () => {
+      location.href = `/${memberNo}/minihome`;
+    });
+  }
+
+  memberName.style.cursor = "pointer";
+  if (memberName) {
+    memberName.addEventListener("click", () => {
+      location.href = `/${memberNo}/minihome`;
+    });
+  }
+});

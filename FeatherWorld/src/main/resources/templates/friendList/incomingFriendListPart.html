@@ -26,13 +26,17 @@
             th:if="${ilchon.memberImg}"
             th:src="@{${ilchon.memberImg}}"
             width="20"
+            class="friend-profile"
           />
           <img
             th:unless="${ilchon.memberImg}"
             th:src="@{/images/default-user.png}"
             width="20"
+            class="friend-profile"
           />
-          <span class="font-bold color-gray" th:text="${ilchon.memberName}"
+          <span
+            class="font-bold color-gray friend-name"
+            th:text="${ilchon.memberName}"
             >별명</span
           >
         </div>

@@ -237,3 +237,24 @@ const xIcon = (friend) => {
     icon.classList.add("hidden");
   }, 1500);
 };
+
+// 프로필 이미지나 이름을 클릭하면 해당 회원의 미니홈피로 이동
+friendSpans.forEach(function (friend) {
+  const memberNo = friend.dataset.memberNo;
+
+  const profileImg = friend.querySelector(".friend-profile");
+  const memberName = friend.querySelector(".friend-name");
+
+  profileImg.style.cursor = "pointer";
+  if (profileImg) {
+    profileImg.addEventListener("click", () => {
+      location.href = `/${memberNo}/minihome`;
+    });
+  }
+  memberName.style.cursor = "pointer";
+  if (memberName) {
+    memberName.addEventListener("click", () => {
+      location.href = `/${memberNo}/minihome`;
+    });
+  }
+});
