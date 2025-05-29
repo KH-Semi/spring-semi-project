@@ -13,8 +13,47 @@
     <link rel="stylesheet" href="/css/miniHome/miniHome.css" />
     <link href="/css/friendList/friendListPart.css" rel="stylesheet" />
     <link href="/css/common/main.css" rel="stylesheet" />
+    <link href="/css/friendList/incomingFriendListPart.css" rel="stylesheet" />
+
   </head>
   <body class="minihome-page">
+    <script th:inline="javascript">
+      const memberNo = /*[[${memberNo}]]*/ 0;
+    </script>
+
+    <script src="/js/miniHome/miniHome.js"></script>
+
+    <script src="/js/miniHome/leftSidebar.js"></script>
+    <script th:inline="javascript">
+    function updateFriendList(cp, cpFrom) {//for pagination
+      fetch(`/${memberNo}/friendList/incoming?cp=${cp}&cpFrom=${cpFrom}`, {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("요청 실패: " + res.status);
+          }
+          return res.text();
+        })
+        .then((html) => {
+          // 응답받은 HTML을 파싱해서 DOM으로 변환
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+
+          const newBlock = doc.querySelector('[name="inc-friend-list"]');
+
+      // 기존 DOM의 요소 교체
+        const currentBlock = document.querySelector('[name="inc-friend-list"]');
+    
+        if (newBlock && currentBlock) {
+          currentBlock.outerHTML = newBlock.outerHTML;
+        }
+    })
+    .catch(err => console.error("fragment 갱신 실패:", err));
+    }
+  </script>
     <div class="container">
       <!-- Header Fragment -->
       <div th:replace="~{common/header}"></div>
@@ -41,13 +80,7 @@
       <!-- Footer -->
     </div>
 
-    <script th:inline="javascript">
-      const memberNo = /*[[${memberNo}]]*/ 0;
-    </script>
 
-    <script src="/js/miniHome/miniHome.js"></script>
-
-    <script src="/js/miniHome/leftSidebar.js"></script>
 
     
   </body>

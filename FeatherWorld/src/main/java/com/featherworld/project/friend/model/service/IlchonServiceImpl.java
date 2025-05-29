@@ -136,7 +136,7 @@ public class IlchonServiceImpl implements IlchonService {
 		// TODO Auto-generated method stub
 		
 		
-		int ilchonsCount =  mapper.countIncomingIlchons(loginMemberNo);
+		int ilchonsCount =  mapper.countSendedIlchons(loginMemberNo);
 		
 		// pagination 객체 생성 
 
