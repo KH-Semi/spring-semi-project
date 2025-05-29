@@ -16,6 +16,16 @@ public interface MemberService {
 	 */
 	int checkMember(int memberNo);
 
+	/** 탈퇴한 회원 조회
+	 * @return 탈퇴된 회원 번호 리스트
+	 */
+	List<Member> deletedMembers();
+
+	/** 탈퇴한 회원 한 명 삭제
+	 * @param memberNo 탈퇴 회원 번호
+	 */
+	int deleteMember(int memberNo);
+
 	/** 회원가입 메서드
 	 * @author 영민
 	 * @param inputMember

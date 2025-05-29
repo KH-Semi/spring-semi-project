@@ -15,6 +15,10 @@ public interface MemberMapper {
 
 	int checkMember(int memberNo);
 
+	List<Member> deletedMembers();
+
+	int deleteMember(int memberNo);
+
 	/** 회원가입 메서드
 	 * @author 영민
 	 * @param inputMember

@@ -7,7 +7,21 @@
 			SELECT COUNT(*)
 			FROM MEMBER
 			WHERE MEMBER_NO = ${memberNo}
+			AND MEMBER_DEL_FL = 'N'
 		</select>
+
+    <!-- 탈퇴 회원 조회 -->
+    <select id="deletedMembers" resultType="Member">
+        SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NAME, MEMBER_TEL, ENROLL_DATE
+        FROM MEMBER
+        WHERE MEMBER_DEL_FL = 'Y'
+    </select>
+
+    <!-- 탈퇴 회원 한 명 삭제 -->
+    <delete id="deleteMember">
+        DELETE FROM MEMBER
+        WHERE MEMBER_NO = ${memberNo}
+    </delete>
 
 		<!-- 회원가입 SQL 영민 -->
 		
