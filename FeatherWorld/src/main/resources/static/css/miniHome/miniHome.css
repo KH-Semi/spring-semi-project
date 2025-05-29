@@ -3,7 +3,6 @@
 /* MiniHome 페이지 body 스타일 - 더 구체적인 선택자 사용 */
 body.minihome-page {
   background-color: #f0f0f0 !important;
-  padding: 20px 0 !important;
   scrollbar-width: none !important;
 }
 
