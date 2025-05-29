@@ -102,6 +102,7 @@
   cursor: pointer;
 }
 
+/*page nation 아래 빈 공간 - 재호 도움*/
 .whitespace {
   height: 100%;
 }
@@ -122,10 +123,8 @@
   resize: none;
   margin-right: 15px;
 }
-/* 할일 : css 통일성 */
 
 /* 댓글 입력창 */
-
 /* Write 버튼을 우측 하단에 위치시킴 */
 .write-button-wrapper {
   display: flex;
@@ -133,7 +132,6 @@
   margin-left: 50px;
   margin-right: 40px;
 }
-
 .guestBook-write-area {
   position: relative;
   height: 110px;
