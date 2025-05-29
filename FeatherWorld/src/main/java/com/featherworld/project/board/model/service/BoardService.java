@@ -59,5 +59,5 @@ public interface BoardService {
 	 * @param imageList 새롭게 추가될 BoardImg 관련 내용들
 	 * @return result 1(성공) 0(실패)
 	 */
-	int boardUpdate(Board board, int[] deletedImageList, List<MultipartFile> imageList);
+	int boardUpdate(Board board, String deletedImageList, List<MultipartFile> imageList) throws Exception;
 }

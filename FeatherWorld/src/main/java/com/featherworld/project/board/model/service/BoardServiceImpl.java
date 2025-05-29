@@ -143,7 +143,7 @@ public class BoardServiceImpl implements BoardService {
 
 	// 게시글 수정 - 수정 결과 반환
 	@Override
-	public int boardUpdate(Board board, int[] deletedImageList, List<MultipartFile> imageList) {
+	public int boardUpdate(Board board, String deletedImageList, List<MultipartFile> imageList) throws Exception {
 
 		// 게시글 제목/내용 수정 결과 반환
 		int result = mapper.boardUpdate(board);
@@ -153,10 +153,77 @@ public class BoardServiceImpl implements BoardService {
 		// 삭제된 이미지에 대한 처리
 		// 해당 게시글(boardNo)에 이미지(imgNo) 포함되어 있음
 		// 그럼 삭제되는 배열이랑 비교해서 업로드할 애만 업로드하고 나머지는 수정/삭제 하면 됨.
+		if(deletedImageList != null && !deletedImageList.equals("")) {
 
+			Map<String, Object> map = new HashMap<>();
+			map.put("deletedImageList", deletedImageList);
+			map.put("boardNo", board.getBoardNo());
 
+			result = mapper.deleteImage(map);
 
-		return 0;
+			// 삭제 실패한 경우 -> 롤백
+			if(result == 0) {
+				throw new RuntimeException();
+			}
+		}
+
+		List<BoardImg> uploadList = new ArrayList<>();
+
+		// images List에서 하나씩 꺼내어 파일이 있는지 검사
+		for(int i = 0; i < imageList.size(); i++) {
+
+			// 실제 선택된 파일이 존재하는 경우
+			if(!imageList.get(i).isEmpty()) {
+
+				// 원본명
+				String originalName = imageList.get(i).getOriginalFilename();
+
+				// 변경명
+				String rename = Utility.fileRename(originalName);
+
+				// 모든 값을 저장할 DTO 생성 (BoardImg)
+				BoardImg img = BoardImg.builder()
+						.imgOriginalName(originalName)
+						.imgRename(rename)
+						.imgPath(webPath)
+						.boardNo(board.getBoardNo())
+						.imgOrder(i)
+						.uploadFile(imageList.get(i))
+						.build();
+
+				// 해당 BoardImg를 uploadList 추가
+				uploadList.add(img);
+
+				// 업로드 하려는 이미지 정보를 이용해서
+				// 수정 or 삽입 수행
+
+				// 1) 기존 O -> 새 이미지로 변경 -> 수정
+				result = mapper.updateImage(img);
+
+				if(result == 0) {
+					// 수정 실패 == 기존 해당 순서(IMG_ORDER)에 이미지가 없었다!
+					// -> 삽입 수행
+
+					// 2) 기존 X -> 새 이미지 추가
+					result = mapper.insertImage(img);
+				}
+			}
+
+			// 수정 또는 삽입이 실패한 경우
+			if(result == 0) {
+				throw new RuntimeException(); // 예외 발생 -> 롤백
+			}
+		}
+
+		// 선택한 파일이 하나도 없을 경우
+		if(uploadList.isEmpty()) return result;
+
+		// 수정, 새로 삽입한 이미지 파일을 서버에 실제로 저장!
+		for(BoardImg img : uploadList) {
+			img.getUploadFile().transferTo(new File(folderPath + img.getImgRename()));
+		}
+
+		return result;
 	}
 
 	/** 게시글 좋아요 체크/해제

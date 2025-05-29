@@ -71,7 +71,7 @@
                     </th:block>
                     <th:block th:if="${board.thumbnail == null}">
                       <img
-                        src="/images/defaultimage.png"
+                        th:src="#{thumbnail.default.image}"
                         alt="썸네일"
                         class="thumbnail"
                       />
@@ -126,7 +126,7 @@
                         th:href="@{/{memberNo}/minihome(memberNo=${comment.actualAuthorNo})}"
                         ><div class="comment-author">
                           <img
-                            th:src="${comment.fromMemberImg == null ? '/images/user.png' : comment.fromMemberImg}"
+                            th:src="${comment.fromMemberImg == null ? '/images/default/user.png' : comment.fromMemberImg}"
                             alt="프로필"
                             class="author-profile-img"
                           />
