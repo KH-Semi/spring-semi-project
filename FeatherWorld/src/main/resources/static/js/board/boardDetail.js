@@ -1,5 +1,5 @@
 // 1. #boardLike가 클릭 되었을 때
-document.querySelector("#boardLike").addEventListener("click", (e) => {
+document.querySelector("#boardLike").addEventListener("mouseup", (e) => {
   // 2. 로그인 상태가 아닌 경우 동작 X
   if (loginMemberNo == null) {
     alert("로그인 후 이용해주세요");
@@ -51,27 +51,29 @@ document.addEventListener("DOMContentLoaded", () => {
 // 수정 버튼 처리
 document.addEventListener("DOMContentLoaded", () => {
   const boardDetailEditBtn = document.querySelector("#updateBtn");
-  if(boardDetailEditBtn) {
-      boardDetailEditBtn.addEventListener("click", () => {
-        const queryString = location.search;
-        
-        location.href = `/${memberNo}/board/${boardCode}/${boardNo}/update${queryString}`;
-      })
+  if (boardDetailEditBtn) {
+    boardDetailEditBtn.addEventListener("click", () => {
+      const queryString = location.search;
+
+      location.href = `/${memberNo}/board/${boardCode}/${boardNo}/update${queryString}`;
+    });
   }
-})
+});
 
 // 삭제 버튼 처리
 document.addEventListener("DOMContentLoaded", () => {
   const boardDeleteBtn = document.querySelector("#deleteBtn");
-  if(boardDeleteBtn) {
+  if (boardDeleteBtn) {
     boardDeleteBtn.addEventListener("click", async () => {
-
       // 현재 게시글 번호(boardNo)로 게시글 삭제 요청
-      const resp = await fetch(`/${memberNo}/board/${boardCode}/${boardNo}/delete`, {method: "delete"});
+      const resp = await fetch(
+        `/${memberNo}/board/${boardCode}/${boardNo}/delete`,
+        { method: "delete" }
+      );
       const result = await resp.text();
 
       // 게시글 삭제 실패시
-      if(result == 0) {
+      if (result == 0) {
         alert("게시글 삭제 실패");
         return;
       }
@@ -83,9 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const queryString = location.search;
 
       location.href = `/${memberNo}/board/${boardCode}${queryString}`;
-    })
+    });
   }
-})
+});
 
 // 게시글 작성자의 프로필, 이름 누르면 해당 멤버 홈피 이동
 document.addEventListener("DOMContentLoaded", () => {

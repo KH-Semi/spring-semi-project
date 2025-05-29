@@ -72,7 +72,7 @@
   display: flex;
   justify-content: flex-end; /* 오른쪽 정렬 */
   gap: 10px;
-  color: #a62c2c;
+  color: #9f2120;
   font-size: 18px;
   width: 51px;
 }
@@ -158,7 +158,7 @@
   resize: none;
 }
 .guestBook-write-area button {
-  background-color: #b3002d;
+  background-color: #9f2120;
   color: white;
   font-weight: bold;
   border: none;

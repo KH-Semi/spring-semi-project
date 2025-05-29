@@ -84,15 +84,15 @@ const selectGuestBookList = (cp = 1) => {
           window.location.href = `/${item.visitorNo}/minihome`;
         });
 
-        mainDiv.prepend(profileImg);
+        // mainDiv.prepend(profileImg); // 0529 작성자를 프로필사진 옆으로 이동시키려 주석!
 
-        // 아이콘 생성 (비밀글일 경우)
-        if (item.secret == 1) {
-          const lockIcon = document.createElement("i");
-          lockIcon.className = "fa-solid fa-lock"; // FontAwesome 자물쇠 아이콘
-          lockIcon.style.marginRight = "8px"; // 오른쪽 간격 조절
-          mainDiv.appendChild(lockIcon);
-        }
+        // // 아이콘 생성 (비밀글일 경우)
+        // if (item.secret == 1) {
+        //   const lockIcon = document.createElement("i");
+        //   lockIcon.className = "fa-solid fa-lock"; // FontAwesome 자물쇠 아이콘
+        //   lockIcon.style.marginRight = "8px"; // 오른쪽 간격 조절
+        //   mainDiv.appendChild(lockIcon);
+        // }
 
         const contentDiv = document.createElement("div");
         contentDiv.className = "guestbook-content"; // 방명록 내용 표시 영역
@@ -109,18 +109,55 @@ const selectGuestBookList = (cp = 1) => {
         writerSpan.textContent = item.visitor?.memberName || "익명"; // 작성자 이름 (없으면 '익명')
 
         writerSpan.style.cursor = "pointer";
+        writerSpan.style.fontWeight = "bold";
+        writerSpan.style.textDecoration = "none";
+        writerSpan.style.color = "#333";
 
-        // 작성자 누르면 홈페이지 이동 (추후 수정...)
+        // 작성자 누르면 홈페이지 이동
         writerSpan.addEventListener("click", () => {
           window.location.href = `/${item.visitorNo}/minihome`;
         });
+
+        // 🔽 여기에 아래 코드 추가 🔽 // 0529 작성자를 프로필사진 옆으로!
+        const writerBox = document.createElement("div");
+        writerBox.className = "guestbook-writer-box";
+        writerBox.style.display = "flex";
+        writerBox.style.alignItems = "center";
+        writerBox.style.gap = "8px";
+        writerBox.style.marginBottom = "6px";
+        writerBox.style.position = "relative";
+
+        // [💡 이미지 wrapper]
+        const imgWrapper = document.createElement("div");
+        imgWrapper.style.position = "relative";
+        imgWrapper.style.width = "32px";
+        imgWrapper.style.height = "32px";
+
+        // [💡 자물쇠 아이콘 위치]
+        if (item.secret == 1) {
+          const lockIcon = document.createElement("i");
+          lockIcon.className = "fa-solid fa-lock";
+          lockIcon.style.position = "absolute";
+          lockIcon.style.top = "-10px";
+          lockIcon.style.left = "-10px";
+          lockIcon.style.fontSize = "14px";
+          lockIcon.style.color = "#9f2120";
+          imgWrapper.appendChild(lockIcon);
+        }
+
+        imgWrapper.appendChild(profileImg);
+
+        writerBox.appendChild(imgWrapper);
+        writerBox.appendChild(writerSpan);
+
+        mainDiv.prepend(writerBox);
 
         const dateDiv = document.createElement("div");
         dateDiv.className = "guestbook-date"; // 작성일 표시 영역
         dateDiv.textContent = item.guestBookWriteDate; // 작성일 삽입
 
         // 작성자, 작성일을 info 영역에 추가
-        infoDiv.appendChild(writerSpan);
+        // infoDiv.appendChild(writerSpan); // 0529 작성자를 프로필사진 옆으로 이동시키려 주석!
         infoDiv.appendChild(dateDiv);
 
         // 전체 item div에 info 추가
