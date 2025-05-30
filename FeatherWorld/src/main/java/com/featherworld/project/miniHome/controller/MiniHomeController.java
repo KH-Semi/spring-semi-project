@@ -342,24 +342,27 @@ public class MiniHomeController {
      */
     @GetMapping("{memberNo:[0-9]+}/surfing")
     @ResponseBody
-    public String getRandomMember(@SessionAttribute("loginMember") Member loginMember ,
-    							  @PathVariable("memberNo") int memberNo	) {
-    	
-    	
-    	   Integer loginNO = loginMember.getMemberNo();
-    	   Integer randomMemberNo;
-    	   
-    	   int attempts = 0;
-    	   
-    	   int maxAttempts = 10;
-       
-        
-    	   do {
-    		    randomMemberNo = miniHomeService.getRandomActiveMember();
-    		    attempts++;
-    		} while ((randomMemberNo == loginNO || randomMemberNo == memberNo) && attempts < maxAttempts);
+    public String getRandomMember(@SessionAttribute(value = "loginMember", required = false) Member loginMember,
+                                @PathVariable("memberNo") int memberNo) {
 
-    		return randomMemberNo != null ? randomMemberNo.toString() : "0";
+        Integer loginNo = 0;  // 기본값 설정
+
+        if (loginMember != null) {
+            loginNo = loginMember.getMemberNo();  // 변수명 통일: loginNo (대문자 O가 아닌 소문자 o)
+        }
+
+        Integer randomMemberNo;
+        int attempts = 0;
+        int maxAttempts = 10;
+
+        do {
+            randomMemberNo = miniHomeService.getRandomActiveMember();
+            attempts++;
+        } while ((randomMemberNo != null && 
+                  (randomMemberNo.equals(loginNo) || randomMemberNo.equals(memberNo))) 
+                 && attempts < maxAttempts);
+
+        return randomMemberNo != null ? randomMemberNo.toString() : "0";
     }
     
 }
