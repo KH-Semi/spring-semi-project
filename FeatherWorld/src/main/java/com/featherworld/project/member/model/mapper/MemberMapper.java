@@ -15,6 +15,10 @@ public interface MemberMapper {
 
 	int checkMember(int memberNo);
 
+	List<Member> deletedMembers();
+
+	int deleteMember(int memberNo);
+
 	/** 회원가입 메서드
 	 * @author 영민
 	 * @param inputMember
@@ -107,8 +111,13 @@ public interface MemberMapper {
 	 * @author 영민
 	 */
 	List<Member> getTodayBestMembers();
+	
+	/** DB에 있는 이미지 이름 조회
+	 * @author Jiho
+	 * @return
+	 */
+	List<String> selectDbImageList();
 
 	Member checkmemberEmailIncludingDeleted(String memberEmail);
-
 
 }

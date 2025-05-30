@@ -1,6 +1,7 @@
 package com.featherworld.project.miniHome.model.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -41,11 +42,11 @@ public interface MiniHomeMapper {
 
 	int findAcceptedIlchon(Ilchon myRequest);
 	
-	List<Board> getRecentBoards(int memberNo);
+	List<Board> getRecentBoards(Map<String, Integer> map);
 	
-	int getTotalBoardCount(int memberNo);
+	int getTotalBoardCount(Map<String, Integer> map);
 
-	int getTotalGuestBookCount(int memberNo);
+	int getTotalGuestBookCount(Map<String, Integer> map);
 
 	// ----
 	

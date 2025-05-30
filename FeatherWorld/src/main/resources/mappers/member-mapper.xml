@@ -7,7 +7,21 @@
 			SELECT COUNT(*)
 			FROM MEMBER
 			WHERE MEMBER_NO = ${memberNo}
+			AND MEMBER_DEL_FL = 'N'
 		</select>
+
+    <!-- 탈퇴 회원 조회 -->
+    <select id="deletedMembers" resultType="Member">
+        SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NAME, MEMBER_TEL, ENROLL_DATE
+        FROM MEMBER
+        WHERE MEMBER_DEL_FL = 'Y'
+    </select>
+
+    <!-- 탈퇴 회원 한 명 삭제 -->
+    <delete id="deleteMember">
+        DELETE FROM MEMBER
+        WHERE MEMBER_NO = ${memberNo}
+    </delete>
 
 		<!-- 회원가입 SQL 영민 -->
 		
@@ -186,5 +200,21 @@
     <!-- MEMBER_DEL_FL 조건 없음 - 탈퇴한 회원도 조회 -->
 </select>
 
+    <!-- DB에 있는 이미지 이름 조회 -->
+    <select id="selectDbImageList">
+        SELECT SUBSTR(MEMBER_IMG, INSTR(MEMBER_IMG, '/', -1) + 1) AS "rename"
+        FROM MEMBER
+        WHERE MEMBER_IMG IS NOT NULL
+        
+        UNION
 
+        SELECT CAST(IMG_RENAME AS VARCHAR2(300)) AS "rename"
+        FROM PROFILE
+        
+        UNION
+        
+        SELECT CAST(IMG_RENAME AS VARCHAR2(300)) AS "rename"
+        FROM BOARD_IMG
+    </select>
+    
 </mapper>

@@ -6,9 +6,12 @@
 	import lombok.RequiredArgsConstructor;
 	import lombok.extern.slf4j.Slf4j;
 	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.web.servlet.FlashMap;
+	import org.springframework.web.servlet.FlashMapManager;
 	import org.springframework.web.servlet.HandlerInterceptor;
 	import org.springframework.web.servlet.ModelAndView;
-	
+	import org.springframework.web.servlet.support.RequestContextUtils;
+
 	import java.util.regex.Matcher;
 	import java.util.regex.Pattern;
 	
@@ -56,6 +59,17 @@
 	            int result = memberService.checkMember(Integer.parseInt(memberNo));
 	
 	            if(result == 0) { // DB에 존재하지 않는 회원 번호인 경우 main page로 redirect
+
+					// Controller 단의 ra와 동일한 역할
+					FlashMap flashMap = new FlashMap();
+					flashMap.put("message", "탈퇴했거나, 유효하지 않은 회원입니다.");
+
+					// FlashMapManager를 통해 FlashMap 저장
+					FlashMapManager flashMapManager = RequestContextUtils.getFlashMapManager(request);
+					if (flashMapManager != null) {
+						flashMapManager.saveOutputFlashMap(flashMap, request, response);
+					}
+
 	                response.sendRedirect("/");
 	                return false;
 	            }

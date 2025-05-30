@@ -32,10 +32,22 @@ public class MemberServiceImpl implements MemberService {
 	// --------------------------------------------
 
 	// 회원 여부 확인
+	@Override
 	public int checkMember(int memberNo) {
 		return mapper.checkMember(memberNo);
 	}
 
+	// 탈퇴한 회원 조회
+	@Override
+	public List<Member> deletedMembers() {
+		return mapper.deletedMembers();
+	}
+
+	// 탈퇴 회원 한 명 삭제
+	@Override
+	public int deleteMember(int memberNo) {
+		return mapper.deleteMember(memberNo);
+	}
 
 	/** 회원가입 메서드
 	 *	@author 영민
@@ -287,12 +299,12 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public Member checkmemberEmailIncludingDeleted(String memberEmail) {
-		// TODO Auto-generated method stub
 		return mapper.checkmemberEmailIncludingDeleted(memberEmail);
 	}
-
+	
+	// DB에 있는 이미지 이름 조회
+	@Override
+	public List<String> selectDbImageList() {
+		return mapper.selectDbImageList();
 	}
-	
-	
-	
-	
+}
