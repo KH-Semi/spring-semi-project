@@ -285,7 +285,11 @@ public class MemberServiceImpl implements MemberService {
 		return mapper.getTodayBestMembers();
 	}
 
-
+	@Override
+	public Member checkmemberEmailIncludingDeleted(String memberEmail) {
+		// TODO Auto-generated method stub
+		return mapper.checkmemberEmailIncludingDeleted(memberEmail);
+	}
 
 	}
 	

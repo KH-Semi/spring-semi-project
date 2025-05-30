@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.featherworld.project.member.model.dto.Member;
 import com.featherworld.project.profile.model.dto.Profile;
-
 import com.featherworld.project.profile.model.service.ProfileService;
 
 import jakarta.servlet.http.HttpSession;
@@ -40,7 +39,7 @@ public class ProfileController {
 		Profile profile = profileService.selectProfile(memberNo);
 		log.debug("profile {}", profile);
 		model.addAttribute("profile", profile);
-		model.addAttribute("memberNo", memberNo); // memberNo도 추가
+		model.addAttribute("memberNo", memberNo);
 		return "profile/profile";
 	}
 
@@ -48,19 +47,10 @@ public class ProfileController {
 	public String editProfilePage(@PathVariable("memberNo") int memberNo, Model model) {
 		Profile profile = profileService.selectProfile(memberNo);
 		model.addAttribute("profile", profile);
-		model.addAttribute("memberNo", memberNo); // 여기를 추가!
+		model.addAttribute("memberNo", memberNo);
 		return "profile/editprofile";
 	}
 
-	/**
-	 * 프로필 이미지 수정 페이지로 이동
-	 * 
-	 * @param memberNo
-	 * @param model
-	 * @param loginMember
-	 * @param ra
-	 * @return
-	 */
 	@GetMapping("{memberNo:[0-9]+}/profileupdate")
 	public String showProfileUpdateForm(@PathVariable("memberNo") int memberNo, Model model,
 			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) {
@@ -74,28 +64,12 @@ public class ProfileController {
 		}
 	}
 
-	/**
-	 * 프로필 사진 업데이트
-	 * 
-	 * @param memberNo
-	 * @param uploadFile
-	 * @param bio
-	 * @return
-	 * @throws IOException
-	 */
 	@PostMapping("{memberNo:[0-9]+}/profileupdate")
 	public String updateProfile(@PathVariable("memberNo") int memberNo,
 			@SessionAttribute("loginMember") Member loginMember, @RequestParam("uploadFile") MultipartFile uploadFile,
-			@RequestParam("bio") String bio, RedirectAttributes ra)  throws Exception {
+			@RequestParam("bio") String bio, RedirectAttributes ra) throws Exception {
 
 		if (loginMember.getMemberNo() == memberNo) {
-
-
-//			if (profile == null) {
-//	            profile = Profile.builder().memberNo(memberNo).build();
-//	        }
-			// 현재 로그인한 회원의 프로필을 업데이트 할때
-			// DB 저장 또는 업데이트
 			int result = profileService.saveOrUpdateProfile(loginMember.getMemberNo(), uploadFile, bio);
 
 			String message = null;
@@ -111,18 +85,14 @@ public class ProfileController {
 			ra.addFlashAttribute("message", "접근 할 수 없는 없는 경로입니다!(다른사람 프로필 업데이트 불가)");
 			return "redirect:/";
 		}
-
 	}
 
-	
-	/** 회원 탈퇴
-	 * @param memberNo
-	 * @param model
-	 * @return
+	/** 
+	 * 회원 탈퇴 페이지 (GET)
 	 */
-	// GET 요청
 	@GetMapping("{memberNo}/profiledelete")
-	public String profileDelete(@PathVariable("memberNo") int memberNo, HttpSession session, RedirectAttributes ra, Model model) {
+	public String profileDelete(@PathVariable("memberNo") int memberNo, HttpSession session, 
+			RedirectAttributes ra, Model model) {
 		Member loginMember = (Member) session.getAttribute("loginMember");
 
 		if (loginMember == null || loginMember.getMemberNo() != memberNo) {
@@ -131,41 +101,98 @@ public class ProfileController {
 		}
 
 		model.addAttribute("memberNo", memberNo);
-		return "profile/profiledelete"; // profiledelete.html
+		return "profile/profiledelete";
 	}
 
-	// POST 요청
+	/** 
+	 * 회원 탈퇴 처리 (POST)
+	 * - memberPw가 null이면 카카오 회원, 있으면 일반 회원으로 구분
+	 */
 	@PostMapping("{memberNo}/profiledelete")
 	public String secession(@PathVariable("memberNo") int memberNo,
-	                        @RequestParam("memberPw") String memberPw,
+	                        @RequestParam(value = "memberPw", required = false) String memberPw,
 	                        HttpSession session,
 	                        RedirectAttributes ra,
 	                        SessionStatus status) {
 
 		Member loginMember = (Member) session.getAttribute("loginMember");
+		
+		
+		log.info("=== 탈퇴 처리 시작 ===");
+	    log.info("memberNo: {}", memberNo);
+	    log.info("loginMember: {}", loginMember);
+	    log.info("loginMember.getMemberPw(): {}", loginMember != null ? loginMember.getMemberPw() : "null");
+	    log.info("입력된 memberPw: {}", memberPw);
 
+		
+		// 1. 접근 권한 확인
 		if (loginMember == null || loginMember.getMemberNo() != memberNo) {
 			ra.addFlashAttribute("message", "잘못된 접근입니다.");
 			return "redirect:/" + memberNo + "/profiledelete";
 		}
 
-		int result = profileService.secession(memberPw, memberNo);
-
+		int result = 0;
 		String message;
 		String path;
 
-		if (result > 0) {
-			message = "탈퇴 되었습니다.";
-			path = "/";
-			status.setComplete(); // 세션 종료
-			session.invalidate(); // 세션 전체 무효화
-		} else {
-			message = "비밀번호가 일치하지 않습니다.";
+		try {
+			// 2. 🚨 memberPw로 카카오/일반 회원 구분
+			if (loginMember.getMemberPw() == null) {
+				// 카카오 회원 탈퇴 처리
+				 log.info("카카오 회원으로 판단");
+				log.info("카카오 회원 탈퇴 처리 - memberNo: {}", memberNo);
+				result = profileService.secessionKakaoMember(memberNo);
+				log.info("카카오 탈퇴 결과: {}", result);
+				
+			} else {
+				// 일반 회원 탈퇴 처리
+				log.info("일반 회원 탈퇴 처리 - memberNo: {}", memberNo);
+				
+				if (memberPw == null || memberPw.trim().isEmpty()) {
+					ra.addFlashAttribute("message", "비밀번호를 입력해주세요.");
+					return "redirect:/" + memberNo + "/profiledelete";
+				}
+				
+				result = profileService.secession(memberPw, memberNo);
+			}
+
+			// 3. 결과 처리
+			if (result > 0) {
+				// 탈퇴 성공
+				if (loginMember.getMemberPw() == null) {
+					message = "카카오 계정 탈퇴가 완료되었습니다.\n" +
+					         "카카오 연결 해제는 카카오톡 > 더보기 > 설정 > 카카오계정 > 연결된 서비스 관리에서 수동으로 진행해주세요.";
+				} else {
+					message = "회원탈퇴가 완료되었습니다.";
+				}
+				
+				path = "/";
+				
+				// 세션 완전 무효화
+				status.setComplete();
+				session.invalidate();
+				
+				log.info("회원 탈퇴 완료 - memberNo: {}, type: {}", 
+						memberNo, (loginMember.getMemberPw() == null ? "KAKAO" : "NORMAL"));
+				
+			} else {
+				// 탈퇴 실패
+				if (loginMember.getMemberPw() == null) {
+					message = "카카오 계정 탈퇴 처리 중 오류가 발생했습니다.";
+				} else {
+					message = "비밀번호가 일치하지 않습니다.";
+				}
+				path = "/" + memberNo + "/profiledelete";
+			}
+
+		} catch (Exception e) {
+			log.error("예외 발생!!!", e);
+			log.error("회원 탈퇴 처리 중 예외 발생 - memberNo: {}", memberNo, e);
+			message = "탈퇴 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
 			path = "/" + memberNo + "/profiledelete";
 		}
 
 		ra.addFlashAttribute("message", message);
 		return "redirect:" + path;
 	}
-
 }

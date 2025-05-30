@@ -104,3 +104,106 @@ button.post-button {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+/* 기존 CSS에 추가할 스타일들 */
+
+/* 계정 타입 안내 영역 */
+.account-type-info {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.account-type-info.normal-member {
+  border-left: 5px solid #007bff;
+}
+
+.account-type-info.kakao-member {
+  border-left: 5px solid #fee500;
+  background: #fffdf0;
+}
+
+.account-type-info h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.account-type-info p {
+  color: #666;
+  margin: 8px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* 카카오 탈퇴 안내 */
+.kakao-withdrawal-notice {
+  margin-bottom: 25px;
+}
+
+.kakao-withdrawal-notice .terms-content {
+  background: #fff9e6;
+  border: 2px solid #fee500;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* 체크박스 스타일 개선 */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 12px;
+  width: 18px;
+  height: 18px;
+  accent-color: #9f2120;
+}
+
+.checkbox-container label {
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* 카카오 회원용 체크박스 스타일 */
+#kakaoAgree + label {
+  color: #d68910;
+  font-weight: 600;
+}
+
+/* 버튼 텍스트 조정 */
+.post-button span {
+  margin-left: 5px;
+}
+
+/* 반응형 개선 */
+@media (max-width: 768px) {
+  .account-type-info {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .account-type-info h3 {
+    font-size: 16px;
+  }
+
+  .account-type-info p {
+    font-size: 13px;
+  }
+
+  .kakao-withdrawal-notice .terms-content {
+    padding: 15px;
+    font-size: 13px;
+  }
+}

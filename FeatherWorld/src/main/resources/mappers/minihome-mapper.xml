@@ -200,8 +200,10 @@ AND (
     B.BOARD_NO as boardNo,
     B.BOARD_TITLE as boardTitle,
     B.BOARD_CODE as boardCode,
+   
     (SELECT IMG_PATH || IMG_RENAME FROM "BOARD_IMG" WHERE B.BOARD_NO = BOARD_IMG.BOARD_NO AND IMG_ORDER = 0) THUMBNAIL
 	FROM BOARD B
+	
 	JOIN BOARD_TYPE BT ON B.BOARD_CODE = BT.BOARD_CODE
 	WHERE B.MEMBER_NO = #{memberNo}
 	AND B.BOARD_DEL_FL = 'N'
@@ -215,7 +217,7 @@ AND (
 		SELECT COUNT(*)
 		FROM BOARD
 		WHERE MEMBER_NO = #{memberNo}
-		  AND BOARD_DEL_FL = 'N'
+		AND BOARD_DEL_FL = 'N'
 	</select>
   		
 	<!-- 총 방명록 수 조회 -->

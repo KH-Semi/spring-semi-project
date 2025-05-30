@@ -108,5 +108,7 @@ public interface MemberMapper {
 	 */
 	List<Member> getTodayBestMembers();
 
+	Member checkmemberEmailIncludingDeleted(String memberEmail);
+
 
 }
