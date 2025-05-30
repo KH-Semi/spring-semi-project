@@ -223,7 +223,7 @@ AND (
 		SELECT COUNT(*)
 		FROM GUEST_BOOK
 		WHERE OWNER_NO = #{memberNo}
-		AND SECRET = 0
+		
 	</select>
 	
 	<!--  왼쪽 프로필 이미지만! 바꾸는  -->

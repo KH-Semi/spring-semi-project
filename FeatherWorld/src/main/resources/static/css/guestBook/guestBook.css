@@ -39,13 +39,14 @@
 }
 
 .guestbook-content {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.6;
   display: -webkit-box; /* 줄 자르기용 박스 */
   -webkit-line-clamp: 2; /* 최대 2줄 */
   -webkit-box-orient: vertical;
   overflow: hidden;
-
+  max-height: 3.2em; /* line-height * 2 */
+  position: relative;
   /* 방명록 내용 밖으로 나가는거 방지 코드 */
   text-overflow: ellipsis; /* 넘치면 ... 표시 */
   word-break: break-word; /* 단어 단위 줄바꿈 */
@@ -83,8 +84,8 @@
 
 /* 작성자 프로필 이미지 */
 .guestbook-writer-img {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -194,4 +195,34 @@
   .guestbook-list {
     max-width: none;
   }
+}
+
+/* 방명록 모달창 관련 */
+/* .guestbook-content.long-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  position: relative;
+  word-break: break-word;
+  padding-right: 80px;
+} */
+
+/* .guestbook-content.long-text::after {
+  content: "...더보기";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #f9f9f9;
+  padding-left: 4px;
+  color: #9f2120;
+  font-weight: bold;
+  cursor: pointer;
+} */
+
+.more-button {
+  color: #9f2120;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 4px;
 }
