@@ -25,10 +25,10 @@ public class MiniHomeServiceImpl implements MiniHomeService {
 	@Autowired
 	private MiniHomeMapper mapper;
 	    
-	@Value("${my.leftprofile.web-path}")
+	@Value("${my.left-profile.web-path}")
 	private String leftProfileWebPath;
 	
-	@Value("${my.leftprofile.folder-path}")
+	@Value("${my.left-profile.folder-path}")
 	private String leftProfileFolderPath;
 	
 	
