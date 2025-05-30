@@ -2,6 +2,7 @@ package com.featherworld.project.miniHome.model.service;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -123,18 +124,18 @@ public class MiniHomeServiceImpl implements MiniHomeService {
 	// ================ 게시글 및 방명록 ================
 	
 	@Override
-	public List<Board> getRecentBoards(int memberNo) {
-	    return mapper.getRecentBoards(memberNo);
+	public List<Board> getRecentBoards(Map<String, Integer> map) {
+	    return mapper.getRecentBoards(map);
 	}
 	
 	@Override
-	public int getTotalBoardCount(int memberNo) {
-	    return mapper.getTotalBoardCount(memberNo);
+	public int getTotalBoardCount(Map<String, Integer> map) {
+	    return mapper.getTotalBoardCount(map);
 	}
 	
 	@Override
-	public int getTotalGuestBookCount(int memberNo) {
-	    return mapper.getTotalGuestBookCount(memberNo);
+	public int getTotalGuestBookCount(Map<String, Integer> map) {
+	    return mapper.getTotalGuestBookCount(map);
 	}
 	
 	// 왼쪽프로필 수정하는 서비스
