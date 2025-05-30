@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 최대 150자 입력 제한
   guestBookContent.addEventListener("input", (e) => {
     const len = e.target.value.length;
-    console.log("입력 글자 수:", len);
+
     if (e.target.value.length > 150) {
       alert("방명록 내용은 최대 150자까지 작성할 수 있습니다.");
       e.target.value = e.target.value.slice(0, 150);
