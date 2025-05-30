@@ -104,7 +104,12 @@ span {
 .title {
   display: flex;
   align-content: center;
-  margin: 30px 30px 10px 30px;
+  margin: 50px 30px 10px 30px;
+}
+.title {
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 .title-font {
   font-weight: bold;
@@ -131,12 +136,19 @@ span {
   width: auto;
 }
 .button-default {
-  background-color: #912d2d;
+  background-color: #9f2120;
   color: white;
-  border: 1px solid #ccc;
-  align-items: center;
-  padding: 8px 8px;
-  border-radius: 10px;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button-default:hover {
+  opacity: 90%;
+  transform: translateY(-5px);
 }
 
 .check-icon {

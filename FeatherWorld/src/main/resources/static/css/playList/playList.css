@@ -189,12 +189,14 @@ body {
 }
 
 .post-button {
-  padding: 6px 12px;
-  border: 2px solid #ccc;
-  border-radius: 20px;
+  background-color: #9f2120;
   color: white;
+  font-weight: bold;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  opacity: 90%;
   font-size: 12px;
-  background-color: #912d2d;
   cursor: pointer;
 }
 
