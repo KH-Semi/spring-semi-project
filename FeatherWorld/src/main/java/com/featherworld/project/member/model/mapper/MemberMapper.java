@@ -117,4 +117,7 @@ public interface MemberMapper {
 	 * @return
 	 */
 	List<String> selectDbImageList();
+
+	Member checkmemberEmailIncludingDeleted(String memberEmail);
+
 }

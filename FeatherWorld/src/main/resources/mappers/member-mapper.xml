@@ -112,6 +112,7 @@
             KAKAO_ACCESS_TOKEN
         FROM MEMBER
         WHERE MEMBER_EMAIL = #{memberEmail}
+        AND MEMBER_DEL_FL = 'N'
     </select>
 
     <!-- kakaoToken 업데이트 (매개변수 이름 오타 수정) -->
@@ -119,6 +120,7 @@
         UPDATE MEMBER SET
             KAKAO_ACCESS_TOKEN = #{kakaoAccessToken}
         WHERE MEMBER_EMAIL = #{memberEmail}
+        AND MEMBER_DEL_FL = 'N'
     </update>
     
     <select id="checkmemberEmail" resultType="Member">
@@ -190,6 +192,13 @@
 	WHERE ROWNUM <= 6
 	]]>
 	</select>
+	
+	<select id="checkmemberEmailIncludingDeleted" resultType="Member">
+    SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NAME, MEMBER_DEL_FL
+    FROM MEMBER
+    WHERE MEMBER_EMAIL = #{memberEmail}
+    <!-- MEMBER_DEL_FL 조건 없음 - 탈퇴한 회원도 조회 -->
+</select>
 
     <!-- DB에 있는 이미지 이름 조회 -->
     <select id="selectDbImageList">

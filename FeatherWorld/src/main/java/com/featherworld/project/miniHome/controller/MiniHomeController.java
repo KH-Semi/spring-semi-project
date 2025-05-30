@@ -37,7 +37,7 @@ public class MiniHomeController {
     public String miniHomePage(@PathVariable("memberNo") int memberNo,
                               @SessionAttribute(value = "loginMember", required = false) Member loginMember,
                               Model model) {
-    
+
         Map<String, Integer> map = new HashMap<>();
         map.put("memberNo", memberNo);
         
@@ -52,6 +52,7 @@ public class MiniHomeController {
         
         int totalBoardCount = miniHomeService.getTotalBoardCount(map);
         int totalGuestBookCount = miniHomeService.getTotalGuestBookCount(map);
+        
         
         model.addAttribute("totalBoardCount", totalBoardCount);
         model.addAttribute("totalGuestBookCount", totalGuestBookCount);

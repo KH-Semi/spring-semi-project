@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="/css/board/boardList.css" />
   </head>
   <body>
+	<div class="center-page">
+	     <div class="center-content">
     <div class="container">
       <!-- 헤더 Include -->
       <th:block th:replace="~{common/header}"></th:block>
@@ -31,7 +33,8 @@
       <!-- 푸터 Include -->
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
-
+	     </div>
+	</div>
     <!-- JS 에서 쓰기 버튼 클릭 이벤트에 활용할 현재 게시판 종류 번호 선언 -->
     <script th:inline="javascript">
       const memberNo = /*[[${memberNo}]]*/ 0;

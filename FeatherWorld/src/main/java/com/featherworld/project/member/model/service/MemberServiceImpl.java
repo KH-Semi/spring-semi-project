@@ -296,6 +296,11 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mapper.getTodayBestMembers();
 	}
+
+	@Override
+	public Member checkmemberEmailIncludingDeleted(String memberEmail) {
+		return mapper.checkmemberEmailIncludingDeleted(memberEmail);
+	}
 	
 	// DB에 있는 이미지 이름 조회
 	@Override

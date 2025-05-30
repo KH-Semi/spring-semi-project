@@ -52,12 +52,7 @@
                       th:src="${profile != null} ? @{${profile.imgPath + profile.imgRename}} : @{/images/defaultimage.png}"
                       id="preview"
                       alt="이미지 미리보기"
-                      style="
-                        display: block;
-                        max-width: 100%;
-                        height: auto;
-                        border-radius: 8px;
-                      "
+                      style="display: block; max-width: 100%; height: auto"
                     />
                   </div>
                 </div>
@@ -89,7 +84,9 @@
             </div>
 
             <!-- Right Sidebar -->
-            <th:block th:replace="~{common/navSidebar}"></th:block>
+            <div class="right-sidebar">
+              <th:block th:replace="~{common/navSidebar}"></th:block>
+            </div>
           </div>
 
           <!-- Footer -->

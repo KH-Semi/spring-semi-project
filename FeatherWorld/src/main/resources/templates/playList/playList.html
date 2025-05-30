@@ -10,6 +10,8 @@
   </head>
 
   <body>
+	<div class="center-page">
+	     <div class="center-content">
     <div class="container">
       <!-- 헤더 Include -->
       <th:block th:replace="~{common/header}"></th:block>
@@ -111,7 +113,8 @@
       <!-- 푸터 추가-->
       <th:block th:replace="~{common/footer}"></th:block>
     </div>
-
+</div>
+</div>
     <script th:inline="javascript">
       const memberNo = /*[[${memberNo}]]*/ "회원번호";
       const loginMemberNo =

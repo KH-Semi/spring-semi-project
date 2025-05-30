@@ -1,5 +1,8 @@
-<div id="my-incoming-friend-list">
-  <button id="back-btn" class="button-default right-align">Back</button>
+<div id="my-incoming-friend-list" style="padding-bottom: 20px">
+  <button id="to-friendList-btn" class="button-default right-align">
+    현재 일촌 리스트로 돌아가기
+  </button>
+
   <ul class="title title-font">
     <!-- 250521 나중에 미니홈피 profile 구현 후 서버에서 member정보를 model 등에 구현했을떄 다시 수정할것.-->
     MY 보낸/받은 일촌신청 목록
@@ -14,7 +17,11 @@
       나에게 들어온 일촌신청 목록이에요!
     </ul>
   </div>
-  <ul id="friend-list" class="border-inner" style="padding: 20px 0px 20px 0px">
+  <ul
+    id="friend-list"
+    class="border-inner"
+    style="padding: 20px 0px 20px 0px; margin: 20px 0px 20px 0px"
+  >
     <th:block th:each="ilchon : ${ilchons}">
       <li
         class="friend-item fade-slide"
@@ -95,58 +102,69 @@
       </li>
     </th:block>
     <!-- pagination -->
-    <ul
-      id="incoming-pagination"
-      class="pagination"
-      th:unless="${#lists.isEmpty(ilchons)}"
-    >
-      <!-- << -->
-      <li>
-        <span
-          th:href="@{|${memberNo}/friendList/incoming?cp=1&cpFrom=${paginationFrom.currentPage}|}"
-          >&lt;&lt;</span
-        >
-      </li>
-
-      <!-- < -->
-      <li>
-        <span
-          th:href="@{|/${memberNo}/friendList/incoming?cp=${pagination.prevPage}&cpFrom=${paginationFrom.currentPage}|}"
-          >&lt;</span
-        >
-      </li>
-
-      <!-- Page numbers -->
-      <th:block
-        th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
+    <div style="margin-top: 40px">
+      <ul
+        id="incoming-pagination"
+        class="pagination"
+        th:unless="${#lists.isEmpty(ilchons)}"
       >
-        <li th:if="${i == pagination.currentPage}">
-          <span class="current" th:text="${i}"></span>
-        </li>
-        <li th:if="${i != pagination.currentPage}">
+        <!-- << -->
+        <li>
           <span
-            th:href="@{|/{memberNo}/friendList/incomingcp=${i}&cpFrom=${paginationFrom.currentPage}|}"
-            th:text="${i}"
-          ></span>
+            th:href="@{|${memberNo}/friendList/incoming?cp=1&cpFrom=${paginationFrom.currentPage}|}"
+            th:onClick="|updateFriendListIncoming(1,  ${paginationFrom.currentPage})|"
+            >&lt;&lt;</span
+          >
         </li>
-      </th:block>
 
-      <!-- > -->
-      <li>
-        <span
-          th:href="@{|/${memberNo}/friendList/incoming?cp=${pagination.nextPage}&cpFrom=${paginationFrom.currentPage}|}"
-          >&gt;</span
-        >
-      </li>
+        <!-- < -->
+        <li>
+          <span
+            th:href="@{|/${memberNo}/friendList/incoming?cp=${pagination.prevPage}&cpFrom=${paginationFrom.currentPage}|}"
+            th:onClick="|updateFriendListIncoming(${pagination.prevPage},  ${paginationFrom.currentPage})|"
+            >&lt;</span
+          >
+        </li>
 
-      <!-- >> -->
-      <li>
-        <span
-          th:href="@{|/${memberNo}/friendList/incoming?cp=${pagination.maxPage}&cpFrom=${paginationFrom.currentPage}|}"
-          >&gt;&gt;</span
+        <!-- Page numbers -->
+        <th:block
+          th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
         >
-      </li>
-    </ul>
+          <li th:if="${i == pagination.currentPage}">
+            <span
+              class="current"
+              th:text="${i}"
+              th:onClick="|updateFriendListIncoming(${i},  ${paginationFrom.currentPage})|"
+            ></span>
+          </li>
+          <li th:if="${i != pagination.currentPage}">
+            <span
+              th:href="@{|/{memberNo}/friendList/incomingcp=${i}&cpFrom=${paginationFrom.currentPage}|}"
+              th:text="${i}"
+              th:onClick="|updateFriendListIncoming(${i},  ${paginationFrom.currentPage})|"
+            ></span>
+          </li>
+        </th:block>
+
+        <!-- > -->
+        <li>
+          <span
+            th:href="@{|/${memberNo}/friendList/incoming?cp=${pagination.nextPage}&cpFrom=${paginationFrom.currentPage}|}"
+            th:onClick="|updateFriendListIncoming(${pagination.nextPage},  ${paginationFrom.currentPage})|"
+            >&gt;</span
+          >
+        </li>
+
+        <!-- >> -->
+        <li>
+          <span
+            th:href="@{|/${memberNo}/friendList/incoming?cp=${pagination.maxPage}&cpFrom=${paginationFrom.currentPage}|}"
+            th:onClick="|updateFriendListIncoming(${pagination.maxPage},  ${paginationFrom.currentPage})|"
+            >&gt;&gt;</span
+          >
+        </li>
+      </ul>
+    </div>
     <!--end of Pagination-->
     <div style="justify-items: center" th:if="${#lists.isEmpty(ilchons)}">
       <p>일촌신청이 없습니다.</p>
@@ -216,58 +234,66 @@
       </li>
     </th:block>
     <!-- pagination -->
-    <ul
-      id="sended-pagination"
-      class="pagination"
-      th:unless="${#lists.isEmpty(ilchonsFrom)}"
-    >
-      <!-- << -->
-      <li>
-        <span th:href="@{|/{memberNo}/friendList/incoming?cpFrom=1|}"
-          >&lt;&lt;</span
-        >
-      </li>
-
-      <!-- < -->
-      <li>
-        <span
-          th:href="@{|/${memberNo}/friendList/incoming?cp=${pagination.currentPage}&cpFrom=${pagination.prevPage} |}"
-          >&lt;</span
-        >
-      </li>
-
-      <!-- Page numbers -->
-      <th:block
-        th:each="i : ${#numbers.sequence(paginationFrom.startPage, paginationFrom.endPage)}"
+    <div style="margin-top: 40px">
+      <ul
+        id="sended-pagination"
+        class="pagination"
+        th:unless="${#lists.isEmpty(ilchonsFrom)}"
       >
-        <li th:if="${i == paginationFrom.currentPage}">
-          <span class="current" th:text="${i}"></span>
-        </li>
-        <li id="target" th:if="${i != paginationFrom.currentPage}">
+        <!-- << -->
+        <li>
           <span
-            th:href="@{|/${memberNo}/friendList/incoming?cpFrom=${i}|}"
-            th:text="${i}"
-          ></span>
+            th:href="@{|/{memberNo}/friendList/incoming?cpFrom=1|}"
+            th:onClick="|updateFriendListIncoming(${pagination.currentPage},  1)|"
+            >&lt;&lt;</span
+          >
         </li>
-      </th:block>
 
-      <!-- > -->
-      <li>
-        <span
-          th:href="@{|/${memberNo}/friendList/incoming?cp=${pagination.currentPage}&cpFrom=${paginationFrom.nextPage}|}"
-          >&gt;</span
-        >
-      </li>
+        <!-- < -->
+        <li>
+          <span
+            th:href="@{|/${memberNo}/friendList/incoming?cp=${pagination.currentPage}&cpFrom=${pagination.prevPage} |}"
+            th:onClick="|updateFriendListIncoming(${pagination.currentPage},  ${pagination.prevPage})|"
+            >&lt;</span
+          >
+        </li>
 
-      <!-- >> -->
-      <li>
-        <span
-          th:href="@{|/${memberNo}/friendList/incoming?cp=${pagination.currentPage}&cpFrom=${paginationFrom.maxPage}|}"
-          th:onClick="|updateFriendList(${pagination.currentPage}, ${paginationFrom.maxPage})|"
-          >&gt;&gt;</span
+        <!-- Page numbers -->
+        <th:block
+          th:each="i : ${#numbers.sequence(paginationFrom.startPage, paginationFrom.endPage)}"
         >
-      </li>
-    </ul>
+          <li th:if="${i == paginationFrom.currentPage}">
+            <span class="current" th:text="${i}"></span>
+          </li>
+          <li id="target" th:if="${i != paginationFrom.currentPage}">
+            <span
+              th:href="@{|/${memberNo}/friendList/incoming?cpFrom=${i}|}"
+              th:text="${i}"
+              th:onClick="|updateFriendListIncoming(${pagination.currentPage},  ${i})|"
+            ></span>
+          </li>
+        </th:block>
+
+        <!-- > -->
+        <li>
+          <span
+            th:href="@{|/${memberNo}/friendList/incoming?cp=${pagination.currentPage}&cpFrom=${paginationFrom.nextPage}|}"
+            th:onClick="|updateFriendListIncoming(${pagination.currentPage},  ${paginationFrom.nextPage})|"
+            >&gt;</span
+          >
+        </li>
+
+        <!-- >> -->
+        <li>
+          <span
+            th:href="@{|/${memberNo}/friendList/incoming?cp=${pagination.currentPage}&cpFrom=${paginationFrom.maxPage}|}"
+            th:onClick="|updateFriendListIncoming(${pagination.currentPage},  ${paginationFrom.maxPage})|"
+            >&gt;&gt;</span
+          >
+        </li>
+      </ul>
+    </div>
+
     <!--end of Pagination-->
     <div style="justify-items: center" th:if="${#lists.isEmpty(ilchonsFrom)}">
       <p>일촌신청이 없습니다.</p>

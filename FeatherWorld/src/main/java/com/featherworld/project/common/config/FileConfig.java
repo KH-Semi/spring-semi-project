@@ -17,11 +17,6 @@ import jakarta.servlet.MultipartConfigElement;
 @PropertySource("classpath:/config.properties")
 public class FileConfig implements WebMvcConfigurer{
 	
-	// WebMvcConfigurer : (addResourceHandlers, Locations 사용하게 해줌)
-	// Spring MVC 프레임워크에서 제공하는 인터페이스 중 하나로
-	// 스프링 구성을 커스터마이징하고 확장하기 위한 메서드를 제공함.
-	// 주로 웹 애플리케이션의 설정을 조정하거나 추가하는 데 사용됨.
-	
 	// 파일 업로드 임계값
 	@Value("${spring.servlet.multipart.file-size-threshold}")
 	private long fileSizeThreshold;	// 52428800
@@ -119,11 +114,7 @@ public class FileConfig implements WebMvcConfigurer{
 	// -> Bean으로 등록하면서 위에서 만든 MultipartConfigElement 자동으로 이용함
 	@Bean
 	public MultipartResolver multipartResolver() {
-		// MultipartResolver : MultipartFile을 처리해주는 해결사
-		// MultipartResolver는 클라이언트로부터 받은 multipart 요청을 처리하고,
-		// 이 중에서 업로드 된 파일을 추출하여 MultipartFile 객체로 제공하는 역할
-		StandardServletMultipartResolver multipartResolver
-		= new StandardServletMultipartResolver();
+		StandardServletMultipartResolver multipartResolver = new StandardServletMultipartResolver();
 		
 		return multipartResolver;
 	}

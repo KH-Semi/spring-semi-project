@@ -89,6 +89,10 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 
-
+@Override
+public int secessionKakaoMember(int memberNo) {
+	
+	return mapper.secessionKakaoMember(memberNo);
+}
 
 }

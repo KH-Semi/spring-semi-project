@@ -13,26 +13,39 @@
     <link href="/css/friendList/friendListPart.css" rel="stylesheet" />
   </head>
   <body class="minihome-page">
-    <div class="container">
-      <!-- Header Fragment -->
-      <div th:replace="~{common/header}"></div>
+    <div class="center-page">
+      <div class="center-content">
+        <div class="container">
+          <!-- Header Fragment -->
+          <div th:replace="~{common/header}"></div>
 
-      <div class="content-container">
-        <!-- Left sidebar - Profile -->
-        <div class="left-sidebar">
-          <div th:replace="~{common/leftsidebar}"></div>
-        </div>
+          <div class="content-container">
+            <!-- Left sidebar - Profile -->
+            <div class="left-sidebar">
+              <div th:replace="~{common/leftsidebar}"></div>
+            </div>
 
-        <!-- Middle Content Area -->
-        <div name="friend-list" class="main-content" style="min-height: 600px">
-          <div th:replace="~{friendList/friendListPart}"></div>
-          <!-- Right sidebar -->
+            <!-- Middle Content Area -->
+            <div
+              name="friend-list"
+              class="main-content overflow-content-y"
+              style="min-height: 600px"
+            >
+              <div
+                style="padding-bottom: 20px"
+                th:replace="~{friendList/friendListPart}"
+              ></div>
+              <!-- Right sidebar -->
+            </div>
+            <div th:replace="~{common/navsidebar}"></div>
+          </div>
+          <div th:replace="~{common/footer}"></div>
+          <!-- Footer -->
         </div>
-        <div th:replace="~{common/navsidebar}"></div>
       </div>
-      <div th:replace="~{common/footer}"></div>
-      <!-- Footer -->
     </div>
+
+    <!-------------------------------------------------------------------->
     <script th:inline="javascript">
       const memberNo = /*[[${memberNo}]]*/ 0;
     </script>

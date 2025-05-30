@@ -213,79 +213,88 @@ public List<Member> searchMembers(@RequestParam("memberName") String memberName)
  */
    @ResponseBody
     @PostMapping("kakaoLogin")
-    public Map<String, Object> kakaoLogin(@RequestBody Map<String, String> kakaodata, 
-                                          HttpSession session) {
-        
-        Map<String, Object> response = new HashMap<>();
-        
-        try {
-            String memberEmail = kakaodata.get("memberEmail");
-            String kakaoToken = kakaodata.get("kakaoToken");
-            String memberName = kakaodata.get("memberName");
-            
-           
-            
-            // 이메일로 기존 회원 조회
-            Member member = service.checkmemberEmail(memberEmail);
-            
-            if (member != null) {
-                // 기존 회원이 있는 경우
-               
-                
-                // 카카오 토큰 업데이트
-                int result = service.kakaoMemberUpdate(memberEmail, kakaoToken);
-                
-                if (result > 0) {
-                    // 업데이트 성공 - 최신 정보로 회원 다시 조회
-                    member = service.checkmemberEmail(memberEmail);
-                    
-                    // 세션에 로그인 정보 저장
-                    session.setAttribute("loginMember", member);
-                    
-                    response.put("success", true);
-                    response.put("message", "로그인 성공");
-                    response.put("isNewMember", false);
-                } else {
-                    // 업데이트 실패
-                    response.put("success", false);
-                    response.put("message", "카카오 토큰 업데이트 실패");
-                }
-            } else {
-                // 신규 회원인 경우
-               
-                
-                Member newMember = new Member();
-                newMember.setMemberEmail(memberEmail);
-                newMember.setMemberName(memberName);
-                newMember.setKakaoAccessToken(kakaoToken);
-                
-                int insertResult = service.insertMember(newMember);
-                
-                if (insertResult > 0) {
-                    // 신규 회원 등록 성공
-                    // 등록 후 최신 정보로 회원 조회
-                    Member insertedMember = service.checkmemberEmail(memberEmail);
-                    
-                    // 세션에 로그인 정보 저장
-                    session.setAttribute("loginMember", insertedMember);
-                    
-                    response.put("success", true);
-                    response.put("message", "회원가입 및 로그인 성공");
-                    response.put("isNewMember", true);
-                } else {
-                    // 신규 회원 등록 실패
-                    response.put("success", false);
-                    response.put("message", "회원가입 실패");
-                }
-            }
-        } catch (Exception e) {
-         
-            response.put("success", false);
-            response.put("message", "로그인 처리 중 오류가 발생했습니다: " + e.getMessage());
-	        }
-	        
-	        return response;
-	    }
+   public Map<String, Object> kakaoLogin(@RequestBody Map<String, String> kakaodata,
+           HttpSession session) {
+
+Map<String, Object> response = new HashMap<>();
+
+
+	try {
+			String memberEmail = kakaodata.get("memberEmail");
+			String kakaoToken = kakaodata.get("kakaoToken");
+			String memberName = kakaodata.get("memberName");
+
+			// 이메일로 기존 활성 회원 조회
+			Member member = service.checkmemberEmail(memberEmail);
+
+			if (member != null) {
+				// 기존 활성 회원이 있는 경우
+
+				// 카카오 토큰 업데이트
+				 int result = service.kakaoMemberUpdate(memberEmail, kakaoToken);
+
+				 	if (result > 0) {
+                         // 업데이트 성공 - 최신 정보로 회원 다시 조회
+				 			member = service.checkmemberEmail(memberEmail);
+
+				 			// 세션에 로그인 정보 저장
+				 			session.setAttribute("loginMember", member);
+
+				 			response.put("success", true);
+							response.put("message", "로그인 성공");
+							response.put("isNewMember", false);
+							} else {
+							// 업데이트 실패
+							response.put("success", false);
+							response.put("message", "카카오 토큰 업데이트 실패");
+							}
+							} else {
+							// 활성 회원이 없는 경우 - 탈퇴한 회원인지 확인
+							
+							// 🚨 추가: 탈퇴한 회원 포함해서 조회
+							Member deletedMember = service.checkmemberEmailIncludingDeleted(memberEmail);
+							
+							if (deletedMember != null) {
+							// 탈퇴한 회원이 존재하는 경우 - 재가입 차단
+							response.put("success", false);
+							response.put("message", "이미 사용된 이메일입니다. 해당 이메일로는 재가입이 불가능합니다.");
+
+							} else {
+								// 완전히 새로운 회원인 경우 - 신규 가입 허용
+
+									Member newMember = new Member();
+									newMember.setMemberEmail(memberEmail);
+									newMember.setMemberName(memberName);
+									newMember.setKakaoAccessToken(kakaoToken);
+
+									int insertResult = service.insertMember(newMember);
+
+								if (insertResult > 0) {
+									// 신규 회원 등록 성공
+									// 등록 후 최신 정보로 회원 조회
+									Member insertedMember = service.checkmemberEmail(memberEmail);
+
+										//	세션에 로그인 정보 저장
+									   session.setAttribute("loginMember", insertedMember);
+
+									   response.put("success", true);
+									   response.put("message", "회원가입 및 로그인 성공");
+									   response.put("isNewMember", true);
+									} else {
+										
+										// 신규 회원 등록 실패
+										response.put("success", false);
+										response.put("message", "회원가입 실패");
+									}
+								}
+							}
+									} catch (Exception e) {
+										response.put("success", false);
+										response.put("message", "로그인 처리 중 오류가 발생했습니다: " + e.getMessage());
+									}
+
+									return response;
+   								}
 
    	
 

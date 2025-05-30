@@ -130,4 +130,6 @@ public interface MemberService {
 	 * @return 
 	 */
 	List<String> selectDbImageList();
+
+	Member checkmemberEmailIncludingDeleted(String memberEmail);
 }
