@@ -192,7 +192,7 @@
 
 /* 반응형 디자인 */
 @media (max-width: 992px) {
-  .guestbook-list {
+  .profile-list {
     max-width: none;
   }
 }
