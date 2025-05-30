@@ -84,6 +84,7 @@ function resetEditCancelBtn() {
   cancelBtn = document.getElementById("cancel-button");
   sendFriendReqBtn = document.getElementById("send-friend-request-button");
   friendSpans = document.querySelectorAll(".friend-item");
+  //1
   if (editBtn) {
     editBtn.addEventListener("click", (e) => {
       console.log("editBtn clicked!");
@@ -112,6 +113,7 @@ function resetEditCancelBtn() {
     });
   }
 
+  //2
   if (cancelBtn) {
     cancelBtn.addEventListener("click", (e) => {
       editBtn.classList.remove("hidden");
@@ -129,6 +131,24 @@ function resetEditCancelBtn() {
       });
     });
   }
+
+  //3
+  friendSpans.forEach(function (friend) {
+    const profileImg = friend.querySelector(".friend-profile");
+    const profileName = friend.querySelector(".friend-name");
+    profileImg.style.cursor = "pointer";
+    if (profileImg) {
+      profileImg.addEventListener("click", () => {
+        window.location.href = `/${friend.dataset.memberNo}/friendList`;
+      });
+    }
+    profileImg.style.cursor = "pointer";
+    if (profileName) {
+      profileName.addEventListener("click", () => {
+        window.location.href = `/${friend.dataset.memberNo}/friendList`;
+      });
+    }
+  });
 }
 resetEditCancelBtn();
 function updateFriendList(cp) {
@@ -146,7 +166,6 @@ function updateFriendList(cp) {
       return res.text();
     })
     .then((html) => {
-      console.log("응답 HTML:", html);
       // 응답받은 HTML을 파싱해서 DOM으로 변환
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, "text/html");
@@ -154,8 +173,6 @@ function updateFriendList(cp) {
       // 기존 DOM의 요소 교체
       const currentBlock = document.querySelector(".main-content");
 
-      console.log("파싱된 요소:", doc.body.firstElementChild);
-      console.log("파싱된 요소:", currentBlock);
       if (currentBlock) {
         currentBlock.innerHTML = doc.body.firstElementChild.outerHTML;
         resetEditCancelBtn();

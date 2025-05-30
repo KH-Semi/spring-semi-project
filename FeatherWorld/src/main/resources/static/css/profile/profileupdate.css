@@ -1,52 +1,54 @@
 /* 가운데 영역 기본 레이아웃 */
 .middle-content {
   flex: 1 1 auto;
+  max-width: 900px; /* ✅ 추가 */
+  margin: 0 auto; /* ✅ 가운데 정렬 */
   padding: 20px;
   background-color: #fdfdfd;
-  border-radius: 10px;
+  border-radius: 1px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-/* 업로드 + 자기소개 랩퍼 */
 .upload-bio-container {
-  max-width: 700px;
-  width: 100%;
-  margin: 0 auto;
-  border-radius: 8px;
-  padding: 12px 20px;
-  box-sizing: border-box;
+  max-width: 400px; /* 원하는 최대 너비 지정 */
+  margin: 0 auto; /* 가운데 정렬 */
   cursor: pointer;
+  border: 1px dashed #ccc;
+  padding: 15px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #fafafa;
+  transition: transform 0.3s ease;
 }
 
-/* 이미지 업로드 박스 */
+.upload-bio-container:hover {
+  background-color: #f0f0f0;
+}
+
 .image-upload-box {
   width: 100%;
-  height: 50%;
-  border: 2px dashed #9f2120;
+  height: 350px;
+  border: 2px dashed white;
   background-color: #fafafa;
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 18px;
-  font-family: inherit;
-  color: #9f2120;
-  box-sizing: border-box;
   overflow: hidden;
-  transition: background-color 0.3s ease;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.image-upload-box {
+  width: 100%;
+  max-height: 350px; /* ⬅️ 수정: height → max-height */
+  min-height: 200px;
 }
 
 .image-upload-box:hover {
   background-color: #f0e6e6;
-}
-
-.image-upload-box img {
-  max-width: 100%;
-  max-height: 180px;
-  border-radius: 8px;
-  margin-top: 10px;
-  object-fit: contain;
 }
 
 /* 자기소개 텍스트 */
@@ -60,7 +62,7 @@
 
 .bio-textarea {
   width: 100%;
-  height: 150px;
+  height: 100px;
   border: 2px solid #9f2120;
   background-color: #fafafa;
   border-radius: 8px;
@@ -72,6 +74,8 @@
   color: #333;
   text-align: center;
   transition: border-color 0.3s ease;
+  overflow: hidden; /* 스크롤 숨김 */
+  resize: none; /* 크기 조절 막기 */
 }
 
 .bio-textarea:focus {
@@ -116,38 +120,4 @@
 .confirm-button:hover {
   background-color: #9f2120;
   opacity: 90%;
-  transform: translateY(-5px);
-}
-
-.upload-bio-container {
-  max-width: 400px; /* 원하는 최대 너비 지정 */
-  margin: 0 auto; /* 가운데 정렬 */
-  cursor: pointer;
-  border: 1px dashed #ccc;
-  padding: 15px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  text-align: center;
-  background-color: #fafafa;
-  transition: transform 0.3s ease;
-}
-
-.upload-bio-container:hover {
-  background-color: #f0f0f0;
-  transform: translateY(-5px);
-}
-
-.image-upload-box p {
-  margin: 0 0 10px 0;
-  color: #666;
-  font-size: 14px;
-}
-
-.image-upload-box img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }

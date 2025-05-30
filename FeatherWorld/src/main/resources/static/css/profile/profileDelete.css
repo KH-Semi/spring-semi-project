@@ -77,7 +77,8 @@
   margin-top: 30px;
 }
 
-.post-button {
+.post-button,
+button.post-button {
   padding: 10px 20px;
   background-color: #9f2120;
   color: #fff;
@@ -92,7 +93,6 @@
 .post-button:hover {
   background-color: #9f2120;
   opacity: 90%;
-  transform: translateY(-5px);
 }
 
 /* 오른쪽 사이드바 영역   */

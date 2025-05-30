@@ -9,7 +9,7 @@
   <!-- DB 수정완료 되었을시 뜨는 v표시 애니메이션-->
 </head>
 
-<div id="my-friend-list">
+<div id="my-friend-list" style="padding-bottom: 20px">
   <button
       id="goto-imcoming-friend-button"
       th:if="${session.loginMember != null 
@@ -76,7 +76,7 @@
   </div>
   <ul id="friend-list">
     <th:block th:each="ilchon : ${ilchons}">
-      <li
+      <li 
         class="friend-item fade-slide"
         th:attr="data-member-no=${ilchon.toMemberNo == memberNo?ilchon.fromMemberNo:ilchon.toMemberNo}"
       >
@@ -136,33 +136,36 @@
   </ul>
 
   <!-- pagination -->
-  <ul class="pagination" th:unless="${#lists.isEmpty(ilchons)}">
-    <!-- << -->
-    <li><span th:href="@{|/${memberNo}/friendList?cp=1|}" th:onClick="|updateFriendList(1)|">&lt;&lt;</span></li>
+   <div style="margin-top:40px">
+      <ul class="pagination" th:unless="${#lists.isEmpty(ilchons)}">
+      <!-- << -->
+      <li><span  th:onClick="|updateFriendList(1)|">&lt;&lt;</span></li>
 
-    <!-- < -->
-    <li><span th:href="@{|/${memberNo}/friendList?cp=${pagination.prevPage}|}" th:onClick="|updateFriendList(${pagination.prevPage})|">&lt;</span></li>
+      <!-- < -->
+      <li><span  th:onClick="|updateFriendList(${pagination.prevPage})|">&lt;</span></li>
 
-    <!-- Page numbers -->
-    <th:block
-      th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
-    >
-      <li th:if="${i == pagination.currentPage}">
-        <span class="current" th:text="${i}" th:onClick="|updateFriendList(${i})|"></span>
+      <!-- Page numbers -->
+      <th:block
+        th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage)}"
+      >
+        <li th:if="${i == pagination.currentPage}">
+          <span class="current" th:text="${i}" th:onClick="|updateFriendList(${i})|"></span>
+        </li>
+        <li th:if="${i != pagination.currentPage}">
+          <span  th:onClick="|updateFriendList(${i})|" th:text="${i}"></span>
+        </li>
+      </th:block>
+
+      <!-- > -->
+      <li><span  th:onClick="|updateFriendList(${pagination.nextPage})|">&gt;</span></li>
+
+      <!-- >> -->
+      <li>
+        <span  th:onClick="|updateFriendList(${pagination.maxPage})|">&gt;&gt;</span>
       </li>
-      <li th:if="${i != pagination.currentPage}">
-        <span th:href="@{|/${memberNo}/friendList?cp=${i}|}" th:onClick="|updateFriendList(${i})|" th:text="${i}"></span>
-      </li>
-    </th:block>
-
-    <!-- > -->
-    <li><span th:href="@{|/${memberNo}/friendList?cp=${pagination.nextPage}|}" th:onClick="|updateFriendList(${pagination.nextPage})|">&gt;</span></li>
-
-    <!-- >> -->
-    <li>
-      <span th:href="@{|/${memberNo}/friendList?cp=${pagination.maxPage}|}" th:onClick="|updateFriendList(${pagination.maxPage})|">&gt;&gt;</span>
-    </li>
-  </ul>
+      </ul>
+  </div>
+  
 </div>
 
 <!--***********author : ahn     **********
