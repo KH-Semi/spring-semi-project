@@ -35,7 +35,5 @@ public class MemberDeleteScheduling {
 
             memberService.deleteMember(member.getMemberNo());
         }
-
-        log.info("탈퇴 회원 삭제 끝");
     }
 }

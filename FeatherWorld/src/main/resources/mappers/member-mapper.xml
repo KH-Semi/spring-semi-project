@@ -191,5 +191,21 @@
 	]]>
 	</select>
 
+    <!-- DB에 있는 이미지 이름 조회 -->
+    <select id="selectDbImageList">
+        SELECT SUBSTR(MEMBER_IMG, INSTR(MEMBER_IMG, '/', -1) + 1) AS "rename"
+        FROM MEMBER
+        WHERE MEMBER_IMG IS NOT NULL
+        
+        UNION
 
+        SELECT CAST(IMG_RENAME AS VARCHAR2(300)) AS "rename"
+        FROM PROFILE
+        
+        UNION
+        
+        SELECT CAST(IMG_RENAME AS VARCHAR2(300)) AS "rename"
+        FROM BOARD_IMG
+    </select>
+    
 </mapper>

@@ -124,5 +124,10 @@ public interface MemberService {
 	 * @author 영민
 	 */
 	List<Member> getTodayBestMembers();
-
+	
+	/** DB에 있는 이미지 이름 조회
+	 * @author Jiho
+	 * @return 
+	 */
+	List<String> selectDbImageList();
 }

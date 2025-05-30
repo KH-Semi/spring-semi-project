@@ -296,11 +296,10 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mapper.getTodayBestMembers();
 	}
-
-
-
+	
+	// DB에 있는 이미지 이름 조회
+	@Override
+	public List<String> selectDbImageList() {
+		return mapper.selectDbImageList();
 	}
-	
-	
-	
-	
+}
