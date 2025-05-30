@@ -32,7 +32,8 @@ public class ImageDeleteScheduling {
     @Value("${my.board.folder-path}")
     private String boardFolderPath;
 
-    @Scheduled(cron = "0 0 0 1 * *")
+    // 매일 오전 3시에 삭제 진행
+    @Scheduled(cron = "0 0 3 * * *")
     public void deleteImage() {
         log.info("이미지 삭제 시작");
 

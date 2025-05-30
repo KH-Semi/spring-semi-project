@@ -16,7 +16,8 @@ public class MemberDeleteScheduling {
     @Autowired
     private MemberService memberService;
 
-    @Scheduled(cron = "0 0 0 1 * *")
+    // 15일마다 오전 3시에 삭제 진행
+    @Scheduled(cron = "0 0 3 */15 * *")
     public void deleteMember() {
         log.info("탈퇴 회원 삭제 시작");
 
