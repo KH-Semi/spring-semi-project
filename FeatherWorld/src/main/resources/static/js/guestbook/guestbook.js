@@ -94,13 +94,52 @@ const selectGuestBookList = (cp = 1) => {
         //   mainDiv.appendChild(lockIcon);
         // }
 
-        const contentDiv = document.createElement("div");
-        contentDiv.className = "guestbook-content"; // 방명록 내용 표시 영역
-        contentDiv.textContent = item.guestBookContent; // 내용 삽입
+        // 방명록 모달창 관련!!
+        // 🔽 본문 출력용 wrapper (2줄 제한 + ...더보기)
+        const contentWrapper = document.createElement("div");
+        contentWrapper.className = "guestbook-content-wrapper";
 
-        mainDiv.appendChild(contentDiv); // main 안에 내용 삽입
+        const contentDiv = document.createElement("div");
+        contentDiv.className = "guestbook-content";
+        contentDiv.dataset.full = item.guestBookContent; // 전체 텍스트 저장
+        contentDiv.textContent = item.guestBookContent; // 첫 2줄까지만 보여질 것임
+
+        contentWrapper.appendChild(contentDiv);
+        mainDiv.appendChild(contentWrapper); // ✅ mainDiv에 contentWrapper 삽입
         wrapDiv.appendChild(mainDiv); // wrap 안에 main 삽입
         itemDiv.appendChild(wrapDiv); // item 안에 wrap 삽입
+
+        // 방명록 모달창 관련!
+        // 💡 2줄 초과인 경우만 '...더보기'를 적용할 클래스 추가
+        requestAnimationFrame(() => {
+          const lineHeight = parseFloat(
+            getComputedStyle(contentDiv).lineHeight
+          );
+          const lines = Math.round(contentDiv.scrollHeight / lineHeight);
+
+          if (lines > 2) {
+            // ✅ 더보기 버튼 생성
+            const moreBtn = document.createElement("span");
+            moreBtn.className = "more-button";
+            moreBtn.textContent = "...더보기";
+            moreBtn.style.color = "#9f2120";
+            moreBtn.style.cursor = "pointer";
+            moreBtn.style.marginLeft = "6px";
+            moreBtn.style.fontWeight = "bold";
+            moreBtn.style.fontSize = "0.7em";
+
+            // ✅ 버튼 클릭 시 모달 오픈
+            moreBtn.addEventListener("click", (e) => {
+              e.stopPropagation(); // 혹시나 버블링 방지
+              const fullText = contentDiv.dataset.full;
+              document.querySelector("#modalContentText").textContent =
+                fullText;
+              document.querySelector("#guestbookModal").style.display = "flex";
+            });
+
+            contentWrapper.appendChild(moreBtn);
+          }
+        });
 
         const infoDiv = document.createElement("div");
         infoDiv.className = "guestbook-info"; // 작성자 및 날짜 정보 영역
@@ -112,6 +151,7 @@ const selectGuestBookList = (cp = 1) => {
         writerSpan.style.fontWeight = "bold";
         writerSpan.style.textDecoration = "none";
         writerSpan.style.color = "#333";
+        writerSpan.style.fontSize = "14px";
 
         // 작성자 누르면 홈페이지 이동
         writerSpan.addEventListener("click", () => {
@@ -123,15 +163,15 @@ const selectGuestBookList = (cp = 1) => {
         writerBox.className = "guestbook-writer-box";
         writerBox.style.display = "flex";
         writerBox.style.alignItems = "center";
-        writerBox.style.gap = "8px";
+        writerBox.style.gap = "13px";
         writerBox.style.marginBottom = "6px";
         writerBox.style.position = "relative";
 
         // [💡 이미지 wrapper]
         const imgWrapper = document.createElement("div");
         imgWrapper.style.position = "relative";
-        imgWrapper.style.width = "32px";
-        imgWrapper.style.height = "32px";
+        imgWrapper.style.width = "20px";
+        imgWrapper.style.height = "20px";
 
         // [💡 자물쇠 아이콘 위치]
         if (item.secret == 1) {
@@ -199,6 +239,8 @@ const selectGuestBookList = (cp = 1) => {
 
       // 페이지네이션 렌더링
       if (pagination) renderPagination(pagination);
+
+      applyModalViewer();
     })
     .catch((err) => {
       console.error("방명록 목록 조회 실패:", err); // 요청 실패 시 콘솔 출력
@@ -465,3 +507,79 @@ window.addEventListener("popstate", () => {
 });
 
 selectGuestBookList(searchCp());
+
+//-----------------------
+// 방명록 모달창!!!
+
+const applyModalViewer = () => {
+  // 모달이 없으면 만들기
+  if (!document.querySelector("#guestbookModal")) {
+    const modal = document.createElement("div");
+    modal.id = "guestbookModal";
+    modal.style = `
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    `;
+
+    const contentBox = document.createElement("div");
+    contentBox.style = `
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    `;
+
+    const contentText = document.createElement("div");
+    contentText.id = "modalContentText";
+    contentText.style.fontSize = "16px";
+    contentText.style.wordBreak = "break-word";
+    contentText.style.overflowWrap = "break-word";
+
+    const closeWrapper = document.createElement("div");
+    closeWrapper.style = `
+  text-align: right;
+  margin-top: 15px;
+`;
+
+    const closeBtn = document.createElement("button");
+    closeBtn.textContent = "닫기";
+    closeBtn.style = `
+      margin-top: 15px;
+      background-color: #9f2120;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    `;
+
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    contentBox.append(contentText, closeBtn);
+    contentBox.append(closeWrapper);
+    closeWrapper.appendChild(closeBtn);
+    modal.appendChild(contentBox);
+    document.body.appendChild(modal);
+  }
+
+  // 더보기 클릭 처리
+  // document.querySelectorAll(".guestbook-content").forEach((contentDiv) => {
+  //   contentDiv.addEventListener("click", () => {
+  //     const fullText = contentDiv.dataset.full;
+  //     document.querySelector("#modalContentText").textContent = fullText;
+  //     document.querySelector("#guestbookModal").style.display = "flex";
+  //   });
+  // });
+};
