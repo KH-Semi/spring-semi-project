@@ -3,7 +3,8 @@ const profileForm = document.getElementById("profileForm"); // 프로필 form
 if (profileForm != null) {
   const imageInput = document.getElementById("uploadFile"); // input 태그
   const previewImg = document.getElementById("preview"); // img태그
-  let statusCheck = 0; // 0 : 초기 상태,  1 : 새 이미지 선택
+  const previewBio = document.getElementById("bio-input"); // img태그
+  let statusCheckImg = 0; // 0 : 초기 상태,  1 : 새 이미지 선택
   // img 태그에 작성하는 값 src = 미리보기 이미지를 띄울 URL 주소
 
   let previousImage = previewImg.src;
@@ -27,7 +28,7 @@ if (profileForm != null) {
           // (img 태그의 src에 선택한 파일 임시 경로 대입)
           previousImage = newImageUrl; // 현재 선택된 이미지를 이전 이미지로 저장(다음에 바뀔일에 대비)
           previousFile = file; // 현재 선택된 파일 객체를 이전 파일로 저장 (다음에 바뀔일에 대비)
-          statusCheck = 1; // 새 이미지 선택 상태 기록
+          statusCheckImg = 1; // 새 이미지 선택 상태 기록
         } else {
           // 파일 크기가 허용번위를 초과한 경우
           alert("5MB 이하의 이미지를 선택해주세요!");
@@ -58,7 +59,11 @@ if (profileForm != null) {
 
     // 폼 제출 시 유효성 검사
     profileForm.addEventListener("submit", (e) => {
-      if (statusCheck == 0) {
+      if (statusCheckImg == 0) {
+        // 변경 사항이 없는 경우 제출 막기
+        e.preventDefault();
+        alert("이미지 변경 후 제출하세요!");
+      } else if (previewBio.length === 0) {
         // 변경 사항이 없는 경우 제출 막기
         e.preventDefault();
         alert("이미지 변경 후 제출하세요!");
