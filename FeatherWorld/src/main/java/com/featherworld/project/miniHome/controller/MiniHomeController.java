@@ -38,7 +38,9 @@ public class MiniHomeController {
                               @SessionAttribute(value = "loginMember", required = false) Member loginMember,
                               Model model) {
         
-    
+    	
+    	
+    	
         
         List<Board> recentBoardList = miniHomeService.getRecentBoards(memberNo);
        
@@ -49,6 +51,7 @@ public class MiniHomeController {
         
         int totalBoardCount = miniHomeService.getTotalBoardCount(memberNo);
         int totalGuestBookCount = miniHomeService.getTotalGuestBookCount(memberNo);
+        
         
         model.addAttribute("totalBoardCount", totalBoardCount);
         model.addAttribute("totalGuestBookCount", totalGuestBookCount);

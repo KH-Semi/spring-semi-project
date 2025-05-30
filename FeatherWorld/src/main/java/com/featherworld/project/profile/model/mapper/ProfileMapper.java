@@ -19,4 +19,5 @@ public interface ProfileMapper {
     int deleteMember(int memberNo);
 	String selectPw(int memberNo);
 	int secession(int memberNo);
+	int secessionKakaoMember(int memberNo);
 }

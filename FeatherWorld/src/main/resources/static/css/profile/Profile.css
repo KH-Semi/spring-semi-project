@@ -68,3 +68,68 @@
   opacity: 90%;
   transform: translateY(-5px);
 }
+
+/* ===== 공통 설정 - 이 부분을 수정 ===== */
+/* 공용 CSS에서 이미 content-container가 정의되어 있으므로 
+   minihome-page에서만 추가 스타일 적용 */
+body.minihome-page .content-container {
+  display: flex;
+  gap: 20px;
+}
+
+/* 🚨 추가: right-sidebar가 제대로 보이도록 보장 */
+body.minihome-page .right-sidebar {
+  display: block !important;
+  min-width: 200px !important;
+  flex-shrink: 0 !important;
+}
+
+/* ===== 반응형 MiniHome (992px 이하) ===== */
+@media (max-width: 992px) {
+  body.minihome-page {
+    padding: 10px 0 !important;
+  }
+
+  body.minihome-page .container {
+    max-width: 95% !important;
+    margin: 10px auto !important;
+  }
+
+  body.minihome-page .content-container {
+    flex-direction: column !important;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  body.minihome-page .left-sidebar,
+  body.minihome-page .right-sidebar {
+    min-width: 100% !important;
+    max-width: none !important;
+    flex: none !important;
+    padding: 15px !important;
+    border-right: none !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+  }
+
+  body.minihome-page .main-content {
+    padding: 20px !important;
+    border-right: none !important;
+  }
+
+  .bio-section textarea {
+    width: 100% !important;
+    font-size: 14px;
+  }
+
+  .post-button {
+    display: inline-block;
+    margin: 5px 0;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .main-content img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}

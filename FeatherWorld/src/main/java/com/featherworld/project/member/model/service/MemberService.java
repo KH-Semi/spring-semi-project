@@ -115,4 +115,6 @@ public interface MemberService {
 	 */
 	List<Member> getTodayBestMembers();
 
+	Member checkmemberEmailIncludingDeleted(String memberEmail);
+
 }

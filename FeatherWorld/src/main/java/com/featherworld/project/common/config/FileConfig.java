@@ -84,9 +84,7 @@ public class FileConfig implements WebMvcConfigurer{
 		
 		// URL 요청 패턴을 서버의 실제 파일 경로와 연결하여
 		// 클라이언트가 특정 경로로 정적파일에 접근할 수 있도록 설정
-		registry
-		.addResourceHandler("/myPage/file/**") // 클라이언트의 요청 주소 패턴
-		.addResourceLocations("file:///C:/uploadFiles/test/");
+	
 		// 요청을 연결해서 처리해 줄 서버 실제 폴더 경로
 		
 		// -> 클라이언트가 /myPage/file/** 패턴으로 이미지를 요청할 때
