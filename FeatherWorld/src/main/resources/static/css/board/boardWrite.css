@@ -26,7 +26,6 @@
 
 .back-button span:hover {
   background-color: #7d1a19;
-  transform: translateX(-3px);
 }
 
 /* 게시글 작성 폼 */
@@ -125,7 +124,8 @@
   overflow: hidden;
 }
 
-.image-slot:hover, .image-slot.drag-over {
+.image-slot:hover,
+.image-slot.drag-over {
   border-color: #9f2120;
   background-color: #fafafa;
 }
@@ -206,7 +206,6 @@
 
 .btn-confirm:hover {
   background-color: #7d1a19;
-  transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(159, 33, 32, 0.3);
 }
 

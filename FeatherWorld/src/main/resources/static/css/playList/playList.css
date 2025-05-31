@@ -151,6 +151,12 @@
   display: block;
 }
 
+#youtubeUrl:focus {
+  outline: none;
+  border-color: #9f2120;
+  box-shadow: 0 0 0 3px rgba(159, 33, 32, 0.1);
+}
+
 .embed-container {
   position: relative;
   padding-bottom: 56.25%;
