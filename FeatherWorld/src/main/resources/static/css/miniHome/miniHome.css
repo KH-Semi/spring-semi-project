@@ -36,21 +36,6 @@ body.minihome-page .main-content {
   height: 100%;
 }
 
-/* 우측 사이드바 */
-body.minihome-page .right-sidebar {
-  border-left: 1px solid #e0e0e0;
-  padding: 20px;
-  min-width: 200px;
-}
-
-/* 좌측 프로필 컨테이너 높이 조정 */
-body.minihome-page #leftProfileContainer {
-  height: 100%;
-  min-height: 500px;
-  display: flex;
-  flex-direction: column;
-}
-
 /* ===== MiniHome 메인 콘텐츠 영역 스타일 ===== */
 
 /* 보드 컨테이너 */

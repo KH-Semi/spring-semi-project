@@ -7,20 +7,6 @@ const sendFriendRequestButton = document.getElementById(
 );
 
 if (sendFriendRequestButton) {
-  /*switch (sendFriendRequestButton.dataset.ilchonStatus) {
-    case 0:
-      sendFriendRequestButton.classList.remove("hidden");
-      sendFriendRequestButton.innerText = "일촌 요청 보내기기";
-      break;
-    case 1:
-      sendFriendRequestButton.classList.remove("hidden");
-      sendFriendRequestButton.innerText = "일촌 요청 이미 보냄!";
-      break;
-    default:
-      sendFriendRequestButton.classList.add("hidden");
-      document.querySelector("#ilchon-flag").classList.remove("hidden");
-      break;
-  }*/
   sendFriendRequestButton.addEventListener("click", () => {
     window.location.href = `/${memberNo}/newFriend/input`;
   });
@@ -28,52 +14,9 @@ if (sendFriendRequestButton) {
 //buttons
 let editBtn = document.getElementById("edit-button"); // edit
 let applyCancelBtnDiv = document.getElementById("apply-cancel-button-div"); //apply-cancel btn 을 담는 div
-/*const applyBtn = document.getElementById("apply-button");*/
 let cancelBtn = document.getElementById("cancel-button");
 let sendFriendReqBtn = document.getElementById("send-friend-request-button");
 let friendSpans = document.querySelectorAll(".friend-item");
-/*
-sendFriendReqBtn.addEventListener("click", () => {
-  fetch("/insert/new", {
-    method: "POST", // ← POST로 바꿔야 body 사용 가능
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      memberNo: "00",
-      nickname: newNickName,
-    }), // TO_NICKNAME/FROM_NICKNAME 판별 여부는 서버측에서 판단
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      if (data.status == 2) {
-        console.log("toNickname 수정 성공!");
-        e.target.value = data.Ilchon.toNickname;
-        if (friend) {
-          friend.querySelector("[name=fromNickname]").textContent =
-            data.Ilchon.toNickname;
-        } //refresh
-        checkIcon(friend);
-      } else if (data.status == 1) {
-        console.log("fromNickname 수정 성공!");
-        e.target.value = data.Ilchon.fromNickname;
-        if (friend) {
-          friend.querySelector("[name=fromNickname]").textContent =
-            data.Ilchon.fromNickname;
-        } //refresh
-        checkIcon(friend);
-      } else {
-        console.log("수정 실패!");
-        xIcon(friend);
-      }
-    });
-});*/
-if (friendSpans) {
-  friendSpans.forEach(function (friend) {
-    console.log(friend);
-  });
-}
 
 function resetEditCancelBtn() {
   // 비동기로 update한 friend-item 과 Edit, Cancel, 일촌신청 버튼 다시 연동.

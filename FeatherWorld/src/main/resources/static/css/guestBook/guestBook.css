@@ -195,6 +195,14 @@
   .profile-list {
     max-width: none;
   }
+
+  .main-content {
+    align-items: center;
+  }
+
+  .guestbook-list {
+    max-width: none;
+  }
 }
 
 /* 방명록 모달창 관련 */
