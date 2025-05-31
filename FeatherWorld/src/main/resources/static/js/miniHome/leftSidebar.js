@@ -301,7 +301,6 @@ function goSurfing() {
 
 // DOM 로드 완료 시 초기화
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("MiniHome JavaScript 로드 완료");
 
   // 프로필 이미지 edit 아이콘 초기에 숨기기
   const editIcon = document.getElementById("profileImageEditIcon");

@@ -1,13 +1,5 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
-/* 공통 사이드바 스타일 */
-html,
-body {
-  width: 1379px;
-  height: 732px;
-  overflow: hidden;
-  margin: 0 auto;
-}
 .container {
   width: 1200px;
   height: 732px;

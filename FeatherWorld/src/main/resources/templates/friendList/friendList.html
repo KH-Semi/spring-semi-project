@@ -4,10 +4,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>FeatherWorld</title>
+    <title th:text="|#{app.name}' - FriendList'|">FriendList</title>
     <!-- 공용 css/js 추가 -->
     <th:block th:replace="~{common/common}"></th:block>
-    <!-- miniHome 전용 CSS -->
     <link href="/css/friendList/friendList.css" rel="stylesheet" />
 
     <!-- for pagination -->

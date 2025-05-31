@@ -70,6 +70,7 @@ body {
   padding: 30px 40px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
@@ -230,8 +231,6 @@ body {
 /* 우측 사이드바 스타일 */
 .right-sidebar {
   min-width: 200px;
-  padding: 20px;
-  border-left: none !important;
 }
 
 .nav-sidebar {

@@ -1,8 +1,15 @@
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 130px);
+  padding: 30px 0;
+}
+
 /* 전체 레이아웃 스타일 */
 .page-container {
   display: flex;
-  max-width: 1200px;
-  margin: 80px auto 50px;
+  min-width: 1200px;
   gap: 30px;
 }
 
@@ -51,6 +58,7 @@
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  min-height: 520px;
   padding: 40px;
 }
 
