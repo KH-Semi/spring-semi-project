@@ -1,21 +1,20 @@
 /* 가운데 영역 기본 레이아웃 */
 .middle-content {
   flex: 1 1 auto; /* flex-grow:1, flex-shrink:1, flex-basis:auto */
-  min-width: 0; /* 오버플로우 방지 */
+  min-width: 600px; /* 오버플로우 방지 */
   padding: 20px;
-  background-color: #fdfdfd;
   border-radius: 1px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
 }
 
 .middle-content img {
-  width: 400px !important;
-  height: 350px !important;
-  object-fit: fill !important;
+  max-width: 400px;
+  max-height: 350px;
+  object-fit: cover;
   border-radius: 10px;
-  border: 3px solid white;
   display: block;
   margin: 0 auto 20px;
 }
@@ -41,10 +40,7 @@
   display: flex;
   gap: 10px;
   justify-content: flex-end;
-  margin-top: 20px;
   max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .post-button {
@@ -76,34 +72,19 @@ body.minihome-page .content-container {
   gap: 20px;
 }
 
-/* ===== 공통 설정 - 이 부분을 수정 ===== */
-/* 공용 CSS에서 이미 content-container가 정의되어 있으므로 
-   minihome-page에서만 추가 스타일 적용 */
-body.minihome-page .content-container {
-  display: flex;
-  gap: 20px;
-}
-
-/* 🚨 추가: right-sidebar가 제대로 보이도록 보장 */
-body.minihome-page .right-sidebar {
-  display: block !important;
-  min-width: 200px !important;
-  flex-shrink: 0 !important;
-}
-
 /* ===== 반응형 MiniHome (992px 이하) ===== */
 @media (max-width: 992px) {
   body.minihome-page {
-    padding: 10px 0 !important;
+    padding: 10px 0;
   }
 
   body.minihome-page .container {
-    max-width: 95% !important;
-    margin: 10px auto !important;
+    max-width: 95%;
+    margin: 10px auto;
   }
 
   body.minihome-page .content-container {
-    flex-direction: column !important;
+    flex-direction: column;
     padding: 10px;
     gap: 10px;
   }
@@ -111,20 +92,16 @@ body.minihome-page .right-sidebar {
   body.minihome-page .left-sidebar,
   body.minihome-page .right-sidebar {
     min-width: 100% !important;
-    max-width: none !important;
-    flex: none !important;
-    padding: 15px !important;
-    border-right: none !important;
-    border-bottom: 1px solid #e0e0e0 !important;
+    border-right: none;
   }
 
   body.minihome-page .main-content {
-    padding: 20px !important;
-    border-right: none !important;
+    padding: 20px;
+    border-right: none;
   }
 
   .bio-section textarea {
-    width: 100% !important;
+    width: 100%;
     font-size: 14px;
   }
 
@@ -133,10 +110,11 @@ body.minihome-page .right-sidebar {
     margin: 5px 0;
     padding: 10px 16px;
     font-size: 14px;
+    text-align: center;
   }
 
   .main-content img {
-    max-width: 100% !important;
-    height: auto !important;
+    max-width: 100%;
+    height: auto;
   }
 }
