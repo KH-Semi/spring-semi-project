@@ -35,40 +35,64 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	public int saveOrUpdateProfile(int loginMemberNo, MultipartFile uploadFile, String bio) throws Exception {
+	    int result = 0;
+	    String rename = null;
 
-		int result = 0;
+	    // 기존 프로필 불러오기
+	    Profile findProfileData = selectProfile(loginMemberNo);
 
-		// 변경명 저장
-		String rename = null;
+	    // 업로드한 이미지가 있을 경우 이름 변경
+	    if (uploadFile != null && !uploadFile.isEmpty()) {
+	        rename = Utility.fileRename(uploadFile.getOriginalFilename());
+	    }
 
-		// 업로드한 이미지가 있을 경우
-		if (!uploadFile.isEmpty())
-			rename = Utility.fileRename(uploadFile.getOriginalFilename());
+	    // bio가 null이거나 공백이면 기존 bio 유지
+	    if ((bio == null || bio.trim().isEmpty()) && findProfileData != null) {
+	        bio = findProfileData.getProfileContent();
+	    }
 
-		// 수정된 프로필 이미지 경로 + 회원 번호를 저장할 DTO 객체
-		Profile newProfile = Profile.builder().memberNo(loginMemberNo).imgPath(profileWebPath)
-				.imgOriginalName(uploadFile.getOriginalFilename()).imgRename(rename).profileContent(bio).build();
+	    // 원래 이름 및 리네임 파일 이름 설정
+	    String imgOriginalName = null;
+	    String imgRename = null;
 
-		Profile findProfileData = selectProfile(loginMemberNo);
-		
-		if (findProfileData != null) {
-			result = mapper.updateProfile(newProfile);
-		} else {
-			result = mapper.insertProfile(newProfile);
-		}
+	    if (!uploadFile.isEmpty()) {
+	        imgOriginalName = uploadFile.getOriginalFilename();
+	        imgRename = rename;
+	    } else if (findProfileData != null) {
+	        imgOriginalName = findProfileData.getImgOriginalName();
+	        imgRename = findProfileData.getImgRename();
+	    }
 
-		if (result > 0) {
-			// 프로필 이미지를 없애는 update를 한 경우를 제외
-			// -> 업로드한 이미지가 있을 경우
-			if (!uploadFile.isEmpty()) {
-				// 파일을 서버에 저장
-				uploadFile.transferTo(new File(profileFolderPath + rename));
-				// C:/uploadFiles/profile/변경한 이름
+	    // 프로필 객체 구성
+	    Profile newProfile = Profile.builder()
+	        .memberNo(loginMemberNo)
+	        .imgPath(profileWebPath)
+	        .imgOriginalName(imgOriginalName)
+	        .imgRename(imgRename)
+	        .profileContent(bio)
+	        .build();
 
-			}
-		}
+	    // DB에 저장 (기존 데이터가 있으면 update, 없으면 insert)
+	    if (findProfileData != null) {
+	        result = mapper.updateProfile(newProfile);
+	    } else {
+	        result = mapper.insertProfile(newProfile);
+	    }
 
-		return result;
+	    // 실제 파일 저장은 DB 반영 후 수행
+	    if (result > 0 && !uploadFile.isEmpty()) {
+	        File directory = new File(profileFolderPath);
+	        if (!directory.exists()) {
+	            directory.mkdirs();  // 폴더가 없으면 생성
+	        }
+
+	        File dest = new File(directory, rename);
+	        uploadFile.transferTo(dest);
+	    }
+
+	    return result;
+	
+
 	}
 
 	/**
