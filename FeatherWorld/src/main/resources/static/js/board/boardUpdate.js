@@ -10,7 +10,6 @@ const MAX_LENGTH = 5;
 document.addEventListener('DOMContentLoaded', () => {
   initializeImageUpload();
   initializeBackButton();
-  initializeByteCounter();
 });
 
 // 이미지 업로드 초기화
@@ -150,40 +149,6 @@ const initializeBackButton = () => {
   }
 }
 
-// 바이트 카운터 초기화
-const initializeByteCounter = () => {
-  const textarea = document.querySelector('.content-area textarea');
-  const byteCounter = document.querySelector('.byte-counter');
-
-  if (textarea && byteCounter) {
-    // 초기값 설정
-    updateByteCounter(textarea, byteCounter);
-
-    // 입력 시마다 바이트 카운터 업데이트
-    textarea.addEventListener('input', () => {
-      updateByteCounter(textarea, byteCounter);
-    });
-  }
-}
-
-// 바이트 카운터 업데이트
-const updateByteCounter = (textarea, counter) => {
-  const text = textarea.value;
-  const byteLength = new Blob([text]).size;
-  const maxBytes = 4000;
-
-  counter.textContent = `(${byteLength}/${maxBytes})bytes`;
-
-  // 바이트 수가 초과되면 빨간색으로 표시
-  if (byteLength > maxBytes) {
-    counter.style.color = '#9f2120';
-    textarea.style.borderColor = '#9f2120';
-  } else {
-    counter.style.color = '#777';
-    textarea.style.borderColor = '#e0e0e0';
-  }
-}
-
 // 폼 제출 시 이미지 데이터 처리
 const handleFormSubmit = () => {
   const form = document.querySelector('.board-form');
@@ -309,12 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // 업로드된 이미지 배열 초기화
         imageList = [];
 
-        // 바이트 카운터 초기화
-        const byteCounter = document.querySelector('.byte-counter');
-        if (byteCounter) {
-          byteCounter.textContent = '(0/2000)bytes';
-          byteCounter.style.color = '#777';
-        }
       }
     });
   }

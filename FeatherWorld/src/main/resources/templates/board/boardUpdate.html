@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
+  <title th:text="|${board.boardNo}번 글 수정|">FeatherWorld - Board</title>
 
   <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" href="/css/board/boardType.css">
@@ -36,7 +36,6 @@
                 <textarea class="form-control" name="boardContent"
                           placeholder="Board Content" rows="20" cols="70"
                           th:text="${board.boardContent}"></textarea>
-            <div class="byte-counter">(12/2000)bytes</div>
           </div>
 
           <!-- 기존 이미지 표시 영역 -->
@@ -99,7 +98,7 @@
 </div>
 
 <!-- 숨겨진 파일 입력 -->
-<input type="file" id="imageUpload" accept="image/*" multiple style="display: none;">
+<input type="file" id="imageUpload" accept="image/*" style="display: none;">
 
 <!-- JS 에서 수정 버튼 클릭 이벤트에 활용할 현재 게시판 정보 선언 -->
 <script th:inline="javascript">

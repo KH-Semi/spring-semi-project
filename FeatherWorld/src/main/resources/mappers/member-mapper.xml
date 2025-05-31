@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.featherworld.project.member.model.mapper.MemberMapper">
 
-		<!-- 회원 여부 확인 -->
-		<select id="checkMember" resultType="_int">
-			SELECT COUNT(*)
-			FROM MEMBER
-			WHERE MEMBER_NO = ${memberNo}
-			AND MEMBER_DEL_FL = 'N'
-		</select>
+    <!-- 회원 여부 확인 -->
+    <select id="checkMember" resultType="_int">
+        SELECT COUNT(*)
+        FROM MEMBER
+        WHERE MEMBER_NO = ${memberNo}
+        AND MEMBER_DEL_FL = 'N'
+    </select>
 
     <!-- 탈퇴 회원 조회 -->
     <select id="deletedMembers" resultType="Member">
@@ -22,29 +22,35 @@
         DELETE FROM MEMBER
         WHERE MEMBER_NO = ${memberNo}
     </delete>
+    
+    <update id="deleteProfileImage">
+        UPDATE MEMBER
+        SET MEMBER_IMG = NULL
+        WHERE MEMBER_NO = ${memberNo}
+    </update>
 
-		<!-- 회원가입 SQL 영민 -->
-		
-		<insert id="signUp" parameterType="Member">
+    <!-- 회원가입 SQL 영민 -->
     
-	    <!-- 시퀀스 값을 먼저 가져와서 memberNo에 설정 -->
-    	<selectKey keyProperty="memberNo" resultType="int" order="BEFORE">
-        
-        SELECT SEQ_MEMBER_NO.NEXTVAL FROM DUAL
-    	
-    	</selectKey>
+    <insert id="signUp" parameterType="Member">
+
+    <!-- 시퀀스 값을 먼저 가져와서 memberNo에 설정 -->
+    <selectKey keyProperty="memberNo" resultType="int" order="BEFORE">
     
-    	INSERT INTO MEMBER VALUES(
-        #{memberNo},
-        #{memberEmail},
-        #{memberPw},
-        #{memberName},
-        #{memberTel},
-        #{memberAddress},
-        NULL,
-        DEFAULT, DEFAULT, DEFAULT, DEFAULT, NULL
-        )
-      </insert>
+    SELECT SEQ_MEMBER_NO.NEXTVAL FROM DUAL
+    
+    </selectKey>
+
+    INSERT INTO MEMBER VALUES(
+    #{memberNo},
+    #{memberEmail},
+    #{memberPw},
+    #{memberName},
+    #{memberTel},
+    #{memberAddress},
+    NULL,
+    DEFAULT, DEFAULT, DEFAULT, DEFAULT, NULL
+    )
+  </insert>
 	
 	<!-- 회원가입을 하고나서 바로 boardType 하나 추가함 -->
 	<insert id="setDefaultBoardType">
