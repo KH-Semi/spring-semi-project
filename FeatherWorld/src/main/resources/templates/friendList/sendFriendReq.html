@@ -7,78 +7,66 @@
     <title th:text="#{app.name}">Feathers McGrew Semi Project</title>
 
     <th:block th:replace="~{common/common}"></th:block>
-    <link rel="stylesheet" href="/css/board/boardList.css" />
-    <link rel="stylesheet" href="/css/board/boardWrite.css" />
-    <style>
-      * {
-        margin: 10px;
-      }
-
-      div,
-      p,
-      section {
-        margin-left: auto;
-        margin-right: auto;
-        width: fit-content;
-      }
-
-      button {
-        justify-items: center;
-        align-items: center;
-      }
-    </style>
+    <link rel="stylesheet" href="/css/friendList/sendFriendReq.css" />
+    <!-- <link rel="stylesheet" href="/css/board/boardWrite.css" /> -->
   </head>
   <body th:attr="member-no=${memberNo}">
-    <div class="container">
-      <!-- 헤더 Include -->
-      <th:block th:replace="~{common/header}"></th:block>
+    <div class="center-page">
+      <div class="center-content">
+        <div class="container">
+          <!-- 헤더 Include -->
+          <th:block th:replace="~{common/header}"></th:block>
 
-      <div class="content-container">
-        <!-- 좌측 게시판 리스트 Include -->
-
-        <!-- 중앙 게시글 상세 -->
-        <div class="main-content">
-          <div class="board-write">
-            <button onclick="history.back()" class="back-button">
-              <span class="fa-solid fa-left-long"></span>
-            </button>
-
-            <div class="board-form">
-              <form action="/insert/newFriend" method="post">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="새로 정할 일촌명을 입력하세요"
-                  name="nickname"
-                />
-                <div class="byte-counter">(12/2000)bytes</div>
-                <input type="hidden" name="memberNo" th:value="${memberNo}" />
-                <button type="submit" class="btn-confirm">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  SEND
-                </button>
-              </form>
+          <div class="content-container">
+            <!-- 좌측  프로필 들어올 공간 Include -->
+            <div class="left-sidebar">
+              <div th:replace="~{common/leftsidebar}"></div>
             </div>
+
+            <!-- 중앙 게시글 상세 -->
+            <div class="main-content">
+              <div class="board-write">
+                <button onclick="history.back()" class="back-button">
+                  <span class="fa-solid fa-left-long"></span>
+                </button>
+
+                <div class="board-form">
+                  <div class="reqTitle">
+                    <ul
+                      class="reqTitle-font"
+                      th:text="${session.loginMember?.memberNo == memberNo?'내 ': member.memberName + ' 님에게 '} + '일촌 요청 보내기'"
+                    ></ul>
+                  </div>
+                  <form
+                    class="reqContent"
+                    action="/insert/newFriend"
+                    method="post"
+                  >
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="새로 정할 일촌명을 입력하세요"
+                      name="nickname"
+                    />
+                    <input
+                      type="hidden"
+                      name="memberNo"
+                      th:value="${memberNo}"
+                    />
+                    <button type="submit" class="btn-confirm">SEND</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- 우측 네비게이션 바 Include -->
+            <th:block th:replace="~{common/navSidebar}"></th:block>
           </div>
+
+          <!-- 푸터 Include -->
+          <th:block th:replace="~{common/footer}"></th:block>
         </div>
-
-        <!-- 우측 네비게이션 바 Include -->
-        <th:block th:replace="~{common/navSidebar}"></th:block>
       </div>
-
-      <!-- 푸터 Include -->
-      <th:block th:replace="~{common/footer}"></th:block>
     </div>
 
     <!-- JS 에서 쓰기 버튼 클릭 이벤트에 활용할 현재 게시판 종류 번호 선언 -->

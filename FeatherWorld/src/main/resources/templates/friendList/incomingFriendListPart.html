@@ -192,16 +192,21 @@
         <!-- session이랑 비교하도록 되어있음. -->
         <div class="left-align">
           <img
+            id="toFriendImg"
             th:if="${ilchon.memberImg}"
             th:src="@{${ilchon.memberImg}}"
             width="20"
           />
           <img
+            id="toFriendImg"
             th:unless="${ilchon.memberImg}"
             th:src="@{/images/default/user.png}"
             width="20"
           />
-          <span class="font-bold color-gray" th:text="${ilchon.memberName}"
+          <span
+            id="toFriendName"
+            class="font-bold color-gray"
+            th:text="${ilchon.memberName}"
             >별명</span
           >
         </div>
