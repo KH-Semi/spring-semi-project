@@ -204,7 +204,7 @@ function resetEditCancelBtn() {
   });
 
   friendSendedSpans.forEach(function (friend) {
-    const profileImg2 = friend.querySelector("#toFriendImg");
+    const profileImg2 = friend.querySelector(".toFriendImg");
     const profileName2 = friend.querySelector("#toFriendName");
     profileImg2.style.cursor = "pointer";
     if (profileImg2) {
