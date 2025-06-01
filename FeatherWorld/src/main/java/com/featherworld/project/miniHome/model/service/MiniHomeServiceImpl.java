@@ -199,5 +199,9 @@ public class MiniHomeServiceImpl implements MiniHomeService {
 		
 	    	return mapper.getRandomActiveMember();
 	    }
-		
+    @Override
+	public int deleteMemberImage(Member loginMember) {
+			
+			return mapper.deleteMemberImage(loginMember);
+		}
 	}

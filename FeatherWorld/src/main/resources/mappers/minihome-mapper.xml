@@ -266,6 +266,13 @@ AND (
     WHERE ROWNUM = 1
 	</select>
 	
+	<update id="deleteMemberImage" parameterType="int">
+    UPDATE MEMBER 
+    SET MEMBER_IMG = NULL
+    WHERE MEMBER_NO = #{memberNo}
+    AND MEMBER_DEL_FL = 'N'
+   </update>
+	
 	
 
 </mapper>

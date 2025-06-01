@@ -39,9 +39,6 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
-	@Autowired
-    private MiniHomeService miniHomeService; // 레프트사이드바때문에 전역에서 쓰려고 가져옴 ,...하 
-	
 	/** 회원가입 하는 페이지로 이동하는 메서드(get)
 	 * @author 영민
 	 */

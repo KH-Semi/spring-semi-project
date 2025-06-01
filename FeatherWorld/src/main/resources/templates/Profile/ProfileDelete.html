@@ -14,6 +14,7 @@
   <body
     class="profiledelete"
     th:data-member-no="${memberNo != null ? memberNo : 0}"
+    th:data-is-kakao="${session.loginMember.memberPw == null}"
   >
     <div class="center-page">
       <div class="center-content">
