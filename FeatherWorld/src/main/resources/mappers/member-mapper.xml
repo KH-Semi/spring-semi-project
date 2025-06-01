@@ -23,12 +23,6 @@
         WHERE MEMBER_NO = ${memberNo}
     </delete>
     
-    <update id="deleteProfileImage">
-        UPDATE MEMBER
-        SET MEMBER_IMG = NULL
-        WHERE MEMBER_NO = ${memberNo}
-    </update>
-
     <!-- 회원가입 SQL 영민 -->
     
     <insert id="signUp" parameterType="Member">

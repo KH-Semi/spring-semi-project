@@ -51,12 +51,6 @@ public class MemberServiceImpl implements MemberService {
 		return mapper.deleteMember(memberNo);
 	}
 	
-	// 회원 이미지 삭제 (x)
-	@Override
-	public int deleteProfileImage(int memberNo) {
-		return mapper.deleteProfileImage(memberNo);
-	}
-	
 	/** 회원가입 메서드
 	 *	@author 영민
 	 *
