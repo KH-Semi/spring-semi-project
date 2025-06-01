@@ -339,16 +339,18 @@ function resetEditCancelBtn() {
   });
   // (내가 일촌신청을 보낸사람 한정)프로필img / 이름 클릭시 헤당 user의 minihome으로
   friendSendedSpans.forEach(function (friend) {
-    const profileImg = friend.querySelector(".friend-profile");
-    const profileName = friend.querySelector(".friend-name");
-    profileImg.style.cursor = "pointer";
+    const profileImg = friend.querySelector("[name=sended-friend-img]");
+    const profileName = friend.querySelector("[name=sended-friend-name]");
+    
     if (profileImg) {
+      profileImg.style.cursor = "pointer";
       profileImg.addEventListener("click", () => {
         window.location.href = `/${friend.dataset.memberNo}/friendList`;
       });
     }
-    profileImg.style.cursor = "pointer";
+    
     if (profileName) {
+      profileImg.style.cursor = "pointer";
       profileName.addEventListener("click", () => {
         window.location.href = `/${friend.dataset.memberNo}/friendList`;
       });
