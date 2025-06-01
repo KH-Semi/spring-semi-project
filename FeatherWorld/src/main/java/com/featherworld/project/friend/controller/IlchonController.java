@@ -129,8 +129,9 @@ public class IlchonController {
 	    
 	    Pagination pagination = (Pagination) map.get("pagination");
 	    Pagination paginationFrom = (Pagination) mapFrom.get("pagination");
-	    System.out.println("pagination : " +pagination.getStartPage() + ", " + pagination.getEndPage());
-	    System.out.println("pagination : " +paginationFrom.getStartPage() + ", " + paginationFrom.getEndPage());
+	    
+	    
+	    
 		
 	    if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
 	        return "friendList/incomingfriendListPart";

@@ -114,18 +114,19 @@ span {
   width: auto;
 }
 .button-default {
-  background-color: #912d2d;
+  background-color: #9f2120;
   color: white;
-  border: 1px solid #ccc;
-  align-items: center;
-  padding: 8px 8px;
-  border-radius: 10px;
-}
-.button-default:hover {
-  transform: translateY(-2px);
-  background-color: #d32f2f;
-  color: #eee;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
   transition: all 0.3s ease;
+}
+
+.button-default:hover {
+  opacity: 90%;
+  transform: translateY(-5px);
 }
 .button-disabled {
   background-color: #eee;
@@ -205,4 +206,9 @@ span {
 .border-red:focus {
   border: 1.5px solid #d32f2f;
   border-radius: 4px;
+}
+
+.overflow-content-y {
+  overflow-y: auto;
+  overflow-x: hidden;
 }
