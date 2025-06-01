@@ -15,60 +15,42 @@ import com.featherworld.project.member.model.dto.Today;
 @Mapper
 public interface MiniHomeMapper {
     
-	Member findmember(int memberNo);
-
-    int findilchon(Ilchon friend);
-
+    Member findmember(int memberNo);
+    int findIlchon(Ilchon friend);  
     List<Ilchon> getIlchonComments(int memberNo);
-// ---------------------------------------  체크 ..
-	int todayAdd(Today today);
-	int todayCount(Today today);
 
-	int todayconfirm(Today today);
-
-	int totalCount(int memberNo);
-
-	int todayConfirm(Today today);
-
-	int getFollowerCount(int memberNo);
-
-	int getFollowingCount(int memberNo);
-
-	int getPendingFollowerCount(int memberNo);
-
-	int sendFollowRequest(Ilchon followRequest);
-
-	int findPendingIlchon(Ilchon theirRequest);
-
-	int findAcceptedIlchon(Ilchon myRequest);
-	
-	List<Board> getRecentBoards(Map<String, Integer> map);
-	
-	int getTotalBoardCount(Map<String, Integer> map);
-
-	int getTotalGuestBookCount(Map<String, Integer> map);
-
-	// ----
-	
-
-	int deleteIlchonFromComment(Ilchon ilchonRelation);
-
-	int deleteIlchonToComment(Ilchon ilchonRelation);
-
-	int updateIlchonFromComment(Ilchon ilchonRelation);
-
-	int updateIlchonToComment(Ilchon reverseRelation);
-
-	int findIlchon(Ilchon friend);
-
-	int leftprofileUpdate(Member member);
-
-	int leftprofileintroUpdate(Member loginMember);
-
-	Integer getRandomActiveMember();
-
-	int deleteMemberImage(Member loginMember);
-	
-	
-
+    // 방문자 관련
+    int todayAdd(Today today);
+    int todayCount(Today today);
+    int todayConfirm(Today today);  
+    int totalCount(int memberNo);
+    
+    // 팔로우 관련
+    int getFollowerCount(int memberNo);
+    int getFollowingCount(int memberNo);
+    int getPendingFollowerCount(int memberNo);
+    int sendFollowRequest(Ilchon followRequest);
+    int findPendingIlchon(Ilchon theirRequest);
+    
+    
+    // 게시글 관련
+    List<Board> getRecentBoards(Map<String, Integer> map);
+    int getTotalBoardCount(Map<String, Integer> map);
+    int getTotalGuestBookCount(Map<String, Integer> map);
+    
+    // 일촌평 관련
+    int deleteIlchonFromComment(Ilchon ilchonRelation);
+    int deleteIlchonToComment(Ilchon ilchonRelation);
+    int updateIlchonFromComment(Ilchon ilchonRelation);
+    int updateIlchonToComment(Ilchon reverseRelation);
+    
+    // 프로필 관련
+    int leftprofileUpdate(Member member);
+    int leftprofileintroUpdate(Member loginMember);
+    int deleteMemberImage(Member loginMember);
+    
+    // 기타
+    Integer getRandomActiveMember();
+    
+    // -------------------정리 .. -------------------- 이러면 깔끔 ?
 }

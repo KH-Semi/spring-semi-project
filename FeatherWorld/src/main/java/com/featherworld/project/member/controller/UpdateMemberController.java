@@ -27,35 +27,6 @@ public class UpdateMemberController {
     @Autowired
     private MiniHomeService miniHomeService;
     
-    /** 회원 이미지 삭제 (x)
-     * @param memberNo 현재 회원 번호
-     * @author Jiho
-     * @return 삭제 성공(OK) / 삭제 실패
-     */
-    @ResponseBody
-    @DeleteMapping("{memberNo:[0-9]+}/memberImage/delete")
-    public ResponseEntity<String> deleteMember(@PathVariable("memberNo") int memberNo,
-                                               @SessionAttribute("loginMember") Member loginMember) {
-        
-        try {
-            int result = service.deleteProfileImage(memberNo);
-            
-            if(result == 0) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("유효하지 않은 회원 번호 : " + memberNo);
-                
-            } else {
-                loginMember.setMemberImg(null);
-                
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(memberNo + "번 회원 이미지 삭제 성공");
-            }
-            
-        } catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("회원 이미지 삭제 중 오류 발생 : " + e.getMessage());
-        }
-    }
     
     // GET: 비밀번호 인증 페이지 표시
     @GetMapping("/{memberNo}/updateMember")
@@ -75,7 +46,7 @@ public class UpdateMemberController {
             ra.addFlashAttribute("message", "카카오로그인은 정보수정이 불가능합니다.");
             return "redirect:/";
         }
-        addSidebarData(memberNo, loginMember, model);
+      
         // 3. 정상 진입
         model.addAttribute("memberNo", memberNo);
         return "member/updateMember";
@@ -144,46 +115,7 @@ public class UpdateMemberController {
         	
         return "redirect:/"; // 메인페이지로
     }
-    
-    
-	/** 왼쪽 프로필의 대한 값들의 타임리프값들을 유지시킬 장치
-	 * 그냥 필요한곳에다가는 냅다 박아넣어서 써야될것같음
-	 * @param memberNo
-		 * @param loginMember
-		 * @param model
-		*/
-		private void addSidebarData(int memberNo, Member loginMember, Model model) {
  
-  		// 본인기준이긴함 
-       // 회원 정보 조회
-       Member member = miniHomeService.findmember(memberNo);
-       
-       // 방문자 수 조회
-       Today todayQuery = new Today();
-       todayQuery.setHomeNo(memberNo);
-       int todayCount = miniHomeService.todayCount(todayQuery);
-       int totalCount = miniHomeService.totalCount(memberNo);
-       
-       // 팔로워/팔로잉 수 조회
-       int followerCount = miniHomeService.getFollowerCount(memberNo);
-       int followingCount = miniHomeService.getFollowingCount(memberNo);
-       
-       // 미수락 팔로워 신청 수 조회 (본인인 경우만)
-       boolean hasPendingFollowers = false;
-       if (loginMember != null && loginMember.getMemberNo() == memberNo) {
-           int pendingFollowerCount = miniHomeService.getPendingFollowerCount(memberNo);
-           hasPendingFollowers = (pendingFollowerCount > 0);
-       }
-       
-       // 모델에 데이터 추가
-       model.addAttribute("member", member);
-       model.addAttribute("todayCount", todayCount);
-       model.addAttribute("totalCount", totalCount);
-       model.addAttribute("followerCount", followerCount);
-       model.addAttribute("followingCount", followingCount);
-       model.addAttribute("hasPendingFollowers", hasPendingFollowers);
-       model.addAttribute("isIlchon", false); // 본인 페이지이므로 false
  
-       }
 
 }
