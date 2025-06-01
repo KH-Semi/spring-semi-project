@@ -75,8 +75,8 @@ public class BoardController {
 
         // 현재 회원의 게시판 종류 번호(boardCode) 목록을 조회해서 가져옴
         List<BoardType> boardTypeList = boardTypeService.selectBoardType(memberNo);
-        // FIXME 이미 BoardTypeInterceptor 통해 Session에 boardTypeList가 담겨 있음
-        // FIXME 더블 체크용으로 두긴 했지만, 불필요하다면 Session에 있는 boardTypeList 꺼내 쓰면 됨
+        // 이미 BoardTypeInterceptor 통해 Session에 boardTypeList가 담겨 있음
+        // 더블 체크용으로 두긴 했지만, 불필요하다면 Session에 있는 boardTypeList 꺼내 쓰면 됨
 
         boolean isValid = false;
         // boardCode가 현재 회원이 소유한 게시판 종류 번호인지 확인

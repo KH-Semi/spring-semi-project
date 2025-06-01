@@ -192,13 +192,30 @@ function resetEditCancelBtn() {
     profileImg.style.cursor = "pointer";
     if (profileImg) {
       profileImg.addEventListener("click", () => {
-        window.location.href = `/${friend.dataset.memberNo}/friendList`;
+        window.location.href = `/${friend.dataset.memberNo}/minihome`;
       });
     }
-    profileImg.style.cursor = "pointer";
+    profileName.style.cursor = "pointer";
     if (profileName) {
       profileName.addEventListener("click", () => {
-        window.location.href = `/${friend.dataset.memberNo}/friendList`;
+        window.location.href = `/${friend.dataset.memberNo}/minihome`;
+      });
+    }
+  });
+
+  friendSendedSpans.forEach(function (friend) {
+    const profileImg2 = friend.querySelector(".toFriendImg");
+    const profileName2 = friend.querySelector("#toFriendName");
+    profileImg2.style.cursor = "pointer";
+    if (profileImg2) {
+      profileImg2.addEventListener("click", () => {
+        window.location.href = `/${friend.dataset.memberNo}/minihome`;
+      });
+    }
+    profileName2.style.cursor = "pointer";
+    if (profileName2) {
+      profileName2.addEventListener("click", () => {
+        window.location.href = `/${friend.dataset.memberNo}/minihome`;
       });
     }
   });

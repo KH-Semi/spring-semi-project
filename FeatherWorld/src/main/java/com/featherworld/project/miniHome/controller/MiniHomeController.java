@@ -37,18 +37,22 @@ public class MiniHomeController {
     public String miniHomePage(@PathVariable("memberNo") int memberNo,
                               @SessionAttribute(value = "loginMember", required = false) Member loginMember,
                               Model model) {
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("memberNo", memberNo);
         
-    
+        int loginMemberNo = (loginMember != null) ? loginMember.getMemberNo() : 0;
+        map.put("loginMemberNo", loginMemberNo);
         
-        List<Board> recentBoardList = miniHomeService.getRecentBoards(memberNo);
-       
+        List<Board> recentBoardList = miniHomeService.getRecentBoards(map);
         
         // 일촌평 조회
         List<Ilchon> ilchonComments = miniHomeService.getIlchonComments(memberNo);
       
         
-        int totalBoardCount = miniHomeService.getTotalBoardCount(memberNo);
-        int totalGuestBookCount = miniHomeService.getTotalGuestBookCount(memberNo);
+        int totalBoardCount = miniHomeService.getTotalBoardCount(map);
+        int totalGuestBookCount = miniHomeService.getTotalGuestBookCount(map);
+        
         
         model.addAttribute("totalBoardCount", totalBoardCount);
         model.addAttribute("totalGuestBookCount", totalGuestBookCount);

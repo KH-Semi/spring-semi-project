@@ -1,5 +1,4 @@
 // miniHome.js - 미니홈 관련 JavaScript 함수들
-console.log("현재 페이지 memberNo:", memberNo);
 
 // 일촌평 작성 모달 열기
 function openCommentModal() {

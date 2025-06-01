@@ -28,55 +28,32 @@
             </div>
 
             <!-- Middle Panel -->
-            <div class="main-content middle-content">
-              <!-- 프로필 이미지 
-          <img
-            th:if="${profile != null and profile.imgRename != null}"
-            th:src="@{'/resources/profile/' + ${profile.imgRename}}"
-            alt="사용자 프로필 이미지"
-            style="max-width: 50%; height: auto"
-          />-->
-              <<<<<<< HEAD
-              <th:block th:if="${profile != null}">
-                <img
-                  th:src="@{${profile.imgPath} + ${profile.imgRename}}"
-                  alt="사용자 프로필 이미지"
-                  style="max-width: 50%; height: auto"
-                />
-              </th:block>
-              <th:block th:unless="${profile != null}">
-                <img
-                  th:src="@{/images/default/profile.png}"
-                  alt="사용자 프로필 이미지"
-                  style="max-width: 50%; height: auto"
-                />
-              </th:block>
-              =======
-              <th:block th:if="${profile != null}">
-                <img
-                  th:src="@{${profile.imgPath} + ${profile.imgRename}}"
-                  alt="사용자 프로필 이미지"
-                  style="max-width: 100%; height: 50%"
-                />
-              </th:block>
-              <th:block th:unless="${profile != null}">
-                <img
-                  th:src="@{/images/default/profile.png}"
-                  alt="사용자 프로필 이미지"
-                  style="max-width: 100%; height: 50%"
-                />
-              </th:block>
-              >>>>>>> origin/develop
-
-              <!-- Bio 섹션 -->
-              <div class="bio-section">
-                <textarea
-                  readonly
-                  class="Comment-home"
-                  placeholder="안녕하세요! FeatherWorld에 오신 걸 환영합니다."
-                  th:text="${profile != null ? profile.profileContent : ''}"
-                  style="resize: none !important; overflow: auto; height: 100px"
-                ></textarea>
+            <div class="middle-content">
+              <div>
+                <th:block th:if="${profile != null}">
+                  <img
+                    th:src="|${profile.imgPath}${profile.imgRename}|"
+                    alt="사용자 프로필 이미지"
+                    style="max-width: 50%; height: auto"
+                  />
+                </th:block>
+                <th:block th:if="${profile == null}">
+                  <img
+                    th:src="#{user.default.profile}"
+                    alt="사용자 프로필 이미지"
+                  />
+                </th:block>
+  
+                <!-- Bio 섹션 -->
+                <div class="bio-section">
+                  <textarea
+                    readonly
+                    class="Comment-home"
+                    placeholder="안녕하세요! FeatherWorld에 오신 걸 환영합니다."
+                    th:text="${profile != null ? profile.profileContent : ''}"
+                    style="resize: none !important; overflow: auto; height: 100px"
+                  ></textarea>
+                </div>
               </div>
 
               <!-- 하단 버튼 -->

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.featherworld.project.member.model.dto.Member;
+import org.springframework.http.ResponseEntity;
 
 /** 멤버service 인터페이스
  * @author 영민
@@ -16,6 +17,24 @@ public interface MemberService {
 	 */
 	int checkMember(int memberNo);
 
+	/** 탈퇴한 회원 조회
+	 * @author Jiho
+	 * @return 탈퇴된 회원 번호 리스트
+	 */
+	List<Member> deletedMembers();
+
+	/** 탈퇴한 회원 한 명 삭제
+	 * @author Jiho
+	 * @param memberNo 탈퇴 회원 번호
+	 */
+	int deleteMember(int memberNo);
+	
+	/** 회원 이미지 삭제 (x)
+	 * @param memberNo 현재 회원 번호
+	 * @return 삭제 성공(OK) / 삭제 실패
+	 */
+	int deleteProfileImage(int memberNo);
+	
 	/** 회원가입 메서드
 	 * @author 영민
 	 * @param inputMember
@@ -114,5 +133,13 @@ public interface MemberService {
 	 * @author 영민
 	 */
 	List<Member> getTodayBestMembers();
+	
+	/** DB에 있는 이미지 이름 조회
+	 * @author Jiho
+	 * @return 
+	 */
+	List<String> selectDbImageList();
 
+	Member checkmemberEmailIncludingDeleted(String memberEmail);
+	
 }

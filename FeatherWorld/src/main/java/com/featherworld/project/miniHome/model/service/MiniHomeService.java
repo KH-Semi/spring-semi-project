@@ -1,6 +1,7 @@
 package com.featherworld.project.miniHome.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +21,7 @@ public interface MiniHomeService {
     List<Ilchon> getIlchonComments(int memberNo);
 
     /** 최근 게시글 리스트 가져오기 */
-    List<Board> getRecentBoards(int memberNo);
+    List<Board> getRecentBoards(Map<String, Integer> map);
     
 
 
@@ -95,13 +96,13 @@ public interface MiniHomeService {
 	 * @param memberNo
 	 * @return
 	 */
-	int getTotalBoardCount(int memberNo);
+	int getTotalBoardCount(Map<String, Integer> map);
 
 	/** 방명록 총갯수
 	 * @param memberNo
 	 * @return
 	 */
-	int getTotalGuestBookCount(int memberNo);
+	int getTotalGuestBookCount(Map<String, Integer> map);
 
 
 

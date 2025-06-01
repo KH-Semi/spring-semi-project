@@ -17,11 +17,6 @@ import jakarta.servlet.MultipartConfigElement;
 @PropertySource("classpath:/config.properties")
 public class FileConfig implements WebMvcConfigurer{
 	
-	// WebMvcConfigurer : (addResourceHandlers, Locations 사용하게 해줌)
-	// Spring MVC 프레임워크에서 제공하는 인터페이스 중 하나로
-	// 스프링 구성을 커스터마이징하고 확장하기 위한 메서드를 제공함.
-	// 주로 웹 애플리케이션의 설정을 조정하거나 추가하는 데 사용됨.
-	
 	// 파일 업로드 임계값
 	@Value("${spring.servlet.multipart.file-size-threshold}")
 	private long fileSizeThreshold;	// 52428800
@@ -56,21 +51,19 @@ public class FileConfig implements WebMvcConfigurer{
 	@Value("${my.board.resource-location}")
 	private String boardResourceLocation;
 	
-
 	
 	//-------------------------------------------------------------
 	
-	// left프로필 이미지 관련 경로
+	// left 프로필 이미지 관련 경로
 	
-	@Value("${my.leftprofile.resource-handler}")
+	@Value("${my.left-profile.resource-handler}")
 	private String leftProfileResourceHandler;
 	
-	@Value("${my.leftprofile.resource-location}")
+	@Value("${my.left-profile.resource-location}")
 	private String leftProfileResourceLocation;
 
 	//---------------------------------------
-	//leftProfile 쓸때는 my.leftprfile.resource 이런식으로만들어서추가
-
+	//leftProfile 쓸때는 my.left-profile.resource 이런식으로만들어서추가
 	
 	
 	// 요청 주소에 따라
@@ -78,22 +71,8 @@ public class FileConfig implements WebMvcConfigurer{
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		
-		// ResourceHandlerRegistry :
-		// Spring MVC에서 정적 리소스 (CSS, JS, 이미지 파일 등)의
-		// 요청을 처리하기 위해 사용하는 클래스
-		
-		// URL 요청 패턴을 서버의 실제 파일 경로와 연결하여
-		// 클라이언트가 특정 경로로 정적파일에 접근할 수 있도록 설정
 		registry
-		.addResourceHandler("/myPage/file/**") // 클라이언트의 요청 주소 패턴
-		.addResourceLocations("file:///C:/uploadFiles/test/");
-		// 요청을 연결해서 처리해 줄 서버 실제 폴더 경로
-		
-		// -> 클라이언트가 /myPage/file/** 패턴으로 이미지를 요청할 때
-		// 서버폴더 경로 중 C:/uploadFiles/test/로 연결하겠다 (여기서 이미지 찾겠다)
-		
-		registry
-		.addResourceHandler(profileResourceHandler) // /myPage/profile/**
+		.addResourceHandler(profileResourceHandler) // /profile/**
 		.addResourceLocations(profileResourceLocation); // file:///C:/uploadFiles/profile/
 		
 		registry
@@ -135,11 +114,7 @@ public class FileConfig implements WebMvcConfigurer{
 	// -> Bean으로 등록하면서 위에서 만든 MultipartConfigElement 자동으로 이용함
 	@Bean
 	public MultipartResolver multipartResolver() {
-		// MultipartResolver : MultipartFile을 처리해주는 해결사
-		// MultipartResolver는 클라이언트로부터 받은 multipart 요청을 처리하고,
-		// 이 중에서 업로드 된 파일을 추출하여 MultipartFile 객체로 제공하는 역할
-		StandardServletMultipartResolver multipartResolver
-		= new StandardServletMultipartResolver();
+		StandardServletMultipartResolver multipartResolver = new StandardServletMultipartResolver();
 		
 		return multipartResolver;
 	}

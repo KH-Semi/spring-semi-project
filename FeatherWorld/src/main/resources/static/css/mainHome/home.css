@@ -40,7 +40,10 @@
 
 /* Main Content */
 .main-content {
-  min-height: calc(100vh - 140px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 130px);
   padding: 30px 0;
 }
 
@@ -448,11 +451,11 @@
 
 .main-sections {
   display: flex;
-  gap: 100px;
+  gap: 70px;
   max-width: 1200px;
   margin: 0 auto;
   padding: 60px 20px; /* 위/아래 여백 동일하게 */
-  min-height: 600px; /* 전체 영역 높이 일정하게 맞춤 */
+  min-height: 630px; /* 전체 영역 높이 일정하게 맞춤 */
 }
 
 /* 왼쪽 전체 (검색 + 베스트) */
@@ -461,12 +464,16 @@
   max-width: 600px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center; /* 내부 요소들 중앙 정렬 */
 }
 
 .right-panel {
   flex: 1;
   max-width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* search-bar를 오늘의 베스트 위에 위치하게 조정 */

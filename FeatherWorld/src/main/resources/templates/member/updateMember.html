@@ -8,6 +8,8 @@
     <th:block th:replace="~{common/common}"></th:block>
   </head>
   <body>
+	<div class="center-page">
+	     <div class="center-content">
     <div class="container">
       <div th:replace="~{common/header}"></div>
 
@@ -109,13 +111,13 @@
           </div>
         </div>
 
-        <div class="right-sidebar">
-          <th:block th:replace="~{common/navSidebar}"></th:block>
-        </div>
+        <th:block th:replace="~{common/navSidebar}"></th:block>
       </div>
 
       <div th:replace="~{common/footer}"></div>
     </div>
+	</div>
+	</div>
     <script th:inline="javascript">
       const memberNo = /*[[${memberNo}]]*/ 0;
     </script>

@@ -1,12 +1,5 @@
 /* ===== MiniHome 페이지 전용 CSS ===== */
 
-/* MiniHome 페이지 body 스타일 - 더 구체적인 선택자 사용 */
-body.minihome-page {
-  background-color: #f0f0f0 !important;
-  padding: 20px 0 !important;
-  scrollbar-width: none !important;
-}
-
 /* MiniHome 페이지의 컨테이너 조정 - 더 구체적인 선택자로 우선순위 확보 */
 body.minihome-page .container {
   max-width: 1200px;
@@ -19,61 +12,28 @@ body.minihome-page .container {
 
 /* MiniHome 페이지의 콘텐츠 컨테이너 */
 body.minihome-page .content-container {
-  gap: 0px;
-  padding: 0px;
   align-items: stretch;
   display: flex;
-  border: none;
   min-height: 600px;
 }
 
 /* MiniHome 페이지의 좌측 사이드바 */
 body.minihome-page .left-sidebar {
-  background-color: white;
-  border-radius: 0px;
-  box-shadow: none;
-  border: none;
   border-right: 1px solid #e0e0e0;
   min-width: 250px;
   max-width: 250px;
   flex: 0 0 250px;
   padding: 20px;
-  height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 /* MiniHome 페이지의 메인 콘텐츠 */
 body.minihome-page .main-content {
-  background-color: white;
-  border-radius: 0px;
-  box-shadow: none;
   flex: 1;
   min-height: 600px;
   padding: 20px;
-  border: none;
-  border-right: 1px solid #e0e0e0;
   height: 100%;
-}
-
-/* 우측 사이드바 */
-body.minihome-page .right-sidebar {
-  background-color: white;
-  border-radius: 0px;
-  box-shadow: none;
-  border: none;
-  border-left: none;
-  padding: 20px;
-  height: 100%;
-  min-width: 200px;
-}
-
-/* 좌측 프로필 컨테이너 높이 조정 */
-body.minihome-page #leftProfileContainer {
-  height: 100%;
-  min-height: 500px;
-  display: flex;
-  flex-direction: column;
 }
 
 /* ===== MiniHome 메인 콘텐츠 영역 스타일 ===== */
@@ -250,7 +210,7 @@ body.minihome-page #leftProfileContainer {
 }
 
 .ilchon-comment-box {
-  padding: 18px;
+  padding: 14px;
   background: white;
   border: 2px solid #f0f0f0;
   border-radius: 12px;
@@ -262,7 +222,6 @@ body.minihome-page #leftProfileContainer {
 .ilchon-comment-box:hover {
   border-color: #9f2120;
   box-shadow: 0 4px 15px rgba(159, 33, 32, 0.1);
-  transform: translateY(-2px);
 }
 
 .ilchon-comment-box .comment {
@@ -459,7 +418,7 @@ body.minihome-page #leftProfileContainer {
 }
 
 /* ===== 반응형 MiniHome ===== */
-@media (max-width: 992px) {
+@media (max-width: 1024px) {
   body.minihome-page {
     padding: 10px 0 !important;
   }
@@ -470,24 +429,17 @@ body.minihome-page #leftProfileContainer {
   }
 
   body.minihome-page .content-container {
-    flex-direction: column !important;
+    flex-direction: column;
     padding: 10px;
     gap: 10px;
   }
 
-  body.minihome-page .left-sidebar,
-  body.minihome-page .right-sidebar {
-    min-width: 100% !important;
+  body.minihome-page .left-sidebar {
     max-width: none !important;
-    flex: none !important;
-    padding: 15px !important;
-    border-right: none !important;
-    border-bottom: 1px solid #e0e0e0 !important;
+    border-right: none;
   }
-
-  body.minihome-page .main-content {
-    padding: 20px !important;
-    border-right: none !important;
+  body.minihome-page .right-sidebar {
+    border-left: none;
   }
 
   .summary-links span {

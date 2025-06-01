@@ -193,19 +193,20 @@
         <div class="left-align">
           <img
             name="sended-friend-img"
+            class="toFriendImg"
             th:if="${ilchon.memberImg}"
             th:src="@{${ilchon.memberImg}}"
             width="20"
           />
           <img
-
             name="sended-friend-img"
-
+            class="toFriendImg"
             th:unless="${ilchon.memberImg}"
             th:src="@{/images/default/user.png}"
             width="20"
           />
-          <span name="sended-friend-name" class="font-bold color-gray" th:text="${ilchon.memberName}"
+
+          <span name="sended-friend-name" id="toFriendName" class="font-bold color-gray" th:text="${ilchon.memberName}"
             >별명</span
           >
         </div>

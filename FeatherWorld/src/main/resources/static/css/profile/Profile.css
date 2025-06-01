@@ -1,19 +1,20 @@
 /* 가운데 영역 기본 레이아웃 */
 .middle-content {
-  flex: 1 1 auto;
+  flex: 1 1 auto; /* flex-grow:1, flex-shrink:1, flex-basis:auto */
+  min-width: 600px; /* 오버플로우 방지 */
   padding: 20px;
-  background-color: #fdfdfd;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  border-radius: 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
 }
 
 .middle-content img {
-  width: 900px !important;
-  height: 350px !important;
-  object-fit: fill !important;
+  max-width: 400px;
+  max-height: 350px;
+  object-fit: cover;
   border-radius: 10px;
-  border: 3px solid #9f2120;
   display: block;
   margin: 0 auto 20px;
 }
@@ -39,10 +40,7 @@
   display: flex;
   gap: 10px;
   justify-content: flex-end;
-  margin-top: 20px;
   max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .post-button {
@@ -66,5 +64,57 @@
 .post-button:hover {
   background-color: #9f2120;
   opacity: 90%;
-  transform: translateY(-5px);
+}
+
+/* ===== 공통 설정 ===== */
+body.minihome-page .content-container {
+  display: flex;
+  gap: 20px;
+}
+
+/* ===== 반응형 MiniHome (992px 이하) ===== */
+@media (max-width: 992px) {
+  body.minihome-page {
+    padding: 10px 0;
+  }
+
+  body.minihome-page .container {
+    max-width: 95%;
+    margin: 10px auto;
+  }
+
+  body.minihome-page .content-container {
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  body.minihome-page .left-sidebar,
+  body.minihome-page .right-sidebar {
+    min-width: 100% !important;
+    border-right: none;
+  }
+
+  body.minihome-page .main-content {
+    padding: 20px;
+    border-right: none;
+  }
+
+  .bio-section textarea {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .post-button {
+    display: inline-block;
+    margin: 5px 0;
+    padding: 10px 16px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .main-content img {
+    max-width: 100%;
+    height: auto;
+  }
 }

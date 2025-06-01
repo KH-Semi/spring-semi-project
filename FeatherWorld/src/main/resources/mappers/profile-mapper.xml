@@ -42,7 +42,13 @@
 	<!-- <update id="deleteMember"> UPDATE MEMBER SET MEMBER_DEL_FL = 'Y' WHERE 
 		MEMBER_NO = #{memberNo} </update> -->
 
-
+	<!-- 카카오회원 탈퇴 -->
+	<update id="secessionKakaoMember" parameterType="int">
+    UPDATE MEMBER SET 
+      MEMBER_DEL_FL = 'Y',
+      KAKAO_ACCESS_TOKEN = NULL 
+    WHERE MEMBER_NO = #{memberNo}
+</update>
 
 
 </mapper>

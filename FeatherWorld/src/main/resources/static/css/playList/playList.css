@@ -1,16 +1,7 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
-/* 공통 사이드바 스타일 */
-html,
-body {
-  width: 1379px;
-  height: 732px;
-  overflow: hidden;
-  margin: 0 auto;
-}
 .container {
   width: 1200px;
-  height: 732px;
 }
 
 .container-main {
@@ -22,7 +13,7 @@ body {
   flex: 1;
   overflow-y: auto;
   text-align: center;
-  background-color: #fdfdfd;
+  min-height: 600px;
   padding: 20px;
 }
 
@@ -159,6 +150,12 @@ body {
   display: block;
 }
 
+#youtubeUrl:focus {
+  outline: none;
+  border-color: #9f2120;
+  box-shadow: 0 0 0 3px rgba(159, 33, 32, 0.1);
+}
+
 .embed-container {
   position: relative;
   padding-bottom: 56.25%;
@@ -189,12 +186,14 @@ body {
 }
 
 .post-button {
-  padding: 6px 12px;
-  border: 2px solid #ccc;
-  border-radius: 20px;
+  background-color: #9f2120;
   color: white;
+  font-weight: bold;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  opacity: 90%;
   font-size: 12px;
-  background-color: #912d2d;
   cursor: pointer;
 }
 
@@ -252,4 +251,87 @@ body {
 
 .nav-sidebar .nav-item:nth-child(5) > a i {
   color: white;
+}
+
+/* 반응형 */
+@media (max-width: 1250px) {
+  .container {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container-main {
+    flex-direction: column;
+  }
+
+  .left-sidebar {
+    min-width: 100%;
+    padding: 10px;
+  }
+
+  .middle-sidebar {
+    padding: 15px;
+  }
+
+  .right-sidebar {
+    min-width: 100%;
+    min-height: 100%;
+    padding: 10px;
+  }
+
+  #youtubeUrl {
+    width: 95%;
+    max-width: none;
+  }
+
+  .embed-container {
+    margin: 15px auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .middle-sidebar {
+    padding: 10px;
+  }
+
+  #youtubeUrl {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .post-button {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+
+  .embed-container {
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .middle-sidebar {
+    padding: 5px;
+  }
+
+  #youtubeUrl {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .post-actions {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .post-button {
+    padding: 5px 10px;
+    font-size: 10px;
+    margin: 0 2px;
+  }
 }

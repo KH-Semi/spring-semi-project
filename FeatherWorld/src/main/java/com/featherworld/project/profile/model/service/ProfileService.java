@@ -27,4 +27,10 @@ public interface ProfileService {
 	 * @return
 	 */
 	int secession(String memberPw, int memberNo);
+
+	/** 카카오 회원 탈퇴
+	 * @param memberNo
+	 * @return
+	 */
+	int secessionKakaoMember(int memberNo);
 }
