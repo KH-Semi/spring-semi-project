@@ -210,3 +210,9 @@ span {
   transform: translateX(100%); /* 오른쪽으로 이동 */
   opacity: 0; /* 투명하게 */
 }
+
+[name="deny-button"],
+[name="unfollow-button"],
+[name="accept-button"] {
+  cursor: pointer;
+}
