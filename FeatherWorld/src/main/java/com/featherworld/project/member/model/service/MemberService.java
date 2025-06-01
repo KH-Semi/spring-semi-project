@@ -29,12 +29,6 @@ public interface MemberService {
 	 */
 	int deleteMember(int memberNo);
 	
-	/** 회원 이미지 삭제 (x)
-	 * @param memberNo 현재 회원 번호
-	 * @return 삭제 성공(OK) / 삭제 실패
-	 */
-	int deleteProfileImage(int memberNo);
-	
 	/** 회원가입 메서드
 	 * @author 영민
 	 * @param inputMember

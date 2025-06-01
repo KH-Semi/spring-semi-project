@@ -19,8 +19,6 @@ public interface MemberMapper {
 
 	int deleteMember(int memberNo);
 	
-	int deleteProfileImage(int memberNo);
-	
 	/** 회원가입 메서드
 	 * @author 영민
 	 * @param inputMember
