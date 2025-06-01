@@ -90,10 +90,14 @@ function enterEditMode() {
   if (ownerButtons) ownerButtons.style.display = "none";
   if (editModeButtons) editModeButtons.style.display = "block";
 
-  // 프로필 이미지 edit 아이콘 표시
+  // 프로필 이미지 edit, delete 아이콘 표시
   const editIcon = document.getElementById("profileImageEditIcon");
   if (editIcon) {
     editIcon.style.display = "block";
+  }
+  const deleteIcon = document.getElementById("profileImageDeleteIcon");
+  if (deleteIcon) {
+    deleteIcon.style.display = "block";
   }
 
   // 다른 수정 가능한 요소들 활성화
@@ -116,10 +120,14 @@ function exitEditMode() {
   if (ownerButtons) ownerButtons.style.display = "block";
   if (editModeButtons) editModeButtons.style.display = "none";
 
-  // 프로필 이미지 edit 아이콘 숨기기
+  // 프로필 이미지 edit, delete 아이콘 숨기기
   const editIcon = document.getElementById("profileImageEditIcon");
   if (editIcon) {
     editIcon.style.display = "none";
+  }
+  const deleteIcon = document.getElementById("profileImageDeleteIcon");
+  if (deleteIcon) {
+    deleteIcon.style.display = "none";
   }
 
   // 수정 가능한 요소들 비활성화
@@ -156,6 +164,8 @@ function disableEditableFields() {
 // 프로필 변경사항 저장
 function saveProfileChanges() {
   const formData = new FormData();
+  const defaultImageUrl = `${location.origin}/images/default/user.png`;
+  const userProfileImage = document.getElementById("profileMainImage");
 
   // bio 내용 가져오기
   const bioDisplay = document.getElementById("profileBioDisplay");
@@ -168,6 +178,16 @@ function saveProfileChanges() {
   if (selectedImageFile) {
     formData.append("memberImg", selectedImageFile);
     console.log("이미지 파일 추가:", selectedImageFile.name);
+  }
+
+  // 이미지가 기본 이미지로 변경된 경우 (삭제된 경우)
+  let isImageDeleted = false;
+  if (
+    userProfileImage.src === defaultImageUrl &&
+    originalImageSrc !== defaultImageUrl
+  ) {
+    isImageDeleted = true;
+    formData.append("deleteImage", "true"); // 이미지 삭제 플래그 추가
   }
 
   // 서버로 전송
@@ -198,6 +218,20 @@ function saveProfileChanges() {
       alert("❌ 프로필 업데이트 중 오류가 발생했습니다.");
     });
 }
+
+// 프로필 삭제
+const deleteProfileImage = () => {
+  // 기본 이미지 주소, 현재 회원 프로필 이미지
+  const defaultImageUrl = `${location.origin}/images/default/user.png`;
+  const userProfileImage = document.getElementById("profileMainImage");
+
+  // 기본 이미지가 아닌 경우만 삭제
+  if (defaultImageUrl !== userProfileImage.src) {
+    // 제출되는 이미지 초기화
+    selectedImageFile = null;
+    userProfileImage.src = defaultImageUrl; // 미리보기 기본 이미지로 변경
+  }
+};
 
 // 프로필 수정 취소
 function cancelEdit() {
@@ -301,8 +335,6 @@ function goSurfing() {
 
 // DOM 로드 완료 시 초기화
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("MiniHome JavaScript 로드 완료");
-
   // 프로필 이미지 edit 아이콘 초기에 숨기기
   const editIcon = document.getElementById("profileImageEditIcon");
   if (editIcon) {

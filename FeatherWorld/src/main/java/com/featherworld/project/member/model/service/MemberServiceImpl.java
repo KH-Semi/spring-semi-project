@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +50,13 @@ public class MemberServiceImpl implements MemberService {
 	public int deleteMember(int memberNo) {
 		return mapper.deleteMember(memberNo);
 	}
-
+	
+	// 회원 이미지 삭제 (x)
+	@Override
+	public int deleteProfileImage(int memberNo) {
+		return mapper.deleteProfileImage(memberNo);
+	}
+	
 	/** 회원가입 메서드
 	 *	@author 영민
 	 *

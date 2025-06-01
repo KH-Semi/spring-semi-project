@@ -3,14 +3,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,6 +26,37 @@ public class UpdateMemberController {
     
     @Autowired
     private MiniHomeService miniHomeService;
+    
+    /** 회원 이미지 삭제 (x)
+     * @param memberNo 현재 회원 번호
+     * @author Jiho
+     * @return 삭제 성공(OK) / 삭제 실패
+     */
+    @ResponseBody
+    @DeleteMapping("{memberNo:[0-9]+}/memberImage/delete")
+    public ResponseEntity<String> deleteMember(@PathVariable("memberNo") int memberNo,
+                                               @SessionAttribute("loginMember") Member loginMember) {
+        
+        try {
+            int result = service.deleteProfileImage(memberNo);
+            
+            if(result == 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("유효하지 않은 회원 번호 : " + memberNo);
+                
+            } else {
+                loginMember.setMemberImg(null);
+                
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(memberNo + "번 회원 이미지 삭제 성공");
+            }
+            
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("회원 이미지 삭제 중 오류 발생 : " + e.getMessage());
+        }
+    }
+    
     // GET: 비밀번호 인증 페이지 표시
     @GetMapping("/{memberNo}/updateMember")
     public String updateMemberAuth(@PathVariable("memberNo") int memberNo,
@@ -158,6 +186,4 @@ public class UpdateMemberController {
  
        }
 
-    
-    
 }

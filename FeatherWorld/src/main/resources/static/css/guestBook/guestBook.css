@@ -93,13 +93,20 @@
 /* 방명록 수정 시 입력창 스타일 */
 .update-textarea {
   width: 630px;
-  height: 90px;
+  height: 80px;
   font-size: 16px;
   padding: 5px;
   border-radius: 6px;
   border: 1px solid #ccc;
   resize: none;
   margin-right: 15px;
+  margin-bottom: 10px;
+}
+
+.update-textarea:focus {
+  outline: none;
+  border-color: #9f2120;
+  box-shadow: 0 0 0 3px rgba(159, 33, 32, 0.1);
 }
 
 /* 댓글 입력창 */
@@ -136,6 +143,12 @@
   border-radius: 6px;
   border: 1px solid #ccc;
   resize: none;
+}
+
+.guestBook-textbox:focus {
+  outline: none;
+  border-color: #9f2120;
+  box-shadow: 0 0 0 3px rgba(159, 33, 32, 0.1);
 }
 
 /* 방명록 작성 버튼*/
@@ -193,6 +206,14 @@
 /* 반응형 디자인 */
 @media (max-width: 992px) {
   .profile-list {
+    max-width: none;
+  }
+
+  .main-content {
+    align-items: center;
+  }
+
+  .guestbook-list {
     max-width: none;
   }
 }

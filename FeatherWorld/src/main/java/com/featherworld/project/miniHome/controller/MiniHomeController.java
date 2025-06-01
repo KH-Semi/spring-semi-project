@@ -277,10 +277,9 @@ public class MiniHomeController {
     public Map<String,Object> updateLeftProfile(@PathVariable("memberNo") int memberNo,
                               @RequestParam(value = "memberIntro", required = false) String memberIntro,
                               @RequestParam(value = "memberImg", required = false) MultipartFile memberImg,
+                              @RequestParam(value = "deleteImage", required = false) String deleteImage,
                               @SessionAttribute("loginMember") Member loginMember,
                               HttpSession session) {
-        
-       
         
         Map<String, Object> response = new HashMap<>();
         
@@ -294,23 +293,35 @@ public class MiniHomeController {
             boolean imageUpdated = false;
             boolean introUpdated = false;
             
-            if(memberImg != null && !memberImg.isEmpty()) {
-               
+            // 이미지 삭제 처리
+            if ("true".equals(deleteImage)) {
+                int deleteResult = miniHomeService.deleteMemberImage(loginMember);
+                if (deleteResult > 0) {
+                    loginMember.setMemberImg(null); // 세션 객체도 업데이트
+                    imageUpdated = true;
+                }
+            }
+            // 이미지 업로드 처리
+            else if(memberImg != null && !memberImg.isEmpty()) {
                 int imageResult = miniHomeService.leftprofileUpdate(loginMember, memberImg);
-                
-                if(imageResult > 0) imageUpdated = true;
+                if(imageResult > 0) {
+                    imageUpdated = true;
+                    // 새로운 이미지 경로를 세션에 반영 (서비스에서 설정된 값)
+                }
             }
             
+            // 자기소개 업데이트 처리
             if(memberIntro != null) {
-              
                 int introResult = miniHomeService.leftprofileintroUpdate(loginMember, memberIntro);
-           
                 
-                if (introResult > 0) introUpdated = true;
+                if (introResult > 0) {
+                    loginMember.setMemberIntro(memberIntro); // 세션 객체 업데이트
+                    introUpdated = true;
+                }
             }
             
             if (imageUpdated || introUpdated) {
-                session.setAttribute("loginMember", loginMember);
+                session.setAttribute("loginMember", loginMember); // 업데이트된 객체를 세션에 저장
                 response.put("success", true);
                 
                 if (imageUpdated && introUpdated) {
@@ -326,7 +337,6 @@ public class MiniHomeController {
             }
             
         } catch (Exception e) {
-        
             e.printStackTrace();
             response.put("success", false);
             response.put("message", "프로필 업데이트 중 오류가 발생했습니다: " + e.getMessage());

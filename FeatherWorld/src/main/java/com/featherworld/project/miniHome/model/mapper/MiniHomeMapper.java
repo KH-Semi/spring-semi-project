@@ -67,5 +67,8 @@ public interface MiniHomeMapper {
 
 	Integer getRandomActiveMember();
 
+	int deleteMemberImage(Member loginMember);
+	
+	
 
 }

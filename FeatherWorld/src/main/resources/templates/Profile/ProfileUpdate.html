@@ -84,9 +84,7 @@
             </div>
 
             <!-- Right Sidebar -->
-            <div class="right-sidebar">
-              <th:block th:replace="~{common/navSidebar}"></th:block>
-            </div>
+            <th:block th:replace="~{common/navSidebar}"></th:block>
           </div>
 
           <!-- Footer -->
@@ -98,7 +96,7 @@
     <script th:inline="javascript">
       const memberNo = /*[[${memberNo}]]*/ 0;
     </script>
-    <script src="/js/profile/profileupdate.js"></script>
+    <script src="js/profile/profileupdate.js"></script>
     <script src="/js/miniHome/leftSidebar.js"></script>
   </body>
 </html>

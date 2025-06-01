@@ -142,6 +142,8 @@ public interface MiniHomeService {
 	 */
 	Integer getRandomActiveMember();
 
+	int deleteMemberImage(Member loginMember);
+
 	
 
 	

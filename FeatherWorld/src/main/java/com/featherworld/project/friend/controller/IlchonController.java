@@ -75,28 +75,6 @@ public class IlchonController {
 		
 	}
 	
-	// 250515 아직 로그인 세션기능이 구현되지 않았으므로 시험할수 있는 controller 내부 함수 구현
-	@GetMapping("{memberNo:[0-9]+}/friendList/test")
-	
-	public String selectTest(/* @SessionAttribute Member loginMember*/ @PathVariable(value="memberNo") int memberNo,
-
-			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp
-			,Model model){
-		//Session에서 loginMember의 MEMBER_NO를 불러오기.
-		
-		
-		// loginMember의 MEMBER_NO를 불러오는 대신 MEMBER_NO = 1을 시험적으로 불러온다.
-		int loginMemberNo = 2;/*loginMember.getMemberNo(); */
-		Map<String, Object> map = service.selectIlchonMemberList(loginMemberNo, cp);
-		//map에서 ilchons 따로 변수로 뺴낼것
-		model.addAttribute("ilchons", map.get("ilchons"));
-		model.addAttribute("memberNo", memberNo);
-	    model.addAttribute("pagination", map.get("pagination"));
-		return "friendList/friendList";
-		
-	}
-	
-	
 	@GetMapping("{memberNo:[0-9]+}/friendList/incoming")
 	
 	public String selectIncoming(@SessionAttribute(name = "loginMember", required = true) Member loginMember,

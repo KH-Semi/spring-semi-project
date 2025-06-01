@@ -110,6 +110,13 @@ body {
   font-size: 0.85rem;
 }
 
+.back-button:hover,
+#updateBtn:hover,
+#deleteBtn:hover {
+  background-color: #9f2120;
+  opacity: 90%;
+}
+
 .container {
   display: flex;
   flex-direction: column;
