@@ -148,7 +148,6 @@ span {
 
 .button-default:hover {
   opacity: 90%;
-  transform: translateY(-5px);
 }
 
 .check-icon {

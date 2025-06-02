@@ -49,7 +49,7 @@
 
                   <div class="image-upload-box">
                     <img
-                      th:src="${profile != null} ? @{${profile.imgPath + profile.imgRename}} : @{/images/defaultimage.png}"
+                      th:src="${profile != null} ? ${profile.imgPath + profile.imgRename} : #{user.default.profile}"
                       id="preview"
                       alt="이미지 미리보기"
                       style="display: block; max-width: 100%; height: auto"
@@ -96,7 +96,7 @@
     <script th:inline="javascript">
       const memberNo = /*[[${memberNo}]]*/ 0;
     </script>
-    <script src="js/profile/profileupdate.js"></script>
+    <script src="/js/profile/profileupdate.js"></script>
     <script src="/js/miniHome/leftSidebar.js"></script>
   </body>
 </html>
