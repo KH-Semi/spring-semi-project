@@ -8,21 +8,20 @@ document.addEventListener("DOMContentLoaded", function () {
   const profileImg = document.querySelector(".profile-avatar img");
 
   // 키보드 네비게이션 변수
-  let currentSelectedIndex = -1; // 현재 선택된 아이템의 인덱스
+  let currentSelectedIndex = -1;
   let isKeyboardNavigation = false;
 
   // Kakao SDK 초기화 확인 및 재시도
   if (profileImg != null) {
     profileImg.addEventListener("click", () => {
       if (memberNo) {
-        window.location.href = `/${memberNo}/updateMember`; // 단순하게 GET 요청
+        window.location.href = `/${memberNo}/updateMember`;
       }
     });
   }
 
   function ensureKakaoInit() {
     if (typeof Kakao !== "undefined") {
-      // 아직 초기화되지 않았다면 초기화 실행
       if (!Kakao.isInitialized()) {
         try {
           Kakao.init("e03376ec020087e66ba936c86bceebe2");
@@ -43,13 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (logoutBtn) {
     logoutBtn.addEventListener("click", function () {
       console.log("로그아웃 버튼 클릭됨");
-
-      // 간단한 POST 요청
       fetch("/member/logout", {
         method: "POST",
         credentials: "same-origin",
       }).then(() => {
-        // 성공 여부와 상관없이 페이지 새로고침
         window.location.href = "/";
       });
     });
@@ -58,17 +54,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // 카카오 로그인 함수
   function kakaoLogin() {
     try {
-      // SDK가 로드 및 초기화되었는지 확인
       if (!ensureKakaoInit()) {
         alert("카카오 SDK를 불러오지 못했습니다. 페이지를 새로고침해 주세요.");
         return;
       }
 
-      // 기존 인증 상태 초기화 시도 (오류가 발생해도 계속 진행)
-
-      // 카카오 로그인 실행 - 웹 기반 로그인 강제 사용
       Kakao.Auth.login({
-        throughTalk: false, // 카카오톡 앱 사용 안함, 항상 웹 로그인 페이지 사용
+        throughTalk: false,
         scope: "profile_nickname account_email",
         success: function (authObj) {
           console.log("카카오 인증 성공:", authObj);
@@ -79,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
               const kakao_account = res.kakao_account || {};
               console.log("카카오 사용자 정보:", kakao_account);
 
-              // 프로필 정보 안전하게 접근
               const memberEmail = kakao_account.email || "";
               const memberName =
                 kakao_account.profile?.nickname || "카카오 사용자";
@@ -100,19 +91,13 @@ document.addEventListener("DOMContentLoaded", function () {
                   return response.json();
                 })
                 .then((data) => {
-                  // 서버 응답 처리
                   if (data.success) {
                     console.log("카카오 로그인 성공:", data.message);
-
-                    // 새 회원이면 추가 정보 입력 페이지로, 아니면 메인으로 리다이렉트
                     if (data.isNewMember) {
                       alert("환영합니다! 회원가입이 완료되었습니다.");
                     }
-
-                    // 로그인 성공 시 메인 페이지로 리다이렉트
                     window.location.href = "/";
                   } else {
-                    // 로그인 실패 처리
                     console.error("로그인 실패:", data.message);
                     alert("로그인에 실패했습니다: " + data.message);
                   }
@@ -144,7 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // 카카오 로그인 버튼 이벤트
   if (kakaoLoginBtn) {
     kakaoLoginBtn.addEventListener("click", function () {
-      // 로그인 실행
       kakaoLogin();
     });
   }
@@ -160,15 +144,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const resultItems = document.querySelectorAll("#searchResults li");
     if (resultItems.length === 0) return;
 
-    // 기존 선택 해제
     resultItems.forEach((item) => item.classList.remove("selected"));
 
-    // 새 항목 선택
     if (index >= 0 && index < resultItems.length) {
       currentSelectedIndex = index;
       resultItems[index].classList.add("selected");
-
-      // 선택된 항목이 보이도록 스크롤
       resultItems[index].scrollIntoView({
         block: "nearest",
         behavior: "smooth",
@@ -176,13 +156,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // 검색 결과 표시 함수 (키보드 네비게이션 지원 추가)
+  // 검색 결과 표시 함수
   function displayResults(members) {
     if (!searchResults) return;
 
-    searchResults.innerHTML = ""; // 이전 결과 비우기
-    resetSelection(); // 선택 상태 초기화
-    isKeyboardNavigation = false;
+    searchResults.innerHTML = "";
+    resetSelection();
 
     if (!members || members.length === 0) {
       const li = document.createElement("li");
@@ -193,11 +172,8 @@ document.addEventListener("DOMContentLoaded", function () {
       members.forEach((member, index) => {
         const li = document.createElement("li");
         li.className = "member-result-item";
-
-        // data 속성에 회원번호 저장 (키보드 네비게이션용)
         li.dataset.memberNo = member.memberNo;
 
-        // 결과 항목을 구성하는 HTML 생성
         li.innerHTML = `
           <div class="member-result-wrapper">
             <div class="member-result-avatar">
@@ -214,23 +190,10 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
         `;
 
-        // 회원 클릭 시 해당 미니홈으로 이동
         li.addEventListener("click", () => {
           if (member.memberNo) {
             window.location.href = `/${member.memberNo}/minihome`;
           }
-        });
-
-        // 마우스 호버 시 선택 상태 업데이트 (키보드 사용 중이 아닐 때만)
-        li.addEventListener("mouseenter", () => {
-          if (!isKeyboardNavigation) {
-            selectItem(index);
-          }
-        });
-
-        // 마우스가 움직이면 키보드 네비게이션 모드 해제
-        li.addEventListener("mousemove", () => {
-          isKeyboardNavigation = false;
         });
 
         searchResults.appendChild(li);
@@ -244,81 +207,116 @@ document.addEventListener("DOMContentLoaded", function () {
     searchResults.style.display = "block";
   }
 
-  // 검색 입력에 이벤트 리스너 추가 - 즉시 검색 실행 및 키보드 네비게이션
+  // 검색 입력 및 키보드 네비게이션
   if (searchInput) {
-    // 검색 입력 이벤트
+    let debounceTimer = null;
+    let isNavigating = false;
+    let lastSearchTerm = ""; // 마지막으로 검색한 내용 추적
+
     searchInput.addEventListener("input", function () {
       const searchTerm = this.value.trim();
 
-      // 입력 값이 없으면 결과와 닫기 버튼 숨김
+      // 검색어가 이전과 같으면 검색하지 않음 (키보드 네비게이션 중이라도)
+      if (searchTerm === lastSearchTerm) {
+        return;
+      }
+
+      // 검색어가 달라졌으므로 네비게이션 모드 해제 및 새로운 검색 시작
+      if (isNavigating && searchTerm !== lastSearchTerm) {
+        isNavigating = false;
+        isKeyboardNavigation = false;
+      }
+
+      clearTimeout(debounceTimer);
+
       if (searchTerm === "") {
         if (searchResults) searchResults.style.display = "none";
         if (closeBtn) closeBtn.style.display = "none";
         resetSelection();
+        isNavigating = false;
+        isKeyboardNavigation = false;
+        lastSearchTerm = ""; // 마지막 검색어 초기화
         return;
       }
 
-      // 검색어가 있으면 닫기 버튼 표시
       if (closeBtn) closeBtn.style.display = "inline";
 
-      // 즉시 검색 실행
-      fetch(`/member/search?memberName=${encodeURIComponent(searchTerm)}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("검색 요청 실패: " + response.status);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          // 검색 결과 표시
-          displayResults(data);
-        })
-        .catch((error) => {
-          console.error("검색 중 오류 발생:", error);
-          if (searchResults) {
-            searchResults.innerHTML = "<li>검색 중 오류가 발생했습니다.</li>";
-            searchResults.style.display = "block";
-            resetSelection();
-          }
-        });
+      if (searchResults) {
+        searchResults.innerHTML = "<li class='loading'>검색 중...</li>";
+        searchResults.style.display = "block";
+        resetSelection();
+      }
+
+      debounceTimer = setTimeout(() => {
+        // 검색 시작할 때 현재 검색어를 마지막 검색어로 저장
+        lastSearchTerm = searchTerm;
+
+        fetch(`/member/search?memberName=${encodeURIComponent(searchTerm)}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                `HTTP ${response.status}: ${response.statusText}`
+              );
+            }
+            return response.json();
+          })
+          .then((data) => {
+            displayResults(data);
+            // ✅ 검색 결과가 나타나면 바로 키보드 네비게이션 활성화
+            if (data && data.length > 0) {
+              isNavigating = true;
+              isKeyboardNavigation = true;
+            } else {
+              isNavigating = false;
+              isKeyboardNavigation = false;
+            }
+          })
+          .catch((error) => {
+            if (searchResults) {
+              resetSelection();
+              searchResults.innerHTML =
+                "<li class='error'>검색 중 오류가 발생했습니다.</li>";
+              searchResults.style.display = "block";
+            }
+            isNavigating = false;
+            isKeyboardNavigation = false;
+          });
+      }, 500);
     });
 
-    // 키보드 네비게이션 이벤트
+    // 포커스 이벤트
+    searchInput.addEventListener("focus", function () {
+      // 포커스만으로는 네비게이션 모드를 해제하지 않음
+      // 실제 입력이 있을 때만 해제되도록 변경
+    });
 
+    // 키보드 네비게이션
     searchInput.addEventListener("keydown", function (e) {
       const resultItems = document.querySelectorAll(
-        "#searchResults li:not(.no-results)"
+        "#searchResults li:not(.no-results):not(.loading):not(.error)"
       );
 
       switch (e.key) {
         case "ArrowDown":
         case "ArrowUp":
-          e.preventDefault();
-          isKeyboardNavigation = true; // 키보드 사용 중임을 표시
+          if (resultItems.length === 0) return;
 
-          if (resultItems.length > 0) {
-            if (e.key === "ArrowDown") {
-              if (currentSelectedIndex === -1) {
-                selectItem(0);
-              } else {
-                const nextIndex =
-                  currentSelectedIndex < resultItems.length - 1
-                    ? currentSelectedIndex + 1
-                    : 0;
-                selectItem(nextIndex);
-              }
-            } else {
-              // ArrowUp
-              if (currentSelectedIndex === -1) {
-                selectItem(resultItems.length - 1);
-              } else {
-                const prevIndex =
-                  currentSelectedIndex <= 0
-                    ? resultItems.length - 1
-                    : currentSelectedIndex - 1;
-                selectItem(prevIndex);
-              }
-            }
+          e.preventDefault();
+          isNavigating = true;
+          isKeyboardNavigation = true;
+
+          if (e.key === "ArrowDown") {
+            const nextIndex =
+              currentSelectedIndex < resultItems.length - 1
+                ? currentSelectedIndex + 1
+                : 0;
+            selectItem(nextIndex);
+          } else {
+            const prevIndex =
+              currentSelectedIndex > 0
+                ? currentSelectedIndex - 1
+                : resultItems.length - 1;
+            selectItem(prevIndex);
           }
           break;
 
@@ -327,7 +325,6 @@ document.addEventListener("DOMContentLoaded", function () {
           if (currentSelectedIndex >= 0 && resultItems.length > 0) {
             const selectedItem = resultItems[currentSelectedIndex];
             const memberNo = selectedItem.dataset.memberNo;
-
             if (memberNo) {
               window.location.href = `/${memberNo}/minihome`;
             }
@@ -335,11 +332,34 @@ document.addEventListener("DOMContentLoaded", function () {
           break;
 
         case "Escape":
+          e.preventDefault();
           if (searchResults) searchResults.style.display = "none";
           if (closeBtn) closeBtn.style.display = "none";
-          resetSelection();
+          isNavigating = false;
           isKeyboardNavigation = false;
+          resetSelection();
+
           break;
+
+        case "Tab":
+          isNavigating = false;
+          isKeyboardNavigation = false;
+
+          break;
+
+        case "Backspace":
+        case "Delete":
+          // 백스페이스나 Delete 키는 입력 변경이므로 네비게이션 모드 해제 준비
+
+          // input 이벤트에서 실제 변경 여부를 확인할 예정
+          break;
+      }
+    });
+
+    // 텍스트 입력 시 - keypress는 유지하되 로직 단순화
+    searchInput.addEventListener("keypress", function (e) {
+      if (e.key.length === 1) {
+        // input 이벤트에서 실제 검색어 변경 여부를 확인할 예정
       }
     });
   }
@@ -351,6 +371,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (searchResults) searchResults.style.display = "none";
       closeBtn.style.display = "none";
       resetSelection();
+      isNavigating = false; // ✅ 추가됨
       isKeyboardNavigation = false;
     });
   }
@@ -367,6 +388,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ) {
       searchResults.style.display = "none";
       resetSelection();
+      isNavigating = false; // ✅ 추가됨
       isKeyboardNavigation = false;
     }
   });
