@@ -306,8 +306,20 @@ const renderBoardTypeList = async () => {
         deleteIcon.append(trashIcon);
 
         iconSpan.append(editIcon, deleteIcon);
-
-        boardTypeItem.append(boardTypeTitle, iconSpan);
+        
+        if(boardType.authority === 1) {
+          const lock = document.createElement("i");
+          lock.className = "fa-solid fa-lock";
+          lock.style.position = "absolute";
+          lock.style.left = "-12px";
+          lock.style.fontSize = "10px";
+          lock.style.color = "#9f2120";
+          
+          boardTypeItem.append(lock, boardTypeTitle, iconSpan);
+          
+        } else {
+          boardTypeItem.append(boardTypeTitle, iconSpan);
+        }
 
       } else {
         boardTypeItem.append(boardTypeTitle);
@@ -555,6 +567,12 @@ if (leftSidebar) {
       const boardName = document.querySelector("input[name='boardName']").value;
       if (boardName.trim().length === 0) {
         alert("게시판 이름을 작성해주세요.");
+        document.querySelector(".add-folder-input").focus();
+        return;
+      }
+      
+      if (boardName.length > 10) {
+        alert("게시판 이름이 너무 깁니다.");
         document.querySelector(".add-folder-input").focus();
         return;
       }
