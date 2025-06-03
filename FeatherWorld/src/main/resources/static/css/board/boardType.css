@@ -29,6 +29,13 @@
   border-color: #9f2120;
 }
 
+.board-type-item > .fa-lock {
+  position: absolute;
+  left: -12px;
+  font-size: 10px;
+  color: #9f2120;
+}
+
 .board-type-sidebar > div:first-child {
   display: flex;
   justify-content: space-between;

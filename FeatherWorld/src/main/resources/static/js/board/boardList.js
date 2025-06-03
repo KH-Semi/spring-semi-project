@@ -310,10 +310,6 @@ const renderBoardTypeList = async () => {
         if(boardType.authority === 1) {
           const lock = document.createElement("i");
           lock.className = "fa-solid fa-lock";
-          lock.style.position = "absolute";
-          lock.style.left = "-12px";
-          lock.style.fontSize = "10px";
-          lock.style.color = "#9f2120";
           
           boardTypeItem.append(lock, boardTypeTitle, iconSpan);
           
