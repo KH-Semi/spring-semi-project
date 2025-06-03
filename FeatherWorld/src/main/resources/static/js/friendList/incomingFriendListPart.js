@@ -125,7 +125,7 @@ function resetEditCancelBtn() {
     });
   }
 }
-/************************************************250530 start of copy */
+
 function resetEditCancelBtn() {
   // 비동기로 update한 friend-item 과 Edit, Cancel, 일촌신청 버튼 다시 연동.
 
@@ -341,14 +341,14 @@ function resetEditCancelBtn() {
   friendSendedSpans.forEach(function (friend) {
     const profileImg = friend.querySelector("[name=sended-friend-img]");
     const profileName = friend.querySelector("[name=sended-friend-name]");
-    
+
     if (profileImg) {
       profileImg.style.cursor = "pointer";
       profileImg.addEventListener("click", () => {
         window.location.href = `/${friend.dataset.memberNo}/friendList`;
       });
     }
-    
+
     if (profileName) {
       profileImg.style.cursor = "pointer";
       profileName.addEventListener("click", () => {
@@ -408,7 +408,9 @@ function resetEditCancelBtn() {
     }
   });
 }
+
 resetEditCancelBtn();
+
 function updateFriendListIncoming(cp, cpFrom) {
   //for pagination
   console.log("cp: ", cp, "cpFrom:", cpFrom);
@@ -438,7 +440,54 @@ function updateFriendListIncoming(cp, cpFrom) {
       }
     })
     .catch((err) => console.error("fragment 갱신 실패:", err));
-} /************************************************250530 end of copy */
+}
+
+function updateModel(cp, cpFrom) {
+  // "{memberNo:[0-9]+}/friendList/incoming" 에서 model만 업데이트
+  //for pagination
+  console.log("cp: ", cp, "cpFrom:", cpFrom);
+  return fetch(`/${memberNo}/friendList/incoming?cp=${cp}&cpFrom=${cpFrom}`, {
+    headers: {
+      "X-Requested-With": "XMLHttpRequest",
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("요청 실패: " + res.status);
+      }
+      return res.text();
+    })
+    .then((html) => {
+      console.log("html response:", html);
+      // 응답받은 HTML을 파싱해서 DOM으로 변환
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+      console.log("doc: ", doc.body.innerText);
+      return doc;
+    });
+}
+
+async function updateFriendListIncoming_refactored(cp, cpFrom) {
+  //for pagination
+  console.log("cp: ", cp, "cpFrom:", cpFrom);
+
+  try {
+    const doc = await updateModel(cp, cpFrom);
+
+    console.log("doc: ", doc.body.innerText);
+    // 기존 DOM의 요소 교체
+    const currentBlock = document.querySelector(".main-content");
+
+    if (currentBlock) {
+      currentBlock.innerHTML = doc.body.firstElementChild.outerHTML;
+      resetEditCancelBtn();
+    }
+  } catch (err) {
+    console.error("fragment 갱신 실패:", err);
+  }
+}
+
+/************************************************250530 end of copy */
 //각 friendSpans의 <textarea>안 change이벤트 발생시 submit하는 이벤트 핸들러 지정
 
 // 미니홈피 이동 기능: 프로필 이미지 or 이름 클릭 시
