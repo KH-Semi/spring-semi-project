@@ -159,8 +159,8 @@
 
 /* 키보드 네비게이션 - 선택된 항목 스타일 */
 .search-results li.selected {
-  background-color: #e3f2fd !important;
-  border-left: 4px solid #2196f3 !important;
+  background-color: rgba(159, 33, 32, 0.2);
+  border-left: 4px solid #c62828 !important;
   transform: translateX(3px);
 }
 
