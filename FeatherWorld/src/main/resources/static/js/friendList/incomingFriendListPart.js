@@ -23,44 +23,59 @@ const xIcon = (friend) => {
 };
 /*friend를 왼쪽으로 밀어버리는 애니메이션 동작함수 + 해당 요소를 DOM에서 제거*/
 const fadeOut = (friend) => {
-  friend.classList.add("removing");
+    return new Promise((resolve) => {
+      friend.classList.add("removing");
 
-  // transition 완료 후 remove()
-  friend.addEventListener(
-    "transitionend",
-    () => {
-      friend.remove();
-    },
-    { once: true }
-  );
+      // transition 완료 후 remove()
+      friend.addEventListener(
+        "transitionend",
+        () => {
+          friend.remove();
+          resolve();
+        },
+        { once: true }
+      );
+  });
 };
 // DB 내부 일촌테이블 DELETE 전용 애니메이션 함수(fadeOut과는 반대방향으로 밀어버림) +  안에서 해당 요소를 DOM에서 제거.
 const deleteFade = (friend) => {
-  friend.classList.add("deleting");
+  return new Promise((resolve) => {
+    friend.classList.add("deleting");
 
-  // transition 완료 후 remove()
-  friend.addEventListener(
-    "transitionend",
-    () => {
-      friend.remove();
-    },
-    { once: true }
-  );
+      // transition 완료 후 remove()
+      friend.addEventListener(
+        "transitionend",
+        () => {
+          friend.remove();
+          resolve();
+        },
+        { once: true }
+      );
+
+
+  });
+  
 };
 /* changeTitleForSec()
   title : 동작을 수행할 웹페이지상 text 요소
   str : 바꿀 내용
 */
 const changeTitleForSec = (title, str) => {
-  if (title) {
-    const savedText = title.innerText;
-    title.innerText = str; // string
-    setTimeout(() => {
-      title.innerText = savedText;
-    }, 1000);
-  } else {
-    console.log("title이 null 입니다!");
-  }
+  return new Promise((resolve) => {
+    if (title) {
+      const savedText = title.innerText;
+      title.innerText = str; // string
+      setTimeout(() => {
+        title.innerText = savedText;
+        resolve();
+      }, 1000);
+
+      
+    } else {
+      console.log("title이 null 입니다!");
+      resolve();
+    }
+  });
 };
 
 /********************여기까지 주요 기능 이외 함수******************** */
@@ -83,49 +98,33 @@ document.getElementById("to-friendList-btn").addEventListener("click", () => {
 friendSpans.forEach(function (friend) {
   console.log(friend);
 });
-function resetEditCancelBtn() {
-  if (editBtn) {
-    editBtn.addEventListener("click", (e) => {
-      console.log("editBtn clicked!");
-      applyCancelBtnDiv.classList.remove("hidden");
-      applyBtn.classList.remove("hidden");
-      cancelBtn.classList.remove("hidden");
-      e.target.classList.add("hidden");
 
-      friendSpans.forEach(function (friend) {
-        friend.querySelector("[name=fromNickname]").classList.add("hidden");
-        friend.querySelector("[name=ilchon-button]").classList.add("hidden");
-        friend
-          .querySelector("[name=fromNickname-input]")
-          .classList.remove("hidden");
-        friend.querySelector("[name=fromNickname-input]").innerText =
-          friend.querySelector("[name=fromNickname]").innerText;
-        friend
-          .querySelector("[name=unfollow-button]")
-          .classList.remove("hidden");
-      });
+
+
+function updateModel(cp, cpFrom) {
+  // "{memberNo:[0-9]+}/friendList/incoming" 에서 model만 업데이트
+  //for pagination
+  console.log("cp: ", cp, "cpFrom:", cpFrom);
+  return fetch(`/${memberNo}/friendList/incoming?cp=${cp}&cpFrom=${cpFrom}`, {
+    headers: {
+      "X-Requested-With": "XMLHttpRequest",
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("요청 실패: " + res.status);
+      }
+      return res.text();
+    })
+    .then((html) => {
+      console.log("html response:", html);
+      // 응답받은 HTML을 파싱해서 DOM으로 변환
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+      console.log("doc: ", doc.body.innerText);
+      return doc;
     });
-  }
-
-  if (cancelBtn) {
-    cancelBtn.addEventListener("click", (e) => {
-      editBtn.classList.remove("hidden");
-      applyCancelBtnDiv.classList.add("hidden");
-      applyBtn.classList.add("hidden");
-      e.target.classList.add("hidden");
-
-      friendSpans.forEach(function (friend) {
-        friend.querySelector("[name=fromNickname]").classList.remove("hidden");
-        friend.querySelector("[name=ilchon-button]").classList.remove("hidden");
-        friend
-          .querySelector("[name=fromNickname-input]")
-          .classList.add("hidden");
-        friend.querySelector("[name=unfollow-button]").classList.add("hidden");
-      });
-    });
-  }
 }
-
 function resetEditCancelBtn() {
   // 비동기로 update한 friend-item 과 Edit, Cancel, 일촌신청 버튼 다시 연동.
 
@@ -137,54 +136,11 @@ function resetEditCancelBtn() {
   friendSpans = document.querySelectorAll(".friend-item");
   friendSendedSpans = document.querySelectorAll(".friend-item-sended");
 
-  //1
-  if (editBtn) {
-    editBtn.addEventListener("click", (e) => {
-      console.log("editBtn clicked!");
-      applyCancelBtnDiv.classList.remove("hidden");
-      /*applyBtn.classList.remove("hidden");*/
-      cancelBtn.classList.remove("hidden");
-      e.target.classList.add("hidden");
-
-      friendSpans.forEach(function (friend) {
-        friend.querySelector("[name=fromNickname]").classList.add("hidden");
-        friend.querySelector("[name=ilchon-button]").classList.add("hidden");
-        friend
-          .querySelector("[name=fromNickname-input]")
-          .classList.remove("hidden");
-        friend.querySelector("[name=fromNickname-input]").value =
-          friend.querySelector("[name=fromNickname]").innerText;
-        friend
-          .querySelector("[name=unfollow-button]")
-          .classList.remove("hidden");
-        /* 첫 요소밖에 뜨지않는 이슈로 잠시 주석처리해둠.
-        //unfollow 요청 서버로 보내기
-        friend.querySelector("[name=unfollow-button]").addEventListener(() => {
-          // unfollow 비동기 요청
-        });*/
-      });
-    });
-  }
-
-  //2
-  if (cancelBtn) {
-    cancelBtn.addEventListener("click", (e) => {
-      editBtn.classList.remove("hidden");
-      applyCancelBtnDiv.classList.add("hidden");
-      /*applyBtn.classList.add("hidden");*/
-      e.target.classList.add("hidden");
-
-      friendSpans.forEach(function (friend) {
-        friend.querySelector("[name=fromNickname]").classList.remove("hidden");
-        friend.querySelector("[name=ilchon-button]").classList.remove("hidden");
-        friend
-          .querySelector("[name=fromNickname-input]")
-          .classList.add("hidden");
-        friend.querySelector("[name=unfollow-button]").classList.add("hidden");
-      });
-    });
-  }
-
+  //1. 현재 일촌 리스트로 돌아가기 버튼 click 이벤트 다시 추가
+ 
+  document.getElementById("to-friendList-btn").addEventListener("click", () => {
+  window.location.href = `/${memberNo}/friendList`;
+  });
   //3 // (내가 일촌신청을 받은사람 한정)프로필img / 이름 클릭시 헤당 user의 minihome으로
   friendSpans.forEach(function (friend) {
     const profileImg = friend.querySelector(".friend-profile");
@@ -202,7 +158,7 @@ function resetEditCancelBtn() {
       });
     }
   });
-
+  //3 // (내가 일촌신청을 보낸사람 한정)프로필img / 이름 클릭시 헤당 user의 minihome으로
   friendSendedSpans.forEach(function (friend) {
     const profileImg2 = friend.querySelector(".toFriendImg");
     const profileName2 = friend.querySelector("#toFriendName");
@@ -247,25 +203,26 @@ function resetEditCancelBtn() {
           }), // TO_NICKNAME/FROM_NICKNAME 판별 여부는 서버측에서 판단
         })
           .then((response) => response.json())
-          .then((data) => {
+          .then(async(data) => {
             console.log(data); // DEBUG용이므로 지우셔도 됩니다
-            if (data.status == 2) {
-              console.log("toNickname 수정 성공!");
+            if (data.status == 2 || data.status == 1) { // 2 : toNickname  수정성공, 1 : fromNickname 수정성공
+              console.log(data.status==2?"toNickname 수정 성공!":"fromNickname 수정 성공!");
 
-              fadeOut(friend);
-              changeTitleForSec(
+              await fadeOut(friend);
+              await changeTitleForSec(
                 document.getElementById("incoming-title"),
                 "새 일촌을 수락했습니다!! 잘부탁드려요!"
               );
-            } else if (data.status == 1) {
-              console.log("fromNickname 수정 성공!");
-
-              checkIcon(friend);
-
-              fadeOut(friend);
-
-              /* return fetch(`/${memberNo}/friendList/incoming`);*/
-            } else {
+              //model 업데이트 후 다시 items 갱신
+              console.log(currPagination,"+", currPaginationFrom)
+              const newItems = await updateModel(currPagination, currPaginationFrom);
+              const currentBlock = document.querySelector(".main-content");
+              console.log(newItems);
+              if (currentBlock) {
+                currentBlock.innerHTML = newItems.body.firstElementChild.outerHTML;
+                resetEditCancelBtn();
+              }
+            } else  {
               console.log("수정 실패!");
               xIcon(friend);
               return Promise.reject("닉네임 수정 실패");
@@ -274,6 +231,8 @@ function resetEditCancelBtn() {
           .catch((err) => {
             console.error(err);
           });
+          
+              //
       });
       //accept 버튼 누른후 nickname 수정요청 + is_ilchon = 'Y'로 변경
       fromNicknameInput?.addEventListener("input", (e) => {
@@ -442,30 +401,7 @@ function updateFriendListIncoming(cp, cpFrom) {
     .catch((err) => console.error("fragment 갱신 실패:", err));
 }
 
-function updateModel(cp, cpFrom) {
-  // "{memberNo:[0-9]+}/friendList/incoming" 에서 model만 업데이트
-  //for pagination
-  console.log("cp: ", cp, "cpFrom:", cpFrom);
-  return fetch(`/${memberNo}/friendList/incoming?cp=${cp}&cpFrom=${cpFrom}`, {
-    headers: {
-      "X-Requested-With": "XMLHttpRequest",
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("요청 실패: " + res.status);
-      }
-      return res.text();
-    })
-    .then((html) => {
-      console.log("html response:", html);
-      // 응답받은 HTML을 파싱해서 DOM으로 변환
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
-      console.log("doc: ", doc.body.innerText);
-      return doc;
-    });
-}
+
 
 async function updateFriendListIncoming_refactored(cp, cpFrom) {
   //for pagination
