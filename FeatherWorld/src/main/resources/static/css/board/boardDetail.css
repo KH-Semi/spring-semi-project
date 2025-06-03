@@ -167,6 +167,7 @@ body {
   flex: 0 0 calc(20% - 16px); /* flex 고정 */
   max-width: 180px;
   position: relative;
+  height: 100%;
 }
 
 /* 이미지 */

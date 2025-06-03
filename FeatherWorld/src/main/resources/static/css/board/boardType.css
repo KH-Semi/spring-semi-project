@@ -12,6 +12,7 @@
 }
 
 .board-type-sidebar .board-type-item {
+  position: relative;
   display: flex;
   justify-content: space-between;
   padding: 10px;
