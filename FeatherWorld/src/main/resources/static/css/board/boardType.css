@@ -22,8 +22,16 @@
   transition: all 0.3s ease;
 }
 
-.board-type-sidebar .board-type-item:hover {
+.board-type-sidebar .board-type-item:hover,
+.board-type-sidebar .board-type-item:hover > .fa-lock {
   transition-duration: 0.2s;
+  background-color: #9f2120;
+  color: white;
+  border-color: #9f2120;
+}
+
+.board-type-sidebar .board-type-item.selected,
+.board-type-sidebar .board-type-item.selected > .fa-lock {
   background-color: #9f2120;
   color: white;
   border-color: #9f2120;
@@ -31,9 +39,15 @@
 
 .board-type-item > .fa-lock {
   position: absolute;
-  left: -12px;
+  left: -4px;
   font-size: 10px;
   color: #9f2120;
+}
+
+.board-type-item > input[name="boardName"] {
+  font-family: "Pretendard", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .board-type-sidebar > div:first-child {
@@ -68,7 +82,6 @@
 }
 .board-type-item .fa-solid {
   margin: 0 5px;
-  padding: 0 10px;
 }
 .board-type-item .fa-solid:hover {
   transition-duration: 0.2s;

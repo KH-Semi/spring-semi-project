@@ -8,7 +8,6 @@ const MAX_LENGTH = 5;
 document.addEventListener('DOMContentLoaded', () => {
   initializeImageUpload();
   initializeBackButton();
-  initializeByteCounter();
 });
 
 // 이미지 업로드 초기화
