@@ -281,6 +281,8 @@ const renderBoardTypeList = async () => {
       const boardTypeItem = document.createElement("div");
       boardTypeItem.classList.add("board-type-item");
       boardTypeItem.dataset.boardCode = boardType.boardCode;
+      // 현재 게시판인 경우, selected 클래스 추가
+      if(boardType.boardCode === currentBoardCode) boardTypeItem.classList.add("selected");
 
       const boardTypeTitle = document.createElement("span");
       boardTypeTitle.classList.add("board-type-title");
@@ -308,7 +310,7 @@ const renderBoardTypeList = async () => {
         iconSpan.append(editIcon, deleteIcon);
         
         if(boardType.authority === 1) {
-          const lock = document.createElement("i");
+          const lock = document.createElement("span");
           lock.className = "fa-solid fa-lock";
           
           boardTypeItem.append(lock, boardTypeTitle, iconSpan);
@@ -352,7 +354,7 @@ const createAddFolder = () => {
   return div;
 };
 
-/** 게시판 추가/수정 시 나타나는 폼 요소 생성
+/** 게시판 추가 시 나타나는 폼 요소 생성
  * @author Jiho
  * @returns {HTMLDivElement}
  */
@@ -445,45 +447,64 @@ if (leftSidebar) {
     // 연필 아이콘 클릭시
     const editIcon = e.target.closest(".edit-icon");
     if(editMode && editIcon) {
-
+      
       // 선택한 게시판
       const parentBoardItem = editIcon.closest(".board-type-item");
       // 선택한 게시판 종류 번호
       const editBoardCode = parentBoardItem.dataset.boardCode;
-      // 기존 게시판명
-      const title = parentBoardItem.firstElementChild.innerText;
-
-      const editFn = async input => {
-        if (input.value.trim() === "") {
-          alert("게시판 이름을 입력하세요.");
-          return;
+      // 게시판 제목
+      const boardTitle = parentBoardItem.querySelector(".board-type-title");
+      
+      // 게시판 이름 수정 & 게시판 목록 갱신
+      const editFn = async (e, input) => {
+        
+        // 클릭, 엔터 입력시에만 수정 진행
+        if (e.type === "click" || (e.type === "keydown" && e.key === "Enter")) {
+          
+          if (input.value.trim() === "") {
+            alert("게시판 이름을 입력하세요.");
+            return;
+          }
+          
+          if (input.value.length > 10) {
+            alert("게시판 이름은 10자 이내로 작성해주세요.");
+            input.focus();
+            return;
+          }
+          
+          const folderObj = {
+            boardCode: editBoardCode,
+            boardName: input.value
+          };
+          
+          const resp = await fetch(`/${memberNo}/board/update`, {
+            method: "put",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(folderObj)
+          });
+          const result = await resp.text();
+          
+          if (result == 0) alert("게시판 수정 실패");
+          
+          renderBoardTypeList().catch(console.error);
         }
-
-        const folderObj = {
-          boardCode: editBoardCode,
-          boardName: input.value
-        };
-
-        const resp = await fetch(`/${memberNo}/board/update`, {
-          method: "put",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(folderObj)
-        });
-        const result = await resp.text();
-
-        if (result == 0) alert("게시판 수정 실패");
-
-        renderBoardTypeList().catch(console.error);
       }
-
-      const input = document.createElement("input");
-      input.name = "boardName";
-      input.value = title;
-
-      editIcon.addEventListener("click", () => editFn(input));
-
-      parentBoardItem.firstElementChild.replaceWith(input);
-      input.focus();
+      
+      // 게시글 제목 span이 존재하는 경우
+      if(boardTitle) {
+        const input = document.createElement("input");
+        input.name = "boardName";
+        input.size = 10;
+        input.value = boardTitle.innerText;
+        
+        editIcon.addEventListener("click", e => editFn(e, input));
+        input.addEventListener("keydown", e => editFn(e, input));
+        
+        boardTitle.replaceWith(input);
+        input.focus();
+        
+        return;
+      }
 
       return;
     }
@@ -523,6 +544,12 @@ if (leftSidebar) {
     // 좌측 게시판 목록 선택
     const boardTypeItem = e.target.closest(".board-type-item");
     if (boardTypeItem) {
+      // 기존 선택된 항목에서 selected 클래스 제거
+      document.querySelector(".board-type-item.selected")?.classList.remove("selected");
+      
+      // 현재 클릭한 항목에 selected 클래스 추가
+      boardTypeItem.classList.add("selected");
+      
       // 현재 게시판 종류 번호 갱신
       boardCode = boardTypeItem.dataset.boardCode;
 
@@ -568,7 +595,7 @@ if (leftSidebar) {
       }
       
       if (boardName.length > 10) {
-        alert("게시판 이름이 너무 깁니다.");
+        alert("게시판 이름은 10자 이내로 작성해주세요.");
         document.querySelector(".add-folder-input").focus();
         return;
       }
@@ -614,6 +641,6 @@ window.addEventListener("popstate", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  loadBoardList(currentBoardCode);
   loadBoardTypeList();
+  loadBoardList(currentBoardCode);
 });
