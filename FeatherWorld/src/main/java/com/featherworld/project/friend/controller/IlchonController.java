@@ -107,7 +107,8 @@ public class IlchonController {
 	    
 	    Pagination pagination = (Pagination) map.get("pagination");
 	    Pagination paginationFrom = (Pagination) mapFrom.get("pagination");
-	    
+	    System.out.println("currPagination:" + pagination.getCurrentPage());
+	    System.out.println("currPaginationFrom:" + paginationFrom.getCurrentPage());
 	    
 	    
 		
