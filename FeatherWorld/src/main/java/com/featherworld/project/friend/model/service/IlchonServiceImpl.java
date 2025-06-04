@@ -23,28 +23,21 @@ import com.featherworld.project.member.model.dto.Member;
 @Service
 public class IlchonServiceImpl implements IlchonService {
 
-
-
-	
 	@Autowired
 	private IlchonMapper mapper;
 
- 
-    
     public Ilchon selectOne(int loginMemberNo, int memberNo) {
     	
     	return mapper.selectOne(loginMemberNo, memberNo);
     }
 	@Override
 	public Map<String, Object> selectIlchonMemberList(int loginMemberNo, int cp) {
-		// TODO Auto-generated method stub
-		
 		
 		int ilchonsCount =  mapper.countIlchons(loginMemberNo);
 		
 		// pagination 객체 생성 
 
-	    Pagination pagination = new Pagination(cp, ilchonsCount);
+	    Pagination pagination = new Pagination(cp, ilchonsCount, 6, 8);
 
 		
 		// 지정된 inchon들의 목록 조회
@@ -62,10 +55,6 @@ public class IlchonServiceImpl implements IlchonService {
 		int offset = (cp - 1) * limit;
 		
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		
-		
-		
-		
 		
 		
 		// Mapper 메서드 호출 시 원래 전달할 수 있는 매개변수 1개

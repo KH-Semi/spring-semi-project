@@ -75,9 +75,6 @@ const changeTitleForSec = (title, str) => {
 
 /********************여기까지 주요 기능 이외 함수******************** */
 
-//현재 로그인한 유저 정보(지금은 테스트중)
-let memberN = /*[[${members}]]*/ [];
-
 //buttons
 let editBtn = document.getElementById("edit-button"); // edit
 let applyCancelBtnDiv = document.getElementById("apply-cancel-button-div"); //apply-cancel btn 을 담는 div
@@ -212,8 +209,9 @@ function resetEditCancelBtn() {
           }), // TO_NICKNAME/FROM_NICKNAME 판별 여부는 서버측에서 판단
         })
           .then((response) => response.json())
+
           .then(async (data) => {
-            console.log(data); // DEBUG용이므로 지우셔도 됩니다
+          
             if (data.status == 2 || data.status == 1) {
               // 2 : toNickname  수정성공, 1 : fromNickname 수정성공
               console.log(
@@ -294,7 +292,6 @@ function resetEditCancelBtn() {
         .addEventListener("click", (e) => {
           // 1. fetch
           const newNickName = e.target.value;
-          console.log(e.target.value); // DEBUG용이므로 지우셔도 됩니다
           fetch("/delete", {
             method: "POST", // ← POST로 바꿔야 body 사용 가능
 
@@ -308,7 +305,7 @@ function resetEditCancelBtn() {
           })
             .then((response) => response.json())
             .then(async (data) => {
-              console.log(data); // DEBUG용이므로 지우셔도 됩니다
+
               if (data.status == 1) {
                 console.log("삭제 성공!");
 
@@ -386,7 +383,6 @@ function resetEditCancelBtn() {
         .addEventListener("click", (e) => {
           // 1. fetch
           const newNickName = e.target.value;
-          console.log(e.target.value); // DEBUG용이므로 지우셔도 됩니다
           fetch("/delete", {
             method: "POST", // ← POST로 바꿔야 body 사용 가능
 
@@ -399,8 +395,9 @@ function resetEditCancelBtn() {
             }),
           })
             .then((response) => response.json())
+
             .then(async (data) => {
-              console.log(data); // DEBUG용이므로 지우셔도 됩니다
+
               if (data.status == 1) {
                 console.log("삭제 성공!");
                 /*e.target.value = data.Ilchon.toNickname;
@@ -475,7 +472,6 @@ resetEditCancelBtn();
 
 function updateFriendListIncoming(cp, cpFrom) {
   //for pagination
-  console.log("cp: ", cp, "cpFrom:", cpFrom);
   fetch(`/${memberNo}/friendList/incoming?cp=${cp}&cpFrom=${cpFrom}`, {
     headers: {
       "X-Requested-With": "XMLHttpRequest",
@@ -488,8 +484,6 @@ function updateFriendListIncoming(cp, cpFrom) {
       return res.text();
     })
     .then((html) => {
-      //console.log("html response:", html);
-      // 응답받은 HTML을 파싱해서 DOM으로 변환
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, "text/html");
       //console.log("doc: ", doc.body.innerText);
