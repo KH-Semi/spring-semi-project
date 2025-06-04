@@ -308,11 +308,17 @@
       <p>일촌신청이 없습니다.</p>
     </div>
   </ul>
-
+  <input
+    type="hidden"
+    id="curr-pagination"
+    th:value="${pagination.currentPage}"
+  />
+  <input
+    type="hidden"
+    id="curr-pagination-from"
+    th:value="${paginationFrom.currentPage}"
+  />
   <script src="/js/friendList/incomingFriendListPart.js"></script>
   <!--for pagination-->
-  <script th:inline="javascript">
-    const currPagination = /*[[${pagination.currentPage}]]*/ 1;
-    const currPaginationFrom = /*[[${paginationFrom.currentPage}]]*/ 1;
-  </script>
+  <script th:inline="javascript"></script>
 </div>
