@@ -53,15 +53,15 @@ public class ProfileController {
 
 	@GetMapping("{memberNo:[0-9]+}/profileupdate")
 	public String showProfileUpdateForm(@PathVariable("memberNo") int memberNo, Model model,
-			@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) {
-		if (loginMember.getMemberNo() == memberNo) {
-			Profile profile = profileService.selectProfile(memberNo);
-			model.addAttribute("profile", profile);
-			return "profile/profileupdate";
-		} else {
+			@SessionAttribute(value = "loginMember", required = false) Member loginMember, RedirectAttributes ra) {
+		if (loginMember == null || loginMember.getMemberNo() != memberNo) {
 			ra.addFlashAttribute("message", "접근 할 수 없는 없는 경로입니다!(다른사람 프로필 업데이트 불가)");
 			return "redirect:/";
 		}
+			
+		Profile profile = profileService.selectProfile(memberNo);
+		model.addAttribute("profile", profile);
+		return "profile/profileupdate";
 	}
 
 	@PostMapping("{memberNo:[0-9]+}/profileupdate")
