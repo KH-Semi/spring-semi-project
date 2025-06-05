@@ -211,7 +211,6 @@ function resetEditCancelBtn() {
           .then((response) => response.json())
 
           .then(async (data) => {
-          
             if (data.status == 2 || data.status == 1) {
               // 2 : toNickname  수정성공, 1 : fromNickname 수정성공
               console.log(
@@ -305,7 +304,6 @@ function resetEditCancelBtn() {
           })
             .then((response) => response.json())
             .then(async (data) => {
-
               if (data.status == 1) {
                 console.log("삭제 성공!");
 
@@ -357,25 +355,7 @@ function resetEditCancelBtn() {
         });
     }
   });
-  // (내가 일촌신청을 보낸사람 한정)프로필img / 이름 클릭시 헤당 user의 minihome으로
-  friendSendedSpans.forEach(function (friend) {
-    const profileImg = friend.querySelector("[name=sended-friend-img]");
-    const profileName = friend.querySelector("[name=sended-friend-name]");
 
-    if (profileImg) {
-      profileImg.style.cursor = "pointer";
-      profileImg.addEventListener("click", () => {
-        window.location.href = `/${friend.dataset.memberNo}/friendList`;
-      });
-    }
-
-    if (profileName) {
-      profileImg.style.cursor = "pointer";
-      profileName.addEventListener("click", () => {
-        window.location.href = `/${friend.dataset.memberNo}/friendList`;
-      });
-    }
-  });
   friendSendedSpans?.forEach(function (friend) {
     if (friend) {
       friend // unfollow 버튼 누른후 이벤트 핸들러 설정(accept 버튼 누른후 fetch문을 그대로 복사해서 필요한 부분만 바꾼 코드!!)
@@ -397,7 +377,6 @@ function resetEditCancelBtn() {
             .then((response) => response.json())
 
             .then(async (data) => {
-
               if (data.status == 1) {
                 console.log("삭제 성공!");
                 /*e.target.value = data.Ilchon.toNickname;
