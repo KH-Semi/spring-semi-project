@@ -233,3 +233,8 @@ li {
     transform: scale(0.5);
   }
 }
+
+.friend-profile,
+.friend-name {
+  cursor: pointer;
+}

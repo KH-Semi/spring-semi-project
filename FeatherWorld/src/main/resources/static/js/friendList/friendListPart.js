@@ -163,16 +163,16 @@ function resetEditCancelBtn() {
   friendSpans.forEach(function (friend) {
     const profileImg = friend.querySelector(".friend-profile");
     const profileName = friend.querySelector(".friend-name");
-    profileImg.style.cursor = "pointer";
     if (profileImg) {
+      profileImg.style.cursor = "pointer";
       profileImg.addEventListener("click", () => {
-        window.location.href = `/${friend.dataset.memberNo}/friendList`;
+        window.location.href = `/${friend.dataset.memberNo}/minihome`;
       });
     }
-    profileImg.style.cursor = "pointer";
     if (profileName) {
+      profileImg.style.cursor = "pointer";
       profileName.addEventListener("click", () => {
-        window.location.href = `/${friend.dataset.memberNo}/friendList`;
+        window.location.href = `/${friend.dataset.memberNo}/minihome`;
       });
     }
   });
@@ -326,24 +326,3 @@ if (applyBtn) {
 }*/
 
 //각 friendSpans의 <textarea>안 change이벤트 발생시 submit하는 이벤트 핸들러 지정
-
-// 프로필 이미지나 이름을 클릭하면 해당 회원의 미니홈피로 이동
-friendSpans.forEach(function (friend) {
-  const memberNo = friend.dataset.memberNo;
-
-  const profileImg = friend.querySelector(".friend-profile");
-  const memberName = friend.querySelector(".friend-name");
-
-  profileImg.style.cursor = "pointer";
-  if (profileImg) {
-    profileImg.addEventListener("click", () => {
-      location.href = `/${memberNo}/minihome`;
-    });
-  }
-  memberName.style.cursor = "pointer";
-  if (memberName) {
-    memberName.addEventListener("click", () => {
-      location.href = `/${memberNo}/minihome`;
-    });
-  }
-});
